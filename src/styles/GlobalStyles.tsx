@@ -1,8 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@200..700&display=swap');
-
     *,
     *::before,
     *::after{
@@ -16,9 +14,9 @@ const GlobalStyles = createGlobalStyle`
     }
 
     body{
-        font-family: "Cascadia Code", sans-serif;
+        font-family: "Inter Tight", sans-serif;
         line-height: 1.5;
-        font-weight: 100;
+        font-weight: var(--font-weight-default);
         font-size: 1.6rem;
         color: var(--color-gray-700);
         background-color: var(color-gray-50);
@@ -44,9 +42,11 @@ const GlobalStyles = createGlobalStyle`
         --border-radius-md: 0.8rem;
         --border-radius-bg: 1.2rem;
 
-        --font-weight-thin: 400;
+        --font-weight-light: 300;
+        --font-weight-default: 400;
         --font-weight-normal: 500;
         --font-weight-bold: 600;
+        --font-weight-x-bold: 700;
 
         --duration-fast: 200ms;
         --duration-default: 300ms;

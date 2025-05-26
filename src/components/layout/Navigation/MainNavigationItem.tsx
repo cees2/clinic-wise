@@ -15,7 +15,6 @@ const StyledMainNavigationItem = styled.a`
     padding: 0 1.6rem;
     transition: var(--duration-fast);
     color: var(--color-gray-600);
-    font-weight: 200;
   }
 
   & > svg {
@@ -27,6 +26,7 @@ const StyledMainNavigationItem = styled.a`
   &.active {
     transform: scale(102%);
     color: var(--color-gray-800);
+    font-weight: var(--font-weight-normal);
   }
 
   &:hover > svg,
