@@ -5,19 +5,21 @@ import {
   MdOutlineCalendarMonth,
   MdOutlineRoomPreferences,
 } from "react-icons/md";
-import { LuChartNoAxesCombined, LuUsers } from "react-icons/lu";
+import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
+import { HiOutlineUsers } from "react-icons/hi";
 
 const StyledNavigation = styled.header`
+  flex: 0 1 20rem;
   display: flex;
   flex-direction: column;
-  grid-column: 1 / 2;
-  grid-row: 1 / -1;
   align-items: center;
   row-gap: 8rem;
+  height: 100vh;
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
+  margin-top: 3.2rem;
   width: 50%;
 `;
 
@@ -41,7 +43,7 @@ const mainNavigationConfig: MainNavigationConfigItem[] = [
   {
     to: "/patients",
     title: "Patients",
-    icon: <LuUsers />,
+    icon: <HiOutlineUsers />,
   },
   {
     to: "/rooms",

@@ -12,15 +12,18 @@ import styled from "styled-components";
 import MainNavigation from "../components/layout/Navigation/MainNavigation";
 
 const StyledMainLayout = styled.div`
-  display: grid;
-  grid-template-columns: min-content 1fr;
+  display: flex;
+`;
+
+const Main = styled.main`
+  flex: 1;
 `;
 
 const MainLayout = () => {
   return (
     <StyledMainLayout>
       <MainNavigation />
-      <main>
+      <Main>
         <Routes>
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="dashboard" Component={Dashboard} />
@@ -33,7 +36,7 @@ const MainLayout = () => {
           <Route path="register" Component={Register} />
           <Route path="*" Component={Page404} />
         </Routes>
-      </main>
+      </Main>
     </StyledMainLayout>
   );
 };

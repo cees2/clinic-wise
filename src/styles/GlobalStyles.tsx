@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
-    @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cascadia+Code:wght@200..700&display=swap');
 
     *,
     *::before,
@@ -16,9 +16,9 @@ const GlobalStyles = createGlobalStyle`
     }
 
     body{
-        font-family: "Lato", sans-serif;
+        font-family: "Cascadia Code", sans-serif;
         line-height: 1.5;
-        font-weight: 400;
+        font-weight: 100;
         font-size: 1.6rem;
         color: var(--color-gray-700);
         background-color: var(color-gray-50);
@@ -45,6 +45,8 @@ const GlobalStyles = createGlobalStyle`
         --border-radius-bg: 1.2rem;
 
         --font-weight-thin: 400;
+        --font-weight-normal: 500;
+        --font-weight-bold: 600;
 
         --duration-fast: 200ms;
         --duration-default: 300ms;

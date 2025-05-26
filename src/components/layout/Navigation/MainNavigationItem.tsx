@@ -13,24 +13,24 @@ const StyledMainNavigationItem = styled.a`
     align-items: center;
     column-gap: 1.6rem;
     padding: 0 1.6rem;
-    font-size: 2rem;
     transition: var(--duration-fast);
     color: var(--color-gray-600);
-  }
-
-  &:hover,
-  &:active {
-    cursor: pointer;
-    transform: scale(102%);
+    font-weight: 200;
   }
 
   & > svg {
-    height: 2.4rem;
-    width: 2.4rem;
+    height: 2rem;
+    width: 2rem;
+  }
+
+  &:hover,
+  &.active {
+    transform: scale(102%);
+    color: var(--color-gray-800);
   }
 
   &:hover > svg,
-  &.active {
+  &.active > svg {
     color: var(--color-primary);
   }
 `;
