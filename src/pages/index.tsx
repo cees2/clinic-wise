@@ -5,22 +5,22 @@ import Patients from "./Patients";
 import Rooms from "./Rooms";
 import Availabilities from "./Availabilities";
 import Settings from "./Settings";
-import Navigation from "../components/layout/Navigation";
 import Page404 from "../components/layout/Page404";
 import Login from "./Authentication/Login/Login";
 import Register from "./Authentication/Register/Register";
 import styled from "styled-components";
+import MainNavigation from "../components/layout/Navigation/MainNavigation";
 
 const StyledMainLayout = styled.div`
   display: grid;
+  grid-template-columns: min-content 1fr;
 `;
 
 const MainLayout = () => {
   return (
     <StyledMainLayout>
-      <Navigation />
+      <MainNavigation />
       <main>
-        <input type="text" />
         <Routes>
           <Route index element={<Navigate to="dashboard" />} />
           <Route path="dashboard" Component={Dashboard} />

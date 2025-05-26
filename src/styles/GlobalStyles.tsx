@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
     body{
         font-family: "Lato", sans-serif;
         line-height: 1.5;
-        font-weight: 500;
+        font-weight: 400;
         font-size: 1.6rem;
         color: var(--color-gray-700);
         background-color: var(color-gray-50);
@@ -43,9 +43,15 @@ const GlobalStyles = createGlobalStyle`
         --border-radius-sm: 0.4rem;
         --border-radius-md: 0.8rem;
         --border-radius-bg: 1.2rem;
+
+        --font-weight-thin: 400;
+
+        --duration-fast: 200ms;
+        --duration-default: 300ms;
+        --duration-slow: 400ms;
     }
 
-    *:focus{
+    input:focus{
         box-shadow: 0px 0px 15px 0px rgba(22, 163, 74, 1);
     }
 
@@ -53,6 +59,13 @@ const GlobalStyles = createGlobalStyle`
         list-style-type: none;
     }
 
+    img{
+        max-width: 100%;
+    }
+
+    a{
+        text-decoration: none;
+    }
 `;
 
 export default GlobalStyles;
