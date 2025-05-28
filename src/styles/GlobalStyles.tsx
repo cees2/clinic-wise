@@ -14,7 +14,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     body{
-        font-family: "Inter Tight", sans-serif;
+        font-family: "Lato", sans-serif;
         line-height: 1.5;
         font-weight: var(--font-weight-default);
         font-size: 1.6rem;

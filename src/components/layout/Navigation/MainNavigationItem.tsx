@@ -12,14 +12,14 @@ const StyledMainNavigationItem = styled.a`
     display: flex;
     align-items: center;
     column-gap: 1.6rem;
-    padding: 0 1.6rem;
+    padding: 0.8rem 1.6rem;
     transition: var(--duration-fast);
     color: var(--color-gray-600);
   }
 
   & > svg {
-    height: 2rem;
-    width: 2rem;
+    height: 2.4rem;
+    width: 2.4rem;
   }
 
   &:hover,

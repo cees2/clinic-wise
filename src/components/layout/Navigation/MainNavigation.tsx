@@ -9,7 +9,7 @@ import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineUsers } from "react-icons/hi";
 
-const StyledNavigation = styled.header`
+const StyledNavigation = styled.aside`
   flex: 0 1 20rem;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
 const NavigationList = styled.ul`
   display: flex;
   flex-direction: column;
-  row-gap: 2.4rem;
+  row-gap: 0.8rem;
 `;
 
 const mainNavigationConfig: MainNavigationConfigItem[] = [
