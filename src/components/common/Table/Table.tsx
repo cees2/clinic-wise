@@ -1,7 +1,7 @@
 import type React from "react";
 import styled, { css } from "styled-components";
 import type { TableHeaderCellProps } from "../../../utils/projectTypes";
-import { createContext, use } from "react";
+import { createContext, use, useMemo } from "react";
 
 interface Props {
   gridTemplateColumns?: string;
@@ -10,7 +10,6 @@ interface Props {
 }
 
 const StyledTable = styled.div.attrs({ role: "table" })`
-  border: 1px solid black;
   display: flex;
   flex-direction: column;
 `;
@@ -18,7 +17,11 @@ const StyledTable = styled.div.attrs({ role: "table" })`
 const StyledTableRow = styled.div.attrs({ role: "row" })<
   Omit<Props, "children">
 >`
+  padding: 0.8rem 1.6rem;
   display: grid;
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-gray-300);
+  }
 
   ${({ gridTemplateColumns, numberOfColumns }) =>
     css`
@@ -30,6 +33,8 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<
 const StyledHeaderCell = styled.div.attrs({
   role: "columnheader",
 })<TableHeaderCellProps>`
+  font-weight: var(--font-weight-bold);
+  font-size: 1.8rem;
   ${({ columnIndex }) => {
     return css`
       grid-column: ${columnIndex + 1} / ${columnIndex + 2};
@@ -48,8 +53,13 @@ const useTableContext = () => {
 };
 
 const Table = ({ children, gridTemplateColumns, numberOfColumns }: Props) => {
+  const contextValue = useMemo(
+    () => ({ gridTemplateColumns, numberOfColumns }),
+    [gridTemplateColumns, numberOfColumns]
+  );
+
   return (
-    <TableContext value={{ gridTemplateColumns, numberOfColumns }}>
+    <TableContext value={contextValue}>
       <StyledTable>{children}</StyledTable>
     </TableContext>
   );

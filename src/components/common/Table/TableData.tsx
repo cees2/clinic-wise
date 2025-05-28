@@ -3,6 +3,7 @@ import type {
   TableDataConfig,
   TableDataConfigGenericExtend,
 } from "../../../utils/projectTypes";
+import { LoadingSpinner } from "../LoadingSpinner";
 import Table from "./Table";
 
 export const TableData = <T extends TableDataConfigGenericExtend>({
@@ -13,10 +14,9 @@ export const TableData = <T extends TableDataConfigGenericExtend>({
   const { gridTemplateColumns, getResources, columns } = config;
   const { data: resources, isLoading } = getResources();
 
-  console.log(resources);
-  console.log(isLoading);
-
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Table
