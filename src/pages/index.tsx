@@ -17,7 +17,7 @@ const StyledMainLayout = styled.div`
 
 const Main = styled.main`
   flex: 1;
-  background-color: var(--color-gray-50);
+  background-color: var(--color-gray-100);
 `;
 
 const MainLayout = () => {

@@ -6,7 +6,7 @@ interface Props {
   as: KnownTarget;
 }
 
-const StyledHeader = styled.h1<{ as: KnownTarget }>`
+export const StyledHeader = styled.h1<{ as: KnownTarget }>`
   ${(props) => {
     switch (props.as) {
       case "h1":
@@ -27,6 +27,17 @@ const StyledHeader = styled.h1<{ as: KnownTarget }>`
       case "h4":
         return css`
           font-size: 2.4rem;
+          font-weight: var(--font-weight-normal);
+        `;
+      case "h5":
+        return css`
+          font-size: 2rem;
+          font-weight: var(--font-weight-normal);
+        `;
+      case "h6":
+      default:
+        return css`
+          font-size: 1.6rem;
           font-weight: var(--font-weight-normal);
         `;
     }

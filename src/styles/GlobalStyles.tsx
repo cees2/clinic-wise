@@ -36,7 +36,12 @@ const GlobalStyles = createGlobalStyle`
         --color-gray-950: #030712;
 
         --color-primary: #16a34a;
-        --color-primary-light: #dcfce7;
+        --color-primary-dark: #15803d;
+        --color-primary-light: #22c55e;
+        --color-primary-light-2: #dcfce7;
+
+        --color-danger: #b91c1c;
+        --color-danger-light: #fee2e2;
 
         --border-radius-sm: 0.4rem;
         --border-radius-md: 0.8rem;
@@ -48,6 +53,7 @@ const GlobalStyles = createGlobalStyle`
         --font-weight-bold: 600;
         --font-weight-x-bold: 700;
 
+        --duration-fastest: 100ms;
         --duration-fast: 200ms;
         --duration-default: 300ms;
         --duration-slow: 400ms;

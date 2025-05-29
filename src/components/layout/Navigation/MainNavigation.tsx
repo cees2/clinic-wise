@@ -8,6 +8,7 @@ import {
 import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineUsers } from "react-icons/hi";
+import Faker from "../Faker/Faker";
 
 const StyledNavigation = styled.aside`
   flex: 0 1 20rem;
@@ -72,6 +73,7 @@ const MainNavigation = () => {
           ))}
         </NavigationList>
       </nav>
+      <Faker />
     </StyledNavigation>
   );
 };
