@@ -1,5 +1,6 @@
 import React, { createContext, use, useMemo, useReducer } from "react";
 import type {
+  TableDataConfigGenericExtend,
   TableDataContextType,
   TableDataState,
 } from "../../../../utils/projectTypes";
@@ -38,7 +39,7 @@ const TableDataContextProvider = <T extends TableDataConfigGenericExtend>({
       dispatch,
       resources,
     }),
-    [ state, resources, config]
+    [state, resources, config]
   );
 
   return (

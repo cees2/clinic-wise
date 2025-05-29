@@ -22,7 +22,7 @@ export interface TableDataColumn<T extends Record<string, any>> {
 
 export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
   columns: TableDataColumn<T>[];
-  getResources: UseQueryResult<T[]>;
+  getResources: () => UseQueryResult<T[]>;
   gridTemplateColumns?: string;
 }
 
