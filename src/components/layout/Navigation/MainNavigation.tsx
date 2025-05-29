@@ -17,6 +17,9 @@ const StyledNavigation = styled.aside`
   align-items: stretch;
   row-gap: 8rem;
   height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`

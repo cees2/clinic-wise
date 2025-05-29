@@ -12,6 +12,7 @@ interface Props {
 const StyledTable = styled.div.attrs({ role: "table" })`
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 `;
 
 const StyledTableRow = styled.div.attrs({ role: "row" })<
@@ -19,6 +20,7 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<
 >`
   padding: 0.8rem 1.6rem;
   display: grid;
+  align-items: center;
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-gray-300);
   }

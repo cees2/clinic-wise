@@ -35,3 +35,47 @@ export interface TableHeaderCellProps {
   children: React.ReactNode;
   columnIndex: number;
 }
+
+export interface TableDataFilter {
+  id: string;
+  value: string;
+}
+
+export interface TableDataState {
+  selectedSort: string;
+  selectedFilters: TableDataFilter[];
+  selectedPage: number;
+  selectedPaginationSize: number;
+}
+
+export interface TableDataContextType<T> {
+  config: TableDataConfig<T>;
+  tableDataState: TableDataState;
+  dispatch: React.ActionDispatch<React.AnyActionArg>;
+  resources: T[];
+}
+
+export enum TableDataActionsEnum {
+  SET_SORT,
+  SET_FILTER,
+  SET_PAGINATION_SIZE,
+  SET_PAGE,
+}
+
+export type TableDataActionsType =
+  | {
+      type: TableDataActionsEnum.SET_SORT;
+      payload: string;
+    }
+  | {
+      type: TableDataActionsEnum.SET_FILTER;
+      payload: TableDataFilter[];
+    }
+  | {
+      type: TableDataActionsEnum.SET_PAGINATION_SIZE;
+      payload: number;
+    }
+  | {
+      type: TableDataActionsEnum.SET_PAGE;
+      payload: number;
+    };

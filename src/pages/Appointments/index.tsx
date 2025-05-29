@@ -1,6 +1,6 @@
 import { Header } from "../../components/common/Header/Header";
-import { TableData } from "../../components/common/Table/TableData";
-import { TableLayout } from "../../components/common/Table/TableLayout";
+import TableDataRenderer from "../../components/layout/TableData/TableData";
+import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
 import { useAppointmentsApi } from "../../services/hooks/useAppointmentsApi";
 import type { TableDataConfig } from "../../utils/projectTypes";
@@ -53,7 +53,7 @@ const Appointments = () => {
   return (
     <TableLayout>
       <Header as="h3" title="Appointments" />
-      <TableData config={config} />
+      <TableDataRenderer config={config} />
     </TableLayout>
   );
 };
