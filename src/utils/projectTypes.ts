@@ -79,3 +79,8 @@ export type TableDataActionsType =
       type: TableDataActionsEnum.SET_PAGE;
       payload: number;
     };
+
+export interface DropdownContextType {
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
