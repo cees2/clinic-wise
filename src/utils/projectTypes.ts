@@ -60,6 +60,8 @@ export enum TableDataActionsEnum {
   SET_FILTER,
   SET_PAGINATION_SIZE,
   SET_PAGE,
+  SET_NEXT_PAGE,
+  SET_PREVIOUS_PAGE,
 }
 
 export type TableDataActionsType =
@@ -78,6 +80,12 @@ export type TableDataActionsType =
   | {
       type: TableDataActionsEnum.SET_PAGE;
       payload: number;
+    }
+  | {
+      type: TableDataActionsEnum.SET_NEXT_PAGE;
+    }
+  | {
+      type: TableDataActionsEnum.SET_PREVIOUS_PAGE;
     };
 
 export interface DropdownContextType {
