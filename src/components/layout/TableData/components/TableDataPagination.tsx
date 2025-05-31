@@ -5,55 +5,62 @@ import { useTableDataContext } from "../utils/TableDataContext";
 import { TableDataActionsEnum } from "../../../../utils/projectTypes";
 
 const StyledTableDataPagination = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 const PaginationNavigation = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 0.6rem;
+    display: flex;
+    align-items: center;
+    column-gap: 0.6rem;
 `;
 
 const PaginationNavigationButton = styled(Button)`
-  background-color: var(--color-gray-200);
+    background-color: var(--color-gray-200);
 `;
 
 const dropdownItems = [10, 20, 50, 100];
 
 const TableDataPagination = () => {
-  const { tableDataState, dispatch } = useTableDataContext();
-  const { selectedPage, selectedPaginationSize } = tableDataState;
+    const { tableDataState, dispatch } = useTableDataContext();
+    const { selectedPage, selectedPaginationSize } = tableDataState;
 
-  const setPreviousPageHander = () => {
-    dispatch({ type: TableDataActionsEnum.SET_PREVIOUS_PAGE });
-  };
-  const setNextPageHander = () => {
-    dispatch({ type: TableDataActionsEnum.SET_NEXT_PAGE });
-  };
+    const setPreviousPageHander = () => {
+        dispatch({ type: TableDataActionsEnum.SET_PREVIOUS_PAGE });
+    };
+    const setNextPageHander = () => {
+        dispatch({ type: TableDataActionsEnum.SET_NEXT_PAGE });
+    };
 
-  return (
-    <StyledTableDataPagination>
-      <Dropdown>
-        <Dropdown.Toggle>{selectedPaginationSize}</Dropdown.Toggle>
-        <Dropdown.Menu>
-          {dropdownItems.map((item) => (
-            <Dropdown.Item key={item}>{item}</Dropdown.Item>
-          ))}
-        </Dropdown.Menu>
-      </Dropdown>
-      <PaginationNavigation>
-        <PaginationNavigationButton onClick={setPreviousPageHander}>
-          Previous
-        </PaginationNavigationButton>
-        <span>{selectedPage}</span>
-        <PaginationNavigationButton onClick={setNextPageHander}>
-          Next
-        </PaginationNavigationButton>
-      </PaginationNavigation>
-    </StyledTableDataPagination>
-  );
+    const setPageSizeHandler = (size: number) => {
+        dispatch({ type: TableDataActionsEnum.SET_PAGINATION_SIZE, payload: size });
+    };
+
+    return (
+        <StyledTableDataPagination>
+            <Dropdown placement="top">
+                <Dropdown.Toggle>{selectedPaginationSize}</Dropdown.Toggle>
+                <Dropdown.Menu>
+                    {dropdownItems.map((item) => (
+                        <Dropdown.Item
+                            key={item}
+                            onClick={() => {
+                                setPageSizeHandler(item);
+                            }}
+                        >
+                            {item}
+                        </Dropdown.Item>
+                    ))}
+                </Dropdown.Menu>
+            </Dropdown>
+            <PaginationNavigation>
+                <PaginationNavigationButton onClick={setPreviousPageHander}>Previous</PaginationNavigationButton>
+                <span>{selectedPage}</span>
+                <PaginationNavigationButton onClick={setNextPageHander}>Next</PaginationNavigationButton>
+            </PaginationNavigation>
+        </StyledTableDataPagination>
+    );
 };
 
 export default TableDataPagination;

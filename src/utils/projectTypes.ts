@@ -1,29 +1,30 @@
 import type { UseQueryResult } from "@tanstack/react-query";
+import type { RefObject } from "react";
 import type React from "react";
 
 export interface MainNavigationConfigItem {
-  to: string;
-  icon: React.ReactNode;
-  title: string;
+    to: string;
+    icon: React.ReactNode;
+    title: string;
 }
 
 export interface HeaderActions {
-  title: string;
-  isInDropdown?: boolean;
-  onClick?: () => void;
-  path?: string;
+    title: string;
+    isInDropdown?: boolean;
+    onClick?: () => void;
+    path?: string;
 }
 
 export interface TableDataColumn<T extends Record<string, any>> {
-  id: keyof T;
-  name: string;
-  render?: (dataItem: T) => React.ReactNode | number | string;
+    id: keyof T;
+    name: string;
+    render?: (dataItem: T) => React.ReactNode | number | string;
 }
 
 export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
-  columns: TableDataColumn<T>[];
-  getResources: () => UseQueryResult<T[]>;
-  gridTemplateColumns?: string;
+    columns: TableDataColumn<T>[];
+    getResources: () => UseQueryResult<T[]>;
+    gridTemplateColumns?: string;
 }
 
 export type TableDataConfigGenericExtend = Record<string, any> & { id: number };
@@ -32,63 +33,80 @@ export type TableDataConfigGenericExtend = Record<string, any> & { id: number };
 // TODO: Create differenet files for types??
 
 export interface TableHeaderCellProps {
-  children: React.ReactNode;
-  columnIndex: number;
+    children: React.ReactNode;
+    columnIndex: number;
 }
 
 export interface TableDataFilter {
-  id: string;
-  value: string;
+    id: string;
+    value: string;
 }
 
 export interface TableDataState {
-  selectedSort: string;
-  selectedFilters: TableDataFilter[];
-  selectedPage: number;
-  selectedPaginationSize: number;
+    selectedSort: string;
+    selectedFilters: TableDataFilter[];
+    selectedPage: number;
+    selectedPaginationSize: number;
 }
 
 export interface TableDataContextType<T> {
-  config: TableDataConfig<T>;
-  tableDataState: TableDataState;
-  dispatch: React.ActionDispatch<React.AnyActionArg>;
-  resources: T[];
+    config: TableDataConfig<T>;
+    tableDataState: TableDataState;
+    dispatch: React.ActionDispatch<React.AnyActionArg>;
+    resources: T[];
 }
 
 export enum TableDataActionsEnum {
-  SET_SORT,
-  SET_FILTER,
-  SET_PAGINATION_SIZE,
-  SET_PAGE,
-  SET_NEXT_PAGE,
-  SET_PREVIOUS_PAGE,
+    SET_SORT,
+    SET_FILTER,
+    SET_PAGINATION_SIZE,
+    SET_PAGE,
+    SET_NEXT_PAGE,
+    SET_PREVIOUS_PAGE,
 }
 
 export type TableDataActionsType =
-  | {
-      type: TableDataActionsEnum.SET_SORT;
-      payload: string;
-    }
-  | {
-      type: TableDataActionsEnum.SET_FILTER;
-      payload: TableDataFilter[];
-    }
-  | {
-      type: TableDataActionsEnum.SET_PAGINATION_SIZE;
-      payload: number;
-    }
-  | {
-      type: TableDataActionsEnum.SET_PAGE;
-      payload: number;
-    }
-  | {
-      type: TableDataActionsEnum.SET_NEXT_PAGE;
-    }
-  | {
-      type: TableDataActionsEnum.SET_PREVIOUS_PAGE;
-    };
+    | {
+          type: TableDataActionsEnum.SET_SORT;
+          payload: string;
+      }
+    | {
+          type: TableDataActionsEnum.SET_FILTER;
+          payload: TableDataFilter[];
+      }
+    | {
+          type: TableDataActionsEnum.SET_PAGINATION_SIZE;
+          payload: number;
+      }
+    | {
+          type: TableDataActionsEnum.SET_PAGE;
+          payload: number;
+      }
+    | {
+          type: TableDataActionsEnum.SET_NEXT_PAGE;
+      }
+    | {
+          type: TableDataActionsEnum.SET_PREVIOUS_PAGE;
+      };
 
 export interface DropdownContextType {
-  open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    dropdownToggleRef: RefObject<HTMLButtonElement> | null;
+    setDropdownToggleRef: (dropdownToggleRef: RefObject<HTMLButtonElement> | null) => void;
+    placement?: DropdownPlacementType;
+}
+
+export interface StyledDropdownMenuProps {
+    toggleHeight: number;
+    toggleWidth: number;
+    placement: DropdownPlacementType;
+}
+
+export type DropdownPlacementType = "top" | "bottom" | "left" | "right";
+
+export interface DropdownItemsProps<T> {
+    render: (item: T) => React.ReactNode;
+    items: T[];
+    onClick?: () => void;
 }

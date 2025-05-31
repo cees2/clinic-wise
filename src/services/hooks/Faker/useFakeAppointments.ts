@@ -4,19 +4,19 @@ import { uploadFakeAppointments } from "../../api";
 import type { Tables } from "../../database.types";
 
 export const useFakeAppointments = () => {
-  const queryClient = useQueryClient();
+    const queryClient = useQueryClient();
 
-  const mutationConfig = useMutation({
-    mutationFn: (appointments: Tables<"appointments">[]) =>
-      uploadFakeAppointments(appointments),
-    onSuccess: async () => {
-      toast.success("Appointments have been uploaded successfully");
-      await queryClient.invalidateQueries({ queryKey: ["appointments"] });
-    },
-    onError: () => {
-      toast.error("Appointments could not be uploaded");
-    },
-  });
+    const mutationConfig = useMutation({
+        mutationFn: (appointments: Tables<"appointments">[]) =>
+            uploadFakeAppointments(appointments),
+        onSuccess: async () => {
+            toast.success("Appointments have been uploaded successfully");
+            await queryClient.invalidateQueries({ queryKey: ["appointments"] });
+        },
+        onError: () => {
+            toast.error("Appointments could not be uploaded");
+        },
+    });
 
-  return mutationConfig;
+    return mutationConfig;
 };

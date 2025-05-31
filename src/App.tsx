@@ -8,16 +8,16 @@ import { ToastContainer } from "react-toastify";
 const queryClient = new QueryClient();
 
 function App() {
-  return (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <ToastContainer />
-        <ReactQueryDevtools initialIsOpen={false} />
-        <GlobalStyles />
-        <MainLayout />
-      </QueryClientProvider>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <QueryClientProvider client={queryClient}>
+                <ToastContainer />
+                <ReactQueryDevtools initialIsOpen={false} />
+                <GlobalStyles />
+                <MainLayout />
+            </QueryClientProvider>
+        </BrowserRouter>
+    );
 }
 
 export default App;

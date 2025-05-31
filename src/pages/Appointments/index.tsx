@@ -16,46 +16,46 @@ import type { TableDataConfig } from "../../utils/projectTypes";
 // employee: EmployeeApi;
 
 const Appointments = () => {
-  const config: TableDataConfig<Tables<"appointments">> = {
-    columns: [
-      {
-        id: "duration",
-        name: "Duration",
-      },
-      {
-        id: "status",
-        name: "Status",
-      },
-      {
-        id: "start_date",
-        name: "Start date",
-      },
-      {
-        id: "number_of_patients",
-        name: "Number of patients",
-      },
-      {
-        id: "additional_note",
-        name: "Additional note",
-      },
-      {
-        id: "patient_id",
-        name: "Patient",
-      },
-      {
-        id: "employee_id",
-        name: "Employee",
-      },
-    ],
-    getResources: useAppointmentsApi,
-  };
+    const config: TableDataConfig<Tables<"appointments">> = {
+        columns: [
+            {
+                id: "duration",
+                name: "Duration",
+            },
+            {
+                id: "status",
+                name: "Status",
+            },
+            {
+                id: "start_date",
+                name: "Start date",
+            },
+            {
+                id: "number_of_patients",
+                name: "Number of patients",
+            },
+            {
+                id: "additional_note",
+                name: "Additional note",
+            },
+            {
+                id: "patient_id",
+                name: "Patient",
+            },
+            {
+                id: "employee_id",
+                name: "Employee",
+            },
+        ],
+        getResources: useAppointmentsApi,
+    };
 
-  return (
-    <TableLayout>
-      <Header as="h3" title="Appointments" />
-      <TableDataRenderer config={config} />
-    </TableLayout>
-  );
+    return (
+        <TableLayout>
+            <Header as="h3" title="Appointments" />
+            <TableDataRenderer config={config} />
+        </TableLayout>
+    );
 };
 
 export default Appointments;

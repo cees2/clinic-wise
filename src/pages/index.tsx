@@ -12,34 +12,34 @@ import styled from "styled-components";
 import MainNavigation from "../components/layout/Navigation/MainNavigation";
 
 const StyledMainLayout = styled.div`
-  display: flex;
+    display: flex;
 `;
 
 const Main = styled.main`
-  flex: 1;
-  background-color: var(--color-gray-100);
+    flex: 1;
+    background-color: var(--color-gray-100);
 `;
 
 const MainLayout = () => {
-  return (
-    <StyledMainLayout>
-      <MainNavigation />
-      <Main>
-        <Routes>
-          <Route index element={<Navigate to="dashboard" />} />
-          <Route path="dashboard" Component={Dashboard} />
-          <Route path="appointments" Component={Appointments} />
-          <Route path="patients" Component={Patients} />
-          <Route path="rooms" Component={Rooms} />
-          <Route path="availabilities" Component={Availabilities} />
-          <Route path="settings" Component={Settings} />
-          <Route path="login" Component={Login} />
-          <Route path="register" Component={Register} />
-          <Route path="*" Component={Page404} />
-        </Routes>
-      </Main>
-    </StyledMainLayout>
-  );
+    return (
+        <StyledMainLayout>
+            <MainNavigation />
+            <Main>
+                <Routes>
+                    <Route index element={<Navigate to="dashboard" />} />
+                    <Route path="dashboard" Component={Dashboard} />
+                    <Route path="appointments" Component={Appointments} />
+                    <Route path="patients" Component={Patients} />
+                    <Route path="rooms" Component={Rooms} />
+                    <Route path="availabilities" Component={Availabilities} />
+                    <Route path="settings" Component={Settings} />
+                    <Route path="login" Component={Login} />
+                    <Route path="register" Component={Register} />
+                    <Route path="*" Component={Page404} />
+                </Routes>
+            </Main>
+        </StyledMainLayout>
+    );
 };
 
 export default MainLayout;

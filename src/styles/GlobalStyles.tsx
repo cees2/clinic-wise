@@ -19,7 +19,6 @@ const GlobalStyles = createGlobalStyle`
         font-weight: var(--font-weight-default);
         font-size: 1.6rem;
         color: var(--color-gray-700);
-        background-color: var(color-gray-50);
     }
 
     html{

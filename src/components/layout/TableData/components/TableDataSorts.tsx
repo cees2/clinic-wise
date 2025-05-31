@@ -1,5 +1,5 @@
 const TableDataSorts = () => {
-  return <div>Sorts</div>;
+    return <div>Sorts</div>;
 };
 
 export default TableDataSorts;

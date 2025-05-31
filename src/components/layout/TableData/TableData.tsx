@@ -1,6 +1,6 @@
 import type {
-  TableDataConfig,
-  TableDataConfigGenericExtend,
+    TableDataConfig,
+    TableDataConfigGenericExtend,
 } from "../../../utils/projectTypes";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import TableDataFilters from "./components/TableDataFilters";
@@ -10,39 +10,39 @@ import TableDataTable from "./components/TableDataTable";
 import TableDataContextProvider from "./utils/TableDataContext";
 
 const TableDataRenderer = <T extends TableDataConfigGenericExtend>({
-  config,
+    config,
 }: {
-  config: TableDataConfig<T>;
+    config: TableDataConfig<T>;
 }) => {
-  const { isLoading, data: resources } = config.getResources();
+    const { isLoading, data: resources } = config.getResources();
 
-  if (isLoading) return <LoadingSpinner />;
-  if (!resources) return <div>EMPTY PAGE</div>;
+    if (isLoading) return <LoadingSpinner />;
+    if (!resources) return <div>EMPTY PAGE</div>;
 
-  return (
-    <TableData config={config} resources={resources}>
-      <TableData.Filters />
-      <TableData.Sorts />
-      <TableData.Table />
-      <TableData.Pagination />
-    </TableData>
-  );
+    return (
+        <TableData config={config} resources={resources}>
+            <TableData.Filters />
+            <TableData.Sorts />
+            <TableData.Table />
+            <TableData.Pagination />
+        </TableData>
+    );
 };
 
 const TableData = <T extends TableDataConfigGenericExtend>({
-  children,
-  config,
-  resources,
+    children,
+    config,
+    resources,
 }: {
-  children: React.ReactNode;
-  config: TableDataConfig<T>;
-  resources: T[];
+    children: React.ReactNode;
+    config: TableDataConfig<T>;
+    resources: T[];
 }) => {
-  return (
-    <TableDataContextProvider config={config} resources={resources}>
-      {children}
-    </TableDataContextProvider>
-  );
+    return (
+        <TableDataContextProvider config={config} resources={resources}>
+            {children}
+        </TableDataContextProvider>
+    );
 };
 
 TableData.Table = TableDataTable;
