@@ -1,26 +1,24 @@
-import type {
-    TableDataConfig,
-    TableDataConfigGenericExtend,
-} from "../../../utils/projectTypes";
+import { useReducer } from "react";
+import type { TableDataConfig, TableDataConfigGenericExtend, TableDataState } from "../../../utils/projectTypes";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import TableDataFilters from "./components/TableDataFilters";
 import TableDataPagination from "./components/TableDataPagination";
 import TableDataSorts from "./components/TableDataSorts";
 import TableDataTable from "./components/TableDataTable";
 import TableDataContextProvider from "./utils/TableDataContext";
+import tableDataContextReducer from "./utils/reducer";
+import { tableDataConfigInitialValue } from "./utils/constants";
+import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
-const TableDataRenderer = <T extends TableDataConfigGenericExtend>({
-    config,
-}: {
-    config: TableDataConfig<T>;
-}) => {
-    const { isLoading, data: resources } = config.getResources();
+const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: { config: TableDataConfig<T> }) => {
+    const [tableDataState, dispatch] = useReducer<TableDataState>(tableDataContextReducer, tableDataConfigInitialValue);
+    const { isLoading, data: resources } = useTableDataFetcher(config.resourceName, tableDataState);
 
     if (isLoading) return <LoadingSpinner />;
-    if (!resources) return <div>EMPTY PAGE</div>;
+    if (!resources || resources.length === 0) return <div>EMPTY PAGE</div>;
 
     return (
-        <TableData config={config} resources={resources}>
+        <TableData config={config} resources={resources} tableDataState={tableDataState} dispatch={dispatch}>
             <TableData.Filters />
             <TableData.Sorts />
             <TableData.Table />
@@ -33,13 +31,22 @@ const TableData = <T extends TableDataConfigGenericExtend>({
     children,
     config,
     resources,
+    tableDataState,
+    dispatch,
 }: {
     children: React.ReactNode;
     config: TableDataConfig<T>;
     resources: T[];
+    tableDataState: TableDataState;
+    dispatch: React.ActionDispatch<React.AnyActionArg>;
 }) => {
     return (
-        <TableDataContextProvider config={config} resources={resources}>
+        <TableDataContextProvider
+            config={config}
+            resources={resources}
+            tableDataState={tableDataState}
+            dispatch={dispatch}
+        >
             {children}
         </TableDataContextProvider>
     );

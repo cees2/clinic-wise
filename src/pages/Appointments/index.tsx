@@ -2,18 +2,7 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
-import { useAppointmentsApi } from "../../services/hooks/useAppointmentsApi";
 import type { TableDataConfig } from "../../utils/projectTypes";
-
-// id: number;
-// duration: number;
-// // TODO: STATUS CHAGEN
-// status: "WAITING" | "DONE" | "MISSED";
-// start_date: string;
-// number_of_patients: number;
-// additional_note: string;
-// patient: PatientApi;
-// employee: EmployeeApi;
 
 const Appointments = () => {
     const config: TableDataConfig<Tables<"appointments">> = {
@@ -47,7 +36,7 @@ const Appointments = () => {
                 name: "Employee",
             },
         ],
-        getResources: useAppointmentsApi,
+        resourceName: "appointments",
     };
 
     return (

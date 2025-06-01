@@ -1,6 +1,6 @@
-import type { UseQueryResult } from "@tanstack/react-query";
 import type { RefObject } from "react";
 import type React from "react";
+import type { Database } from "../services/database.types";
 
 export interface MainNavigationConfigItem {
     to: string;
@@ -23,8 +23,8 @@ export interface TableDataColumn<T extends Record<string, any>> {
 
 export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
     columns: TableDataColumn<T>[];
-    getResources: () => UseQueryResult<T[]>;
     gridTemplateColumns?: string;
+    resourceName: keyof Database["public"]["Tables"];
 }
 
 export type TableDataConfigGenericExtend = Record<string, any> & { id: number };

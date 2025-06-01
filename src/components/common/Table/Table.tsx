@@ -15,9 +15,7 @@ const StyledTable = styled.div.attrs({ role: "table" })`
     overflow-y: auto;
 `;
 
-const StyledTableRow = styled.div.attrs({ role: "row" })<
-    Omit<Props, "children">
->`
+const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<Props, "children">>`
     padding: 0.8rem 1.6rem;
     display: grid;
     align-items: center;
@@ -26,8 +24,7 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<
     }
 
     ${({ gridTemplateColumns, numberOfColumns }) => css`
-        grid-template-columns: ${gridTemplateColumns ??
-        `repeat(${numberOfColumns}, 1fr)`};
+        grid-template-columns: ${gridTemplateColumns ?? `repeat(${numberOfColumns}, 1fr)`};
     `}
 `;
 
@@ -70,21 +67,14 @@ const TableRow = ({ children }: { children: React.ReactNode }) => {
     const { gridTemplateColumns, numberOfColumns } = useTableContext();
 
     return (
-        <StyledTableRow
-            gridTemplateColumns={gridTemplateColumns}
-            numberOfColumns={numberOfColumns}
-        >
+        <StyledTableRow gridTemplateColumns={gridTemplateColumns} numberOfColumns={numberOfColumns}>
             {children}
         </StyledTableRow>
     );
 };
 
 const TableHeaderCell = ({ children, columnIndex }: TableHeaderCellProps) => {
-    return (
-        <StyledHeaderCell columnIndex={columnIndex}>
-            {children}
-        </StyledHeaderCell>
-    );
+    return <StyledHeaderCell columnIndex={columnIndex}>{children}</StyledHeaderCell>;
 };
 
 const TableRowCell = ({ children }: { children: React.ReactNode }) => {

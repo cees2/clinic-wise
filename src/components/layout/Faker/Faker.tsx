@@ -29,16 +29,13 @@ const Faker = () => {
 
     const uploadAppointments = () => {
         const mockAppointments: Tables<"appointments">[] = [];
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < 50; i++) {
             const newMockAppointment: Tables<"appointments"> = {
                 start_date: faker.date.recent().toString(),
                 patient_id: 1,
                 employee_id: 1,
                 duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
-                status: faker.helpers.arrayElement([
-                    "Confirmed",
-                    "Unconfirmed",
-                ]),
+                status: faker.helpers.arrayElement(["Confirmed", "Unconfirmed"]),
                 additional_note: faker.lorem.sentence({ min: 3, max: 10 }),
                 number_of_patients: faker.number.int({ min: 1, max: 2 }),
             };
@@ -56,9 +53,7 @@ const Faker = () => {
                 <LoadingSpinner />
             ) : (
                 <div>
-                    <Button onClick={uploadAppointments}>
-                        Upload appointments
-                    </Button>
+                    <Button onClick={uploadAppointments}>Upload appointments</Button>
                 </div>
             )}
         </StyledFaker>

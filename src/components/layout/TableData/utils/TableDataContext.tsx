@@ -13,40 +13,29 @@ const TableDataContext = createContext<TableDataContextType<T>>({
     resources: [],
 });
 
-const tableDataConfigInitialValue: TableDataState = {
-    selectedFilters: [],
-    selectedPage: 0,
-    selectedSort: "",
-    selectedPaginationSize: 20,
-};
-
 const TableDataContextProvider = <T extends TableDataConfigGenericExtend>({
     children,
     config,
     resources,
+    tableDataState,
+    dispatch,
 }: Pick<TableDataContextType<T>, "config"> & {
     children: React.ReactNode;
     resources: T[];
+    tableDataState: TableDataState;
+    dispatch: React.ActionDispatch<React.AnyActionArg>;
 }) => {
-    const [state, dispatch] = useReducer<TableDataState>(
-        tableDataContextReducer,
-        tableDataConfigInitialValue,
-    );
     const memoizedContextValue = useMemo(
         () => ({
             config,
-            tableDataState: state,
+            tableDataState,
             dispatch,
             resources,
         }),
-        [state, resources, config],
+        [tableDataState, resources, config, dispatch],
     );
 
-    return (
-        <TableDataContext value={memoizedContextValue}>
-            {children}
-        </TableDataContext>
-    );
+    return <TableDataContext value={memoizedContextValue}>{children}</TableDataContext>;
 };
 
 export const useTableDataContext = () => {
