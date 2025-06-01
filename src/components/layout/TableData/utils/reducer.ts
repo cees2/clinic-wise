@@ -1,13 +1,6 @@
-import {
-    TableDataActionsEnum,
-    type TableDataActionsType,
-    type TableDataState,
-} from "../../../../utils/projectTypes";
+import { TableDataActionsEnum, type TableDataActionsType, type TableDataState } from "../../../../utils/projectTypes";
 
-const tableDataContextReducer = (
-    prevState: TableDataState,
-    action: TableDataActionsType,
-): TableDataState => {
+const tableDataContextReducer = (prevState: TableDataState, action: TableDataActionsType): TableDataState => {
     switch (action.type) {
         case TableDataActionsEnum.SET_FILTER:
             return { ...prevState, selectedFilters: action.payload };
@@ -20,7 +13,7 @@ const tableDataContextReducer = (
         case TableDataActionsEnum.SET_NEXT_PAGE:
             return { ...prevState, selectedPage: prevState.selectedPage + 1 };
         case TableDataActionsEnum.SET_PREVIOUS_PAGE: {
-            if (prevState.selectedPage === 0) return prevState;
+            if (prevState.selectedPage === 1) return prevState;
             return { ...prevState, selectedPage: prevState.selectedPage - 1 };
         }
         default:
