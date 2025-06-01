@@ -15,7 +15,6 @@ const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: {
     const { isLoading, data: resources } = useTableDataFetcher(config.resourceName, tableDataState);
 
     if (isLoading) return <LoadingSpinner />;
-    if (!resources || resources.length === 0) return <div>EMPTY PAGE</div>;
 
     return (
         <TableData config={config} resources={resources} tableDataState={tableDataState} dispatch={dispatch}>

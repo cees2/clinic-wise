@@ -1,14 +1,14 @@
+import { EmptyPage } from "../../../common/EmptyPage";
 import Table from "../../../common/Table/Table";
 import { useTableDataContext } from "../utils/TableDataContext";
 
 const TableDataTable = () => {
-    const { config } = useTableDataContext();
+    const { config, resources } = useTableDataContext();
+
+    if (resources.length === 0) return <EmptyPage caption="Could not find any data matching your criteria." />;
 
     return (
-        <Table
-            gridTemplateColumns={config.gridTemplateColumns}
-            numberOfColumns={config.columns.length}
-        >
+        <Table gridTemplateColumns={config.gridTemplateColumns} numberOfColumns={config.columns.length}>
             <TableDataHeaderRow />
             <TableDataItemsRows />
         </Table>
@@ -24,10 +24,7 @@ const TableDataHeaderRow = () => {
         <Table.TableRow>
             {columns.map((column, columnIndex) => {
                 return (
-                    <Table.TableHeaderCell
-                        key={column.name}
-                        columnIndex={columnIndex}
-                    >
+                    <Table.TableHeaderCell key={column.name} columnIndex={columnIndex}>
                         {column.name}
                     </Table.TableHeaderCell>
                 );
@@ -50,11 +47,7 @@ const TableDataItemsRows = () => {
                         {columns.map((column) => {
                             const resourceColumnData = resource[column.id];
 
-                            return (
-                                <Table.TableRowCell key={column.id}>
-                                    {resourceColumnData}
-                                </Table.TableRowCell>
-                            );
+                            return <Table.TableRowCell key={column.id}>{resourceColumnData}</Table.TableRowCell>;
                         })}
                     </Table.TableRow>
                 );
