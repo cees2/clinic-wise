@@ -60,6 +60,7 @@ const GlobalStyles = createGlobalStyle`
 
     input:focus{
         box-shadow: 0px 0px 15px 0px rgba(22, 163, 74, 1);
+        outline: none
     }
 
     ul{
@@ -72,6 +73,12 @@ const GlobalStyles = createGlobalStyle`
 
     a{
         text-decoration: none;
+    }
+
+    input {
+        padding: 1.2rem 1.6rem;
+        border:none;
+        border-radius: var(--border-radius-md);
     }
 `;
 

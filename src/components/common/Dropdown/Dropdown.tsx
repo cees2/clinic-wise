@@ -167,7 +167,13 @@ const DropdownItems = <T,>({ render, items, onClick }: DropdownItemsProps<T>) =>
     );
 };
 
-const DropdownItem = ({ children, onClick }: { children: React.ReactNode; onClick?: () => void }) => {
+const DropdownItem = ({
+    children,
+    onClick,
+}: {
+    children: React.ReactNode;
+    onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
+}) => {
     return <StyledDropdownItem onClick={onClick}>{children}</StyledDropdownItem>;
 };
 

@@ -21,10 +21,28 @@ export interface TableDataColumn<T extends Record<string, any>> {
     render?: (dataItem: T) => React.ReactNode | number | string;
 }
 
+export type FilterCondition = "e" | "ne" | "c" | "gt" | "gte" | "lt" | "lte";
+
+export enum FilterType {
+    NUMBER,
+    TEXT,
+    ENUM,
+}
+
+export interface TableDataFilter {
+    id: string;
+    name: string;
+    type: FilterType;
+    conditions?: FilterCondition[];
+    maxValue?: number;
+    minValue?: number;
+}
+
 export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
     columns: TableDataColumn<T>[];
     gridTemplateColumns?: string;
     resourceName: keyof Database["public"]["Tables"];
+    filters?: TableDataFilter[];
 }
 
 export type TableDataConfigGenericExtend = Record<string, any> & { id: number };
@@ -37,14 +55,14 @@ export interface TableHeaderCellProps {
     columnIndex: number;
 }
 
-export interface TableDataFilter {
+export interface TableDataFilterState {
     id: string;
     value: string;
 }
 
 export interface TableDataState {
     selectedSort: string;
-    selectedFilters: TableDataFilter[];
+    selectedFilters: TableDataFilterState[];
     selectedPage: number;
     selectedPaginationSize: number;
 }
@@ -72,7 +90,7 @@ export type TableDataActionsType =
       }
     | {
           type: TableDataActionsEnum.SET_FILTER;
-          payload: TableDataFilter[];
+          payload: TableDataFilterState[];
       }
     | {
           type: TableDataActionsEnum.SET_PAGINATION_SIZE;
@@ -110,3 +128,7 @@ export interface DropdownItemsProps<T> {
     items: T[];
     onClick?: () => void;
 }
+
+export type NumberFilterForm = {
+    [K in Extract<FilterCondition, "c">]: number;
+};

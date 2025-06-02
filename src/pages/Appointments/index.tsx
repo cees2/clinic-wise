@@ -2,7 +2,7 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
-import type { TableDataConfig } from "../../utils/projectTypes";
+import { FilterType, type TableDataConfig } from "../../utils/projectTypes";
 
 const Appointments = () => {
     const config: TableDataConfig<Tables<"appointments">> = {
@@ -37,6 +37,15 @@ const Appointments = () => {
             },
         ],
         resourceName: "appointments",
+        filters: [
+            {
+                id: "duration",
+                name: "Duration",
+                type: FilterType.NUMBER,
+                minValue: 0,
+                maxValue: 90,
+            },
+        ],
     };
 
     return (

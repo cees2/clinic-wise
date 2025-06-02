@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 import type { TableDataConfig, TableDataConfigGenericExtend, TableDataState } from "../../../utils/projectTypes";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
-import TableDataFilters from "./components/TableDataFilters";
+import TableDataFilters from "./components/Filters/TableDataFilters";
 import TableDataPagination from "./components/TableDataPagination";
 import TableDataSorts from "./components/TableDataSorts";
 import TableDataTable from "./components/TableDataTable";
