@@ -32,7 +32,7 @@ const TableDataFilters = () => {
         <StyledTableDataFilters>
             {filters.map((filter) => {
                 return (
-                    <Dropdown key={filter.id}>
+                    <Dropdown key={filter.id} autoClose={false}>
                         <Dropdown.Toggle>{filter.name}</Dropdown.Toggle>
                         <Dropdown.Menu>{<TableDataFilterBody filterType={filter.type} />}</Dropdown.Menu>
                     </Dropdown>

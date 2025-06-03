@@ -13,6 +13,10 @@ const DropdownContext = createContext<DropdownContextType>({
     setOpen: () => {},
     dropdownToggleRef: { current: {} },
     setDropdownToggleRef: () => {},
+    isOpening: false,
+    setIsOpening: () => {},
+    placement: "bottom",
+    autoClose: true,
 });
 
 const StyledDropdown = styled.div`
@@ -73,18 +77,37 @@ const StyledDropdownItem = styled.li.attrs({ role: "menuitem" })`
     }
 `;
 
-export const Dropdown = ({ children, placement }: { children: React.ReactNode; placement?: DropdownPlacementType }) => {
+export const Dropdown = ({
+    children,
+    placement,
+    autoClose,
+}: {
+    children: React.ReactNode;
+    placement?: DropdownPlacementType;
+    autoClose?: boolean;
+}) => {
     const [open, setOpen] = useState(false);
-    const dropdownToggleRef: RefObject<HTMLButtonElement> | null = useRef<HTMLButtonElement>(null);
+    const [isOpening, setIsOpening] = useState(false);
+    const dropdownToggleRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
     const setDropdownToggleRef = useCallback((originalDropdownToggleRef: RefObject<HTMLButtonElement> | null) => {
-        if (dropdownToggleRef && originalDropdownToggleRef) {
+        if (originalDropdownToggleRef) {
             dropdownToggleRef.current = originalDropdownToggleRef.current;
         }
     }, []);
+
     const memoizedContextState = useMemo(
-        () => ({ open, setOpen, dropdownToggleRef, setDropdownToggleRef, placement: placement ?? "bottom" }),
-        [open, setOpen, dropdownToggleRef, setDropdownToggleRef, placement],
+        () => ({
+            open,
+            setOpen,
+            dropdownToggleRef,
+            setDropdownToggleRef,
+            placement: placement ?? "bottom",
+            isOpening,
+            setIsOpening,
+            autoClose: autoClose ?? true,
+        }),
+        [open, setOpen, dropdownToggleRef, setDropdownToggleRef, placement, isOpening, setIsOpening, autoClose],
     );
 
     return (
@@ -95,31 +118,13 @@ export const Dropdown = ({ children, placement }: { children: React.ReactNode; p
 };
 
 const DropdownToggle = ({ children }: { children: React.ReactNode }) => {
-    const { setOpen, open, setDropdownToggleRef } = use(DropdownContext);
+    const { setOpen, setDropdownToggleRef, setIsOpening } = use(DropdownContext);
     const originalDropdownToggleRef = useRef<HTMLButtonElement>(null);
 
     const toggleDropdown = () => {
         setOpen((prevOpen) => !prevOpen);
+        setIsOpening(true);
     };
-
-    const clickOutsideHandler = useCallback(
-        (event: MouseEvent) => {
-            if (!open) return;
-
-            if (!originalDropdownToggleRef.current?.contains(event.target)) {
-                setOpen(false);
-            }
-        },
-        [open, setOpen],
-    );
-
-    useEffect(() => {
-        window.addEventListener("click", clickOutsideHandler);
-
-        return () => {
-            window.removeEventListener("click", clickOutsideHandler);
-        };
-    }, [clickOutsideHandler]);
 
     useEffect(() => {
         setDropdownToggleRef(originalDropdownToggleRef);
@@ -135,7 +140,26 @@ const DropdownToggle = ({ children }: { children: React.ReactNode }) => {
 
 const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
     const dropdownMenuRef = useRef<HTMLUListElement>(null);
-    const { open, dropdownToggleRef, placement } = use(DropdownContext);
+    const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } = use(DropdownContext);
+
+    const clickOutsideHandler = useCallback(
+        (event: MouseEvent) => {
+            if (open && !isOpening && !dropdownMenuRef.current?.contains(event.target as Node)) {
+                setOpen(false);
+            }
+
+            setIsOpening(false);
+        },
+        [open, setOpen, isOpening, setIsOpening],
+    );
+
+    useEffect(() => {
+        window.addEventListener("click", clickOutsideHandler);
+
+        return () => {
+            window.removeEventListener("click", clickOutsideHandler);
+        };
+    }, [clickOutsideHandler]);
 
     if (!open || !dropdownToggleRef) return null;
 
@@ -154,11 +178,20 @@ const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
 };
 
 const DropdownItems = <T,>({ render, items, onClick }: DropdownItemsProps<T>) => {
+    const { autoClose, setOpen } = use(DropdownContext);
+
+    const onClickInternal = (event: React.MouseEvent<HTMLLIElement>) => {
+        onClick?.(event);
+        if (autoClose) {
+            setOpen(false);
+        }
+    };
+
     return (
         <>
             {items.map((item) => {
                 return (
-                    <StyledDropdownItem key={crypto.randomUUID()} onClick={onClick}>
+                    <StyledDropdownItem key={crypto.randomUUID()} onClick={onClickInternal}>
                         {render(item)}
                     </StyledDropdownItem>
                 );
@@ -174,7 +207,16 @@ const DropdownItem = ({
     children: React.ReactNode;
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }) => {
-    return <StyledDropdownItem onClick={onClick}>{children}</StyledDropdownItem>;
+    const { autoClose, setOpen } = use(DropdownContext);
+
+    const onClickInternal = (event: React.MouseEvent<HTMLLIElement>) => {
+        onClick?.(event);
+        if (autoClose) {
+            setOpen(false);
+        }
+    };
+
+    return <StyledDropdownItem onClick={onClickInternal}>{children}</StyledDropdownItem>;
 };
 
 Dropdown.Toggle = DropdownToggle;

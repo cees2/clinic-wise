@@ -6,7 +6,7 @@ import { NumberInput } from "../../../../common/Input/NumberInput";
 const numberFilterConditions: Exclude<FilterCondition, "c">[] = ["e", "ne", "gt", "gte", "lt", "lte"];
 
 const NumberFilter = () => {
-    const { control, watch } = useForm<NumberFilterForm>();
+    const { control, watch, setValue } = useForm<NumberFilterForm>();
     const getFilterLabel = (filterType: Exclude<FilterCondition, "c">) => {
         switch (filterType) {
             case "e":
@@ -26,22 +26,27 @@ const NumberFilter = () => {
         }
     };
 
-    const stopPropagation = (event: React.MouseEvent<HTMLLIElement>) => {
-        event.stopPropagation();
-    };
-
-    console.log(watch());
-
     return (
         <>
             {numberFilterConditions.map((condition) => {
+                const onChange = () => {
+                    const restConditions = numberFilterConditions.filter(
+                        (filterCondition) => condition !== filterCondition,
+                    );
+
+                    restConditions.forEach((restCondition) => {
+                        setValue(restCondition, "");
+                    });
+                };
+
                 return (
-                    <Dropdown.Item key={condition} onClick={stopPropagation}>
+                    <Dropdown.Item key={condition}>
                         <NumberInput
                             label={getFilterLabel(condition)}
                             control={control}
                             registerName={condition}
-                            registerOptions={{ min: 0 }}
+                            rules={{ onChange }}
+                            allowNegative={false}
                         />
                     </Dropdown.Item>
                 );

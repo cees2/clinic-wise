@@ -110,9 +110,12 @@ export type TableDataActionsType =
 export interface DropdownContextType {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpening: boolean;
+    setIsOpening: React.Dispatch<React.SetStateAction<boolean>>;
     dropdownToggleRef: RefObject<HTMLButtonElement> | null;
     setDropdownToggleRef: (dropdownToggleRef: RefObject<HTMLButtonElement> | null) => void;
-    placement?: DropdownPlacementType;
+    placement: DropdownPlacementType;
+    autoClose: boolean;
 }
 
 export interface StyledDropdownMenuProps {
@@ -126,9 +129,9 @@ export type DropdownPlacementType = "top" | "bottom" | "left" | "right";
 export interface DropdownItemsProps<T> {
     render: (item: T) => React.ReactNode;
     items: T[];
-    onClick?: () => void;
+    onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }
 
 export type NumberFilterForm = {
-    [K in Extract<FilterCondition, "c">]: number;
+    [K in Extract<FilterCondition, "e" | "ne" | "gt" | "gte" | "lt" | "lte">]: number | undefined | "";
 };
