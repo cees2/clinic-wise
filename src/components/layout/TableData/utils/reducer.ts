@@ -2,8 +2,22 @@ import { TableDataActionsEnum, type TableDataActionsType, type TableDataState } 
 
 const tableDataContextReducer = (prevState: TableDataState, action: TableDataActionsType): TableDataState => {
     switch (action.type) {
-        case TableDataActionsEnum.SET_FILTER:
-            return { ...prevState, selectedFilters: action.payload };
+        case TableDataActionsEnum.ADD_FILTER:
+            return { ...prevState, selectedFilters: [...prevState.selectedFilters, action.payload] };
+        case TableDataActionsEnum.REPLACE_FILTER: {
+            console.log(action);
+            const previousFilterIndex = prevState.selectedFilters.findIndex(
+                (filter) => filter.id === action.payload.id,
+            );
+
+            if (previousFilterIndex === -1)
+                return { ...prevState, selectedFilters: [...prevState.selectedFilters, action.payload] };
+
+            const newSelectedFilters = [...prevState.selectedFilters];
+            newSelectedFilters.splice(previousFilterIndex, 1, action.payload);
+
+            return { ...prevState, selectedFilters: newSelectedFilters };
+        }
         case TableDataActionsEnum.SET_PAGE:
             return { ...prevState, selectedPage: action.payload };
         case TableDataActionsEnum.SET_PAGINATION_SIZE:

@@ -138,19 +138,23 @@ const DropdownToggle = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
+const DropdownMenu = ({ children, onHideDropdown }: { children: React.ReactNode; onHideDropdown?: () => void }) => {
     const dropdownMenuRef = useRef<HTMLUListElement>(null);
-    const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } = use(DropdownContext);
+    const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } =
+        use(DropdownContext);
 
     const clickOutsideHandler = useCallback(
         (event: MouseEvent) => {
-            if (open && !isOpening && !dropdownMenuRef.current?.contains(event.target as Node)) {
+            if (!open) return;
+
+            if (!isOpening && !dropdownMenuRef.current?.contains(event.target as Node)) {
+                onHideDropdown?.();
                 setOpen(false);
             }
 
             setIsOpening(false);
         },
-        [open, setOpen, isOpening, setIsOpening],
+        [open, setOpen, isOpening, setIsOpening, onHideDropdown],
     );
 
     useEffect(() => {
@@ -170,7 +174,7 @@ const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
             toggleHeight={toggleHeight}
             toggleWidth={toggleWidth}
             ref={dropdownMenuRef}
-            placement={placement ?? "bottom"}
+            placement={placement}
         >
             {children}
         </StyledDropdownMenu>

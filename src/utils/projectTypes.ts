@@ -57,7 +57,8 @@ export interface TableHeaderCellProps {
 
 export interface TableDataFilterState {
     id: string;
-    value: string;
+    filterValue: string;
+    filterCondition: FilterCondition;
 }
 
 export interface TableDataState {
@@ -76,7 +77,8 @@ export interface TableDataContextType<T> {
 
 export enum TableDataActionsEnum {
     SET_SORT,
-    SET_FILTER,
+    ADD_FILTER,
+    REPLACE_FILTER,
     SET_PAGINATION_SIZE,
     SET_PAGE,
     SET_NEXT_PAGE,
@@ -89,8 +91,12 @@ export type TableDataActionsType =
           payload: string;
       }
     | {
-          type: TableDataActionsEnum.SET_FILTER;
-          payload: TableDataFilterState[];
+          type: TableDataActionsEnum.ADD_FILTER;
+          payload: TableDataFilterState;
+      }
+    | {
+          type: TableDataActionsEnum.REPLACE_FILTER;
+          payload: TableDataFilterState;
       }
     | {
           type: TableDataActionsEnum.SET_PAGINATION_SIZE;
