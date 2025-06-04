@@ -42,8 +42,15 @@ const Appointments = () => {
                 id: "duration",
                 name: "Duration",
                 type: FilterType.NUMBER,
-                minValue: 0,
-                maxValue: 90,
+            },
+            {
+                id: "status",
+                name: "Status",
+                type: FilterType.ENUM,
+                options: {
+                    confirmed: "Confirmed",
+                    unconfirmed: "Unconfirmed",
+                },
             },
         ],
     };

@@ -36,6 +36,7 @@ export interface TableDataFilter {
     conditions?: FilterCondition[];
     maxValue?: number;
     minValue?: number;
+    options?: Record<string, string>;
 }
 
 export interface TableDataConfig<T extends TableDataConfigGenericExtend> {

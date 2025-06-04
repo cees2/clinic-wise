@@ -5,7 +5,6 @@ const tableDataContextReducer = (prevState: TableDataState, action: TableDataAct
         case TableDataActionsEnum.ADD_FILTER:
             return { ...prevState, selectedFilters: [...prevState.selectedFilters, action.payload] };
         case TableDataActionsEnum.REPLACE_FILTER: {
-            console.log(action);
             const previousFilterIndex = prevState.selectedFilters.findIndex(
                 (filter) => filter.id === action.payload.id,
             );

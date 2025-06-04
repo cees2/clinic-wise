@@ -3,6 +3,7 @@ import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useTableDataContext } from "../../utils/TableDataContext";
 import { FilterType, type TableDataFilter } from "../../../../../utils/projectTypes";
 import NumberFilter from "./NumberFilter";
+import EnumFilter from "./EnumFilter";
 
 const StyledTableDataFilters = styled.div`
     display: flex;
@@ -11,11 +12,15 @@ const StyledTableDataFilters = styled.div`
 `;
 
 const TableDataFilterBody = ({ filter }: { filter: TableDataFilter }) => {
-    const { type, id } = filter;
+    const { type, id, options } = filter;
     switch (type) {
         case FilterType.NUMBER:
             return <NumberFilter filterId={id} />;
-        case FilterType.ENUM:
+        case FilterType.ENUM: {
+            if (!options) return null;
+
+            return <EnumFilter filterId={id} options={options} />;
+        }
         case FilterType.TEXT:
         default:
             return null;
