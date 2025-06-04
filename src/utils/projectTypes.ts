@@ -140,5 +140,11 @@ export interface DropdownItemsProps<T> {
 }
 
 export type NumberFilterForm = {
-    [K in Extract<FilterCondition, "e" | "ne" | "gt" | "gte" | "lt" | "lte">]: number | undefined | "";
+    [K in Exclude<FilterCondition, "c">]: number | undefined | "";
+};
+
+export type TextFilterCondition = Extract<FilterCondition, "e" | "c">;
+
+export type TextFilterForm = {
+    [K in TextFilterCondition]: string;
 };

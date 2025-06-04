@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { CheckboxInput } from "../../../../common/Input/CheckboxInput";
 import { useTableDataContext } from "../../utils/TableDataContext";
-import { TableDataActionsEnum } from "../../../../../utils/projectTypes";
+import { FilterType, TableDataActionsEnum } from "../../../../../utils/projectTypes";
+import { getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
 interface Props {
     filterId: string;
@@ -10,8 +11,13 @@ interface Props {
 }
 
 const EnumFilter = ({ filterId, options }: Props) => {
-    const { dispatch } = useTableDataContext();
-    const { register, watch } = useForm<Record<string, string>>();
+    const { dispatch, tableDataState } = useTableDataContext();
+    // TODO: useForm generic type ???
+    const {
+        register,
+        watch,
+        formState: { isDirty },
+    } = useForm<Record<string, string>>();
     const optionsAsEntries = Object.entries(options);
 
     const renderOptions = ([filterValue, filterTitle]: [string, string]) => {
@@ -19,12 +25,11 @@ const EnumFilter = ({ filterId, options }: Props) => {
     };
 
     const hideDropdownHandler = () => {
-        const filterState = watch();
-        const filterStateAsEntries = Object.entries(filterState);
-        const filterWithFilteredValue = filterStateAsEntries.filter(([_, filterValue]) => Boolean(filterValue));
-        const selectedOptions = filterWithFilteredValue.map(([option]) => option).join(",");
+        if (!isDirty) return;
 
-        const selectedFilter = { id: filterId, filterValue: selectedOptions, filterCondition: "e" };
+        const { filterValue, filterCondition } = getFiltersConditionsWithValue(watch(), FilterType.ENUM);
+
+        const selectedFilter = { id: filterId, filterValue, filterCondition };
 
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };

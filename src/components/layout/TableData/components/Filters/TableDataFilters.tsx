@@ -4,6 +4,7 @@ import { useTableDataContext } from "../../utils/TableDataContext";
 import { FilterType, type TableDataFilter } from "../../../../../utils/projectTypes";
 import NumberFilter from "./NumberFilter";
 import EnumFilter from "./EnumFilter";
+import TextFilter from "./TextFilter";
 
 const StyledTableDataFilters = styled.div`
     display: flex;
@@ -22,6 +23,7 @@ const TableDataFilterBody = ({ filter }: { filter: TableDataFilter }) => {
             return <EnumFilter filterId={id} options={options} />;
         }
         case FilterType.TEXT:
+            return <TextFilter filterId={id} />;
         default:
             return null;
     }

@@ -3,6 +3,7 @@ import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useForm } from "react-hook-form";
 import { NumberInput } from "../../../../common/Input/NumberInput";
 import { useTableDataContext } from "../../utils/TableDataContext";
+import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
 interface Props {
     filterId: string;
@@ -11,8 +12,18 @@ interface Props {
 const numberFilterConditions: Exclude<FilterCondition, "c">[] = ["e", "ne", "gt", "gte", "lt", "lte"];
 
 const NumberFilter = ({ filterId }: Props) => {
-    const { dispatch } = useTableDataContext();
-    const { control, setValue, watch } = useForm<NumberFilterForm>();
+    const {
+        dispatch,
+        tableDataState: { selectedFilters },
+    } = useTableDataContext();
+    const {
+        control,
+        setValue,
+        watch,
+        formState: { isDirty },
+    } = useForm<NumberFilterForm>({
+        defaultValues: getFilterDefaultValue(filterId, numberFilterConditions, selectedFilters),
+    });
     const getFilterLabel = (filterType: Exclude<FilterCondition, "c">) => {
         switch (filterType) {
             case "e":
@@ -33,13 +44,9 @@ const NumberFilter = ({ filterId }: Props) => {
     };
 
     const hideDropdownHandler = () => {
-        const filterState = watch();
-        const filterStateAsEntries = Object.entries(filterState);
-        const filterWithValue = filterStateAsEntries.filter(([_, filterValue]) => Boolean(filterValue));
+        if (!isDirty) return;
 
-        if (filterWithValue.length !== 1) return;
-
-        const [filterCondition, filterValue] = filterWithValue.at(0);
+        const { filterValue, filterCondition } = getFiltersConditionsWithValue(watch());
 
         const selectedFilter = { id: filterId, filterValue, filterCondition };
 

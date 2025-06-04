@@ -52,6 +52,11 @@ const Appointments = () => {
                     unconfirmed: "Unconfirmed",
                 },
             },
+            {
+                id: "additional_note",
+                name: "Additional note",
+                type: FilterType.TEXT,
+            },
         ],
     };
 
