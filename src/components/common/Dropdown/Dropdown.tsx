@@ -140,8 +140,7 @@ const DropdownToggle = ({ children }: { children: React.ReactNode }) => {
 
 const DropdownMenu = ({ children, onHideDropdown }: { children: React.ReactNode; onHideDropdown?: () => void }) => {
     const dropdownMenuRef = useRef<HTMLUListElement>(null);
-    const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } =
-        use(DropdownContext);
+    const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } = use(DropdownContext);
 
     const clickOutsideHandler = useCallback(
         (event: MouseEvent) => {

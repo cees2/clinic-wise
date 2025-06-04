@@ -8,7 +8,6 @@ export const getFiltersConditionsWithValue = (
     const filterConditionsWithTruthyValues = filterStateEntries.filter(([_, filterValue]) => Boolean(filterValue));
 
     if (filterType === FilterType.ENUM) {
-        console.log(filterState);
         const selectedEnums = filterConditionsWithTruthyValues.map(([filterValue]) => filterValue);
         return { filterValue: selectedEnums.join(","), filterCondition: "e" };
     }
