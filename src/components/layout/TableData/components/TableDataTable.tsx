@@ -48,15 +48,22 @@ const TableDataItemsRows = () => {
         config: { columns },
     } = useTableDataContext();
 
+    console.log(resources);
+    console.log(columns);
+
     return (
         <>
             {resources.map((resource) => {
                 return (
                     <Table.TableRow key={resource.id}>
                         {columns.map((column) => {
-                            const resourceColumnData = resource[column.id];
+                            const resourceColumnDisplayValue = column.render
+                                ? column.render(resource)
+                                : resource[column.id];
 
-                            return <Table.TableRowCell key={column.id}>{resourceColumnData}</Table.TableRowCell>;
+                            return (
+                                <Table.TableRowCell key={column.id}>{resourceColumnDisplayValue}</Table.TableRowCell>
+                            );
                         })}
                     </Table.TableRow>
                 );

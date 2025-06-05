@@ -10,6 +10,7 @@ const Appointments = () => {
             {
                 id: "duration",
                 name: "Duration",
+                render: (item) => `${item.duration} min.`,
             },
             {
                 id: "status",
