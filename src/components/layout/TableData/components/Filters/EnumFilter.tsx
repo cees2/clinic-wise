@@ -28,9 +28,16 @@ const EnumFilter = ({ filterId, options }: Props) => {
     const hideDropdownHandler = () => {
         if (!isDirty) return;
 
-        const { filterValue, filterCondition } = getFiltersConditionsWithValue(watch(), FilterType.ENUM);
+        const filterState = getFiltersConditionsWithValue(watch(), FilterType.ENUM);
 
-        const selectedFilter = { id: filterId, filterValue, filterCondition };
+        if (!filterState) {
+            dispatch({ type: TableDataActionsEnum.REMOVE_FILTER, payload: filterId });
+            return;
+        }
+
+        const { filterValue, filterCondition } = filterState;
+
+        const selectedFilter = { id: filterId, filterValue, filterCondition, filterType: FilterType.ENUM };
 
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };

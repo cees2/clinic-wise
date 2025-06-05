@@ -34,7 +34,7 @@ const TableDataHeaderRow = () => {
                 return (
                     <StyledTableDataHeaderCell key={column.name} columnIndex={columnIndex}>
                         {column.name}
-                        <TableData.Sorts columnName={column.name} />
+                        <TableData.Sorts columnId={column.id} />
                     </StyledTableDataHeaderCell>
                 );
             })}
@@ -47,9 +47,6 @@ const TableDataItemsRows = () => {
         resources,
         config: { columns },
     } = useTableDataContext();
-
-    console.log(resources);
-    console.log(columns);
 
     return (
         <>

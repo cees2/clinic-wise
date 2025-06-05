@@ -1,4 +1,9 @@
-import { TableDataActionsEnum, type FilterCondition, type NumberFilterForm } from "../../../../../utils/projectTypes";
+import {
+    FilterType,
+    TableDataActionsEnum,
+    type FilterCondition,
+    type NumberFilterForm,
+} from "../../../../../utils/projectTypes";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useForm } from "react-hook-form";
 import { NumberInput } from "../../../../common/Input/NumberInput";
@@ -46,11 +51,18 @@ const NumberFilter = ({ filterId }: Props) => {
     const hideDropdownHandler = () => {
         if (!isDirty) return;
 
-        const { filterValue, filterCondition } = getFiltersConditionsWithValue(watch());
+        const filterState = getFiltersConditionsWithValue(watch(), FilterType.NUMBER);
+
+        if (!filterState) {
+            dispatch({ type: TableDataActionsEnum.REMOVE_FILTER, payload: filterId });
+            return;
+        }
+
+        const { filterValue, filterCondition } = filterState;
 
         const selectedFilter = { id: filterId, filterValue, filterCondition };
 
-        dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
+        dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter, filterType: FilterType.NUMBER });
     };
 
     return (

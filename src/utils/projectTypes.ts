@@ -56,22 +56,28 @@ export interface TableHeaderCellProps {
     columnIndex: number;
 }
 
-export interface TableDataFilterState {
-    id: string;
+export interface TableDataFilterState<T> {
+    id: keyof T;
     filterValue: string;
     filterCondition: FilterCondition;
+    filterType: FilterType;
 }
 
-export interface TableDataState {
-    selectedSort: string;
-    selectedFilters: TableDataFilterState[];
+export interface TableDataSortState<T> {
+    id: keyof T;
+    isAscending: boolean;
+}
+
+export interface TableDataState<T extends TableDataConfigGenericExtend> {
+    selectedSort: TableDataSortState<T> | null;
+    selectedFilters: TableDataFilterState<T>[];
     selectedPage: number;
     selectedPaginationSize: number;
 }
 
 export interface TableDataContextType<T> {
     config: TableDataConfig<T>;
-    tableDataState: TableDataState;
+    tableDataState: TableDataState<T>;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
     resources: T[];
 }
@@ -79,6 +85,7 @@ export interface TableDataContextType<T> {
 export enum TableDataActionsEnum {
     SET_SORT,
     ADD_FILTER,
+    REMOVE_FILTER,
     REPLACE_FILTER,
     SET_PAGINATION_SIZE,
     SET_PAGE,
@@ -86,18 +93,25 @@ export enum TableDataActionsEnum {
     SET_PREVIOUS_PAGE,
 }
 
-export type TableDataActionsType =
+export type TableDataActionsType<T extends TableDataConfigGenericExtend> =
     | {
           type: TableDataActionsEnum.SET_SORT;
-          payload: string;
+          payload: {
+              id: string;
+              isAscending: boolean;
+          } | null;
       }
     | {
           type: TableDataActionsEnum.ADD_FILTER;
-          payload: TableDataFilterState;
+          payload: TableDataFilterState<T>;
+      }
+    | {
+          type: TableDataActionsEnum.REMOVE_FILTER;
+          payload: string;
       }
     | {
           type: TableDataActionsEnum.REPLACE_FILTER;
-          payload: TableDataFilterState;
+          payload: TableDataFilterState<T>;
       }
     | {
           type: TableDataActionsEnum.SET_PAGINATION_SIZE;

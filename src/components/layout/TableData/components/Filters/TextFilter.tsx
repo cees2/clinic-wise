@@ -1,6 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useTableDataContext } from "../../utils/TableDataContext";
-import { TableDataActionsEnum, type TextFilterCondition, type TextFilterForm } from "../../../../../utils/projectTypes";
+import {
+    FilterType,
+    TableDataActionsEnum,
+    type TextFilterCondition,
+    type TextFilterForm,
+} from "../../../../../utils/projectTypes";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { TextInput } from "../../../../common/Input/TextInput";
 import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
@@ -39,9 +44,16 @@ const TextFilter = ({ filterId }: Props) => {
     const hideDropdownHandler = () => {
         if (!isDirty) return;
 
-        const { filterValue, filterCondition } = getFiltersConditionsWithValue(watch());
+        const filterState = getFiltersConditionsWithValue(watch(), FilterType.TEXT);
 
-        const selectedFilter = { id: filterId, filterValue, filterCondition };
+        if (!filterState) {
+            dispatch({ type: TableDataActionsEnum.REMOVE_FILTER, payload: filterId });
+            return;
+        }
+
+        const { filterValue, filterCondition } = filterState;
+
+        const selectedFilter = { id: filterId, filterValue, filterCondition, filterType: FilterType.TEXT };
 
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };

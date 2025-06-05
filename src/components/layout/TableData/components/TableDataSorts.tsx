@@ -4,10 +4,10 @@ import { SortTableEnum, TableDataActionsEnum } from "../../../../utils/projectTy
 import { LuArrowDownUp } from "react-icons/lu";
 
 interface Props {
-    columnName: string;
+    columnId: string;
 }
 
-const TableDataSorts = ({ columnName }: Props) => {
+const TableDataSorts = ({ columnId }: Props) => {
     const {
         tableDataState: { selectedSort },
         dispatch,
@@ -16,23 +16,24 @@ const TableDataSorts = ({ columnName }: Props) => {
     const sortColumnHandler = (sortType: SortTableEnum) => {
         switch (sortType) {
             case SortTableEnum.ASCENDING:
-                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: columnName });
+                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: { id: columnId, isAscending: true } });
                 break;
             case SortTableEnum.DESCENDING:
-                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: `-${columnName}` });
+                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: { id: columnId, isAscending: false } });
                 break;
             case SortTableEnum.NONE:
             default:
-                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: "" });
+                // TODO here and in the above code change type. For now I can pass "" as a payload and there is no TS error
+                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: null });
         }
     };
 
-    if (selectedSort.includes(columnName)) {
-        if (selectedSort.includes("-")) {
+    if (selectedSort && selectedSort.id === columnId) {
+        if (selectedSort.isAscending) {
             return (
                 <LiaLongArrowAltDownSolid
                     onClick={() => {
-                        sortColumnHandler(SortTableEnum.NONE);
+                        sortColumnHandler(SortTableEnum.DESCENDING);
                     }}
                 />
             );
@@ -40,7 +41,7 @@ const TableDataSorts = ({ columnName }: Props) => {
         return (
             <LiaLongArrowAltUpSolid
                 onClick={() => {
-                    sortColumnHandler(SortTableEnum.DESCENDING);
+                    sortColumnHandler(SortTableEnum.NONE);
                 }}
             />
         );

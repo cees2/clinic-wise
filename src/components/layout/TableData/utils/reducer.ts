@@ -1,9 +1,30 @@
-import { TableDataActionsEnum, type TableDataActionsType, type TableDataState } from "../../../../utils/projectTypes";
+import {
+    TableDataActionsEnum,
+    type TableDataActionsType,
+    type TableDataConfigGenericExtend,
+    type TableDataState,
+} from "../../../../utils/projectTypes";
 
-const tableDataContextReducer = (prevState: TableDataState, action: TableDataActionsType): TableDataState => {
+const tableDataContextReducer = <T extends TableDataConfigGenericExtend>(
+    prevState: TableDataState<T>,
+    action: TableDataActionsType<T>,
+): TableDataState<T> => {
     switch (action.type) {
         case TableDataActionsEnum.ADD_FILTER:
             return { ...prevState, selectedFilters: [...prevState.selectedFilters, action.payload] };
+        case TableDataActionsEnum.REMOVE_FILTER: {
+            const { selectedFilters } = prevState;
+            const indexOfFilterToBeRemoved = selectedFilters.findIndex(
+                (selectedFilter) => selectedFilter.id === action.payload,
+            );
+
+            if (indexOfFilterToBeRemoved === -1) return prevState;
+
+            const newSelectedFilters = [...selectedFilters];
+            newSelectedFilters.splice(indexOfFilterToBeRemoved, 1);
+
+            return { ...prevState, selectedFilters: newSelectedFilters };
+        }
         case TableDataActionsEnum.REPLACE_FILTER: {
             const previousFilterIndex = prevState.selectedFilters.findIndex(
                 (filter) => filter.id === action.payload.id,

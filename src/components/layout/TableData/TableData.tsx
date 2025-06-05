@@ -11,7 +11,7 @@ import { tableDataConfigInitialValue } from "./utils/constants";
 import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
 const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: { config: TableDataConfig<T> }) => {
-    const [tableDataState, dispatch] = useReducer<TableDataState>(tableDataContextReducer, tableDataConfigInitialValue);
+    const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
     const { isLoading, data: resources } = useTableDataFetcher(config.resourceName, tableDataState);
 
     if (isLoading) return <LoadingSpinner />;
@@ -35,7 +35,7 @@ export const TableData = <T extends TableDataConfigGenericExtend>({
     children: React.ReactNode;
     config: TableDataConfig<T>;
     resources: T[];
-    tableDataState: TableDataState;
+    tableDataState: TableDataState<T>;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
 }) => {
     return (

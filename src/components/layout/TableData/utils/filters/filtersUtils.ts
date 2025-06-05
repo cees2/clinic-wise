@@ -2,10 +2,12 @@ import { FilterType, type FilterCondition, type TableDataFilterState } from "../
 
 export const getFiltersConditionsWithValue = (
     filterState: Record<string, any>,
-    filterType?: FilterType,
-): { filterValue: string; filterCondition: FilterCondition } => {
+    filterType: FilterType,
+): { filterValue: string; filterCondition: FilterCondition } | null => {
     const filterStateEntries = Object.entries(filterState);
     const filterConditionsWithTruthyValues = filterStateEntries.filter(([_, filterValue]) => Boolean(filterValue));
+
+    if (filterConditionsWithTruthyValues.length === 0) return null;
 
     if (filterType === FilterType.ENUM) {
         const selectedEnums = filterConditionsWithTruthyValues.map(([filterValue]) => filterValue);

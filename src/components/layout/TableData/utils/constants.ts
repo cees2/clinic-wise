@@ -1,8 +1,8 @@
 import type { TableDataState } from "../../../../utils/projectTypes";
 
-export const tableDataConfigInitialValue: TableDataState = {
+export const tableDataConfigInitialValue: TableDataState<{id: number}> = {
     selectedFilters: [],
     selectedPage: 1,
-    selectedSort: "",
+    selectedSort: null,
     selectedPaginationSize: 20,
 };

@@ -15,6 +15,7 @@ const Appointments = () => {
             {
                 id: "status",
                 name: "Status",
+                render: (item) => `${item.status?.charAt(0).toUpperCase() ?? ""}${item.status?.substring(1) ?? ""}`,
             },
             {
                 id: "start_date",

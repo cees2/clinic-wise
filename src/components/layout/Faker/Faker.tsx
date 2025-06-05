@@ -35,7 +35,7 @@ const Faker = () => {
                 patient_id: 1,
                 employee_id: 1,
                 duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
-                status: faker.helpers.arrayElement(["Confirmed", "Unconfirmed"]),
+                status: faker.helpers.arrayElement(["confirmed", "unconfirmed"]),
                 additional_note: faker.lorem.sentence({ min: 3, max: 10 }),
                 number_of_patients: faker.number.int({ min: 1, max: 2 }),
             };
