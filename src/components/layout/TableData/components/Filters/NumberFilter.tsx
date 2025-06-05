@@ -3,6 +3,7 @@ import {
     TableDataActionsEnum,
     type FilterCondition,
     type NumberFilterForm,
+    type TableDataConfigGenericExtend,
 } from "../../../../../utils/projectTypes";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useForm } from "react-hook-form";
@@ -10,13 +11,13 @@ import { NumberInput } from "../../../../common/Input/NumberInput";
 import { useTableDataContext } from "../../utils/TableDataContext";
 import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
-interface Props {
-    filterId: string;
+interface Props<T extends TableDataConfigGenericExtend> {
+    filterId: keyof T;
 }
 
 const numberFilterConditions: Exclude<FilterCondition, "c">[] = ["e", "ne", "gt", "gte", "lt", "lte"];
 
-const NumberFilter = ({ filterId }: Props) => {
+const NumberFilter = <T extends TableDataConfigGenericExtend>({ filterId }: Props<T>) => {
     const {
         dispatch,
         tableDataState: { selectedFilters },
@@ -27,7 +28,7 @@ const NumberFilter = ({ filterId }: Props) => {
         watch,
         formState: { isDirty },
     } = useForm<NumberFilterForm>({
-        defaultValues: getFilterDefaultValue(filterId, numberFilterConditions, selectedFilters),
+        defaultValues: getFilterDefaultValue<T>(filterId, numberFilterConditions, selectedFilters),
     });
     const getFilterLabel = (filterType: Exclude<FilterCondition, "c">) => {
         switch (filterType) {

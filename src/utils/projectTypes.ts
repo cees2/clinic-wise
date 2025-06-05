@@ -29,8 +29,8 @@ export enum FilterType {
     ENUM,
 }
 
-export interface TableDataFilter {
-    id: string;
+export interface TableDataFilterConfig<T extends TableDataConfigGenericExtend> {
+    id: keyof T;
     name: string;
     type: FilterType;
     conditions?: FilterCondition[];
@@ -43,7 +43,7 @@ export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
     columns: TableDataColumn<T>[];
     gridTemplateColumns?: string;
     resourceName: keyof Database["public"]["Tables"];
-    filters?: TableDataFilter[];
+    filters?: TableDataFilterConfig<T>[];
 }
 
 export type TableDataConfigGenericExtend = Record<string, any> & { id: number };
@@ -97,7 +97,7 @@ export type TableDataActionsType<T extends TableDataConfigGenericExtend> =
     | {
           type: TableDataActionsEnum.SET_SORT;
           payload: {
-              id: string;
+              id: keyof T;
               isAscending: boolean;
           } | null;
       }

@@ -1,4 +1,9 @@
-import { FilterType, type FilterCondition, type TableDataFilterState } from "../../../../../utils/projectTypes";
+import {
+    FilterType,
+    type FilterCondition,
+    type TableDataConfigGenericExtend,
+    type TableDataFilterState,
+} from "../../../../../utils/projectTypes";
 
 export const getFiltersConditionsWithValue = (
     filterState: Record<string, any>,
@@ -20,10 +25,10 @@ export const getFiltersConditionsWithValue = (
     return { filterValue, filterCondition };
 };
 
-const getAlreadySelectedFilter = (
-    filterId: string,
-    selectedFilters: TableDataFilterState[],
-): TableDataFilterState | null => {
+const getAlreadySelectedFilter = <T extends TableDataConfigGenericExtend>(
+    filterId: keyof T,
+    selectedFilters: TableDataFilterState<T>[],
+): TableDataFilterState<T> | null => {
     const selectedFilter = selectedFilters.find((selectedFilter) => selectedFilter.id === filterId);
     const filterAlreadySelected = selectedFilter === undefined;
 
@@ -34,18 +39,21 @@ const getAlreadySelectedFilter = (
     return selectedFilter;
 };
 
-export const getFilterDefaultValue = <T extends Record<string, any>>(
-    filterId: string,
-    filterConditions: (keyof T)[],
-    selectedFilters: TableDataFilterState[],
-): T => {
-    const defaultValues = filterConditions.reduce<T>((defaultValuesObject, filterCondition) => {
-        const newDefaultValuesObject: T = { ...defaultValuesObject };
+export const getFilterDefaultValue = <T extends TableDataConfigGenericExtend>(
+    filterId: keyof T,
+    filterConditions: FilterCondition[],
+    selectedFilters: TableDataFilterState<T>[],
+) => {
+    const defaultValues = filterConditions.reduce<Partial<Record<FilterCondition, string | undefined>>>(
+        (defaultValuesObject, filterCondition) => {
+            const newDefaultValuesObject = { ...defaultValuesObject };
 
-        newDefaultValuesObject[filterCondition] = undefined;
+            newDefaultValuesObject[filterCondition] = undefined;
 
-        return newDefaultValuesObject;
-    }, {} as T);
+            return newDefaultValuesObject;
+        },
+        {},
+    );
 
     const selectedFilter = getAlreadySelectedFilter(filterId, selectedFilters);
 
@@ -60,13 +68,13 @@ export const getFilterDefaultValue = <T extends Record<string, any>>(
     return defaultValues;
 };
 
-export const getEnumFilterDefaultValue = (
-    filterId: string,
-    selectedFilters: TableDataFilterState[],
+export const getEnumFilterDefaultValue = <T extends TableDataConfigGenericExtend>(
+    filterId: keyof T,
+    selectedFilters: TableDataFilterState<T>[],
     options: Record<string, string>,
 ) => {
     const optionsKeys = Object.keys(options);
-    const defaultValues = optionsKeys.reduce<Record<string, string>>((defaultValuesObject, optionKey) => {
+    const defaultValues = optionsKeys.reduce<Record<string, boolean>>((defaultValuesObject, optionKey) => {
         const newDefaultValuesObject = { ...defaultValuesObject };
 
         newDefaultValuesObject[optionKey] = false;
