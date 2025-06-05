@@ -1,6 +1,14 @@
+import styled from "styled-components";
 import { EmptyPage } from "../../../common/EmptyPage";
-import Table from "../../../common/Table/Table";
+import Table, { StyledHeaderCell } from "../../../common/Table/Table";
+import { TableData } from "../TableData";
 import { useTableDataContext } from "../utils/TableDataContext";
+
+const StyledTableDataHeaderCell = styled(StyledHeaderCell)`
+    display: flex;
+    align-items: center;
+    column-gap: 0.6rem;
+`;
 
 const TableDataTable = () => {
     const { config, resources } = useTableDataContext();
@@ -24,9 +32,10 @@ const TableDataHeaderRow = () => {
         <Table.TableRow>
             {columns.map((column, columnIndex) => {
                 return (
-                    <Table.TableHeaderCell key={column.name} columnIndex={columnIndex}>
+                    <StyledTableDataHeaderCell key={column.name} columnIndex={columnIndex}>
                         {column.name}
-                    </Table.TableHeaderCell>
+                        <TableData.Sorts columnName={column.name} />
+                    </StyledTableDataHeaderCell>
                 );
             })}
         </Table.TableRow>

@@ -53,6 +53,11 @@ const Appointments = () => {
                 },
             },
             {
+                id: "number_of_patients",
+                name: "Number of patients",
+                type: FilterType.NUMBER,
+            },
+            {
                 id: "additional_note",
                 name: "Additional note",
                 type: FilterType.TEXT,

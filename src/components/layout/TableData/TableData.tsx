@@ -19,14 +19,13 @@ const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: {
     return (
         <TableData config={config} resources={resources} tableDataState={tableDataState} dispatch={dispatch}>
             <TableData.Filters />
-            <TableData.Sorts />
             <TableData.Table />
             <TableData.Pagination />
         </TableData>
     );
 };
 
-const TableData = <T extends TableDataConfigGenericExtend>({
+export const TableData = <T extends TableDataConfigGenericExtend>({
     children,
     config,
     resources,

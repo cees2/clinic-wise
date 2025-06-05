@@ -148,3 +148,9 @@ export type TextFilterCondition = Extract<FilterCondition, "e" | "c">;
 export type TextFilterForm = {
     [K in TextFilterCondition]: string;
 };
+
+export enum SortTableEnum {
+    ASCENDING,
+    DESCENDING,
+    NONE,
+}

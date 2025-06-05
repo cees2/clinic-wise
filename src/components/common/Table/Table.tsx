@@ -28,7 +28,7 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<Props, "children">
     `}
 `;
 
-const StyledHeaderCell = styled.div.attrs({
+export const StyledHeaderCell = styled.div.attrs({
     role: "columnheader",
 })<TableHeaderCellProps>`
     font-weight: var(--font-weight-bold);
