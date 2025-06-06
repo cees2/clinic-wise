@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { Button } from "../Button";
 import { StyledHeader } from "../../common/Header/Header";
-import { faker } from "@faker-js/faker";
-import type { Tables } from "../../../services/database.types";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import { useFakeAppointments } from "../../../services/hooks/Faker/useFakeAppointments";
+import { useFakePatients } from "../../../services/hooks/Faker/useFakePatients";
+import { generateFakeAppointments, generateFakeEmployees, generateFakePatients } from "../utils/faker";
+import { useFakeEmployees } from "../../../services/hooks/Faker/useFakeEmployees";
 
 const StyledFaker = styled.div`
     margin: auto 1.6rem 1.6rem;
@@ -24,26 +25,32 @@ const FakerHeader = styled(StyledHeader)`
     row-gap: 1.2rem;
 `;
 
-const Faker = () => {
-    const { isPending, mutate } = useFakeAppointments();
+const FakerButtons = styled.div`
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.2rem;
+`;
+
+const FakerComponent = () => {
+    const { isPending: pendingAppointments, mutate: mutateAppointments } = useFakeAppointments();
+    const { isPending: pendingPatients, mutate: mutatePatients } = useFakePatients();
+    const { isPending: pendingEmployees, mutate: mutateEmployees } = useFakeEmployees();
+    const isPending = pendingAppointments || pendingPatients || pendingEmployees;
 
     const uploadAppointments = () => {
-        const mockAppointments: Tables<"appointments">[] = [];
-        for (let i = 0; i < 50; i++) {
-            const newMockAppointment: Tables<"appointments"> = {
-                start_date: faker.date.recent().toString(),
-                patient_id: 1,
-                employee_id: 1,
-                duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
-                status: faker.helpers.arrayElement(["confirmed", "unconfirmed"]),
-                additional_note: faker.lorem.sentence({ min: 3, max: 10 }),
-                number_of_patients: faker.number.int({ min: 1, max: 2 }),
-            };
+        const mockAppointments = generateFakeAppointments();
+        mutateAppointments(mockAppointments);
+    };
 
-            mockAppointments.push(newMockAppointment);
-        }
+    const uploadPatients = () => {
+        const mockPatients = generateFakePatients();
+        mutatePatients(mockPatients);
+    };
 
-        mutate(mockAppointments);
+    const uploadEmployees = () => {
+        const mockEmployees = generateFakeEmployees();
+        console.log(mockEmployees);
+        mutateEmployees(mockEmployees);
     };
 
     return (
@@ -52,12 +59,14 @@ const Faker = () => {
             {isPending ? (
                 <LoadingSpinner />
             ) : (
-                <div>
+                <FakerButtons>
                     <Button onClick={uploadAppointments}>Upload appointments</Button>
-                </div>
+                    <Button onClick={uploadPatients}>Upload patients</Button>
+                    <Button onClick={uploadEmployees}>Upload employees</Button>
+                </FakerButtons>
             )}
         </StyledFaker>
     );
 };
 
-export default Faker;
+export default FakerComponent;

@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import type React from "react";
-import type { Database } from "../services/database.types";
+import type { Database, Tables } from "../services/database.types";
 
 export interface MainNavigationConfigItem {
     to: string;
@@ -167,4 +167,18 @@ export enum SortTableEnum {
     ASCENDING,
     DESCENDING,
     NONE,
+}
+
+export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "id">;
+export type PatientFormType = Omit<Tables<"patients">, "created_at" | "id">;
+export type EmployeeFormType = Omit<Tables<"employees">, "created_at" | "id">;
+
+export interface Person {
+    name: string;
+    surname: string;
+    date_of_birth: string;
+    nationality: string;
+    address: string;
+    gender: string;
+    phone_number: string;
 }

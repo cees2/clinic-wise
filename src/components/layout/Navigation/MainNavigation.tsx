@@ -1,14 +1,11 @@
 import styled from "styled-components";
 import MainNavigationItem from "./MainNavigationItem";
 import type { MainNavigationConfigItem } from "../../../utils/projectTypes";
-import {
-    MdOutlineCalendarMonth,
-    MdOutlineRoomPreferences,
-} from "react-icons/md";
+import { MdOutlineCalendarMonth, MdOutlineRoomPreferences } from "react-icons/md";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineUsers } from "react-icons/hi";
-import Faker from "../Faker/Faker";
+import FakerComponent from "../Faker/Faker";
 
 const StyledNavigation = styled.aside`
     flex: 0 1 20rem;
@@ -69,14 +66,11 @@ const MainNavigation = () => {
             <nav>
                 <NavigationList>
                     {mainNavigationConfig.map((navigationItem) => (
-                        <MainNavigationItem
-                            key={navigationItem.title}
-                            navigationItem={navigationItem}
-                        />
+                        <MainNavigationItem key={navigationItem.title} navigationItem={navigationItem} />
                     ))}
                 </NavigationList>
             </nav>
-            <Faker />
+            <FakerComponent />
         </StyledNavigation>
     );
 };

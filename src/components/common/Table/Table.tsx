@@ -40,6 +40,12 @@ export const StyledHeaderCell = styled.div.attrs({
     }}
 `;
 
+const StyledTableCell = styled.div.attrs({
+    role: "cell",
+})`
+    padding: 1.2rem;
+`;
+
 const TableContext = createContext<Omit<Props, "children">>({});
 
 const useTableContext = () => {
@@ -78,7 +84,7 @@ const TableHeaderCell = ({ children, columnIndex }: TableHeaderCellProps) => {
 };
 
 const TableRowCell = ({ children }: { children: React.ReactNode }) => {
-    return <div role="cell">{children}</div>;
+    return <StyledTableCell role="cell">{children}</StyledTableCell>;
 };
 
 Table.TableRow = TableRow;
