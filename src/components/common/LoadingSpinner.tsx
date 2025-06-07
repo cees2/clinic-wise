@@ -19,6 +19,7 @@ const Spinner = styled.div`
 `;
 
 const StyledSpinnerText = styled.span`
+    text-align: center;
     font-size: 2rem;
     font-weight: var(--font-weight-normal);
 `;

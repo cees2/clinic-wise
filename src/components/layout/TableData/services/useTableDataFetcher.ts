@@ -1,30 +1,51 @@
 import { useQuery } from "@tanstack/react-query";
-import { FilterType, type TableDataConfigGenericExtend, type TableDataState } from "../../../../utils/projectTypes";
+import {
+    FilterType,
+    type TableDataColumn,
+    type TableDataConfig,
+    type TableDataConfigGenericExtend,
+    type TableDataState,
+} from "../../../../utils/projectTypes";
 import { supabase } from "../../../../services/services";
-import type { Database } from "../../../../services/database.types";
 
 export const useTableDataFetcher = <T extends TableDataConfigGenericExtend>(
-    resourceName: keyof Database["public"]["Tables"],
+    config: TableDataConfig<T>,
     tableDataState: TableDataState<T>,
 ) => {
+    const { resourceName } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
 
     const resourceRequestSetup = useQuery({
-        queryFn: () => getResource(resourceName, tableDataState),
+        queryFn: () => getResource(config, tableDataState),
         queryKey: [resourceName, selectedFilters, selectedSort, selectedPage, selectedPaginationSize],
     });
 
     return resourceRequestSetup;
 };
 
+const getSelectString = (columns: TableDataColumn<T>[]): string => {
+    let select = "*";
+
+    columns.forEach((column) => {
+        if (!column.foreignTableColumnsName) return;
+
+        const foreignColumns = column.foreignTableColumnsName.join(",");
+        select += `, ${column.id} (${foreignColumns})`;
+    });
+
+    return select;
+};
+
 export const getResource = async <T extends TableDataConfigGenericExtend>(
-    resourceName: keyof Database["public"]["Tables"],
+    config: TableDataConfig<T>,
     tableDataState: TableDataState<T>,
 ) => {
+    const { resourceName, columns } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
     const rangeStart = (selectedPage - 1) * selectedPaginationSize;
     const rangeEnd = selectedPage * selectedPaginationSize - 1;
-    let query = supabase.from(resourceName).select("*");
+    const selectString = getSelectString(columns);
+    let query = supabase.from(resourceName).select(selectString);
 
     selectedFilters.forEach((selectedFilter) => {
         const { id: filterId, filterValue, filterType, filterCondition } = selectedFilter;

@@ -1,5 +1,6 @@
 import { fakerEN, faker } from "@faker-js/faker";
 import type { AppointmentFormType, EmployeeFormType, PatientFormType, Person } from "../../../utils/projectTypes";
+import type { Tables } from "../../../services/database.types";
 
 const createMockPerson = (): Person => {
     const gender = faker.person.sexType();
@@ -24,13 +25,13 @@ const createMockPerson = (): Person => {
     };
 };
 
-export const generateFakeAppointments = () => {
+export const generateFakeAppointments = (patients: Tables<"patients">, employees: Tables<"employees">) => {
     const mockAppointments: AppointmentFormType[] = [];
     for (let i = 0; i < 50; i++) {
         const newMockAppointment: AppointmentFormType = {
             start_date: faker.date.recent().toISOString(),
-            patient_id: 1,
-            employee_id: 1,
+            patient_id: patients[i % 20].id,
+            employee_id: employees[i % 20].id,
             duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
             status: faker.helpers.arrayElement(["confirmed", "unconfirmed"]),
             additional_note: faker.lorem.sentence({ min: 3, max: 10 }),

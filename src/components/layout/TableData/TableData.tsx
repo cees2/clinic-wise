@@ -12,7 +12,7 @@ import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
 const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: { config: TableDataConfig<T> }) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
-    const { isLoading, data: resources } = useTableDataFetcher(config.resourceName, tableDataState);
+    const { isLoading, data: resources } = useTableDataFetcher(config, tableDataState);
 
     console.log(tableDataState.selectedFilters);
 

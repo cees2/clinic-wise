@@ -32,10 +32,14 @@ const Appointments = () => {
             {
                 id: "patient_id",
                 name: "Patient",
+                foreignTableColumnsName: ["name", "surname"],
+                render: (item) => `${item.patient_id.name} ${item.patient_id.surname}`,
             },
             {
                 id: "employee_id",
                 name: "Employee",
+                foreignTableColumnsName: ["name", "surname"],
+                render: (item) => `${item.employee_id.name} ${item.employee_id.surname}`,
             },
         ],
         resourceName: "appointments",
