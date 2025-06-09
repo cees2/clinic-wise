@@ -12,14 +12,18 @@ import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
 const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: { config: TableDataConfig<T> }) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
-    const { isLoading, data: resources } = useTableDataFetcher(config, tableDataState);
-
-    console.log(tableDataState.selectedFilters);
+    const { isLoading, data: resources, count } = useTableDataFetcher(config, tableDataState);
 
     if (isLoading) return <LoadingSpinner />;
 
     return (
-        <TableData config={config} resources={resources} tableDataState={tableDataState} dispatch={dispatch}>
+        <TableData
+            config={config}
+            resources={resources}
+            tableDataState={tableDataState}
+            dispatch={dispatch}
+            itemsCount={count}
+        >
             <TableData.Filters />
             <TableData.Table />
             <TableData.Pagination />
@@ -33,12 +37,14 @@ export const TableData = <T extends TableDataConfigGenericExtend>({
     resources,
     tableDataState,
     dispatch,
+    itemsCount,
 }: {
     children: React.ReactNode;
     config: TableDataConfig<T>;
     resources: T[];
     tableDataState: TableDataState<T>;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
+    itemsCount?: number | null;
 }) => {
     return (
         <TableDataContextProvider
@@ -46,6 +52,7 @@ export const TableData = <T extends TableDataConfigGenericExtend>({
             resources={resources}
             tableDataState={tableDataState}
             dispatch={dispatch}
+            itemsCount={itemsCount}
         >
             {children}
         </TableDataContextProvider>

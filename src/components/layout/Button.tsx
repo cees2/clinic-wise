@@ -5,6 +5,7 @@ interface Props {
     children: React.ReactNode;
     onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
     variant?: "primary" | "danger" | "cancel";
+    disabled?: boolean;
 }
 
 const StyledButton = styled.button<Pick<Props, "variant">>`
@@ -41,9 +42,9 @@ const StyledButton = styled.button<Pick<Props, "variant">>`
     }}
 `;
 
-export const Button = ({ children, onClick, variant }: Props) => {
+export const Button = ({ children, onClick, variant, disabled }: Props) => {
     return (
-        <StyledButton onClick={onClick} variant={variant}>
+        <StyledButton onClick={onClick} variant={variant} disabled={disabled}>
             {children}
         </StyledButton>
     );

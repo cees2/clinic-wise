@@ -19,11 +19,13 @@ const TableDataContextProvider = <T extends TableDataConfigGenericExtend>({
     resources,
     tableDataState,
     dispatch,
+    itemsCount,
 }: Pick<TableDataContextType<T>, "config"> & {
     children: React.ReactNode;
     resources: T[];
     tableDataState: TableDataState;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
+    itemsCount?: number | null;
 }) => {
     const memoizedContextValue = useMemo(
         () => ({
@@ -31,8 +33,9 @@ const TableDataContextProvider = <T extends TableDataConfigGenericExtend>({
             tableDataState,
             dispatch,
             resources,
+            itemsCount,
         }),
-        [tableDataState, resources, config, dispatch],
+        [tableDataState, resources, config, dispatch, itemsCount],
     );
 
     return <TableDataContext value={memoizedContextValue}>{children}</TableDataContext>;

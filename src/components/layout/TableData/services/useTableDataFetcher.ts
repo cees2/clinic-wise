@@ -19,8 +19,9 @@ export const useTableDataFetcher = <T extends TableDataConfigGenericExtend>(
         queryFn: () => getResource(config, tableDataState),
         queryKey: [resourceName, selectedFilters, selectedSort, selectedPage, selectedPaginationSize],
     });
+    const { data, count } = resourceRequestSetup.data ?? {};
 
-    return resourceRequestSetup;
+    return { ...resourceRequestSetup, data, count };
 };
 
 const getSelectString = (columns: TableDataColumn<T>[]): string => {
@@ -45,7 +46,7 @@ export const getResource = async <T extends TableDataConfigGenericExtend>(
     const rangeStart = (selectedPage - 1) * selectedPaginationSize;
     const rangeEnd = selectedPage * selectedPaginationSize - 1;
     const selectString = getSelectString(columns);
-    let query = supabase.from(resourceName).select(selectString);
+    let query = supabase.from(resourceName).select(selectString, { count: "estimated" });
 
     selectedFilters.forEach((selectedFilter) => {
         const { id: filterId, filterValue, filterType, filterCondition } = selectedFilter;
@@ -83,11 +84,11 @@ export const getResource = async <T extends TableDataConfigGenericExtend>(
 
     query = query.range(rangeStart, rangeEnd);
 
-    const { data, error } = await query;
+    const { data, error, count } = await query;
 
     if (error) {
         throw new Error(error.message);
     }
 
-    return data;
+    return { data, count };
 };

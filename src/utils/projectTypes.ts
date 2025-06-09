@@ -81,6 +81,7 @@ export interface TableDataContextType<T> {
     tableDataState: TableDataState<T>;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
     resources: T[];
+    itemsCount?: number | null;
 }
 
 export enum TableDataActionsEnum {
