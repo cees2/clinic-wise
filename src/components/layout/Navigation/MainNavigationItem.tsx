@@ -36,7 +36,9 @@ const StyledMainNavigationItem = styled.a`
 `;
 
 const MainNavigationItem = ({ navigationItem }: Props) => {
-    const { title, icon, to } = navigationItem;
+    const { title, icon, to, isHidden } = navigationItem;
+
+    if (isHidden) return null;
 
     return (
         <StyledMainNavigationItem as={NavLink} to={to}>

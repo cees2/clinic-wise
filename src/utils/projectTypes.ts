@@ -6,6 +6,7 @@ export interface MainNavigationConfigItem {
     to: string;
     icon: React.ReactNode;
     title: string;
+    isHidden?: true;
 }
 
 export interface HeaderActions {
@@ -40,11 +41,18 @@ export interface TableDataFilterConfig<T extends TableDataConfigGenericExtend> {
     options?: Record<string, string>;
 }
 
+export interface TableDataAction<T extends TableDataConfigGenericExtend> {
+    id: string;
+    name: string;
+    action: (item: T) => void | Promise<void>;
+}
+
 export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
     columns: TableDataColumn<T>[];
     gridTemplateColumns?: string;
     resourceName: keyof Database["public"]["Tables"];
     filters?: TableDataFilterConfig<T>[];
+    actions?: TableDataAction<T>[];
 }
 
 export type TableDataConfigGenericExtend = Record<string, any> & { id: number };

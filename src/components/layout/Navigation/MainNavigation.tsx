@@ -6,6 +6,7 @@ import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineUsers } from "react-icons/hi";
 import FakerComponent from "../Faker/Faker";
+import { GrUserWorker } from "react-icons/gr";
 
 const StyledNavigation = styled.aside`
     flex: 0 1 20rem;
@@ -46,6 +47,11 @@ const mainNavigationConfig: MainNavigationConfigItem[] = [
         to: "/patients",
         title: "Patients",
         icon: <HiOutlineUsers />,
+    },
+    {
+        to: "/employees",
+        title: "Employees",
+        icon: <GrUserWorker />,
     },
     {
         to: "/rooms",

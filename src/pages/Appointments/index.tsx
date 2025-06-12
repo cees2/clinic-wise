@@ -69,6 +69,15 @@ const Appointments = () => {
                 type: FilterType.TEXT,
             },
         ],
+        actions: [
+            {
+                id: "remove",
+                name: "Remove",
+                action: (item) => {
+                    console.log(item.number_of_patients);
+                },
+            },
+        ],
     };
 
     return (

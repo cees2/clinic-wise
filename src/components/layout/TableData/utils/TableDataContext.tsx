@@ -1,10 +1,9 @@
-import React, { createContext, use, useMemo, useReducer } from "react";
+import React, { createContext, use, useMemo } from "react";
 import type {
     TableDataConfigGenericExtend,
     TableDataContextType,
     TableDataState,
 } from "../../../../utils/projectTypes";
-import tableDataContextReducer from "./reducer";
 
 const TableDataContext = createContext<TableDataContextType<T>>({
     config: {},

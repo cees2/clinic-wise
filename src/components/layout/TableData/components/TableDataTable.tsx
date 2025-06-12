@@ -3,6 +3,7 @@ import { EmptyPage } from "../../../common/EmptyPage";
 import Table, { StyledHeaderCell } from "../../../common/Table/Table";
 import { TableData } from "../TableData";
 import { useTableDataContext } from "../utils/TableDataContext";
+import TableDataActionCell from "./TableDataActionCell";
 
 const StyledTableDataHeaderCell = styled(StyledHeaderCell)`
     display: flex;
@@ -62,6 +63,7 @@ const TableDataItemsRows = () => {
                                 <Table.TableRowCell key={column.id}>{resourceColumnDisplayValue}</Table.TableRowCell>
                             );
                         })}
+                        <TableDataActionCell />
                     </Table.TableRow>
                 );
             })}
