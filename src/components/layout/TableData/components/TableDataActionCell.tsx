@@ -1,44 +1,40 @@
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dropdown } from "../../../common/Dropdown/Dropdown";
 import Table from "../../../common/Table/Table";
-import { Button } from "../../Button";
 import { useTableDataContext } from "../utils/TableDataContext";
+import type { TableDataResourceType } from "../../../../utils/projectTypes";
 
-const TableDataActionCell = () => {
+interface Props<T extends TableDataResourceType> {
+    resource: T;
+}
+
+const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Props<T>) => {
     const {
         config: { actions },
     } = useTableDataContext();
 
     if (!actions || actions.length === 0) return null;
 
-    const drawActionContent = () => {
-        const shouldRenderButton = actions.length === 1;
-
-        if (shouldRenderButton) {
-            const { name, action } = actions.at(0) ?? {};
-            return <Button onClick={action}>{name}</Button>;
-        }
-
-        return (
-            <Dropdown>
-                <Dropdown.Toggle>
+    return (
+        <Table.TableRowCell>
+            <Dropdown placement="left">
+                <Dropdown.Toggle hideDefaultIcon>
                     <BsThreeDotsVertical />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     {actions.map((action) => {
                         const { id, name, action: actionCallback } = action;
+
                         return (
-                            <Dropdown.Item onClick={actionCallback} key={id}>
+                            <Dropdown.Item onClick={() => void actionCallback(resource)} key={id}>
                                 {name}
                             </Dropdown.Item>
                         );
                     })}
                 </Dropdown.Menu>
             </Dropdown>
-        );
-    };
-
-    return <Table.TableRowCell>{drawActionContent()}</Table.TableRowCell>;
+        </Table.TableRowCell>
+    );
 };
 
 export default TableDataActionCell;

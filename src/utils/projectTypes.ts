@@ -31,7 +31,7 @@ export enum FilterType {
     ENUM,
 }
 
-export interface TableDataFilterConfig<T extends TableDataConfigGenericExtend> {
+export interface TableDataFilterConfig<T extends TableDataResourceType> {
     id: keyof T;
     name: string;
     type: FilterType;
@@ -41,13 +41,13 @@ export interface TableDataFilterConfig<T extends TableDataConfigGenericExtend> {
     options?: Record<string, string>;
 }
 
-export interface TableDataAction<T extends TableDataConfigGenericExtend> {
+export interface TableDataAction<T extends TableDataResourceType> {
     id: string;
     name: string;
     action: (item: T) => void | Promise<void>;
 }
 
-export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
+export interface TableDataConfig<T extends TableDataResourceType> {
     columns: TableDataColumn<T>[];
     gridTemplateColumns?: string;
     resourceName: keyof Database["public"]["Tables"];
@@ -55,7 +55,7 @@ export interface TableDataConfig<T extends TableDataConfigGenericExtend> {
     actions?: TableDataAction<T>[];
 }
 
-export type TableDataConfigGenericExtend = Record<string, any> & { id: number };
+export type TableDataResourceType = Record<string, any> & { id: number };
 
 // TODO: TableDataConfig with generic type which will allow fields like a TableDataColumn.id have proper type?
 // TODO: Create differenet files for types??
@@ -77,7 +77,7 @@ export interface TableDataSortState<T> {
     isAscending: boolean;
 }
 
-export interface TableDataState<T extends TableDataConfigGenericExtend> {
+export interface TableDataState<T extends TableDataResourceType> {
     selectedSort: TableDataSortState<T> | null;
     selectedFilters: TableDataFilterState<T>[];
     selectedPage: number;
@@ -103,7 +103,7 @@ export enum TableDataActionsEnum {
     SET_PREVIOUS_PAGE,
 }
 
-export type TableDataActionsType<T extends TableDataConfigGenericExtend> =
+export type TableDataActionsType<T extends TableDataResourceType> =
     | {
           type: TableDataActionsEnum.SET_SORT;
           payload: {
@@ -191,4 +191,9 @@ export interface Person {
     address: string;
     gender: string;
     phone_number: string;
+}
+
+export interface ModalContextType {
+    showModal: boolean;
+    onHide: () => void;
 }

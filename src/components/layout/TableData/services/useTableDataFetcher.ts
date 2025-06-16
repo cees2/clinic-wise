@@ -3,12 +3,12 @@ import {
     FilterType,
     type TableDataColumn,
     type TableDataConfig,
-    type TableDataConfigGenericExtend,
+    type TableDataResourceType,
     type TableDataState,
 } from "../../../../utils/projectTypes";
 import { supabase } from "../../../../services/services";
 
-export const useTableDataFetcher = <T extends TableDataConfigGenericExtend>(
+export const useTableDataFetcher = <T extends TableDataResourceType>(
     config: TableDataConfig<T>,
     tableDataState: TableDataState<T>,
 ) => {
@@ -37,7 +37,7 @@ const getSelectString = (columns: TableDataColumn<T>[]): string => {
     return select;
 };
 
-export const getResource = async <T extends TableDataConfigGenericExtend>(
+export const getResource = async <T extends TableDataResourceType>(
     config: TableDataConfig<T>,
     tableDataState: TableDataState<T>,
 ) => {

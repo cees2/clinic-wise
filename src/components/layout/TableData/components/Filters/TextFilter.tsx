@@ -3,7 +3,7 @@ import { useTableDataContext } from "../../utils/TableDataContext";
 import {
     FilterType,
     TableDataActionsEnum,
-    type TableDataConfigGenericExtend,
+    type TableDataResourceType,
     type TextFilterCondition,
     type TextFilterForm,
 } from "../../../../../utils/projectTypes";
@@ -11,13 +11,13 @@ import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { TextInput } from "../../../../common/Input/TextInput";
 import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
-interface Props<T extends TableDataConfigGenericExtend> {
+interface Props<T extends TableDataResourceType> {
     filterId: keyof T;
 }
 
 const numberFilterConditions: TextFilterCondition[] = ["e", "c"];
 
-const TextFilter = <T extends TableDataConfigGenericExtend>({ filterId }: Props<T>) => {
+const TextFilter = <T extends TableDataResourceType>({ filterId }: Props<T>) => {
     const {
         dispatch,
         tableDataState: { selectedFilters },

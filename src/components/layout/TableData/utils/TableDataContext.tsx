@@ -1,9 +1,5 @@
 import React, { createContext, use, useMemo } from "react";
-import type {
-    TableDataConfigGenericExtend,
-    TableDataContextType,
-    TableDataState,
-} from "../../../../utils/projectTypes";
+import type { TableDataResourceType, TableDataContextType, TableDataState } from "../../../../utils/projectTypes";
 
 const TableDataContext = createContext<TableDataContextType<T>>({
     config: {},
@@ -12,7 +8,7 @@ const TableDataContext = createContext<TableDataContextType<T>>({
     resources: [],
 });
 
-const TableDataContextProvider = <T extends TableDataConfigGenericExtend>({
+const TableDataContextProvider = <T extends TableDataResourceType>({
     children,
     config,
     resources,

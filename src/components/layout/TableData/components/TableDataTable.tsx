@@ -9,15 +9,23 @@ const StyledTableDataHeaderCell = styled(StyledHeaderCell)`
     display: flex;
     align-items: center;
     column-gap: 0.6rem;
+    padding: 1rem;
 `;
 
 const TableDataTable = () => {
-    const { config, resources } = useTableDataContext();
+    const {
+        config: { columns, actions, gridTemplateColumns },
+        resources,
+    } = useTableDataContext();
 
     if (resources.length === 0) return <EmptyPage caption="Could not find any data matching your criteria." />;
 
+    const gridTemplateColumnsWithActions = gridTemplateColumns
+        ? `${gridTemplateColumns} 70px`
+        : `repeat(${columns.length}, 1fr)${actions ? "70px" : ""}`;
+
     return (
-        <Table gridTemplateColumns={config.gridTemplateColumns} numberOfColumns={config.columns.length}>
+        <Table gridTemplateColumns={gridTemplateColumnsWithActions}>
             <TableDataHeaderRow />
             <TableDataItemsRows />
         </Table>
@@ -63,7 +71,7 @@ const TableDataItemsRows = () => {
                                 <Table.TableRowCell key={column.id}>{resourceColumnDisplayValue}</Table.TableRowCell>
                             );
                         })}
-                        <TableDataActionCell />
+                        <TableDataActionCell resource={resource}/>
                     </Table.TableRow>
                 );
             })}

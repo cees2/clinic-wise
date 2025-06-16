@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import type { TableDataConfig, TableDataConfigGenericExtend, TableDataState } from "../../../utils/projectTypes";
+import type { TableDataConfig, TableDataResourceType, TableDataState } from "../../../utils/projectTypes";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import TableDataFilters from "./components/Filters/TableDataFilters";
 import TableDataPagination from "./components/TableDataPagination";
@@ -10,7 +10,7 @@ import tableDataContextReducer from "./utils/reducer";
 import { tableDataConfigInitialValue } from "./utils/constants";
 import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
-const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: { config: TableDataConfig<T> }) => {
+const TableDataRenderer = <T extends TableDataResourceType>({ config }: { config: TableDataConfig<T> }) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
     const { isLoading, data: resources, count } = useTableDataFetcher(config, tableDataState);
 
@@ -31,7 +31,7 @@ const TableDataRenderer = <T extends TableDataConfigGenericExtend>({ config }: {
     );
 };
 
-export const TableData = <T extends TableDataConfigGenericExtend>({
+export const TableData = <T extends TableDataResourceType>({
     children,
     config,
     resources,

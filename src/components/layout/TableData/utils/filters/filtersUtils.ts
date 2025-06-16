@@ -1,7 +1,7 @@
 import {
     FilterType,
     type FilterCondition,
-    type TableDataConfigGenericExtend,
+    type TableDataResourceType,
     type TableDataFilterState,
 } from "../../../../../utils/projectTypes";
 
@@ -25,7 +25,7 @@ export const getFiltersConditionsWithValue = (
     return { filterValue, filterCondition };
 };
 
-const getAlreadySelectedFilter = <T extends TableDataConfigGenericExtend>(
+const getAlreadySelectedFilter = <T extends TableDataResourceType>(
     filterId: keyof T,
     selectedFilters: TableDataFilterState<T>[],
 ): TableDataFilterState<T> | null => {
@@ -39,7 +39,7 @@ const getAlreadySelectedFilter = <T extends TableDataConfigGenericExtend>(
     return selectedFilter;
 };
 
-export const getFilterDefaultValue = <T extends TableDataConfigGenericExtend>(
+export const getFilterDefaultValue = <T extends TableDataResourceType>(
     filterId: keyof T,
     filterConditions: FilterCondition[],
     selectedFilters: TableDataFilterState<T>[],
@@ -68,7 +68,7 @@ export const getFilterDefaultValue = <T extends TableDataConfigGenericExtend>(
     return defaultValues;
 };
 
-export const getEnumFilterDefaultValue = <T extends TableDataConfigGenericExtend>(
+export const getEnumFilterDefaultValue = <T extends TableDataResourceType>(
     filterId: keyof T,
     selectedFilters: TableDataFilterState<T>[],
     options: Record<string, string>,

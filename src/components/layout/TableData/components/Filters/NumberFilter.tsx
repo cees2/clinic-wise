@@ -3,7 +3,7 @@ import {
     TableDataActionsEnum,
     type FilterCondition,
     type NumberFilterForm,
-    type TableDataConfigGenericExtend,
+    type TableDataResourceType,
 } from "../../../../../utils/projectTypes";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useForm } from "react-hook-form";
@@ -11,13 +11,13 @@ import { NumberInput } from "../../../../common/Input/NumberInput";
 import { useTableDataContext } from "../../utils/TableDataContext";
 import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
-interface Props<T extends TableDataConfigGenericExtend> {
+interface Props<T extends TableDataResourceType> {
     filterId: keyof T;
 }
 
 const numberFilterConditions: Exclude<FilterCondition, "c">[] = ["e", "ne", "gt", "gte", "lt", "lte"];
 
-const NumberFilter = <T extends TableDataConfigGenericExtend>({ filterId }: Props<T>) => {
+const NumberFilter = <T extends TableDataResourceType>({ filterId }: Props<T>) => {
     const {
         dispatch,
         tableDataState: { selectedFilters },

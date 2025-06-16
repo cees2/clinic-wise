@@ -6,9 +6,7 @@ import { useFakeAppointments } from "../../../services/hooks/faker/useFakeAppoin
 import { useFakePatients } from "../../../services/hooks/faker/useFakePatients";
 import { generateFakeAppointments, generateFakeEmployees, generateFakePatients } from "../utils/faker";
 import { useFakeEmployees } from "../../../services/hooks/faker/useFakeEmployees";
-import { usePatients } from "../../../services/hooks/patients/usePatients";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEmployees } from "../../../services/hooks/employees/useEmployees";
 import { getEmployees, getPatients } from "../../../services/api";
 
 const StyledFaker = styled.div`

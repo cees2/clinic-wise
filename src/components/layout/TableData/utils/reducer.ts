@@ -1,11 +1,11 @@
 import {
     TableDataActionsEnum,
     type TableDataActionsType,
-    type TableDataConfigGenericExtend,
+    type TableDataResourceType,
     type TableDataState,
 } from "../../../../utils/projectTypes";
 
-const tableDataContextReducer = <T extends TableDataConfigGenericExtend>(
+const tableDataContextReducer = <T extends TableDataResourceType>(
     prevState: TableDataState<T>,
     action: TableDataActionsType<T>,
 ): TableDataState<T> => {

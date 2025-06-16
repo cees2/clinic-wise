@@ -2,15 +2,15 @@ import { useForm } from "react-hook-form";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { CheckboxInput } from "../../../../common/Input/CheckboxInput";
 import { useTableDataContext } from "../../utils/TableDataContext";
-import { FilterType, TableDataActionsEnum, type TableDataConfigGenericExtend } from "../../../../../utils/projectTypes";
+import { FilterType, TableDataActionsEnum, type TableDataResourceType } from "../../../../../utils/projectTypes";
 import { getEnumFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
-interface Props<T extends TableDataConfigGenericExtend> {
+interface Props<T extends TableDataResourceType> {
     filterId: keyof T;
     options: Record<string, string>;
 }
 
-const EnumFilter = <T extends TableDataConfigGenericExtend>({ filterId, options }: Props<T>) => {
+const EnumFilter = <T extends TableDataResourceType>({ filterId, options }: Props<T>) => {
     const {
         dispatch,
         tableDataState: { selectedFilters },

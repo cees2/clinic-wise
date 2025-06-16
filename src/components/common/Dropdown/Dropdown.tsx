@@ -117,7 +117,7 @@ export const Dropdown = ({
     );
 };
 
-const DropdownToggle = ({ children }: { children: React.ReactNode }) => {
+const DropdownToggle = ({ children, hideDefaultIcon }: { children: React.ReactNode; hideDefaultIcon?: true }) => {
     const { setOpen, setDropdownToggleRef, setIsOpening } = use(DropdownContext);
     const originalDropdownToggleRef = useRef<HTMLButtonElement>(null);
 
@@ -133,7 +133,7 @@ const DropdownToggle = ({ children }: { children: React.ReactNode }) => {
     return (
         <StyledDropdownToggle onClick={toggleDropdown} ref={originalDropdownToggleRef}>
             {children}
-            <IoMdArrowDropdown />
+            {!hideDefaultIcon && <IoMdArrowDropdown />}
         </StyledDropdownToggle>
     );
 };

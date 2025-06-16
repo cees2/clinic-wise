@@ -15,6 +15,16 @@ export const uploadFakeAppointments = async (appointmentsToBeUploaded: Appointme
     return data;
 };
 
+export const removeAppointment = async (appointmentId: number) => {
+    const { data, error } = await supabase.from("appointments").delete().eq("id", appointmentId);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
 export const uploadFakePatients = async (patientsToBeUploaded: PatientFormType[]) => {
     await supabase.from("patients").delete().gt("id", 0);
 

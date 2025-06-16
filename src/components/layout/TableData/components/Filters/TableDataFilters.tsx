@@ -1,11 +1,7 @@
 import styled from "styled-components";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useTableDataContext } from "../../utils/TableDataContext";
-import {
-    FilterType,
-    type TableDataConfigGenericExtend,
-    type TableDataFilterConfig,
-} from "../../../../../utils/projectTypes";
+import { FilterType, type TableDataResourceType, type TableDataFilterConfig } from "../../../../../utils/projectTypes";
 import NumberFilter from "./NumberFilter";
 import EnumFilter from "./EnumFilter";
 import TextFilter from "./TextFilter";
@@ -16,11 +12,7 @@ const StyledTableDataFilters = styled.div`
     column-gap: 1.2rem;
 `;
 
-const TableDataFilterBody = <T extends TableDataConfigGenericExtend>({
-    filter,
-}: {
-    filter: TableDataFilterConfig<T>;
-}) => {
+const TableDataFilterBody = <T extends TableDataResourceType>({ filter }: { filter: TableDataFilterConfig<T> }) => {
     const { type, id, options } = filter;
     switch (type) {
         case FilterType.NUMBER:
