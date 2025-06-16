@@ -197,3 +197,14 @@ export interface ModalContextType {
     showModal: boolean;
     onHide: () => void;
 }
+
+export interface ConfirmationType {
+    title?: string;
+    caption?: string;
+    onConfirm: () => void;
+    onReject?: () => void;
+}
+
+export interface ConfirmationContextType {
+    confirmation: (confirmation: ConfirmationType) => void;
+}

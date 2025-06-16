@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useMemo, type MouseEvent } from "react
 import type { ModalContextType } from "../../../utils/projectTypes";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
-import { IoMdCloseCircleOutline } from "react-icons/io";
+import { IoMdClose } from "react-icons/io";
 
 const ModalContext = createContext<ModalContextType>({
     showModal: false,
@@ -18,14 +18,26 @@ const ModalBackdrop = styled.div`
 `;
 
 const StyledModal = styled.div`
+    @keyframes display-modal {
+        from {
+            opacity: 50%;
+            transform: scale(60%) translate(-50%, -50%);
+        }
+        to {
+            transform: scale(100%) translate(-50%, -50%);
+            opacity: 100%;
+        }
+    }
+
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     width: 50vw;
+    transform: translate(-50%, -50%);
     background-color: var(--color-gray-200);
     padding: 2.4rem;
     border-radius: var(--border-radius-bg);
+    animation: display-modal var(--duration-fast) ease-out;
 
     & > .close-button {
         position: absolute;
@@ -68,7 +80,7 @@ export const Modal = ({
 }: {
     children: React.ReactNode;
     showModal: boolean;
-    closeable: boolean;
+    closeable?: boolean;
     onHide: () => void;
 }) => {
     const memoizedContextValue = useMemo(() => ({ showModal, onHide }), [showModal, onHide]);
@@ -80,7 +92,7 @@ export const Modal = ({
         }
     }, [showModal, onHide]);
 
-    const onModalClick = (event: MouseEvent<HTMLDivElement>) => {
+    const onBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
         if (event.target === event.currentTarget) onHide();
     };
 
@@ -88,10 +100,10 @@ export const Modal = ({
 
     return createPortal(
         <ModalContext value={memoizedContextValue}>
-            <ModalBackdrop onClick={onModalClick}>
+            <ModalBackdrop onClick={onBackdropClick}>
                 <StyledModal aria-modal="true" role="dialog">
                     {children}
-                    {closeable && <IoMdCloseCircleOutline className="close-button" onClick={onHide} />}
+                    {closeable && <IoMdClose className="close-button" onClick={onHide} />}
                 </StyledModal>
             </ModalBackdrop>
         </ModalContext>,

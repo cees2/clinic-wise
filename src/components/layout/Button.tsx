@@ -20,14 +20,31 @@ const StyledButton = styled.button<Pick<Props, "variant">>`
 
     &:hover {
         cursor: pointer;
-        background-color: var(--color-primary-dark);
+        ${({ variant }) => {
+            switch (variant) {
+                case "cancel":
+                    return css`
+                        background-color: var(--color-gray-300);
+                    `;
+                case "danger":
+                    return css`
+                        background-color: var(--color-danger-dark);
+                    `;
+                case "primary":
+                default:
+                    return css`
+                        background-color: var(--color-primary-dark);
+                    `;
+            }
+        }}
     }
 
     ${({ variant }) => {
         switch (variant) {
             case "cancel":
                 return css`
-                    background-color: var(--color-gray-200);
+                    background-color: var(--color-gray-100);
+                    color: var(--color-gray-800);
                 `;
             case "danger":
                 return css`

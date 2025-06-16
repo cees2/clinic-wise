@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MainLayout from "./pages";
 import GlobalStyles from "./styles/GlobalStyles";
 import { ToastContainer } from "react-toastify";
+import { ConfirmationProvider } from "./utils/useConfirmation";
 
 const queryClient = new QueryClient();
 
@@ -11,10 +12,12 @@ function App() {
     return (
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
-                <ToastContainer />
-                <ReactQueryDevtools initialIsOpen={false} />
-                <GlobalStyles />
-                <MainLayout />
+                <ConfirmationProvider>
+                    <ToastContainer />
+                    <ReactQueryDevtools initialIsOpen={false} />
+                    <GlobalStyles />
+                    <MainLayout />
+                </ConfirmationProvider>
             </QueryClientProvider>
         </BrowserRouter>
     );

@@ -40,6 +40,7 @@ const GlobalStyles = createGlobalStyle`
         --color-primary-light-2: #dcfce7;
 
         --color-danger: #b91c1c;
+        --color-danger-dark: #991b1b;
         --color-danger-light: #fee2e2;
 
         --border-radius-sm: 0.4rem;
