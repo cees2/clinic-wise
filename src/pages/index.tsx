@@ -11,7 +11,7 @@ import Register from "./Authentication/Register/Register";
 import styled from "styled-components";
 import MainNavigation from "../components/layout/Navigation/MainNavigation";
 import Employees from "./Employees";
-import AppointmentForm from "./Appointments/Form";
+import EditAppointment from "./Appointments/Edit";
 
 const StyledMainLayout = styled.div`
     display: flex;
@@ -32,7 +32,7 @@ const MainLayout = () => {
                     <Route path="dashboard" Component={Dashboard} />
                     <Route path="appointments">
                         <Route path="" Component={Appointments} />
-                        <Route path=":appointmentId/edit" Component={AppointmentForm} />
+                        <Route path=":appointmentId/edit" Component={EditAppointment} />
                     </Route>
                     <Route path="patients" Component={Patients} />
                     <Route path="employees" Component={Employees} />

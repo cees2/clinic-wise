@@ -5,6 +5,8 @@ import MainLayout from "./pages";
 import GlobalStyles from "./styles/GlobalStyles";
 import { ToastContainer } from "react-toastify";
 import { ConfirmationProvider } from "./utils/useConfirmation";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 
 const queryClient = new QueryClient();
 
