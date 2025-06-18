@@ -208,3 +208,8 @@ export interface ConfirmationType {
 export interface ConfirmationContextType {
     confirmation: (confirmation: ConfirmationType) => void;
 }
+
+export enum TimePickerMode {
+    HOURS,
+    MINUTES,
+}

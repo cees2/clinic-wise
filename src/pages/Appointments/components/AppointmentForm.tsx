@@ -7,8 +7,6 @@ import { DatePickerInput } from "../../../components/common/Input/DatePickerInpu
 export const AppointmentForm = () => {
     const { control, watch } = useForm<Database["public"]["Tables"]["appointments"]["Insert"]>();
 
-    console.log(watch());
-
     return (
         <GridLayout columns={2} rowGap="4.8rem">
             <NumberInput
@@ -23,7 +21,7 @@ export const AppointmentForm = () => {
                 label="Number of patients"
                 rules={{ required: "This field is required" }}
             />
-            <DatePickerInput registerName="start_date" control={control} withTimePicker />
+            <DatePickerInput registerName="start_date" control={control} withTimePicker asString />
         </GridLayout>
     );
 };
