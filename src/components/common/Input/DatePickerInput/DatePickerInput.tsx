@@ -33,7 +33,7 @@ export const DatePickerInput = <T extends Record<string, any>>({
     const calendarMinDate = minDate ?? new Date();
     const calendarMaxDate = maxDate ?? add(new Date(), { years: 1 });
     const currentDate = new Date();
-    const defaultValue = asString ? currentDate.toString() : currentDate;
+    const defaultValue = asString ? currentDate.toISOString() : currentDate;
 
     return (
         <Dropdown>
@@ -55,7 +55,7 @@ export const DatePickerInput = <T extends Record<string, any>>({
                                 minDate={calendarMinDate}
                                 maxDate={calendarMaxDate}
                             />
-                            {withTimePicker && <TimePicker value={value} />}
+                            {withTimePicker && <TimePicker value={value} onChange={onChange} />}
                         </StyledDatePickerInput>
                     )}
                 />

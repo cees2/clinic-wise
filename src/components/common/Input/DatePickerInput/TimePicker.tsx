@@ -1,7 +1,17 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { getPossibleHours, getPossibleMinutes, timePickerModes } from "../../utils/constants";
 import { TimePickerMode } from "../../../../utils/projectTypes";
-import { getSelectedHourBasedOnValue, getSelectedMinuteBasedOnValue } from "../../utils/timePicker";
+import {
+    getSelectedHourBasedOnValue,
+    getSelectedMinuteBasedOnValue,
+    getUpdatedTimeValue,
+} from "../../utils/timePicker";
+
+interface Props {
+    mode: TimePickerMode;
+    value: Date | string;
+    onChange: (updatedValue: string | Date) => void;
+}
 
 const StyledTimePicker = styled.div`
     height: 100%;
@@ -14,9 +24,15 @@ const StyledTimePickerColumn = styled.ul`
     overflow-y: scroll;
 `;
 
-const ColumnItem = styled.li`
+const ColumnItem = styled.li<{ isSelected: boolean }>`
     text-align: center;
     padding: 1.2rem;
+
+    ${({ isSelected }) =>
+        isSelected &&
+        css`
+            background-color: var(--color-gray-300);
+        `}
 
     &:hover {
         background-color: var(--color-gray-300);
@@ -24,27 +40,38 @@ const ColumnItem = styled.li`
     }
 `;
 
-const TimePickerColumn = ({ mode, value }: { mode: TimePickerMode; value: Date | string }) => {
+const TimePickerColumn = ({ mode, value, onChange }: Props) => {
     const itemsToMap = mode === TimePickerMode.HOURS ? getPossibleHours() : getPossibleMinutes();
     const selectedValue =
         mode === TimePickerMode.HOURS ? getSelectedHourBasedOnValue(value) : getSelectedMinuteBasedOnValue(value);
 
-    console.log(selectedValue);
+    const onColumnValueSelect = (newSelectedValue: number) => {
+        const updatedValue = getUpdatedTimeValue(value, newSelectedValue, mode);
+        onChange(updatedValue);
+    };
 
     return (
         <StyledTimePickerColumn>
             {itemsToMap.map((item) => (
-                <ColumnItem key={item}>{item}</ColumnItem>
+                <ColumnItem
+                    key={item}
+                    isSelected={selectedValue === item}
+                    onClick={() => {
+                        onColumnValueSelect(item);
+                    }}
+                >
+                    {item}
+                </ColumnItem>
             ))}
         </StyledTimePickerColumn>
     );
 };
 
-const TimePicker = ({ value }: { value: Date | string }) => {
+const TimePicker = ({ value, onChange }: { value: Date | string; onChange: (updatedValue: string | Date) => void }) => {
     return (
         <StyledTimePicker>
             {timePickerModes.map((mode) => (
-                <TimePickerColumn mode={mode} key={mode} value={value} />
+                <TimePickerColumn mode={mode} key={mode} value={value} onChange={onChange} />
             ))}
         </StyledTimePicker>
     );

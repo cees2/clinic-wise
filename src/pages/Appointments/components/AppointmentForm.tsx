@@ -7,6 +7,8 @@ import { DatePickerInput } from "../../../components/common/Input/DatePickerInpu
 export const AppointmentForm = () => {
     const { control, watch } = useForm<Database["public"]["Tables"]["appointments"]["Insert"]>();
 
+    console.log(watch("start_date"));
+
     return (
         <GridLayout columns={2} rowGap="4.8rem">
             <NumberInput
