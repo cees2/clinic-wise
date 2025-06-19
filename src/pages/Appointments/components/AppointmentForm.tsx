@@ -11,8 +11,9 @@ export const AppointmentForm = () => {
     const queryClient = useQueryClient();
     const { control, watch } = useForm<Database["public"]["Tables"]["appointments"]["Insert"]>();
 
+    console.log(watch("employee_id"));
+
     const loadOptions = (inputValue: string) => {
-        console.log("inputValue");
         return queryClient.fetchQuery({
             queryFn: () => getEmployeeSelect(inputValue),
             queryKey: ["employee_select", inputValue],
@@ -38,6 +39,8 @@ export const AppointmentForm = () => {
                 loadOptions={loadOptions}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option.id.toString()}
+                registerName="employee_id"
+                control={control}
             />
         </GridLayout>
     );
