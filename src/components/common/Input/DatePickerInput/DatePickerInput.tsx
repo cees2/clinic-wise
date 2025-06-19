@@ -1,7 +1,7 @@
-import { add } from "date-fns";
+import { add, format } from "date-fns";
 import { Calendar } from "react-date-range";
 import { Dropdown } from "../../Dropdown/Dropdown";
-import { Controller, type Control, type FieldPath } from "react-hook-form";
+import { Controller, type Control, type FieldPath, type UseFormWatch } from "react-hook-form";
 import TimePicker from "./TimePicker";
 import styled from "styled-components";
 
@@ -12,6 +12,7 @@ interface Props<T extends Record<string, any>> {
     registerName: FieldPath<T>;
     withTimePicker?: true;
     asString?: true;
+    watch: UseFormWatch<T>;
 }
 
 const StyledDatePickerInput = styled.div`
@@ -29,15 +30,18 @@ export const DatePickerInput = <T extends Record<string, any>>({
     registerName,
     withTimePicker,
     asString,
+    watch,
 }: Props<T>) => {
     const calendarMinDate = minDate ?? new Date();
     const calendarMaxDate = maxDate ?? add(new Date(), { years: 1 });
     const currentDate = new Date();
     const defaultValue = asString ? currentDate.toISOString() : currentDate;
+    const inputValue = watch(registerName);
+    const formattedDate = format(new Date(inputValue ?? Date.now()), "dd.MM.yyyy kk:mm");
 
     return (
         <Dropdown>
-            <Dropdown.Toggle hideDefaultIcon>ddd</Dropdown.Toggle>
+            <Dropdown.Toggle hideDefaultIcon>{formattedDate}</Dropdown.Toggle>
             <Dropdown.Menu>
                 <Controller
                     control={control}

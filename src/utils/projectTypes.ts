@@ -213,3 +213,8 @@ export enum TimePickerMode {
     HOURS,
     MINUTES,
 }
+
+export interface FormSelectOption {
+    value: string;
+    label: string;
+}
