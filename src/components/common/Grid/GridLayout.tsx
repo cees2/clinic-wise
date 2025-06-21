@@ -1,18 +1,7 @@
 import styled, { css } from "styled-components";
+import type { GridLayoutProps } from "../../../utils/projectTypes";
 
-interface Props {
-    templateColumns?: string;
-    templateRows?: string;
-    columns?: number;
-    rows?: number;
-    columnMinWidth?: string;
-    columnMaxWidth?: string;
-    columnGap?: string;
-    rowGap?: string;
-    gap?: string;
-}
-
-export const GridLayout = styled.div<Props>`
+export const GridLayout = styled.div<GridLayoutProps>`
     display: grid;
     ${({ templateColumns, columnMinWidth, columnMaxWidth, columns }) => {
         if (templateColumns)

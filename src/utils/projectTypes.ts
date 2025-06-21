@@ -218,3 +218,15 @@ export interface FormSelectOption {
     value: string;
     label: string;
 }
+
+export interface GridLayoutProps {
+    templateColumns?: string;
+    templateRows?: string;
+    columns?: number;
+    rows?: number;
+    columnMinWidth?: string;
+    columnMaxWidth?: string;
+    columnGap?: string;
+    rowGap?: string;
+    gap?: string;
+}

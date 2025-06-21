@@ -75,12 +75,18 @@ export const getEmployees = async (size: number) => {
     return data;
 };
 
-export const getEmployeeSelect = async (inputValue: string) => {
-    const { data, error } = await supabase
-        .from("employees")
-        .select("id,name")
-        .ilike("name", `${inputValue}%`)
-        .range(0, 19);
+export const getEmployeesSelect = async (inputValue: string) => {
+    const { data, error } = await supabase.from("employees").select("id,name,surname").ilike("name", `${inputValue}%`);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const getPatientsSelect = async (inputValue: string) => {
+    const { data, error } = await supabase.from("patients").select("id,name,surname").ilike("name", `${inputValue}%`);
 
     if (error) {
         throw new Error(error.message);

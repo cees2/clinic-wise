@@ -1,16 +1,16 @@
+import type { ButtonHTMLAttributes } from "react";
 import type React from "react";
 import styled, { css } from "styled-components";
 
-interface Props {
+interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
-    onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     variant?: "primary" | "danger" | "cancel";
     disabled?: boolean;
 }
 
 const StyledButton = styled.button<Pick<Props, "variant">>`
     padding: 0.8rem 1.6rem;
-    background-color: var(--color-primary);
     color: var(--color-gray-200);
     font-size: 1.4rem;
     border: none;
@@ -59,9 +59,9 @@ const StyledButton = styled.button<Pick<Props, "variant">>`
     }}
 `;
 
-export const Button = ({ children, onClick, variant, disabled }: Props) => {
+export const Button = ({ children, onClick, variant, disabled, ...restProps }: Props) => {
     return (
-        <StyledButton onClick={onClick} variant={variant} disabled={disabled}>
+        <StyledButton onClick={onClick} variant={variant} disabled={disabled} {...restProps}>
             {children}
         </StyledButton>
     );

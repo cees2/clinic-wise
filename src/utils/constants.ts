@@ -1,0 +1,1 @@
+export const DEFAULT_DATA_STALE_TIME = 30 * 1000;

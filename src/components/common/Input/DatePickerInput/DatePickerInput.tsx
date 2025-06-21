@@ -4,6 +4,7 @@ import { Dropdown } from "../../Dropdown/Dropdown";
 import { Controller, type Control, type FieldPath, type UseFormWatch } from "react-hook-form";
 import TimePicker from "./TimePicker";
 import styled from "styled-components";
+import { InputLabel } from "../common/InputCommon";
 
 interface Props<T extends Record<string, any>> {
     minDate?: Date;
@@ -13,6 +14,7 @@ interface Props<T extends Record<string, any>> {
     withTimePicker?: true;
     asString?: true;
     watch: UseFormWatch<T>;
+    label: string;
 }
 
 const StyledDatePickerInput = styled.div`
@@ -30,6 +32,7 @@ export const DatePickerInput = <T extends Record<string, any>>({
     registerName,
     withTimePicker,
     asString,
+    label,
     watch,
 }: Props<T>) => {
     const calendarMinDate = minDate ?? new Date();
@@ -40,30 +43,33 @@ export const DatePickerInput = <T extends Record<string, any>>({
     const formattedDate = format(new Date(inputValue ?? Date.now()), "dd.MM.yyyy kk:mm");
 
     return (
-        <Dropdown>
-            <Dropdown.Toggle hideDefaultIcon>{formattedDate}</Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Controller
-                    control={control}
-                    name={registerName}
-                    defaultValue={defaultValue}
-                    render={({ field: { onChange, value } }) => (
-                        <StyledDatePickerInput>
-                            <Calendar
-                                date={value}
-                                onChange={(dateRange: Date) => {
-                                    onChange(asString ? dateRange.toISOString() : dateRange);
-                                }}
-                                color="#16a34a"
-                                dateDisplayFormat="dd.mm.yyyy"
-                                minDate={calendarMinDate}
-                                maxDate={calendarMaxDate}
-                            />
-                            {withTimePicker && <TimePicker value={value} onChange={onChange} />}
-                        </StyledDatePickerInput>
-                    )}
-                />
-            </Dropdown.Menu>
-        </Dropdown>
+        <div>
+            <InputLabel htmlFor={registerName}>{label}</InputLabel>
+            <Dropdown>
+                <Dropdown.Toggle hideDefaultIcon>{formattedDate}</Dropdown.Toggle>
+                <Dropdown.Menu>
+                    <Controller
+                        control={control}
+                        name={registerName}
+                        defaultValue={defaultValue}
+                        render={({ field: { onChange, value } }) => (
+                            <StyledDatePickerInput>
+                                <Calendar
+                                    date={value}
+                                    onChange={(dateRange: Date) => {
+                                        onChange(asString ? dateRange.toISOString() : dateRange);
+                                    }}
+                                    color="#16a34a"
+                                    dateDisplayFormat="dd.mm.yyyy"
+                                    minDate={calendarMinDate}
+                                    maxDate={calendarMaxDate}
+                                />
+                                {withTimePicker && <TimePicker value={value} onChange={onChange} />}
+                            </StyledDatePickerInput>
+                        )}
+                    />
+                </Dropdown.Menu>
+            </Dropdown>
+        </div>
     );
 };
