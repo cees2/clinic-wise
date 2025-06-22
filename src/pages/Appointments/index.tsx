@@ -2,12 +2,12 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
-import { useRemoveAppointment } from "../../services/hooks/appointments/useRemoveAppointment";
+import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
 import { FilterType, type TableDataConfig } from "../../utils/projectTypes";
 import { useConfirmation } from "../../utils/useConfirmation";
 
 const Appointments = () => {
-    const { mutate: removeAppointment } = useRemoveAppointment();
+    const { mutationRemove: removeAppointment } = useMutateAppointment();
     const { confirmation } = useConfirmation();
 
     const config: TableDataConfig<Tables<"appointments">> = {
@@ -81,7 +81,7 @@ const Appointments = () => {
                 action: (item) => {
                     confirmation({
                         onConfirm: () => {
-                            removeAppointment(item.id);
+                            removeAppointment.mutate(item.id);
                         },
                     });
                 },

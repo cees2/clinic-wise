@@ -94,3 +94,13 @@ export const getPatientsSelect = async (inputValue: string) => {
 
     return data;
 };
+
+export const createAppointment = async (appointment: AppointmentFormType) => {
+    const { data, error } = await supabase.from("appointments").insert(appointment);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};

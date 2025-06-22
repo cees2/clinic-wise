@@ -8,12 +8,12 @@ import { appointmentStatusFormValues } from "../utils/constants";
 import { TextAreaInput } from "../../../components/common/Input/TextAreaInput";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import type { AppointmentFormType } from "../../../utils/projectTypes";
+import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
 
 export const AppointmentForm = () => {
     const queryClient = useQueryClient();
+    const { mutationCreate } = useMutateAppointment();
     const { control, watch, register, handleSubmit } = useForm<AppointmentFormType>();
-
-    console.log(watch());
 
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
@@ -30,7 +30,7 @@ export const AppointmentForm = () => {
     };
 
     const submitSuccess = (data: AppointmentFormType) => {
-        // console.log(data);
+        mutationCreate.mutate(data);
     };
 
     const submitError = () => {};

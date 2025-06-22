@@ -23,7 +23,7 @@ const StyledDropdown = styled.div`
     position: relative;
 `;
 
-const StyledDropdownToggle = styled.button`
+const StyledDropdownToggle = styled.button.attrs({ type: "button" })`
     background-color: var(--color-gray-200);
     cursor: pointer;
     display: flex;
