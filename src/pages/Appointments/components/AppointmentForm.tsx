@@ -13,6 +13,8 @@ export const AppointmentForm = () => {
     const queryClient = useQueryClient();
     const { control, watch, register, handleSubmit } = useForm<AppointmentFormType>();
 
+    console.log(watch());
+
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
             queryFn: () => getEmployeesSelect(inputValue),
@@ -28,7 +30,7 @@ export const AppointmentForm = () => {
     };
 
     const submitSuccess = (data: AppointmentFormType) => {
-        console.log(data);
+        // console.log(data);
     };
 
     const submitError = () => {};
@@ -36,7 +38,7 @@ export const AppointmentForm = () => {
     const onSubmit = handleSubmit(submitSuccess, submitError);
 
     return (
-        <GridForm onSubmit={onSubmit} columns={2} rowGap="2.4rem">
+        <GridForm onSubmit={onSubmit} columns={2} gap="2.4rem">
             <NumberInput
                 control={control}
                 registerName="duration"
