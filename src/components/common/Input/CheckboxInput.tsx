@@ -1,10 +1,10 @@
 import type { FieldPath, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 
-interface Props<T> {
+interface Props<FormType> {
     label: string;
-    name: FieldPath<T>;
-    register: UseFormRegister<T>;
+    name: FieldPath<FormType>;
+    register: UseFormRegister<FormType>;
 }
 
 const StyledCheckboxInput = styled.div`
@@ -13,7 +13,7 @@ const StyledCheckboxInput = styled.div`
     column-gap: 1.2rem;
 `;
 
-export const CheckboxInput = <T extends Record<string, any>>({ label, name, register }: Props<T>) => {
+export const CheckboxInput = <FormType extends Record<string, any>>({ label, name, register }: Props<FormType>) => {
     return (
         <StyledCheckboxInput>
             <input type="checkbox" id={name} {...register(name)} />

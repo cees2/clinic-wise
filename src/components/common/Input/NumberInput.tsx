@@ -11,24 +11,27 @@ import {
 import { getInputFieldErrorName } from "../utils/inputs";
 import { ErrorMessage } from "./common/ErrorMessage";
 
-interface Props<T extends Record<string, any>> extends NumericFormatProps {
+interface Props<FormType extends Record<string, any>> extends NumericFormatProps {
     label: string;
-    control: Control<T>;
-    registerName: FieldPath<T>;
-    rules?: Omit<RegisterOptions<T, Path<T>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
+    control: Control<FormType>;
+    registerName: FieldPath<FormType>;
+    rules?: Omit<
+        RegisterOptions<FormType, Path<FormType>>,
+        "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
+    >;
 }
 
-export const NumberInput = <T extends Record<string, any>>({
+export const NumberInput = <FormType extends Record<string, any>>({
     label,
     control,
     registerName,
     rules,
     ...restProps
-}: Props<T>) => {
+}: Props<FormType>) => {
     const {
         field: { onChange, value, onBlur },
-    } = useController<T>({ control, rules, name: registerName });
-    const { errors } = useFormState<T>({ control, name: registerName });
+    } = useController<FormType>({ control, rules, name: registerName });
+    const { errors } = useFormState<FormType>({ control, name: registerName });
     const isRequired = rules?.required;
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 

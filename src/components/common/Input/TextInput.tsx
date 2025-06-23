@@ -3,14 +3,19 @@ import { InputLabel, StyledInput } from "./common/InputCommon";
 import { getInputFieldErrorName } from "../utils/inputs";
 import { ErrorMessage } from "./common/ErrorMessage";
 
-interface Props<T extends Record<string, any>> {
-    register: UseFormRegister<T>;
-    registerName: FieldPath<T>;
+interface Props<FormType extends Record<string, any>> {
+    register: UseFormRegister<FormType>;
+    registerName: FieldPath<FormType>;
     label: string;
     rules?: RegisterOptions<FieldValues, string>;
 }
 
-export const TextInput = <T extends Record<string, any>>({ register, registerName, label, rules }: Props<T>) => {
+export const TextInput = <FormType extends Record<string, any>>({
+    register,
+    registerName,
+    label,
+    rules,
+}: Props<FormType>) => {
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     return (

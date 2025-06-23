@@ -3,9 +3,9 @@ import { InputLabel } from "./common/InputCommon";
 import styled from "styled-components";
 import type { TextareaHTMLAttributes } from "react";
 
-interface Props<T extends Record<string, any>> extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-    register: UseFormRegister<T>;
-    registerName: FieldPath<T>;
+interface Props<FormType extends Record<string, any>> extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+    register: UseFormRegister<FormType>;
+    registerName: FieldPath<FormType>;
     label: string;
     rules?: RegisterOptions<FieldValues, string>;
 }
@@ -15,13 +15,13 @@ const StyledTextAreaInput = styled.div`
     flex-direction: column;
 `;
 
-export const TextAreaInput = <T extends Record<string, any>>({
+export const TextAreaInput = <FormType extends Record<string, any>>({
     label,
     register,
     rules,
     registerName,
     ...restProps
-}: Props<T>) => {
+}: Props<FormType>) => {
     return (
         <StyledTextAreaInput>
             <InputLabel htmlFor={registerName}>{label}</InputLabel>
