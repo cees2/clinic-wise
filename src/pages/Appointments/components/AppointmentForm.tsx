@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, type FieldErrors } from "react-hook-form";
 import { NumberInput } from "../../../components/common/Input/NumberInput";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput";
@@ -33,7 +33,9 @@ export const AppointmentForm = () => {
         mutationCreate.mutate(data);
     };
 
-    const submitError = () => {};
+    const submitError = (errors: FieldErrors<AppointmentFormType>) => {
+        // console.log(errors);
+    };
 
     const onSubmit = handleSubmit(submitSuccess, submitError);
 
@@ -43,7 +45,11 @@ export const AppointmentForm = () => {
                 control={control}
                 registerName="duration"
                 label="Duration"
-                rules={{ required: "This field is required" }}
+                rules={{
+                    required: true,
+                    min: { value: 0, message: "Duration(in minutes) must be greater than or equal to 0" },
+                    max: { value: 60, message: "Duration(in minutes) must be less than or equal to 60" },
+                }}
                 max={60}
                 step={5}
                 decimalScale={0}
@@ -53,7 +59,11 @@ export const AppointmentForm = () => {
                 control={control}
                 registerName="number_of_patients"
                 label="Number of patients"
-                rules={{ required: "This field is required" }}
+                rules={{
+                    required: true,
+                    min: { value: 1, message: "Number of patients must be greater than or equal to 1" },
+                    max: { value: 5, message: "Number of patients must be less than or equal to 5" },
+                }}
                 max={5}
                 decimalScale={0}
                 allowNegative={false}
@@ -65,6 +75,7 @@ export const AppointmentForm = () => {
                 asString
                 watch={watch}
                 label="Start date"
+                rules={{ required: true }}
             />
             <FormSelectInput
                 loadOptions={loadEmployees}
@@ -73,6 +84,7 @@ export const AppointmentForm = () => {
                 registerName="employee_id"
                 control={control}
                 label="Employee"
+                rules={{ required: true }}
             />
             <FormSelectInput
                 loadOptions={loadPatients}
@@ -81,12 +93,14 @@ export const AppointmentForm = () => {
                 registerName="patient_id"
                 control={control}
                 label="Patient"
+                rules={{ required: true }}
             />
             <FormSelectInput
                 options={appointmentStatusFormValues}
                 registerName="status"
                 control={control}
                 label={"Status"}
+                rules={{ required: true }}
             />
             <TextAreaInput register={register} registerName="additional_note" label="Additional note" rows={3} />
         </GridForm>

@@ -1,12 +1,21 @@
 import { NumericFormat, type NumericFormatProps } from "react-number-format";
 import { InputLabel, StyledInput } from "./common/InputCommon";
-import { Controller, type Control, type FieldPath, type FieldValues, type RegisterOptions } from "react-hook-form";
+import {
+    useController,
+    useFormState,
+    type Control,
+    type FieldPath,
+    type Path,
+    type RegisterOptions,
+} from "react-hook-form";
+import { getInputFieldErrorName } from "../utils/inputs";
+import { ErrorMessage } from "./common/ErrorMessage";
 
-interface Props<T> extends NumericFormatProps {
+interface Props<T extends Record<string, any>> extends NumericFormatProps {
     label: string;
     control: Control<T>;
     registerName: FieldPath<T>;
-    rules?: Omit<RegisterOptions<FieldValues, string>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
+    rules?: Omit<RegisterOptions<T, Path<T>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 }
 
 export const NumberInput = <T extends Record<string, any>>({
@@ -16,25 +25,18 @@ export const NumberInput = <T extends Record<string, any>>({
     rules,
     ...restProps
 }: Props<T>) => {
+    const {
+        field: { onChange, value, onBlur },
+    } = useController<T>({ control, rules, name: registerName });
+    const { errors } = useFormState<T>({ control, name: registerName });
+    const isRequired = rules?.required;
+    const inputErrorName = getInputFieldErrorName(errors, registerName);
+
     return (
-        <Controller
-            render={({ field: { onChange, value, onBlur } }) => {
-                return (
-                    <StyledInput>
-                        <InputLabel htmlFor={registerName}>{label}</InputLabel>
-                        <NumericFormat
-                            id={registerName}
-                            onChange={onChange}
-                            value={value}
-                            onBlur={onBlur}
-                            {...restProps}
-                        />
-                    </StyledInput>
-                );
-            }}
-            control={control}
-            rules={rules}
-            name={registerName}
-        />
+        <StyledInput>
+            <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
+            <NumericFormat id={registerName} onChange={onChange} value={value} onBlur={onBlur} {...restProps} />
+            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+        </StyledInput>
     );
 };

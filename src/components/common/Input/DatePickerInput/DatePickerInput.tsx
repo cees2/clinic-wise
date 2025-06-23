@@ -1,10 +1,20 @@
 import { add, format } from "date-fns";
 import { Calendar } from "react-date-range";
 import { Dropdown } from "../../Dropdown/Dropdown";
-import { Controller, type Control, type FieldPath, type UseFormWatch } from "react-hook-form";
+import {
+    useController,
+    useFormState,
+    type Control,
+    type FieldPath,
+    type Path,
+    type RegisterOptions,
+    type UseFormWatch,
+} from "react-hook-form";
 import TimePicker from "./TimePicker";
 import styled from "styled-components";
 import { InputLabel } from "../common/InputCommon";
+import { ErrorMessage } from "../common/ErrorMessage";
+import { getInputFieldErrorName } from "../../utils/inputs";
 
 interface Props<T extends Record<string, any>> {
     minDate?: Date;
@@ -15,6 +25,7 @@ interface Props<T extends Record<string, any>> {
     asString?: true;
     watch: UseFormWatch<T>;
     label: string;
+    rules?: Omit<RegisterOptions<T, Path<T>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 }
 
 const StyledDatePickerInput = styled.div`
@@ -34,6 +45,7 @@ export const DatePickerInput = <T extends Record<string, any>>({
     asString,
     label,
     watch,
+    rules,
 }: Props<T>) => {
     const calendarMinDate = minDate ?? new Date();
     const calendarMaxDate = maxDate ?? add(new Date(), { years: 1 });
@@ -41,35 +53,35 @@ export const DatePickerInput = <T extends Record<string, any>>({
     const defaultValue = asString ? currentDate.toISOString() : currentDate;
     const inputValue = watch(registerName);
     const formattedDate = format(new Date(inputValue ?? Date.now()), "dd.MM.yyyy kk:mm");
+    const isRequired = rules?.required;
+    const {
+        field: { onChange, value },
+    } = useController<T>({ control, name: registerName, rules, defaultValue });
+    const { errors } = useFormState<T>({ control });
+    const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     return (
         <div>
-            <InputLabel htmlFor={registerName}>{label}</InputLabel>
+            <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             <Dropdown>
                 <Dropdown.Toggle hideDefaultIcon>{formattedDate}</Dropdown.Toggle>
                 <Dropdown.Menu>
-                    <Controller
-                        control={control}
-                        name={registerName}
-                        defaultValue={defaultValue}
-                        render={({ field: { onChange, value } }) => (
-                            <StyledDatePickerInput>
-                                <Calendar
-                                    date={value}
-                                    onChange={(dateRange: Date) => {
-                                        onChange(asString ? dateRange.toISOString() : dateRange);
-                                    }}
-                                    color="#16a34a"
-                                    dateDisplayFormat="dd.mm.yyyy"
-                                    minDate={calendarMinDate}
-                                    maxDate={calendarMaxDate}
-                                />
-                                {withTimePicker && <TimePicker value={value} onChange={onChange} />}
-                            </StyledDatePickerInput>
-                        )}
-                    />
+                    <StyledDatePickerInput>
+                        <Calendar
+                            date={value}
+                            onChange={(dateRange: Date) => {
+                                onChange(asString ? dateRange.toISOString() : dateRange);
+                            }}
+                            color="#16a34a"
+                            dateDisplayFormat="dd.mm.yyyy"
+                            minDate={calendarMinDate}
+                            maxDate={calendarMaxDate}
+                        />
+                        {withTimePicker && <TimePicker value={value} onChange={onChange} />}
+                    </StyledDatePickerInput>
                 </Dropdown.Menu>
             </Dropdown>
+            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
         </div>
     );
 };
