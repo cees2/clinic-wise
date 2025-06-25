@@ -9,11 +9,13 @@ import { TextAreaInput } from "../../../components/common/Input/TextAreaInput";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import type { AppointmentFormType } from "../../../utils/projectTypes";
 import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
+import { useNavigate } from "react-router-dom";
 
 export const AppointmentForm = () => {
     const queryClient = useQueryClient();
     const { mutationCreate } = useMutateAppointment();
-    const { control, watch, register, handleSubmit } = useForm<AppointmentFormType>();
+    const { control, watch, register, handleSubmit, formState } = useForm<AppointmentFormType>();
+    const navigate = useNavigate();
 
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
@@ -40,7 +42,13 @@ export const AppointmentForm = () => {
     const onSubmit = handleSubmit(submitSuccess, submitError);
 
     return (
-        <GridForm onSubmit={onSubmit} columns={2} gap="2.4rem">
+        <GridForm
+            onSubmit={onSubmit}
+            formState={formState}
+            onCancel={() => void navigate("/appointments")}
+            columns={2}
+            gap="2.4rem"
+        >
             <NumberInput
                 control={control}
                 registerName="duration"

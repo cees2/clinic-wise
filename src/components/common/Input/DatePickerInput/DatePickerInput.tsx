@@ -16,16 +16,19 @@ import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { getInputFieldErrorName } from "../../utils/inputs";
 
-interface Props<T extends Record<string, any>> {
+interface Props<FormType extends Record<string, any>> {
     minDate?: Date;
     maxDate?: Date;
-    control: Control<T>;
-    registerName: FieldPath<T>;
+    control: Control<FormType>;
+    registerName: FieldPath<FormType>;
     withTimePicker?: true;
     asString?: true;
-    watch: UseFormWatch<T>;
+    watch: UseFormWatch<FormType>;
     label: string;
-    rules?: Omit<RegisterOptions<T, Path<T>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
+    rules?: Omit<
+        RegisterOptions<FormType, Path<FormType>>,
+        "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
+    >;
 }
 
 const StyledDatePickerInput = styled.div`
@@ -36,7 +39,7 @@ const StyledDatePickerInput = styled.div`
     background-color: #fff;
 `;
 
-export const DatePickerInput = <T extends Record<string, any>>({
+export const DatePickerInput = <FormType extends Record<string, any>>({
     minDate,
     maxDate,
     control,
@@ -46,7 +49,7 @@ export const DatePickerInput = <T extends Record<string, any>>({
     label,
     watch,
     rules,
-}: Props<T>) => {
+}: Props<FormType>) => {
     const calendarMinDate = minDate ?? new Date();
     const calendarMaxDate = maxDate ?? add(new Date(), { years: 1 });
     const currentDate = new Date();
@@ -56,15 +59,17 @@ export const DatePickerInput = <T extends Record<string, any>>({
     const isRequired = rules?.required;
     const {
         field: { onChange, value },
-    } = useController<T>({ control, name: registerName, rules, defaultValue });
-    const { errors } = useFormState<T>({ control });
+    } = useController<FormType>({ control, name: registerName, rules, defaultValue });
+    const { errors } = useFormState<FormType>({ control });
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     return (
         <div>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             <Dropdown>
-                <Dropdown.Toggle hideDefaultIcon>{formattedDate}</Dropdown.Toggle>
+                <Dropdown.Toggle hideDefaultIcon className="w-full">
+                    {formattedDate}
+                </Dropdown.Toggle>
                 <Dropdown.Menu>
                     <StyledDatePickerInput>
                         <Calendar

@@ -1,6 +1,7 @@
 import type { RefObject } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
+import type { FormState } from "react-hook-form";
 
 export interface MainNavigationConfigItem {
     to: string;
@@ -229,4 +230,11 @@ export interface GridLayoutProps {
     columnGap?: string;
     rowGap?: string;
     gap?: string;
+}
+
+export interface FormSubmitProps<FormType extends Record<string, any>> {
+    onSubmit: (event: React.SyntheticEvent) => Promise<void>;
+    children: React.ReactNode;
+    formState: FormState<FormType>;
+    onCancel?: () => void;
 }

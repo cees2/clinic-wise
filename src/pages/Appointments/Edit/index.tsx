@@ -1,17 +1,14 @@
-import { useParams } from "react-router-dom";
 import { Header } from "../../../components/common/Header/Header";
 import { AppointmentForm } from "../components/AppointmentForm";
 import { FormLayout } from "../../../components/common/Form/FormLayout";
 
-const EditAppointment = () => {
-    const { appointmentId } = useParams<{ appointmentId: string }>();
-
+const NewAppointment = () => {
     return (
         <FormLayout>
-            <Header as="h3" title="Edit appointment" />
+            <Header as="h3" title="New appointment" />
             <AppointmentForm />
         </FormLayout>
     );
 };
 
-export default EditAppointment;
+export default NewAppointment;

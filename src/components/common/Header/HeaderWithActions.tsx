@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { Header } from "./Header";
 import type { KnownTarget } from "styled-components/dist/types";
 import type { HeaderActions } from "../../../utils/projectTypes";
@@ -9,16 +8,11 @@ interface Props {
     actions: HeaderActions[];
 }
 
-const StyledHeaderWithActions = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
 export const HeaderWithActions = ({ as, title }: Props) => {
     return (
-        <StyledHeaderWithActions>
+        <div className="flex justify-between">
             <Header as={as} title={title} />
             {/* TODO: Dropdownm */}
-        </StyledHeaderWithActions>
+        </div>
     );
 };

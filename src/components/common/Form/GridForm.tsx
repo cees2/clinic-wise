@@ -1,17 +1,17 @@
-import type { GridLayoutProps } from "../../../utils/projectTypes";
-import { Button } from "../../layout/Button";
+import type { FormSubmitProps, GridLayoutProps } from "../../../utils/projectTypes";
 import { GridLayout } from "../Grid/GridLayout";
+import { FormSubmit } from "./FormSubmit";
 
-interface Props extends GridLayoutProps {
-    onSubmit: (event: React.SyntheticEvent) => Promise<void>;
-    children: React.ReactNode;
-}
-
-export const GridForm = ({ onSubmit, children, ...gridProps }: Props) => {
+export const GridForm = <FormType extends Record<string, any>>({
+    onSubmit,
+    formState,
+    onCancel,
+    children,
+    ...gridProps
+}: GridLayoutProps & FormSubmitProps<FormType>) => {
     return (
-        <form onSubmit={(event: React.SyntheticEvent) => void onSubmit(event)}>
+        <FormSubmit onSubmit={onSubmit} formState={formState} onCancel={onCancel}>
             <GridLayout {...gridProps}>{children}</GridLayout>
-            <Button type="submit">Save</Button>
-        </form>
+        </FormSubmit>
     );
 };

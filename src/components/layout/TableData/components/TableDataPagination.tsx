@@ -4,12 +4,6 @@ import { Button } from "../../Button";
 import { useTableDataContext } from "../utils/TableDataContext";
 import { TableDataActionsEnum } from "../../../../utils/projectTypes";
 
-const StyledTableDataPagination = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
 const PaginationNavigation = styled.div`
     display: flex;
     align-items: center;
@@ -40,7 +34,7 @@ const TableDataPagination = () => {
     };
 
     return (
-        <StyledTableDataPagination>
+        <div className="flex items-center justify-between">
             <Dropdown placement="top">
                 <Dropdown.Toggle>{selectedPaginationSize}</Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -63,7 +57,7 @@ const TableDataPagination = () => {
                     Next
                 </PaginationNavigationButton>
             </PaginationNavigation>
-        </StyledTableDataPagination>
+        </div>
     );
 };
 

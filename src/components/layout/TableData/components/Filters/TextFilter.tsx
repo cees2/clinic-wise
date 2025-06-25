@@ -27,6 +27,7 @@ const TextFilter = <T extends TableDataResourceType>({ filterId }: Props<T>) => 
         watch,
         setValue,
         formState: { isDirty },
+        control,
     } = useForm<TextFilterForm>({
         defaultValues: getFilterDefaultValue(filterId, numberFilterConditions, selectedFilters),
     });
@@ -75,6 +76,7 @@ const TextFilter = <T extends TableDataResourceType>({ filterId }: Props<T>) => 
                             registerName={filterCondition}
                             label={getFilterLabel(filterCondition) ?? ""}
                             rules={{ onChange }}
+                            control={control}
                         />
                     </Dropdown.Item>
                 );

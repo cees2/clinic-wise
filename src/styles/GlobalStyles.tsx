@@ -22,18 +22,6 @@ const GlobalStyles = createGlobalStyle`
     }
 
     html{
-        --color-gray-50: #f9fafb;
-        --color-gray-100: #f3f4f6;
-        --color-gray-200: #e5e7eb;
-        --color-gray-300: #d1d5db;
-        --color-gray-400: #9ca3af;
-        --color-gray-500: #6b7280;
-        --color-gray-600: #4b5563;
-        --color-gray-700: #374151;
-        --color-gray-800: #1f2937;
-        --color-gray-900: #111827;
-        --color-gray-950: #030712;
-
         --color-primary: #16a34a;
         --color-primary-dark: #15803d;
         --color-primary-light: #22c55e;
