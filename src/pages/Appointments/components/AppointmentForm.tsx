@@ -10,11 +10,15 @@ import { GridForm } from "../../../components/common/Form/GridForm";
 import type { AppointmentFormType } from "../../../utils/projectTypes";
 import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
 import { useNavigate } from "react-router-dom";
+import type { Tables } from "../../../services/database.types";
+import { getAppointmentFormDefaultValues } from "../utils/utils";
 
-export const AppointmentForm = () => {
+export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
     const queryClient = useQueryClient();
     const { mutationCreate } = useMutateAppointment();
-    const { control, watch, register, handleSubmit, formState } = useForm<AppointmentFormType>();
+    const { control, watch, register, handleSubmit, formState } = useForm<AppointmentFormType>({
+        defaultValues: getAppointmentFormDefaultValues(appointmentData),
+    });
     const navigate = useNavigate();
 
     const loadEmployees = (inputValue: string) => {

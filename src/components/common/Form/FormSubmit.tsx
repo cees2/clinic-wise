@@ -18,9 +18,9 @@ export const FormSubmit = <FormType extends Record<string, any>>({
     const { isDirty, isLoading, isSubmitting } = formState;
     const navigate = useNavigate();
 
-    console.log("isDirty", isDirty);
-    console.log("isLoading", isLoading);
-    console.log("isSubmitting", isSubmitting);
+    // console.log("isDirty", isDirty);
+    // console.log("isLoading", isLoading);
+    // console.log("isSubmitting", isSubmitting);
 
     const cancelButtonClickHandler = async () => {
         if (onCancel) {

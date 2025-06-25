@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
@@ -9,6 +10,7 @@ import { useConfirmation } from "../../utils/useConfirmation";
 const Appointments = () => {
     const { mutationRemove: removeAppointment } = useMutateAppointment();
     const { confirmation } = useConfirmation();
+    const navigate = useNavigate();
 
     const config: TableDataConfig<Tables<"appointments">> = {
         columns: [
@@ -84,6 +86,13 @@ const Appointments = () => {
                             removeAppointment.mutate(item.id);
                         },
                     });
+                },
+            },
+            {
+                id: "edit",
+                name: "Edit",
+                action: (item) => {
+                    void navigate(`/appointments/${item.id}/edit`);
                 },
             },
         ],

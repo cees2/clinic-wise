@@ -104,3 +104,13 @@ export const createAppointment = async (appointment: AppointmentFormType) => {
 
     return data;
 };
+
+export const getAppointment = async (appointmentId: string) => {
+    const { data, error } = await supabase.from("appointments").select("*").eq("id", Number(appointmentId)).single();
+
+    if (error) {
+        throw new Error(error.details);
+    }
+
+    return data;
+};
