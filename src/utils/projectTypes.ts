@@ -1,7 +1,8 @@
 import type { RefObject } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
-import type { FormState } from "react-hook-form";
+import type { Control, FieldPath, FormState, Path, RegisterOptions } from "react-hook-form";
+import type { Props as SelectProps } from "react-select";
 
 export interface MainNavigationConfigItem {
     to: string;
@@ -237,4 +238,36 @@ export interface FormSubmitProps<FormType extends Record<string, any>> {
     children: React.ReactNode;
     formState: FormState<FormType>;
     onCancel?: () => void;
+}
+
+export interface FormSelectInputProps<
+    OptionsType extends Record<string, any>,
+    isMulti extends boolean,
+    FormType extends Record<string, any>,
+> extends SelectProps<OptionsType, isMulti> {
+    options?: OptionsType[];
+    loadOptions?: (inputValue: string) => Promise<OptionsType[]>;
+    control: Control<FormType>;
+    registerName: FieldPath<FormType>;
+    label: string;
+    rules?: Omit<
+        RegisterOptions<OptionsType, Path<OptionsType>>,
+        "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
+    >;
+}
+
+export interface FormSelectInputSimpleProps<
+    OptionsType extends Record<string, any>,
+    isMulti extends boolean,
+    FormType extends Record<string, any>,
+> extends FormSelectInputProps<OptionsType, isMulti, FormType> {
+    options: OptionsType[];
+}
+
+export interface FormSelectInputAsyncProps<
+    OptionsType extends Record<string, any>,
+    isMulti extends boolean,
+    FormType extends Record<string, any>,
+> extends FormSelectInputProps<OptionsType, isMulti, FormType> {
+    loadOptions: (inputValue: string) => Promise<OptionsType[]>;
 }

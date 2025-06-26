@@ -1,7 +1,7 @@
 import { useForm, type FieldErrors } from "react-hook-form";
 import { NumberInput } from "../../../components/common/Input/NumberInput";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
-import { FormSelectInput } from "../../../components/common/Input/FormSelectInput";
+import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesSelect, getPatientsSelect } from "../../../services/api";
 import { appointmentStatusFormValues } from "../utils/constants";
