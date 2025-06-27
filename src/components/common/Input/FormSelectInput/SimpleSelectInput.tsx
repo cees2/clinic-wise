@@ -18,10 +18,12 @@ const SimpleSelectInput = <
     const {
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
-    const selectedOption = options.find((option) => getFormSelectValue(option, getOptionValue) === value);
+    const selectedOption = options.find(
+        (option) => getFormSelectValue(option, getOptionValue, restProps.isMulti) === value,
+    );
 
     const onChangeInternal = (updatedValue: OnChangeValue<OptionsType, isMulti>) => {
-        const newValue = getFormSelectValue(updatedValue, getOptionValue);
+        const newValue = getFormSelectValue(updatedValue, getOptionValue, restProps.isMulti);
         onChange(newValue);
     };
 

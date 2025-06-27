@@ -1,5 +1,5 @@
 import type { FieldErrors, FieldPath } from "react-hook-form";
-import type { GetOptionValue } from "react-select";
+import type { GetOptionValue, OnChangeValue } from "react-select";
 
 export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     errors: FieldErrors<FormType>,
@@ -19,10 +19,27 @@ export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     }
 };
 
-export const getFormSelectValue = <OptionsType>(
-    option: OptionsType,
+export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
+    option: OnChangeValue<OptionsType, isMulti>,
     getOptionValue: GetOptionValue<OptionsType> | undefined,
+    isMulti?: boolean,
 ) => {
+    if (Array.isArray(option) && isMulti) {
+        const fieldValue = [];
+
+        option.forEach((option) => {
+            if (getOptionValue) {
+                fieldValue.push(getOptionValue(option));
+            } else if ("value" in option) {
+                fieldValue.push(option.value);
+            } else {
+                fieldValue.push(option);
+            }
+        });
+
+        return fieldValue;
+    }
+
     if (getOptionValue) {
         return getOptionValue(option);
     } else if ("value" in option) {

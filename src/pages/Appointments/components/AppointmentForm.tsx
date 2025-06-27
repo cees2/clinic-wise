@@ -21,6 +21,8 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
     });
     const navigate = useNavigate();
 
+    console.log(watch());
+
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
             queryFn: () => getEmployeesSelect(inputValue),
@@ -97,6 +99,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
+                defaultValue={appointmentData?.employee}
             />
             <FormSelectInput
                 loadOptions={loadPatients}
@@ -106,6 +109,8 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 control={control}
                 label="Patient"
                 rules={{ required: true }}
+                defaultValue={[appointmentData?.patient]}
+                isMulti
             />
             <FormSelectInput
                 options={appointmentStatusFormValues}
