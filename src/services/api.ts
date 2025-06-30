@@ -1,4 +1,5 @@
 import type { AppointmentFormType, EmployeeFormType, PatientFormType } from "../utils/projectTypes";
+import type { EmployeeSearchSelect } from "./apiTypes";
 import { supabase } from "./services";
 
 // TODO: possible refactor
@@ -75,7 +76,7 @@ export const getEmployees = async (size: number) => {
     return data;
 };
 
-export const getEmployeesSelect = async (inputValue: string) => {
+export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSearchSelect[]> => {
     const { data, error } = await supabase.from("employees").select("id,name,surname").ilike("name", `${inputValue}%`);
 
     if (error) {

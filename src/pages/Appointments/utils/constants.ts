@@ -1,4 +1,5 @@
 export const appointmentStatusFormValues = [
-    { value: "confirmed", label: "Confirmed" },
-    { value: "unconfirmed", label: "Unconfirmed" },
+    { value: "SCHEDULED", label: "Scheduled" },
+    { value: "CANCELLED", label: "Cancelled" },
+    { value: "COMPLETED", label: "Completed" },
 ];

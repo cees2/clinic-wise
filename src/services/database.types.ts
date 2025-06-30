@@ -16,10 +16,9 @@ export type Database = {
           duration: number
           employee_id: number | null
           id: number
-          number_of_patients: number | null
           patient_id: number | null
           start_date: string
-          status: string
+          status: Database["public"]["Enums"]["AppointmentStatus"]
         }
         Insert: {
           additional_note: string
@@ -27,10 +26,9 @@ export type Database = {
           duration: number
           employee_id?: number | null
           id?: number
-          number_of_patients?: number | null
           patient_id?: number | null
           start_date: string
-          status: string
+          status: Database["public"]["Enums"]["AppointmentStatus"]
         }
         Update: {
           additional_note?: string
@@ -38,10 +36,9 @@ export type Database = {
           duration?: number
           employee_id?: number | null
           id?: number
-          number_of_patients?: number | null
           patient_id?: number | null
           start_date?: string
-          status?: string
+          status?: Database["public"]["Enums"]["AppointmentStatus"]
         }
         Relationships: [
           {
@@ -168,7 +165,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      AppointmentStatus: "SCHEDULED" | "CANCELLED" | "COMPLETED"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -283,6 +280,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      AppointmentStatus: ["SCHEDULED", "CANCELLED", "COMPLETED"],
+    },
   },
 } as const

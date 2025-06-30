@@ -55,7 +55,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     const currentDate = new Date();
     const defaultValue = asString ? currentDate.toISOString() : currentDate;
     const inputValue = watch(registerName);
-    const formattedDate = format(new Date(inputValue ?? Date.now()), "dd.MM.yyyy kk:mm");
+    const formattedDate = format(new Date(inputValue || Date.now()), "dd.MM.yyyy kk:mm");
     const isRequired = rules?.required;
     const {
         field: { onChange, value },

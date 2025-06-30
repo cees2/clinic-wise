@@ -13,6 +13,7 @@ const AsyncSelectInput = <
     props: FormSelectInputAsyncProps<OptionsType, isMulti, FormType>,
 ) => {
     const { control, registerName, rules, getOptionValue, defaultValue } = props;
+    console.log(defaultValue);
     const {
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
@@ -38,7 +39,7 @@ const AsyncSelectInput = <
 
         const inputValueFromDefaultValue = getFormSelectValue(defaultValue, getOptionValue, props.isMulti);
 
-        if (inputValueFromDefaultValue.toString() === value.toString()) {
+        if (inputValueFromDefaultValue?.toString() === value?.toString()) {
             return defaultValue;
         }
 

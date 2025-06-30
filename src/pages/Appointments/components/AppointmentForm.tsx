@@ -12,6 +12,7 @@ import { useMutateAppointment } from "../../../services/hooks/appointments/useMu
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "../../../services/database.types";
 import { getAppointmentFormDefaultValues } from "../utils/utils";
+import type { EmployeeSearchSelect } from "../../../services/apiTypes";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
     const queryClient = useQueryClient();
@@ -21,7 +22,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
     });
     const navigate = useNavigate();
 
-    console.log(watch());
+    // console.log(watch());
 
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
@@ -42,7 +43,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
     };
 
     const submitError = (errors: FieldErrors<AppointmentFormType>) => {
-        // console.log(errors);
+        // console.error(errors);
     };
 
     const onSubmit = handleSubmit(submitSuccess, submitError);
@@ -69,19 +70,6 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 decimalScale={0}
                 allowNegative={false}
             />
-            <NumberInput
-                control={control}
-                registerName="number_of_patients"
-                label="Number of patients"
-                rules={{
-                    required: true,
-                    min: { value: 1, message: "Number of patients must be greater than or equal to 1" },
-                    max: { value: 5, message: "Number of patients must be less than or equal to 5" },
-                }}
-                max={5}
-                decimalScale={0}
-                allowNegative={false}
-            />
             <DatePickerInput
                 registerName="start_date"
                 control={control}
@@ -91,10 +79,10 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 label="Start date"
                 rules={{ required: true }}
             />
-            <FormSelectInput
+            <FormSelectInput<EmployeeSearchSelect | undefined>
                 loadOptions={loadEmployees}
                 getOptionLabel={(option) => `${option.name} ${option.surname}`}
-                getOptionValue={(option) => option.id.toString()}
+                getOptionValue={(option) => option?.id?.toString()}
                 registerName="employee_id"
                 control={control}
                 label="Employee"
@@ -104,7 +92,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
             <FormSelectInput
                 loadOptions={loadPatients}
                 getOptionLabel={(option) => `${option.name} ${option.surname}`}
-                getOptionValue={(option) => option.id.toString()}
+                getOptionValue={(option) => option?.id?.toString()}
                 registerName="patient_id"
                 control={control}
                 label="Patient"

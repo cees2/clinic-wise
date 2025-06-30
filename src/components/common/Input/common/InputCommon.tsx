@@ -13,4 +13,5 @@ export const StyledInput = styled.div`
 
 export const InputLabel = styled.label`
     margin-bottom: 1.2rem;
+    display: block;
 `;

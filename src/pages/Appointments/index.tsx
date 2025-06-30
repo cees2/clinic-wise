@@ -29,10 +29,6 @@ const Appointments = () => {
                 name: "Start date",
             },
             {
-                id: "number_of_patients",
-                name: "Number of patients",
-            },
-            {
                 id: "additional_note",
                 name: "Additional note",
             },
@@ -61,14 +57,10 @@ const Appointments = () => {
                 name: "Status",
                 type: FilterType.ENUM,
                 options: {
-                    confirmed: "Confirmed",
-                    unconfirmed: "Unconfirmed",
+                    SCHEDULED: "Scheduled",
+                    COMPLETED: "Completed",
+                    CANCELLED: "Cancelled",
                 },
-            },
-            {
-                id: "number_of_patients",
-                name: "Number of patients",
-                type: FilterType.NUMBER,
             },
             {
                 id: "additional_note",
