@@ -1,3 +1,4 @@
 import type { Tables } from "./database.types";
 
-export type EmployeeSearchSelect = Pick<Tables<"employees">, "id" | "name" | "surname">;
+export type EmployeeSelect = Pick<Tables<"employees">, "id" | "name" | "surname">;
+export type PatientSelect = Pick<Tables<"patients">, "id" | "name" | "surname">;

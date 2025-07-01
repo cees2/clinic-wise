@@ -12,7 +12,7 @@ import { useMutateAppointment } from "../../../services/hooks/appointments/useMu
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "../../../services/database.types";
 import { getAppointmentFormDefaultValues } from "../utils/utils";
-import type { EmployeeSearchSelect } from "../../../services/apiTypes";
+import type { EmployeeSelect, EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
     const queryClient = useQueryClient();
@@ -79,26 +79,25 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 label="Start date"
                 rules={{ required: true }}
             />
-            <FormSelectInput<EmployeeSearchSelect | undefined>
+            <FormSelectInput<EmployeeSelect | undefined>
                 loadOptions={loadEmployees}
                 getOptionLabel={(option) => `${option.name} ${option.surname}`}
-                getOptionValue={(option) => option?.id?.toString()}
+                getOptionValue={(option) => option?.id.toString()}
                 registerName="employee_id"
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
                 defaultValue={appointmentData?.employee}
             />
-            <FormSelectInput
+            <FormSelectInput<PatientSelect | undefined>
                 loadOptions={loadPatients}
-                getOptionLabel={(option) => `${option.name} ${option.surname}`}
-                getOptionValue={(option) => option?.id?.toString()}
+                getOptionLabel={(option) => `${option?.name} ${option?.surname}`}
+                getOptionValue={(option) => option?.id.toString()}
                 registerName="patient_id"
                 control={control}
                 label="Patient"
                 rules={{ required: true }}
-                defaultValue={[appointmentData?.patient]}
-                isMulti
+                defaultValue={appointmentData?.patient}
             />
             <FormSelectInput
                 options={appointmentStatusFormValues}

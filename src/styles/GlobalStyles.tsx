@@ -47,8 +47,10 @@ const GlobalStyles = createGlobalStyle`
         --duration-slow: 400ms;
     }
 
-    input:focus{
-        box-shadow: 0px 0px 15px 0px rgba(22, 163, 74, 1);
+    input:not([id*="react-select"]):focus,
+    textarea:focus{
+        box-shadow: 0px 0px 3px 0px var(--color-primary);
+        border-color: var(--color-primary);
         outline: none
     }
 

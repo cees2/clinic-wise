@@ -165,6 +165,13 @@ export interface DropdownItemsProps<T> {
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }
 
+export interface DropdownToggleProps {
+    children: React.ReactNode;
+    hideDefaultIcon?: true;
+    className?: string;
+    isForm?: true;
+}
+
 export type NumberFilterForm = {
     [K in Exclude<FilterCondition, "c">]: number | undefined | "";
 };

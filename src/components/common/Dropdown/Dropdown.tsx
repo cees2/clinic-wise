@@ -3,6 +3,7 @@ import type {
     DropdownContextType,
     DropdownItemsProps,
     DropdownPlacementType,
+    DropdownToggleProps,
     StyledDropdownMenuProps,
 } from "../../../utils/projectTypes";
 import styled, { css, type Interpolation } from "styled-components";
@@ -19,8 +20,8 @@ const DropdownContext = createContext<DropdownContextType>({
     autoClose: true,
 });
 
-const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ customStyles?: Interpolation<object> }>`
-    background-color: var(--color-gray-200);
+const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: boolean }>`
+    background-color: #fff;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -29,9 +30,14 @@ const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ customSty
     border-radius: var(--border-radius-sm);
     border: none;
 
-    ${({ customStyles }) => css`
-        ${customStyles}
-    `}
+    ${({ isForm }) =>
+        isForm &&
+        css`
+            width: 100%;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid var(--color-gray-400);
+            border-radius: var(--border-radius-sm);
+        `}
 `;
 
 const StyledDropdownMenu = styled.ul.attrs({
@@ -117,15 +123,7 @@ export const Dropdown = ({
     );
 };
 
-const DropdownToggle = ({
-    children,
-    hideDefaultIcon,
-    className,
-}: {
-    children: React.ReactNode;
-    hideDefaultIcon?: true;
-    className?: string;
-}) => {
+const DropdownToggle = ({ children, hideDefaultIcon, className, isForm }: DropdownToggleProps) => {
     const { setOpen, setDropdownToggleRef, setIsOpening } = use(DropdownContext);
     const originalDropdownToggleRef = useRef<HTMLButtonElement>(null);
 
@@ -139,7 +137,12 @@ const DropdownToggle = ({
     }, [originalDropdownToggleRef, setDropdownToggleRef]);
 
     return (
-        <StyledDropdownToggle onClick={toggleDropdown} ref={originalDropdownToggleRef} className={className}>
+        <StyledDropdownToggle
+            onClick={toggleDropdown}
+            ref={originalDropdownToggleRef}
+            className={className}
+            isForm={isForm}
+        >
             {children}
             {!hideDefaultIcon && <IoMdArrowDropdown />}
         </StyledDropdownToggle>

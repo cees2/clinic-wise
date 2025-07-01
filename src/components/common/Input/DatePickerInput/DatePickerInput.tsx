@@ -67,7 +67,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
         <div>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             <Dropdown>
-                <Dropdown.Toggle hideDefaultIcon className="w-full">
+                <Dropdown.Toggle hideDefaultIcon isForm>
                     {formattedDate}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

@@ -1,5 +1,5 @@
 import type { FieldErrors, FieldPath } from "react-hook-form";
-import type { GetOptionValue, OnChangeValue } from "react-select";
+import type { CSSObjectWithLabel, GetOptionValue, OnChangeValue, StylesConfig } from "react-select";
 
 export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     errors: FieldErrors<FormType>,
@@ -22,24 +22,7 @@ export const getInputFieldErrorName = <FormType extends Record<string, any>>(
 export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
     option: OnChangeValue<OptionsType, isMulti>,
     getOptionValue: GetOptionValue<OptionsType> | undefined,
-    isMulti?: boolean,
 ) => {
-    if (Array.isArray(option) && isMulti) {
-        const fieldValue = [];
-
-        option.forEach((option) => {
-            if (getOptionValue) {
-                fieldValue.push(getOptionValue(option));
-            } else if ("value" in option) {
-                fieldValue.push(option.value);
-            } else {
-                fieldValue.push(option);
-            }
-        });
-
-        return fieldValue;
-    }
-
     if (getOptionValue) {
         return getOptionValue(option);
     } else if ("value" in option) {
@@ -47,4 +30,32 @@ export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
     } else {
         return option;
     }
+};
+
+export const selectInputsStyles: StylesConfig = {
+    control: (baseStyles, { isFocused }) => {
+        const additionalStyles: CSSObjectWithLabel = { border: "1px solid var(--color-gray-400)" };
+
+        if (isFocused) {
+            additionalStyles.borderColor = "var(--color-primary)";
+            additionalStyles.boxShadow = "0px 0px 3px 0px var(--color-primary)";
+        }
+
+        return { ...baseStyles, ...additionalStyles };
+    },
+    option: (baseStyles, { isFocused, isSelected }) => {
+        const additionalStyles: CSSObjectWithLabel = {};
+
+        if (isSelected) {
+            additionalStyles.backgroundColor = "var(--color-primary)";
+            additionalStyles.color = "var(--color-gray-50)";
+        } else if (isFocused) {
+            additionalStyles.background = "color-mix(in srgb, var(--color-primary) 20%, transparent);";
+        }
+
+        return { ...baseStyles, ...additionalStyles };
+    },
+    input: (baseStyles) => {
+        return { ...baseStyles, boxShadow: "none" };
+    },
 };

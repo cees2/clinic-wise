@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import type { FormSelectInputAsyncProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
 import type { OnChangeValue } from "react-select";
-import { getFormSelectValue } from "../../utils/inputs";
+import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
 import AsyncSelect from "react-select/async";
 
 const AsyncSelectInput = <
@@ -13,7 +13,6 @@ const AsyncSelectInput = <
     props: FormSelectInputAsyncProps<OptionsType, isMulti, FormType>,
 ) => {
     const { control, registerName, rules, getOptionValue, defaultValue } = props;
-    console.log(defaultValue);
     const {
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
@@ -27,7 +26,7 @@ const AsyncSelectInput = <
 
     const onChangeInternal = (newValue: OnChangeValue<OptionsType, isMulti>) => {
         selectedValueFullObject.current = newValue;
-        const newUpdatedValue = getFormSelectValue(newValue, getOptionValue, props.isMulti);
+        const newUpdatedValue = getFormSelectValue(newValue, getOptionValue);
 
         onChange(newUpdatedValue);
     };
@@ -37,7 +36,7 @@ const AsyncSelectInput = <
             return selectedValueFullObject.current;
         }
 
-        const inputValueFromDefaultValue = getFormSelectValue(defaultValue, getOptionValue, props.isMulti);
+        const inputValueFromDefaultValue = getFormSelectValue(defaultValue, getOptionValue);
 
         if (inputValueFromDefaultValue?.toString() === value?.toString()) {
             return defaultValue;
@@ -55,6 +54,7 @@ const AsyncSelectInput = <
             defaultOptions
             name={registerName}
             isClearable
+            styles={selectInputsStyles}
         />
     );
 };

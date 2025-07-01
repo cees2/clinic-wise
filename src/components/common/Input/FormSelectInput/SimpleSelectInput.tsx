@@ -1,7 +1,7 @@
-import Select, { type OnChangeValue } from "react-select";
+import Select, { type CSSObjectWithLabel, type OnChangeValue } from "react-select";
 import type { FormSelectInputSimpleProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
-import { getFormSelectValue } from "../../utils/inputs";
+import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
 
 const SimpleSelectInput = <
     OptionsType extends Record<string, any>,
@@ -18,17 +18,22 @@ const SimpleSelectInput = <
     const {
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
-    const selectedOption = options.find(
-        (option) => getFormSelectValue(option, getOptionValue, restProps.isMulti) === value,
-    );
+    const selectedOption = options.find((option) => getFormSelectValue(option, getOptionValue) === value);
 
     const onChangeInternal = (updatedValue: OnChangeValue<OptionsType, isMulti>) => {
-        const newValue = getFormSelectValue(updatedValue, getOptionValue, restProps.isMulti);
+        const newValue = getFormSelectValue(updatedValue, getOptionValue);
         onChange(newValue);
     };
 
     return (
-        <Select {...restProps} value={selectedOption} onChange={onChangeInternal} onBlur={onBlur} options={options} />
+        <Select
+            {...restProps}
+            value={selectedOption}
+            onChange={onChangeInternal}
+            onBlur={onBlur}
+            options={options}
+            styles={selectInputsStyles}
+        />
     );
 };
 
