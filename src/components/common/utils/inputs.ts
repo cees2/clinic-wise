@@ -43,7 +43,7 @@ export const selectInputsStyles: StylesConfig = {
 
         return { ...baseStyles, ...additionalStyles };
     },
-    option: (baseStyles, { isFocused, isSelected }) => {
+    option: (baseStyles, { isSelected, isFocused }) => {
         const additionalStyles: CSSObjectWithLabel = {};
 
         if (isSelected) {

@@ -37,6 +37,8 @@ const StyledDatePickerInput = styled.div`
     column-gap: 0.8rem;
     height: 291px;
     background-color: #fff;
+    position: relative;
+    z-index: 1;
 `;
 
 export const DatePickerInput = <FormType extends Record<string, any>>({

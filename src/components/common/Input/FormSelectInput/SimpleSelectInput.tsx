@@ -1,4 +1,4 @@
-import Select, { type CSSObjectWithLabel, type OnChangeValue } from "react-select";
+import Select, { type OnChangeValue } from "react-select";
 import type { FormSelectInputSimpleProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
 import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
