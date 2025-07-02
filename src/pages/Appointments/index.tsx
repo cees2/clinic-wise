@@ -4,7 +4,7 @@ import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
 import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
-import { FilterType, type TableDataConfig } from "../../utils/projectTypes";
+import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { useConfirmation } from "../../utils/useConfirmation";
 
 const Appointments = () => {
@@ -90,9 +90,16 @@ const Appointments = () => {
         ],
     };
 
+    const buttons: HeaderButton[] = [
+        {
+            title: "Add new",
+            path: "/appointments/new",
+        },
+    ];
+
     return (
         <TableLayout>
-            <Header as="h3" title="Appointments" />
+            <Header as="h3" title="Appointments" buttons={buttons} />
             <TableDataRenderer config={config} />
         </TableLayout>
     );

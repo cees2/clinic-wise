@@ -1,8 +1,9 @@
-import type { RefObject } from "react";
+import type { ButtonHTMLAttributes, RefObject } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, Path, RegisterOptions } from "react-hook-form";
 import type { Props as SelectProps } from "react-select";
+import type { KnownTarget } from "styled-components/dist/types";
 
 export interface MainNavigationConfigItem {
     to: string;
@@ -277,4 +278,26 @@ export interface FormSelectInputAsyncProps<
     FormType extends Record<string, any>,
 > extends FormSelectInputProps<OptionsType, isMulti, FormType> {
     loadOptions: (inputValue: string) => Promise<OptionsType[]>;
+}
+
+export type ButtonVariant = "primary" | "danger" | "cancel";
+
+export interface HeaderButton {
+    title: string;
+    variant?: ButtonVariant;
+    onClick?: () => void;
+    path?: string;
+}
+
+export interface HeaderProps {
+    title: string;
+    as: KnownTarget;
+    buttons?: HeaderButton[];
+}
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    children: React.ReactNode;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    variant?: ButtonVariant;
+    disabled?: boolean;
 }

@@ -10,10 +10,6 @@ const PaginationNavigation = styled.div`
     column-gap: 0.6rem;
 `;
 
-const PaginationNavigationButton = styled(Button)`
-    background-color: var(--color-gray-200);
-`;
-
 const dropdownItems = [10, 20, 50, 100];
 
 const TableDataPagination = () => {
@@ -51,11 +47,11 @@ const TableDataPagination = () => {
                 </Dropdown.Menu>
             </Dropdown>
             <PaginationNavigation>
-                <PaginationNavigationButton onClick={setPreviousPageHander}>Previous</PaginationNavigationButton>
+                <Button onClick={setPreviousPageHander}>Previous</Button>
                 <span>{selectedPage}</span>
-                <PaginationNavigationButton disabled={shouldDisableNextPageButton} onClick={setNextPageHander}>
+                <Button disabled={shouldDisableNextPageButton} onClick={setNextPageHander}>
                     Next
-                </PaginationNavigationButton>
+                </Button>
             </PaginationNavigation>
         </div>
     );
