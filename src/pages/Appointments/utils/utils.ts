@@ -6,9 +6,10 @@ import { UNIVERSAL_FORM_DATE_FORMAT } from "../../../utils/constants";
 export const getAppointmentFormDefaultValues = (
     appointmentData?: Tables<"appointments">,
 ): Partial<AppointmentFormType> => ({
-    additional_note: appointmentData?.additional_note ?? "",
+    additional_note: appointmentData?.additional_note,
     duration: appointmentData?.duration,
-    employee_id: appointmentData?.employee_id ?? 0,
-    patient_id: appointmentData?.patient_id ?? 0,
+    employee_id: appointmentData?.employee_id,
+    patient_id: appointmentData?.patient_id,
     start_date: appointmentData?.start_date ?? format(new Date(), UNIVERSAL_FORM_DATE_FORMAT),
+    status: appointmentData?.status,
 });

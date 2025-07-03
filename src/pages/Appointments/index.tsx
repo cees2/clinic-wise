@@ -6,6 +6,7 @@ import type { Tables } from "../../services/database.types";
 import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { useConfirmation } from "../../utils/useConfirmation";
+import { Status } from "../../components/common/Status";
 
 const Appointments = () => {
     const { mutationRemove: removeAppointment } = useMutateAppointment();
@@ -22,7 +23,11 @@ const Appointments = () => {
             {
                 id: "status",
                 name: "Status",
-                render: (item) => `${item.status?.charAt(0).toUpperCase() ?? ""}${item.status?.substring(1) ?? ""}`,
+                render: (item) => (
+                    <Status status={item.status}>
+                        {`${item.status?.charAt(0).toUpperCase() ?? ""}${item.status?.substring(1).toLowerCase() ?? ""}`}
+                    </Status>
+                ),
             },
             {
                 id: "start_date",

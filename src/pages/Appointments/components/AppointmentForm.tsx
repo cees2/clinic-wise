@@ -17,13 +17,10 @@ import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
     const queryClient = useQueryClient();
     const { mutationCreate } = useMutateAppointment();
-    const { control, register, handleSubmit, formState, watch } = useForm<AppointmentFormType>({
+    const { control, register, handleSubmit, formState } = useForm<AppointmentFormType>({
         defaultValues: getAppointmentFormDefaultValues(appointmentData),
     });
     const navigate = useNavigate();
-    console.log(watch());
-
-    // console.log(watch());
 
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
