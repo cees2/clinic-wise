@@ -33,7 +33,7 @@ export const generateFakeAppointments = (patients: Tables<"patients">, employees
             patient_id: patients[i % 20].id,
             employee_id: employees[i % 20].id,
             duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
-            status: faker.helpers.arrayElement(["CONFIRMED", "UNCONFIRMED", "CANCELLED"]),
+            status: faker.helpers.arrayElement(["SCHEDULED", "CANCELLED", "COMPLETED"]),
             additional_note: faker.lorem.sentence({ min: 3, max: 10 }),
         };
 

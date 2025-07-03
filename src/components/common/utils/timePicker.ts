@@ -16,9 +16,17 @@ export const getSelectedMinuteBasedOnValue = (value: string | Date): number => {
     return value.getMinutes();
 };
 
-export function getUpdatedTimeValue(value: string, newSelectedValue: number, mode: TimePickerMode): string;
+export function getUpdatedTimeValue(
+    value: string,
+    newSelectedValue: number,
+    mode: TimePickerMode,
+): string;
 export function getUpdatedTimeValue(value: Date, newSelectedValue: number, mode: TimePickerMode): Date;
-export function getUpdatedTimeValue(value: string | Date, newSelectedValue: number, mode: TimePickerMode) {
+export function getUpdatedTimeValue(
+    value: string | Date,
+    newSelectedValue: number,
+    mode: TimePickerMode
+) {
     if (typeof value === "string") {
         let valueToBeUpdated = newSelectedValue.toString();
 

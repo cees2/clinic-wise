@@ -12,15 +12,16 @@ import { useMutateAppointment } from "../../../services/hooks/appointments/useMu
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "../../../services/database.types";
 import { getAppointmentFormDefaultValues } from "../utils/utils";
-import type { EmployeeSelect, EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
+import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
     const queryClient = useQueryClient();
     const { mutationCreate } = useMutateAppointment();
-    const { control, watch, register, handleSubmit, formState } = useForm<AppointmentFormType>({
+    const { control, register, handleSubmit, formState, watch } = useForm<AppointmentFormType>({
         defaultValues: getAppointmentFormDefaultValues(appointmentData),
     });
     const navigate = useNavigate();
+    console.log(watch());
 
     // console.log(watch());
 
@@ -74,12 +75,10 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 registerName="start_date"
                 control={control}
                 withTimePicker
-                asString
-                watch={watch}
                 label="Start date"
                 rules={{ required: true }}
             />
-            <FormSelectInput<EmployeeSelect | undefined>
+            <FormSelectInput<EmployeeSelect, false, AppointmentFormType>
                 loadOptions={loadEmployees}
                 getOptionLabel={(option) => `${option.name} ${option.surname}`}
                 getOptionValue={(option) => option?.id.toString()}
@@ -89,7 +88,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 rules={{ required: true }}
                 defaultValue={appointmentData?.employee}
             />
-            <FormSelectInput<PatientSelect | undefined>
+            <FormSelectInput<PatientSelect, false, AppointmentFormType>
                 loadOptions={loadPatients}
                 getOptionLabel={(option) => `${option?.name} ${option?.surname}`}
                 getOptionValue={(option) => option?.id.toString()}

@@ -8,13 +8,13 @@ import {
     type FieldPath,
     type Path,
     type RegisterOptions,
-    type UseFormWatch,
 } from "react-hook-form";
 import TimePicker from "./TimePicker";
 import styled from "styled-components";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { getInputFieldErrorName } from "../../utils/inputs";
+import { UNIVERSAL_FORM_DATE_FORMAT } from "../../../../utils/constants";
 
 interface Props<FormType extends Record<string, any>> {
     minDate?: Date;
@@ -22,8 +22,6 @@ interface Props<FormType extends Record<string, any>> {
     control: Control<FormType>;
     registerName: FieldPath<FormType>;
     withTimePicker?: true;
-    asString?: true;
-    watch: UseFormWatch<FormType>;
     label: string;
     rules?: Omit<
         RegisterOptions<FormType, Path<FormType>>,
@@ -47,23 +45,26 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     control,
     registerName,
     withTimePicker,
-    asString,
     label,
-    watch,
     rules,
 }: Props<FormType>) => {
     const calendarMinDate = minDate ?? new Date();
     const calendarMaxDate = maxDate ?? add(new Date(), { years: 1 });
-    const currentDate = new Date();
-    const defaultValue = asString ? currentDate.toISOString() : currentDate;
-    const inputValue = watch(registerName);
-    const formattedDate = format(new Date(inputValue || Date.now()), "dd.MM.yyyy kk:mm");
     const isRequired = rules?.required;
     const {
         field: { onChange, value },
-    } = useController<FormType>({ control, name: registerName, rules, defaultValue });
+    } = useController<FormType>({ control, name: registerName, rules });
+    const formattedDate = format(new Date(value || Date.now()), "dd.MM.yyyy kk:mm");
     const { errors } = useFormState<FormType>({ control });
     const inputErrorName = getInputFieldErrorName(errors, registerName);
+
+    const onInternalChange = (selectedDate: Date) => {
+        const currentDate = new Date(value);
+
+        selectedDate.setHours(currentDate.getHours());
+        selectedDate.setMinutes(currentDate.getMinutes());
+        onChange(format(selectedDate, UNIVERSAL_FORM_DATE_FORMAT));
+    };
 
     return (
         <div>
@@ -76,9 +77,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
                     <StyledDatePickerInput>
                         <Calendar
                             date={value}
-                            onChange={(dateRange: Date) => {
-                                onChange(asString ? dateRange.toISOString() : dateRange);
-                            }}
+                            onChange={onInternalChange}
                             color="#16a34a"
                             dateDisplayFormat="dd.mm.yyyy"
                             minDate={calendarMinDate}

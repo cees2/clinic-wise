@@ -189,9 +189,9 @@ export enum SortTableEnum {
     NONE,
 }
 
-export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "id">;
-export type PatientFormType = Omit<Tables<"patients">, "created_at" | "id">;
-export type EmployeeFormType = Omit<Tables<"employees">, "created_at" | "id">;
+export type AppointmentFormType = Partial<Omit<Tables<"appointments">, "created_at" | "id">>;
+export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "id">>;
+export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">>;
 
 export interface Person {
     name: string;

@@ -26,7 +26,7 @@ const StyledTimePickerColumn = styled.ul`
 
 const ColumnItem = styled.li<{ isSelected: boolean }>`
     text-align: center;
-    padding: 1.2rem;
+    padding: 0.8rem;
 
     ${({ isSelected }) =>
         isSelected &&
