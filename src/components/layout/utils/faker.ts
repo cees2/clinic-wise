@@ -1,6 +1,8 @@
 import { fakerEN, faker } from "@faker-js/faker";
 import type { AppointmentFormType, EmployeeFormType, PatientFormType, Person } from "../../../utils/projectTypes";
 import type { Tables } from "../../../services/database.types";
+import { format } from "date-fns";
+import { UNIVERSAL_DATE_FORMAT } from "../../../utils/constants";
 
 const createMockPerson = (): Person => {
     const gender = faker.person.sexType();
@@ -8,7 +10,7 @@ const createMockPerson = (): Person => {
     return {
         name: fakerEN.person.firstName(gender),
         surname: fakerEN.person.lastName(),
-        date_of_birth: faker.date.birthdate().toISOString(),
+        date_of_birth: format(faker.date.birthdate(), UNIVERSAL_DATE_FORMAT),
         nationality: fakerEN.helpers.arrayElement([
             "United States",
             "Canada",
@@ -29,7 +31,7 @@ export const generateFakeAppointments = (patients: Tables<"patients">, employees
     const mockAppointments: AppointmentFormType[] = [];
     for (let i = 0; i < 50; i++) {
         const newMockAppointment: AppointmentFormType = {
-            start_date: faker.date.recent().toISOString(),
+            start_date: format(faker.date.recent(), UNIVERSAL_DATE_FORMAT),
             patient_id: patients[i % 20].id,
             employee_id: employees[i % 20].id,
             duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
@@ -46,7 +48,10 @@ export const generateFakeAppointments = (patients: Tables<"patients">, employees
 export const generateFakePatients = () => {
     const mockPatients: PatientFormType[] = [];
     for (let i = 0; i < 20; i++) {
-        const newMockPatient: PatientFormType = createMockPerson();
+        const newMockPatient: PatientFormType = {
+            ...createMockPerson(),
+            start_date: format(faker.date.past({ years: 4 }), UNIVERSAL_DATE_FORMAT),
+        };
 
         mockPatients.push(newMockPatient);
     }
@@ -60,7 +65,7 @@ export const generateFakeEmployees = () => {
         const newEmployee: EmployeeFormType = {
             ...createMockPerson(),
             document_id: `${faker.string.alpha(3)} ${faker.number.int({ min: 10, max: 99 })}`,
-            start_date: faker.date.past({ years: 4 }).toISOString(),
+            start_date: format(faker.date.past({ years: 4 }), UNIVERSAL_DATE_FORMAT),
         };
 
         mockEmployees.push(newEmployee);

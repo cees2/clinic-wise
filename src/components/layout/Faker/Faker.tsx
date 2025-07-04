@@ -55,7 +55,7 @@ const FakerComponent = () => {
         mutatePatients(mockPatients);
     };
 
-    const uploadEmployees = () => {
+    const uploadFakeEmployees = () => {
         const mockEmployees = generateFakeEmployees();
         mutateEmployees(mockEmployees);
     };
@@ -69,7 +69,7 @@ const FakerComponent = () => {
                 <FakerButtons>
                     <Button onClick={uploadAppointments}>Upload appointments</Button>
                     <Button onClick={uploadPatients}>Upload patients</Button>
-                    <Button onClick={uploadEmployees}>Upload employees</Button>
+                    <Button onClick={uploadFakeEmployees}>Upload employees</Button>
                 </FakerButtons>
             )}
         </StyledFaker>

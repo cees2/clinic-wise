@@ -5,7 +5,8 @@ import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
 import type { TableDataConfig } from "../../utils/projectTypes";
 import { UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
-import { capitalizeFirstLetter, getCountryShortName } from "../../utils/utils";
+import { capitalizeFirstLetter } from "../../utils/utils";
+import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 
 const Patients = () => {
     const config: TableDataConfig<Tables<"patients">> = {
@@ -29,20 +30,24 @@ const Patients = () => {
                 id: "nationality",
                 name: "Nationality",
                 render: (patient) => {
-                    return (
-                        <div className="flex items-center gap-x-4">
-                            <span>{patient.nationality}</span>
-                            <img
-                                src={`https://flagcdn.com/w20/${getCountryShortName(patient.nationality ?? " ")}.png`}
-                                alt={`${patient.nationality ?? ""} flag`}
-                            />
-                        </div>
-                    );
+                    return <NationalityWithFlag nationality={patient.nationality} />;
                 },
             },
             {
                 id: "phone_number",
                 name: "Phone number",
+            },
+        ],
+        actions: [
+            {
+                id: "remove",
+                name: "Remove",
+                action: () => {},
+            },
+            {
+                id: "edit",
+                name: "Edit",
+                path: (item) => `/appointments/${item.id}/edit`,
             },
         ],
         resourceName: "patients",

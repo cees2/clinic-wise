@@ -14,7 +14,7 @@ export const getCountryShortName = (countryName: string): SupportedCountriesShor
             return "fr";
         case "Mexico":
             return "mx";
-        case "NOrway":
+        case "Norway":
             return "no";
         case "United states":
         default:

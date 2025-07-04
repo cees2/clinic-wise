@@ -63,15 +63,13 @@ const TableDataItemsRows = () => {
                 return (
                     <Table.TableRow key={resource.id}>
                         {columns.map((column) => {
-                            const resourceColumnDisplayValue = column.render
-                                ? column.render(resource)
-                                : resource[column.id];
+                            const resourceColumnDisplayValue = column.render?.(resource) ?? resource[column.id];
 
                             return (
                                 <Table.TableRowCell key={column.id}>{resourceColumnDisplayValue}</Table.TableRowCell>
                             );
                         })}
-                        <TableDataActionCell resource={resource}/>
+                        <TableDataActionCell resource={resource} />
                     </Table.TableRow>
                 );
             })}

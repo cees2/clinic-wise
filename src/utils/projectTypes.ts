@@ -47,7 +47,8 @@ export interface TableDataFilterConfig<T extends TableDataResourceType> {
 export interface TableDataAction<T extends TableDataResourceType> {
     id: string;
     name: string;
-    action: (item: T) => void | Promise<void>;
+    path?: (item: T) => string;
+    action?: (item: T) => void | Promise<void>;
 }
 
 export interface TableDataConfig<T extends TableDataResourceType> {

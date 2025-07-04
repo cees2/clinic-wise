@@ -97,9 +97,7 @@ const Appointments = () => {
             {
                 id: "edit",
                 name: "Edit",
-                action: (item) => {
-                    void navigate(`/appointments/${item.id}/edit`);
-                },
+                path: (item) => `/appointments/${item.id}/edit`,
             },
         ],
     };

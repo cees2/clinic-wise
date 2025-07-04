@@ -3,6 +3,7 @@ import { Dropdown } from "../../../common/Dropdown/Dropdown";
 import Table from "../../../common/Table/Table";
 import { useTableDataContext } from "../utils/TableDataContext";
 import type { TableDataResourceType } from "../../../../utils/projectTypes";
+import { useNavigate } from "react-router-dom";
 
 interface Props<T extends TableDataResourceType> {
     resource: T;
@@ -12,6 +13,7 @@ const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Prop
     const {
         config: { actions },
     } = useTableDataContext();
+    const navigate = useNavigate();
 
     if (!actions || actions.length === 0) return null;
 
@@ -23,10 +25,21 @@ const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Prop
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     {actions.map((action) => {
-                        const { id, name, action: actionCallback } = action;
+                        const { id, name, action: actionCallback, path } = action;
+
+                        const onClick = async () => {
+                            if (path) {
+                                const pathNavigate = path(resource);
+                                console.log(pathNavigate);
+                                await navigate(pathNavigate);
+                                return;
+                            }
+
+                            await actionCallback?.(resource);
+                        };
 
                         return (
-                            <Dropdown.Item onClick={() => void actionCallback(resource)} key={id}>
+                            <Dropdown.Item onClick={() => void onClick()} key={id}>
                                 {name}
                             </Dropdown.Item>
                         );
