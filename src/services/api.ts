@@ -5,7 +5,7 @@ import { supabase } from "./services";
 // TODO: possible refactor
 
 export const uploadFakeAppointments = async (appointmentsToBeUploaded: AppointmentFormType[]) => {
-    await supabase.from("appointments").delete().neq("id", 98);
+    await supabase.from("appointments").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("appointments").insert(appointmentsToBeUploaded);
 
@@ -27,7 +27,7 @@ export const removeAppointment = async (appointmentId: number) => {
 };
 
 export const uploadFakePatients = async (patientsToBeUploaded: PatientFormType[]) => {
-    await supabase.from("patients").delete().gt("id", 0);
+    await supabase.from("patients").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("patients").insert(patientsToBeUploaded);
 

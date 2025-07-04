@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
@@ -9,6 +9,7 @@ import { useConfirmation } from "../../utils/useConfirmation";
 import { Status } from "../../components/common/Status";
 import { format } from "date-fns";
 import { UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
+import { capitalizeFirstLetter } from "../../utils/utils";
 
 const Appointments = () => {
     const { mutationRemove: removeAppointment } = useMutateAppointment();
@@ -25,11 +26,7 @@ const Appointments = () => {
             {
                 id: "status",
                 name: "Status",
-                render: (item) => (
-                    <Status status={item.status}>
-                        {`${item.status?.charAt(0).toUpperCase() ?? ""}${item.status?.substring(1).toLowerCase() ?? ""}`}
-                    </Status>
-                ),
+                render: (item) => <Status status={item.status}>{capitalizeFirstLetter(item.status)}</Status>,
             },
             {
                 id: "start_date",
@@ -43,14 +40,23 @@ const Appointments = () => {
             {
                 id: "patient_id",
                 name: "Patient",
-                foreignTableColumnsName: ["name", "surname"],
-                render: (item) => `${item.patient_id.name} ${item.patient_id.surname}`,
+                foreignTableColumnsName: ["name", "surname", "id"],
+                render: (item) => (
+                    <Link to={`/patients/${item.patient_id.id}`} className="text-green-600 font-bold">
+                        {`${item.patient_id.name} ${item.patient_id.surname}`}
+                    </Link>
+                ),
             },
             {
                 id: "employee_id",
                 name: "Employee",
-                foreignTableColumnsName: ["name", "surname"],
-                render: (item) => `${item.employee_id.name} ${item.employee_id.surname}`,
+                foreignTableColumnsName: ["name", "surname", "id"],
+                render: (item) => (
+                    <Link
+                        to={`/employees/${item.employee_id.id}`}
+                        className="text-green-600 font-bold"
+                    >{`${item.employee_id.name} ${item.employee_id.surname}`}</Link>
+                ),
             },
         ],
         resourceName: "appointments",

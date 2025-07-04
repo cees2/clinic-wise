@@ -46,10 +46,7 @@ export const generateFakeAppointments = (patients: Tables<"patients">, employees
 export const generateFakePatients = () => {
     const mockPatients: PatientFormType[] = [];
     for (let i = 0; i < 20; i++) {
-        const newMockPatient: PatientFormType = {
-            ...createMockPerson(),
-            appointment_ids: 98,
-        };
+        const newMockPatient: PatientFormType = createMockPerson();
 
         mockPatients.push(newMockPatient);
     }
@@ -62,7 +59,6 @@ export const generateFakeEmployees = () => {
     for (let i = 0; i < 20; i++) {
         const newEmployee: EmployeeFormType = {
             ...createMockPerson(),
-            appointment_ids: 98,
             document_id: `${faker.string.alpha(3)} ${faker.number.int({ min: 10, max: 99 })}`,
             start_date: faker.date.past({ years: 4 }).toISOString(),
         };

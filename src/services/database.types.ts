@@ -60,7 +60,6 @@ export type Database = {
       employees: {
         Row: {
           address: string | null
-          appointment_ids: number | null
           created_at: string
           date_of_birth: string
           document_id: string
@@ -74,7 +73,6 @@ export type Database = {
         }
         Insert: {
           address?: string | null
-          appointment_ids?: number | null
           created_at?: string
           date_of_birth: string
           document_id: string
@@ -88,7 +86,6 @@ export type Database = {
         }
         Update: {
           address?: string | null
-          appointment_ids?: number | null
           created_at?: string
           date_of_birth?: string
           document_id?: string
@@ -100,20 +97,11 @@ export type Database = {
           start_date?: string
           surname?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "employees_appointment_ids_fkey"
-            columns: ["appointment_ids"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       patients: {
         Row: {
           address: string
-          appointment_ids: number | null
           created_at: string
           date_of_birth: string
           gender: string
@@ -125,7 +113,6 @@ export type Database = {
         }
         Insert: {
           address: string
-          appointment_ids?: number | null
           created_at?: string
           date_of_birth: string
           gender: string
@@ -137,7 +124,6 @@ export type Database = {
         }
         Update: {
           address?: string
-          appointment_ids?: number | null
           created_at?: string
           date_of_birth?: string
           gender?: string
@@ -147,15 +133,7 @@ export type Database = {
           phone_number?: string | null
           surname?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: "patients_appointment_ids_fkey"
-            columns: ["appointment_ids"]
-            isOneToOne: false
-            referencedRelation: "appointments"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {
