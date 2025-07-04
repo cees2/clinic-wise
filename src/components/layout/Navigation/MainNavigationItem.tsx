@@ -26,7 +26,7 @@ const StyledMainNavigationItem = styled.a`
     &.active {
         transform: scale(102%);
         color: var(--color-gray-800);
-        font-weight: var(--font-weight-normal);
+        font-weight: var(--font-weight-medium);
     }
 
     &:hover > svg,

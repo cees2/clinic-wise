@@ -11,7 +11,8 @@ interface Props {
 const StyledStatus = styled.span<{ variant: variant }>`
     padding: 0.4rem 0.8rem;
     font-size: 1.2rem;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-weight-semibold);
 
     ${({ variant }) => {
         if (variant === "success") {

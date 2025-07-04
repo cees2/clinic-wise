@@ -21,7 +21,7 @@ const StyledFaker = styled.div`
 
 const FakerHeader = styled(StyledHeader)`
     letter-spacing: 0;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     display: flex;
     flex-direction: column;
     row-gap: 1.2rem;

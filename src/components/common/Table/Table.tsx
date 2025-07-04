@@ -31,7 +31,7 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<Props, "children">
 export const StyledHeaderCell = styled.div.attrs({
     role: "columnheader",
 })<TableHeaderCellProps>`
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     font-size: 1.8rem;
     ${({ columnIndex }) => {
         return css`
@@ -43,7 +43,7 @@ export const StyledHeaderCell = styled.div.attrs({
 const StyledTableCell = styled.div.attrs({
     role: "cell",
 })`
-    padding: 1.2rem;
+    padding: 0.6rem 1.2rem;
 `;
 
 const TableContext = createContext<Omit<Props, "children">>({});

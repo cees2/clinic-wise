@@ -7,7 +7,7 @@ const StyledButton = styled.button<ButtonProps>`
     font-size: 1.4rem;
     border: none;
     border-radius: 6px;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
     transition: var(--duration-fastest) linear;
 
     &:hover {
@@ -20,12 +20,12 @@ const StyledButton = styled.button<ButtonProps>`
                     `;
                 case "danger":
                     return css`
-                        background-color: var(--color-danger-dark);
+                        background-color: var(--color-red-800);
                     `;
                 case "primary":
                 default:
                     return css`
-                        background-color: var(--color-primary-dark);
+                        background-color: var(--color-green-700);
                     `;
             }
         }}
@@ -40,7 +40,7 @@ const StyledButton = styled.button<ButtonProps>`
                 `;
             case "danger":
                 return css`
-                    background-color: var(--color-danger);
+                    background-color: var(--color-red-700);
                 `;
             case "primary":
             default:

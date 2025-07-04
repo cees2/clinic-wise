@@ -7,6 +7,8 @@ import { useMutateAppointment } from "../../services/hooks/appointments/useMutat
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { useConfirmation } from "../../utils/useConfirmation";
 import { Status } from "../../components/common/Status";
+import { format } from "date-fns";
+import { UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
 
 const Appointments = () => {
     const { mutationRemove: removeAppointment } = useMutateAppointment();
@@ -32,6 +34,7 @@ const Appointments = () => {
             {
                 id: "start_date",
                 name: "Start date",
+                render: (item) => format(new Date(item.start_date), UNIVERSAL_DATE_FORMAT),
             },
             {
                 id: "additional_note",

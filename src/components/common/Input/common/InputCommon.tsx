@@ -11,7 +11,7 @@ export const StyledInput = styled.div`
         width: 100%;
         background-color: #fff;
         border: 1px solid var(--color-gray-400);
-        border-radius: var(--border-radius-sm);
+        border-radius: var(--radius-lg);
         padding: 0.5rem 1.2rem;
     }
 `;

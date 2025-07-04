@@ -27,7 +27,7 @@ const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: 
     align-items: center;
     column-gap: 2px;
     padding: 1rem 1.6rem;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--radius-lg);
     border: none;
 
     ${({ isForm }) =>
@@ -36,7 +36,7 @@ const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: 
             width: 100%;
             padding: 0.5rem 1.2rem;
             border: 1px solid var(--color-gray-400);
-            border-radius: var(--border-radius-sm);
+            border-radius: var(--radius-lg);
         `}
 `;
 
@@ -45,7 +45,7 @@ const StyledDropdownMenu = styled.ul.attrs({
 })<StyledDropdownMenuProps>`
     position: absolute;
     min-width: 12rem;
-    border-radius: var(--border-radius-sm);
+    border-radius: var(--radius-lg);
     background-color: var(--color-gray-200);
     ${({ toggleHeight, toggleWidth, placement }) => {
         switch (placement) {

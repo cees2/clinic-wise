@@ -36,7 +36,7 @@ const StyledModal = styled.div`
     transform: translate(-50%, -50%);
     background-color: var(--color-gray-200);
     padding: 2.4rem;
-    border-radius: var(--border-radius-bg);
+    border-radius: var(--radius-2xl);
     animation: display-modal var(--duration-fast) ease-out;
 
     & > .close-button {
@@ -61,7 +61,7 @@ const StyledModalHeader = styled.div`
 
 const StyledModalTitle = styled.h3`
     font-size: 2.4rem;
-    font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-semibold);
 `;
 
 const StyledModalBody = styled.div`

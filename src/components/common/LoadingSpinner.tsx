@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const Spinner = styled.div`
@@ -21,7 +22,7 @@ const Spinner = styled.div`
 const StyledSpinnerText = styled.span`
     text-align: center;
     font-size: 2rem;
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-medium);
 `;
 
 const StyledLoadingSpinner = styled.div`
@@ -29,13 +30,33 @@ const StyledLoadingSpinner = styled.div`
     flex-direction: column;
     align-items: center;
     row-gap: 1.2rem;
+    margin-top: 2.4rem;
 `;
 
 export const LoadingSpinner = () => {
+    const [loadingCaption, setLoadingCaption] = useState("Loading");
+    const intervalID = useRef<NodeJS.Timeout | undefined>(undefined);
+
+    useEffect(() => {
+        let dotsCounter = 0;
+
+        intervalID.current = setInterval(() => {
+            dotsCounter++;
+
+            const currentNumberOfDotsToRender = dotsCounter % 4;
+            const newCaption = `Loading${".".repeat(currentNumberOfDotsToRender)}`;
+            setLoadingCaption(newCaption);
+        }, 400);
+
+        return () => {
+            clearInterval(intervalID.current);
+        };
+    }, []);
+
     return (
         <StyledLoadingSpinner>
             <Spinner />
-            <StyledSpinnerText>Loading in progress...</StyledSpinnerText>
+            <StyledSpinnerText>{loadingCaption}</StyledSpinnerText>
         </StyledLoadingSpinner>
     );
 };

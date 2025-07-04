@@ -10,33 +10,33 @@ export const StyledHeader = styled.h1<{ as: KnownTarget }>`
             case "h1":
                 return css`
                     font-size: 4.4rem;
-                    font-weight: var(--font-weight-bold);
+                    font-weight: var(--font-weight-semibold);
                 `;
             case "h2":
                 return css`
                     font-size: 3.6rem;
-                    font-weight: var(--font-weight-bold);
+                    font-weight: var(--font-weight-semibold);
                 `;
             case "h3":
                 return css`
                     font-size: 3rem;
-                    font-weight: var(--font-weight-bold);
+                    font-weight: var(--font-weight-semibold);
                 `;
             case "h4":
                 return css`
                     font-size: 2.4rem;
-                    font-weight: var(--font-weight-normal);
+                    font-weight: var(--font-weight-medium);
                 `;
             case "h5":
                 return css`
                     font-size: 2rem;
-                    font-weight: var(--font-weight-normal);
+                    font-weight: var(--font-weight-medium);
                 `;
             case "h6":
             default:
                 return css`
                     font-size: 1.6rem;
-                    font-weight: var(--font-weight-normal);
+                    font-weight: var(--font-weight-medium);
                 `;
         }
     }}
