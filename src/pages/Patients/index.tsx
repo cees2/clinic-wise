@@ -4,7 +4,7 @@ import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
-import { SUPPORTED_NATIONALITIES, UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
+import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 

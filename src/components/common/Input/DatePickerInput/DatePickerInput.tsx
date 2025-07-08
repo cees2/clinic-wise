@@ -14,7 +14,7 @@ import styled from "styled-components";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { getInputFieldErrorName } from "../../utils/inputs";
-import { UNIVERSAL_FORM_DATE_FORMAT } from "../../../../utils/constants";
+import { DB_DATE_FORMAT } from "../../../../utils/constants";
 
 interface Props<FormType extends Record<string, any>> {
     minDate?: Date;
@@ -63,7 +63,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
 
         selectedDate.setHours(currentDate.getHours());
         selectedDate.setMinutes(currentDate.getMinutes());
-        onChange(format(selectedDate, UNIVERSAL_FORM_DATE_FORMAT));
+        onChange(format(selectedDate, DB_DATE_FORMAT));
     };
 
     return (

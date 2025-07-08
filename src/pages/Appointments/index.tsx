@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
@@ -8,13 +8,12 @@ import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils
 import { useConfirmation } from "../../utils/useConfirmation";
 import { Status } from "../../components/common/Status";
 import { format } from "date-fns";
-import { UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
+import { DISPLAY_DATE_FORMAT_WITH_TIME } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 
 const Appointments = () => {
     const { mutationRemove: removeAppointment } = useMutateAppointment();
     const { confirmation } = useConfirmation();
-    const navigate = useNavigate();
 
     const config: TableDataConfig<Tables<"appointments">> = {
         columns: [
@@ -31,7 +30,7 @@ const Appointments = () => {
             {
                 id: "start_date",
                 name: "Start date",
-                render: (item) => format(new Date(item.start_date), UNIVERSAL_DATE_FORMAT),
+                render: (item) => format(new Date(item.start_date), DISPLAY_DATE_FORMAT_WITH_TIME),
             },
             {
                 id: "additional_note",
@@ -80,6 +79,11 @@ const Appointments = () => {
                 id: "additional_note",
                 name: "Additional note",
                 type: FilterType.TEXT,
+            },
+            {
+                id: "start_date",
+                name: "Start date",
+                type: FilterType.DATE,
             },
         ],
         actions: [

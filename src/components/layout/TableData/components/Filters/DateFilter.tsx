@@ -15,7 +15,7 @@ import {
     getDateFilterOptionName,
 } from "../../utils/filters/filtersUtils";
 import { format } from "date-fns";
-import { UNIVERSAL_DATE_FORMAT } from "../../../../../utils/constants";
+import { DB_DATE_FORMAT } from "../../../../../utils/constants";
 
 // TODO: Wrong types
 const DateFilter = <T extends TableDataResourceType>({ filterId }: { filterId: keyof T }) => {
@@ -37,7 +37,7 @@ const DateFilter = <T extends TableDataResourceType>({ filterId }: { filterId: k
     const onHideDropdown = () => {
         if (!selectedDate) return;
 
-        const formattedDate = format(selectedDate, UNIVERSAL_DATE_FORMAT);
+        const formattedDate = format(selectedDate, DB_DATE_FORMAT);
 
         dispatch({
             type: TableDataActionsEnum.REPLACE_FILTER,
