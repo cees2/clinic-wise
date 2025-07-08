@@ -30,7 +30,6 @@ const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Prop
                         const onClick = async () => {
                             if (path) {
                                 const pathNavigate = path(resource);
-                                console.log(pathNavigate);
                                 await navigate(pathNavigate);
                                 return;
                             }

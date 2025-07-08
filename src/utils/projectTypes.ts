@@ -32,6 +32,7 @@ export enum FilterType {
     NUMBER,
     TEXT,
     ENUM,
+    DATE,
 }
 
 export interface TableDataFilterConfig<T extends TableDataResourceType> {
@@ -304,3 +305,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export type SupportedCountriesShortNames = "us" | "ca" | "mx" | "de" | "pl" | "fr" | "no" | "it";
+
+export type DateFilterType = "gte" | "lte";
+
+export interface DropdownMenuProps {
+    children: React.ReactNode;
+    onHideDropdown?: () => void;
+    className?: string;
+}

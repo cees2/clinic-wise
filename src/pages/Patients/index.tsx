@@ -3,8 +3,8 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
-import type { TableDataConfig } from "../../utils/projectTypes";
-import { UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
+import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
+import { SUPPORTED_NATIONALITIES, UNIVERSAL_DATE_FORMAT } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 
@@ -19,7 +19,7 @@ const Patients = () => {
             {
                 id: "date_of_birth",
                 name: "Date of birth",
-                render: (patient) => format(new Date(patient.date_of_birth), UNIVERSAL_DATE_FORMAT),
+                render: (patient) => format(new Date(patient.date_of_birth), "dd.MM.yyyy"),
             },
             {
                 id: "gender",
@@ -50,12 +50,46 @@ const Patients = () => {
                 path: (item) => `/appointments/${item.id}/edit`,
             },
         ],
+        filters: [
+            {
+                id: "name",
+                name: "Name",
+                type: FilterType.TEXT,
+            },
+            {
+                id: "date_of_birth",
+                name: "Date of birth",
+                type: FilterType.DATE,
+            },
+            {
+                id: "gender",
+                name: "Gender",
+                type: FilterType.ENUM,
+                options: {
+                    female: "Female",
+                    male: "Male",
+                },
+            },
+            {
+                id: "nationality",
+                name: "Nationality",
+                type: FilterType.ENUM,
+                options: SUPPORTED_NATIONALITIES,
+            },
+        ],
         resourceName: "patients",
     };
 
+    const buttons: HeaderButton[] = [
+        {
+            title: "Add new",
+            path: "/patients/new",
+        },
+    ];
+
     return (
         <TableLayout>
-            <Header as="h3" title="Patients" />
+            <Header as="h3" title="Patients" buttons={buttons} />
             <TableDataRenderer config={config} />
         </TableLayout>
     );

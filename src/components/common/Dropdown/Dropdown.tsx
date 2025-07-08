@@ -2,6 +2,7 @@ import React, { createContext, use, useCallback, useEffect, useMemo, useRef, use
 import type {
     DropdownContextType,
     DropdownItemsProps,
+    DropdownMenuProps,
     DropdownPlacementType,
     DropdownToggleProps,
     StyledDropdownMenuProps,
@@ -149,7 +150,7 @@ const DropdownToggle = ({ children, hideDefaultIcon, className, isForm }: Dropdo
     );
 };
 
-const DropdownMenu = ({ children, onHideDropdown }: { children: React.ReactNode; onHideDropdown?: () => void }) => {
+const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps) => {
     const dropdownMenuRef = useRef<HTMLUListElement>(null);
     const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } = use(DropdownContext);
 
@@ -185,6 +186,7 @@ const DropdownMenu = ({ children, onHideDropdown }: { children: React.ReactNode;
             toggleWidth={toggleWidth}
             ref={dropdownMenuRef}
             placement={placement}
+            className={className}
         >
             {children}
         </StyledDropdownMenu>

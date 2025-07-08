@@ -5,6 +5,7 @@ import { FilterType, type TableDataResourceType, type TableDataFilterConfig } fr
 import NumberFilter from "./NumberFilter";
 import EnumFilter from "./EnumFilter";
 import TextFilter from "./TextFilter";
+import DateFilter from "./DateFilter";
 
 const StyledTableDataFilters = styled.div`
     display: flex;
@@ -24,6 +25,8 @@ const TableDataFilterBody = <T extends TableDataResourceType>({ filter }: { filt
         }
         case FilterType.TEXT:
             return <TextFilter filterId={id} />;
+        case FilterType.DATE:
+            return <DateFilter filterId={id} />;
         default:
             return null;
     }

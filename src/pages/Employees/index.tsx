@@ -6,6 +6,7 @@ import type { Tables } from "../../services/database.types";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
+import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
 
 const Employees = () => {
     const config: TableDataConfig<Tables<"patients">> = {
@@ -48,16 +49,7 @@ const Employees = () => {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: {
-                    "United States": "United States",
-                    Canada: "Canada",
-                    Mexico: "Mexico",
-                    Germany: "Germany",
-                    Poland: "Poland",
-                    France: "France",
-                    Norway: "Norway",
-                    Italy: "Italy",
-                },
+                options: SUPPORTED_NATIONALITIES,
             },
         ],
         actions: [

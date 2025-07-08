@@ -3,6 +3,7 @@ import {
     type FilterCondition,
     type TableDataResourceType,
     type TableDataFilterState,
+    type DateFilterType,
 } from "../../../../../utils/projectTypes";
 
 export const getFiltersConditionsWithValue = (
@@ -96,4 +97,41 @@ export const getEnumFilterDefaultValue = <T extends TableDataResourceType>(
     });
 
     return defaultValues;
+};
+
+export const dateFilterTypesArray: DateFilterType[] = ["gte", "lte"];
+
+export const getDateFilterOptionName = (dateFilterType: DateFilterType) => {
+    switch (dateFilterType) {
+        case "lte":
+            return "To";
+        case "gte":
+        default:
+            return "From";
+    }
+};
+
+const getDateFilter = <T extends TableDataResourceType>(selectedFilters: TableDataFilterState<T>[], filterId: number) =>
+    selectedFilters.find((filter) => filter.id === filterId);
+
+export const getDateFilterDefaultValue = <T extends TableDataResourceType>(
+    selectedFilters: TableDataFilterState<T>[],
+    filterId: number,
+): Date | undefined => {
+    const selectedFilter = getDateFilter(selectedFilters, filterId);
+
+    if (!selectedFilter) return selectedFilter;
+
+    return selectedFilter.filterValue;
+};
+
+export const getDateFilterDefaultType = <T extends TableDataResourceType>(
+    selectedFilters: TableDataFilterState<T>[],
+    filterId: number,
+): DateFilterType => {
+    const selectedFilter = getDateFilter(selectedFilters, filterId);
+
+    if (!selectedFilter) return "gte";
+
+    return selectedFilter.filterCondition;
 };
