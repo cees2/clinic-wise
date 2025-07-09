@@ -44,7 +44,8 @@ const Employees = () => {
         filters: [
             { id: "name", name: "Name", type: FilterType.TEXT },
             { id: "gender", name: "Gender", type: FilterType.ENUM, options: { female: "Female", male: "Male" } },
-            // { id: "start_date", name: "Start date" type: FilterType.Date },
+            { id: "start_date", name: "Start date", type: FilterType.DATE },
+            { id: "date_of_birth", name: "Date of birth", type: FilterType.DATE },
             {
                 id: "nationality",
                 name: "Nationality",

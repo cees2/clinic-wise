@@ -27,11 +27,20 @@ const createMockPerson = (): Person => {
     };
 };
 
+const getMinutes15Multiplicity = () => faker.helpers.arrayElement([0, 15, 30, 45]);
+const getRandomWorkingHour = () => faker.helpers.arrayElement(Array.from({ length: 8 }, (_, index) => index + 8));
+
 export const generateFakeAppointments = (patients: Tables<"patients">, employees: Tables<"employees">) => {
     const mockAppointments: AppointmentFormType[] = [];
     for (let i = 0; i < 50; i++) {
+        const startDate = faker.date.recent({ days: 5 });
+        startDate.setMinutes(getMinutes15Multiplicity());
+        startDate.setSeconds(0);
+        startDate.setHours(getRandomWorkingHour());
+        // const startDate = format(faker.date.recent().setMinutes(getMinutes15Multiplicity()), DB_DATE_FORMAT_WITH_TIME);
+
         const newMockAppointment: AppointmentFormType = {
-            start_date: format(faker.date.recent(), DB_DATE_FORMAT_WITH_TIME),
+            start_date: startDate,
             patient_id: patients[i % 20].id,
             employee_id: employees[i % 20].id,
             duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),

@@ -8,7 +8,7 @@ import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils
 import { useConfirmation } from "../../utils/useConfirmation";
 import { Status } from "../../components/common/Status";
 import { format } from "date-fns";
-import { DISPLAY_DATE_FORMAT_WITH_TIME } from "../../utils/constants";
+import { DISPLAY_DATE_FORMAT_MINUTES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 
 const Appointments = () => {
@@ -30,7 +30,7 @@ const Appointments = () => {
             {
                 id: "start_date",
                 name: "Start date",
-                render: (item) => format(new Date(item.start_date), DISPLAY_DATE_FORMAT_WITH_TIME),
+                render: (item) => format(new Date(item.start_date), DISPLAY_DATE_FORMAT_MINUTES),
             },
             {
                 id: "additional_note",
