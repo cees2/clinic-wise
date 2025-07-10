@@ -1,3 +1,4 @@
+import { add, endOfDay, startOfDay, startOfYear } from "date-fns";
 import type { FieldErrors, FieldPath } from "react-hook-form";
 import type { CSSObjectWithLabel, GetOptionValue, OnChangeValue, StylesConfig } from "react-select";
 
@@ -14,6 +15,8 @@ export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     switch (errorConfig.type) {
         case "required":
             return "This field is required";
+        case "pattern":
+            return "Wrong pattern provided";
         default:
             return null;
     }
@@ -58,4 +61,28 @@ export const selectInputsStyles: StylesConfig = {
     input: (baseStyles) => {
         return { ...baseStyles, boxShadow: "none" };
     },
+};
+
+export const getDefaultMinDate = (minDate?: Date | "current", withTimePicker?: true): Date => {
+    if (minDate === "current") {
+        if (withTimePicker) return new Date();
+
+        return startOfDay(new Date());
+    }
+
+    if (minDate) return minDate;
+
+    return startOfYear(new Date("1950-01-01"));
+};
+
+export const getDefaultMaxDate = (maxDate?: Date | "current", withTimePicker?: true) => {
+    if (maxDate === "current") {
+        if (withTimePicker) return new Date();
+
+        return endOfDay(new Date());
+    }
+
+    if (maxDate) return maxDate;
+
+    return add(new Date(), { years: 1 });
 };

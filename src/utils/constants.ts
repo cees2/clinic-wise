@@ -1,4 +1,4 @@
-export const DEFAULT_DATA_STALE_TIME = 30 * 1000;
+export const DEFAULT_DATA_STALE_TIME = 15 * 1000;
 
 export const DB_DATE_FORMAT = "yyyy-MM-dd";
 export const DB_DATE_FORMAT_WITH_TIME = "yyyy-MM-dd HH:mm:ss";
@@ -16,3 +16,19 @@ export const SUPPORTED_NATIONALITIES = {
     Norway: "Norway",
     Italy: "Italy",
 };
+
+export const genderFormOptions = [
+    {
+        label: "Male",
+        value: "male",
+    },
+    {
+        label: "Female",
+        value: "female",
+    },
+];
+
+export const nationalityOptions = Object.values(SUPPORTED_NATIONALITIES).map((nationality) => ({
+    label: nationality,
+    value: nationality,
+}));

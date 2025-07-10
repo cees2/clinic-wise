@@ -3,6 +3,7 @@ import type { GridLayoutProps } from "../../../utils/projectTypes";
 
 export const GridLayout = styled.div<GridLayoutProps>`
     display: grid;
+    align-items: end;
     ${({ templateColumns, columnMinWidth, columnMaxWidth, columns }) => {
         if (templateColumns)
             return css`

@@ -33,11 +33,11 @@ const getRandomWorkingHour = () => faker.helpers.arrayElement(Array.from({ lengt
 export const generateFakeAppointments = (patients: Tables<"patients">, employees: Tables<"employees">) => {
     const mockAppointments: AppointmentFormType[] = [];
     for (let i = 0; i < 50; i++) {
-        const startDate = faker.date.recent({ days: 5 });
-        startDate.setMinutes(getMinutes15Multiplicity());
-        startDate.setSeconds(0);
-        startDate.setHours(getRandomWorkingHour());
-        // const startDate = format(faker.date.recent().setMinutes(getMinutes15Multiplicity()), DB_DATE_FORMAT_WITH_TIME);
+        const startDateObject = faker.date.recent({ days: 5 });
+        startDateObject.setMinutes(getMinutes15Multiplicity());
+        startDateObject.setSeconds(0);
+        startDateObject.setHours(getRandomWorkingHour());
+        const startDate = format(startDateObject, DB_DATE_FORMAT_WITH_TIME);
 
         const newMockAppointment: AppointmentFormType = {
             start_date: startDate,

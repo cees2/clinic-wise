@@ -7,9 +7,14 @@ import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
+import { useConfirmation } from "../../utils/useConfirmation";
+import { useMutateEmployee } from "../../services/hooks/employees/useMutateEmployee";
 
 const Employees = () => {
-    const config: TableDataConfig<Tables<"patients">> = {
+    const { confirmation } = useConfirmation();
+    const { mutationRemove } = useMutateEmployee();
+
+    const config: TableDataConfig<Tables<"employees">> = {
         columns: [
             {
                 id: "name",
@@ -57,7 +62,13 @@ const Employees = () => {
             {
                 id: "remove",
                 name: "Remove",
-                action: () => {},
+                action: (item) => {
+                    confirmation({
+                        onConfirm: () => {
+                            mutationRemove.mutate(item.id);
+                        },
+                    });
+                },
             },
             {
                 id: "edit",
@@ -65,7 +76,7 @@ const Employees = () => {
                 path: (item) => `/employees/${item.id}/edit`,
             },
         ],
-        resourceName: "patients",
+        resourceName: "employees",
     };
 
     const buttons: HeaderButton[] = [

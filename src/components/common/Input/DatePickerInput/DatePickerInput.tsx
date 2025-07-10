@@ -1,4 +1,4 @@
-import { add, format } from "date-fns";
+import { format } from "date-fns";
 import { Calendar } from "react-date-range";
 import { Dropdown } from "../../Dropdown/Dropdown";
 import {
@@ -13,12 +13,12 @@ import TimePicker from "./TimePicker";
 import styled from "styled-components";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
-import { getInputFieldErrorName } from "../../utils/inputs";
+import { getDefaultMaxDate, getDefaultMinDate, getInputFieldErrorName } from "../../utils/inputs";
 import { DB_DATE_FORMAT } from "../../../../utils/constants";
 
 interface Props<FormType extends Record<string, any>> {
-    minDate?: Date;
-    maxDate?: Date;
+    minDate?: Date | "current";
+    maxDate?: Date | "current";
     control: Control<FormType>;
     registerName: FieldPath<FormType>;
     withTimePicker?: true;
@@ -48,12 +48,16 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     label,
     rules,
 }: Props<FormType>) => {
-    const calendarMinDate = minDate ?? new Date();
-    const calendarMaxDate = maxDate ?? add(new Date(), { years: 1 });
+    const calendarMinDate = getDefaultMinDate(minDate, withTimePicker);
+    const calendarMaxDate = getDefaultMaxDate(maxDate, withTimePicker);
     const isRequired = rules?.required;
     const {
         field: { onChange, value },
-    } = useController<FormType>({ control, name: registerName, rules });
+    } = useController<FormType>({
+        control,
+        name: registerName,
+        rules,
+    });
     const formattedDate = format(new Date(value || Date.now()), "dd.MM.yyyy kk:mm");
     const { errors } = useFormState<FormType>({ control });
     const inputErrorName = getInputFieldErrorName(errors, registerName);

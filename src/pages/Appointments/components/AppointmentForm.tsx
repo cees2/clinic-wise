@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import type { Tables } from "../../../services/database.types";
 import { getAppointmentFormDefaultValues } from "../utils/utils";
 import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
+import { toast } from "react-toastify";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
     const queryClient = useQueryClient();
@@ -41,7 +42,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
     };
 
     const submitError = (errors: FieldErrors<AppointmentFormType>) => {
-        // console.error(errors);
+        toast.error("Invalid data");
     };
 
     const onSubmit = handleSubmit(submitSuccess, submitError);
@@ -74,6 +75,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 withTimePicker
                 label="Start date"
                 rules={{ required: true }}
+                minDate="current"
             />
             <FormSelectInput<EmployeeSelect, false, AppointmentFormType>
                 loadOptions={loadEmployees}

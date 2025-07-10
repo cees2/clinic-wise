@@ -10,16 +10,17 @@ import { useEffect } from "react";
 const EditAppointment = () => {
     const { appointmentId } = useParams<{ appointmentId: string }>();
     const { isLoading, data, error } = useGetAppointment(appointmentId ?? "");
+    const fetchingWentWrong = !appointmentId || error || (!isLoading && !data);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!appointmentId || error || (!isLoading && !data)) {
-            toast.error("Could not edit the appointment with given ID. Please choose a valid appointment");
+        if (fetchingWentWrong) {
+            toast.error("Could not fetch the appointment with given ID. Please choose a valid appointment");
             void navigate("/appointments");
         }
-    }, [appointmentId, data, error, navigate, isLoading]);
+    }, [fetchingWentWrong, navigate]);
 
-    if (!appointmentId || error || (!isLoading && !data)) {
+    if (fetchingWentWrong) {
         return null;
     }
 

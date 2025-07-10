@@ -16,8 +16,10 @@ export const uploadFakeAppointments = async (appointments: AppointmentFormType[]
     return data;
 };
 
-export const removeAppointment = async (appointmentId: number) => {
-    const { data, error } = await supabase.from("appointments").delete().eq("id", appointmentId);
+export const uploadFakePatients = async (patients: PatientFormType[]) => {
+    await supabase.from("patients").delete().gte("id", 0);
+
+    const { data, error } = await supabase.from("patients").insert(patients);
 
     if (error) {
         throw new Error(error.message);
@@ -26,10 +28,8 @@ export const removeAppointment = async (appointmentId: number) => {
     return data;
 };
 
-export const uploadFakePatients = async (patients: PatientFormType[]) => {
-    await supabase.from("patients").delete().gte("id", 0);
-
-    const { data, error } = await supabase.from("patients").insert(patients);
+export const removeAppointment = async (appointmentId: number) => {
+    const { data, error } = await supabase.from("appointments").delete().eq("id", appointmentId);
 
     if (error) {
         throw new Error(error.message);
@@ -97,7 +97,7 @@ export const getPatientsSelect = async (inputValue: string) => {
 };
 
 export const createAppointment = async (appointment: AppointmentFormType) => {
-    const { data, error } = await supabase.from("appointments").insert(appointment);
+    const { data, error } = await supabase.from("appointments").insert(appointment).select().single();
 
     if (error) {
         throw new Error(error.message);
@@ -115,6 +115,37 @@ export const getAppointment = async (appointmentId: string) => {
 
     if (error) {
         throw new Error(error.details);
+    }
+
+    return data;
+};
+
+export const createEmployee = async (employee: EmployeeFormType) => {
+    const { data, error } = await supabase.from("employees").insert(employee).select().single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const getEmployee = async (employeeId: string) => {
+    const { data, error } = await supabase.from("employees").select("*").eq("id", Number(employeeId)).single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const removeEmployee = async (employeeId: number) => {
+    const { data, error } = await supabase.from("employees").delete().eq("id", Number(employeeId));
+
+    console.log("ERROR", error);
+    if (error) {
+        throw new Error(error.message);
     }
 
     return data;

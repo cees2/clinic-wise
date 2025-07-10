@@ -15,7 +15,7 @@ export const useMutateAppointment = () => {
         },
         onSuccess: async () => {
             toast.success("The appointment removed successfully");
-            await queryClient.invalidateQueries({ queryKey: ["appointments"] });
+            await queryClient.refetchQueries({ queryKey: ["appointments"] });
         },
     });
 
@@ -24,10 +24,10 @@ export const useMutateAppointment = () => {
         onError: () => {
             toast.error("Could not create the appointment");
         },
-        onSuccess: async () => {
+        onSuccess: async (data) => {
             toast.success("The appointment created successfully");
-            await queryClient.invalidateQueries({ queryKey: ["appointments"] });
-            await navigate("/appointments");
+            await queryClient.refetchQueries({ queryKey: ["appointments"] });
+            await navigate(`/appointments/${data.id}/edit`);
         },
     });
 
