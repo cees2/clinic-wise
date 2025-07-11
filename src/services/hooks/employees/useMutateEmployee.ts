@@ -22,12 +22,12 @@ export const useMutateEmployee = () => {
 
     const mutationRemove = useMutation({
         mutationFn: (employeeId: number) => removeEmployee(employeeId),
-        onSuccess: () => {
+        onSuccess: async () => {
             toast.success("The appointment removed successfully");
+            await queryClient.invalidateQueries({ queryKey: ["employees"] });
         },
-        onError: async () => {
+        onError: () => {
             toast.error("Could not remove the appointment");
-            await queryClient.refetchQueries({ queryKey: ["employees"] });
         },
     });
 

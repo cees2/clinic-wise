@@ -7,8 +7,13 @@ import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils
 import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
+import { useConfirmation } from "../../utils/useConfirmation";
+import { useMutatePatient } from "../../services/hooks/patients/useMutatePatient";
 
 const Patients = () => {
+    const { confirmation } = useConfirmation();
+    const { mutationRemove } = useMutatePatient();
+
     const config: TableDataConfig<Tables<"patients">> = {
         columns: [
             {
@@ -42,12 +47,18 @@ const Patients = () => {
             {
                 id: "remove",
                 name: "Remove",
-                action: () => {},
+                action: (patient) => {
+                    confirmation({
+                        onConfirm: () => {
+                            mutationRemove.mutate(patient.id);
+                        },
+                    });
+                },
             },
             {
                 id: "edit",
                 name: "Edit",
-                path: (item) => `/appointments/${item.id}/edit`,
+                path: (patient) => `/patients/${patient.id}/edit`,
             },
         ],
         filters: [
