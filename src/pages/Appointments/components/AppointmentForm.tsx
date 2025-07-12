@@ -4,10 +4,9 @@ import { DatePickerInput } from "../../../components/common/Input/DatePickerInpu
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesSelect, getPatientsSelect } from "../../../services/api";
-import { appointmentStatusFormValues } from "../utils/constants";
 import { TextAreaInput } from "../../../components/common/Input/TextAreaInput";
 import { GridForm } from "../../../components/common/Form/GridForm";
-import type { AppointmentFormType } from "../../../utils/projectTypes";
+import type { AppointmentFormType, AppointmentUpdateType } from "../../../utils/projectTypes";
 import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "../../../services/database.types";
@@ -16,8 +15,9 @@ import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 import { toast } from "react-toastify";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
+    const isEdit = Boolean(appointmentData);
     const queryClient = useQueryClient();
-    const { mutationCreate } = useMutateAppointment();
+    const { mutationCreate, mutationUpdate } = useMutateAppointment();
     const { control, register, handleSubmit, formState } = useForm<AppointmentFormType>({
         defaultValues: getAppointmentFormDefaultValues(appointmentData),
     });
@@ -38,7 +38,12 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
     };
 
     const submitSuccess = (data: AppointmentFormType) => {
-        mutationCreate.mutate(data);
+        if (isEdit && appointmentData?.id) {
+            const updateData: AppointmentUpdateType = { ...data, id: appointmentData.id };
+            mutationUpdate.mutate(updateData);
+        } else {
+            mutationCreate.mutate(data);
+        }
     };
 
     const submitError = (errors: FieldErrors<AppointmentFormType>) => {
@@ -96,13 +101,6 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
                 label="Patient"
                 rules={{ required: true }}
                 defaultValue={appointmentData?.patient}
-            />
-            <FormSelectInput
-                options={appointmentStatusFormValues}
-                registerName="status"
-                control={control}
-                label={"Status"}
-                rules={{ required: true }}
             />
             <TextAreaInput register={register} registerName="additional_note" label="Additional note" rows={3} />
         </GridForm>

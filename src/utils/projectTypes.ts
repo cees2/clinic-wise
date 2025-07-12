@@ -191,9 +191,12 @@ export enum SortTableEnum {
     NONE,
 }
 
-export type AppointmentFormType = Partial<Omit<Tables<"appointments">, "created_at" | "id">>;
+export type AppointmentFormType = Partial<Omit<Tables<"appointments">, "created_at" | "id" | "status">>;
+export type AppointmentUpdateType = Partial<Omit<Tables<"appointments">, "created_at">>;
 export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "id">>;
+export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
 export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">>;
+export type EmployeeUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
 
 export interface Person {
     name: string;
@@ -203,6 +206,7 @@ export interface Person {
     address: string;
     gender: string;
     phone_number: string;
+    document_id: string;
 }
 
 export interface ModalContextType {

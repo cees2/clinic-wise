@@ -41,7 +41,7 @@ const Appointments = () => {
                 name: "Patient",
                 foreignTableColumnsName: ["name", "surname", "id"],
                 render: (item) => (
-                    <Link to={`/patients/${item.patient_id.id}`} className="text-green-600 font-bold">
+                    <Link to={`/patients/${item.patient_id.id}/edit`} className="text-green-600 font-bold">
                         {`${item.patient_id.name} ${item.patient_id.surname}`}
                     </Link>
                 ),
@@ -52,7 +52,7 @@ const Appointments = () => {
                 foreignTableColumnsName: ["name", "surname", "id"],
                 render: (item) => (
                     <Link
-                        to={`/employees/${item.employee_id.id}`}
+                        to={`/employees/${item.employee_id.id}/edit`}
                         className="text-green-600 font-bold"
                     >{`${item.employee_id.name} ${item.employee_id.surname}`}</Link>
                 ),

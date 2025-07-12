@@ -11,4 +11,5 @@ export const getPatientFormDefaultValues = (patient?: PatientFormType): PatientF
     phone_number: patient?.phone_number ?? "",
     nationality: patient?.nationality ?? "",
     start_date: patient?.start_date ?? format(new Date(), DB_DATE_FORMAT),
+    document_id: patient?.document_id ?? "",
 });

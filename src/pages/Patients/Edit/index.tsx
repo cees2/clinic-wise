@@ -30,7 +30,7 @@ const EditPatient = () => {
 
     return (
         <FormLayout>
-            <Header title="New patient" as="h3" />
+            <Header title={`Edit patient "${data.name} ${data.surname}"`} as="h3" />
             <PatientForm patientData={data} />
         </FormLayout>
     );

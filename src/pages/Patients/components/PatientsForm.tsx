@@ -1,5 +1,5 @@
 import { useForm, type FieldErrors } from "react-hook-form";
-import type { PatientFormType } from "../../../utils/projectTypes";
+import type { PatientFormType, PatientUpdateType } from "../../../utils/projectTypes";
 import { getPatientFormDefaultValues } from "../utils/utils";
 import type { Tables } from "../../../services/database.types";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +21,9 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
     const { mutationCreate, mutationUpdate } = useMutatePatient();
 
     const submitSuccess = (data: PatientFormType) => {
-        if (isEdit) {
-            mutationUpdate.mutate(data);
+        if (isEdit && patientData?.id) {
+            const updateData: PatientUpdateType = { ...data, id: patientData.id };
+            mutationUpdate.mutate(updateData);
         } else {
             mutationCreate.mutate(data);
         }
@@ -99,6 +100,14 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
                 rules={{ required: true }}
                 minDate={sub(new Date(), { days: 14 })}
                 maxDate={add(new Date(), { days: 14 })}
+            />
+            <TextInput
+                register={register}
+                control={control}
+                registerName="document_id"
+                label="Document ID"
+                rules={{ pattern: /^\S{3} \d{2}$/, required: true }}
+                helpText="Format: ABC 01"
             />
         </GridForm>
     );

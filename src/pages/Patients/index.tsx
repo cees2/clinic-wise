@@ -42,6 +42,10 @@ const Patients = () => {
                 id: "phone_number",
                 name: "Phone number",
             },
+            {
+                id: "document_id",
+                name: "Document ID",
+            },
         ],
         actions: [
             {

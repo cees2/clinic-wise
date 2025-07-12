@@ -1,4 +1,11 @@
-import type { AppointmentFormType, EmployeeFormType, PatientFormType } from "../utils/projectTypes";
+import type {
+    AppointmentFormType,
+    AppointmentUpdateType,
+    EmployeeFormType,
+    EmployeeUpdateType,
+    PatientFormType,
+    PatientUpdateType,
+} from "../utils/projectTypes";
 import type { EmployeeSelect } from "./apiTypes";
 import { supabase } from "./services";
 
@@ -46,6 +53,21 @@ export const getAppointment = async (appointmentId: string) => {
 
     if (error) {
         throw new Error(error.details);
+    }
+
+    return data;
+};
+
+export const updateAppointment = async (appointment: AppointmentUpdateType) => {
+    const { data, error } = await supabase
+        .from("appointments")
+        .update(appointment)
+        .eq("id", appointment.id)
+        .select()
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
     }
 
     return data;
@@ -119,6 +141,16 @@ export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSe
     return data;
 };
 
+export const updateEmployee = async (employee: EmployeeUpdateType) => {
+    const { data, error } = await supabase.from("employees").update(employee).eq("id", employee.id).select().single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
 // PATIENT
 
 export const createPatient = async (patient: PatientFormType) => {
@@ -131,8 +163,8 @@ export const createPatient = async (patient: PatientFormType) => {
     return data;
 };
 
-export const updatePatient = async (patient: PatientFormType) => {
-    const { data, error } = await supabase.from("patients").update(patient).select().single();
+export const updatePatient = async (patient: PatientUpdateType) => {
+    const { data, error } = await supabase.from("patients").update(patient).eq("id", patient.id).select().single();
 
     if (error) {
         throw new Error(error.message);
@@ -144,7 +176,6 @@ export const updatePatient = async (patient: PatientFormType) => {
 export const removePatient = async (patientId: number) => {
     const { data, error } = await supabase.from("patients").delete().eq("id", Number(patientId));
 
-    console.log("ERROR", error);
     if (error) {
         throw new Error(error.message);
     }

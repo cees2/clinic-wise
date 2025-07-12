@@ -1,5 +1,5 @@
 import { useForm, type FieldErrors } from "react-hook-form";
-import type { EmployeeFormType } from "../../../utils/projectTypes";
+import type { EmployeeFormType, EmployeeUpdateType } from "../../../utils/projectTypes";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { useNavigate } from "react-router-dom";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
@@ -13,14 +13,20 @@ import { getEmployeeFormDefaultValues } from "../utils/utils";
 import { toast } from "react-toastify";
 
 export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employees"> }) => {
+    const isEdit = Boolean(employeeData);
     const { register, control, handleSubmit, formState } = useForm<EmployeeFormType>({
         defaultValues: getEmployeeFormDefaultValues(employeeData),
     });
     const navigate = useNavigate();
-    const { mutationCreate } = useMutateEmployee();
+    const { mutationCreate, mutationUpdate } = useMutateEmployee();
 
     const submitSuccess = (data: EmployeeFormType) => {
-        mutationCreate.mutate(data);
+        if (isEdit && employeeData?.id) {
+            const updateData: EmployeeUpdateType = { ...data, id: employeeData.id };
+            mutationUpdate.mutate(updateData);
+        } else {
+            mutationCreate.mutate(data);
+        }
     };
 
     const submitError = (errors: FieldErrors<EmployeeFormType>) => {

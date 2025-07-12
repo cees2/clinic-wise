@@ -45,6 +45,10 @@ const Employees = () => {
                 name: "Nationality",
                 render: (employee) => <NationalityWithFlag nationality={employee.nationality} />,
             },
+            {
+                id: "document_id",
+                name: "Document ID",
+            },
         ],
         filters: [
             { id: "name", name: "Name", type: FilterType.TEXT },

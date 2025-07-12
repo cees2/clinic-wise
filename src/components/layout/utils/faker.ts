@@ -24,6 +24,7 @@ const createMockPerson = (): Person => {
         address: `${fakerEN.location.streetAddress({ useFullAddress: false })} ${fakerEN.location.city()}, ${fakerEN.location.state()}`,
         gender,
         phone_number: faker.phone.number(),
+        document_id: `${faker.string.alpha(3)} ${faker.number.int({ min: 10, max: 99 })}`,
     };
 };
 
@@ -73,7 +74,6 @@ export const generateFakeEmployees = () => {
     for (let i = 0; i < 20; i++) {
         const newEmployee: EmployeeFormType = {
             ...createMockPerson(),
-            document_id: `${faker.string.alpha(3)} ${faker.number.int({ min: 10, max: 99 })}`,
             start_date: format(faker.date.past({ years: 4 }), DB_DATE_FORMAT),
         };
 
