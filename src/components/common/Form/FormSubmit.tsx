@@ -14,13 +14,11 @@ export const FormSubmit = <FormType extends Record<string, any>>({
     formState,
     onCancel,
     children,
+    customButtons,
+    ...restProps
 }: FormSubmitProps<FormType>) => {
     const { isDirty, isLoading, isSubmitting } = formState;
     const navigate = useNavigate();
-
-    // console.log("isDirty", isDirty);
-    // console.log("isLoading", isLoading);
-    // console.log("isSubmitting", isSubmitting);
 
     const cancelButtonClickHandler = async () => {
         if (onCancel) {
@@ -30,17 +28,21 @@ export const FormSubmit = <FormType extends Record<string, any>>({
         }
     };
 
+    const buttons = customButtons ?? (
+        <FormButtons>
+            {isDirty && (
+                <Button type="button" variant="cancel" onClick={() => void cancelButtonClickHandler()}>
+                    Cancel
+                </Button>
+            )}
+            <Button type="submit">Save</Button>
+        </FormButtons>
+    );
+
     return (
-        <form onSubmit={(event: React.SyntheticEvent) => void onSubmit(event)}>
+        <form onSubmit={(event: React.SyntheticEvent) => void onSubmit(event)} {...restProps}>
             {children}
-            <FormButtons>
-                <Button type="submit">Save</Button>
-                {isDirty && (
-                    <Button type="button" variant="cancel" onClick={() => void cancelButtonClickHandler()}>
-                        Cancel
-                    </Button>
-                )}
-            </FormButtons>
+            {buttons}
         </form>
     );
 };

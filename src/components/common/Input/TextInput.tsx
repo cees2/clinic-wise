@@ -10,8 +10,9 @@ import { InputLabel, StyledInput } from "./common/InputCommon";
 import { getInputFieldErrorName } from "../utils/inputs";
 import { ErrorMessage } from "./common/ErrorMessage";
 import { InputHelp } from "./common/InputHelp";
+import type { InputHTMLAttributes } from "react";
 
-interface Props<FormType extends Record<string, any>> {
+interface Props<FormType extends Record<string, any>> extends InputHTMLAttributes<HTMLInputElement> {
     register: UseFormRegister<FormType>;
     registerName: FieldPath<FormType>;
     label: string;
@@ -27,16 +28,18 @@ export const TextInput = <FormType extends Record<string, any>>({
     rules,
     control,
     helpText,
+    className,
+    ...restProps
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const isRequired = rules?.required;
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     return (
-        <StyledInput>
+        <StyledInput className={className}>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             {helpText && <InputHelp>{helpText}</InputHelp>}
-            <input type="text" id={registerName} {...register(registerName, rules)} />
+            <input type="text" id={registerName} {...register(registerName, rules)} {...restProps} />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
         </StyledInput>
     );

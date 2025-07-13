@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, RefObject } from "react";
+import type { ButtonHTMLAttributes, FormHTMLAttributes, RefObject } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, Path, RegisterOptions } from "react-hook-form";
@@ -247,11 +247,12 @@ export interface GridLayoutProps {
     gap?: string;
 }
 
-export interface FormSubmitProps<FormType extends Record<string, any>> {
+export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement> {
     onSubmit: (event: React.SyntheticEvent) => Promise<void>;
     children: React.ReactNode;
     formState: FormState<FormType>;
     onCancel?: () => void;
+    customButtons?: React.ReactNode;
 }
 
 export interface FormSelectInputProps<
@@ -316,4 +317,9 @@ export interface DropdownMenuProps {
     children: React.ReactNode;
     onHideDropdown?: () => void;
     className?: string;
+}
+
+export interface LoginApi {
+    email: string;
+    password: string;
 }

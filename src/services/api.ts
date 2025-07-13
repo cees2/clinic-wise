@@ -3,6 +3,7 @@ import type {
     AppointmentUpdateType,
     EmployeeFormType,
     EmployeeUpdateType,
+    LoginApi,
     PatientFormType,
     PatientUpdateType,
 } from "../utils/projectTypes";
@@ -223,6 +224,46 @@ export const getPatient = async (patientId: string) => {
 
     if (error) {
         throw new Error(error.message);
+    }
+
+    return data;
+};
+
+// AUTHENTICATION
+
+export const loginUser = async (loginData: LoginApi) => {
+    const { data, error } = await supabase.auth.signInWithPassword(loginData);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const registerUser = async (registerData) => {
+    const { data, error } = await supabase.auth.signUp(registerData);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const logoutUser = async () => {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+};
+
+export const getUser = async () => {
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error) {
+        // throw new Error(error.message);
     }
 
     return data;
