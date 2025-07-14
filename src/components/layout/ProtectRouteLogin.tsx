@@ -16,7 +16,7 @@ export const ProtectRouteLogin = ({ children }: { children: React.ReactNode }) =
         } else {
             await navigate("/login");
         }
-    }, []);
+    }, [checkIfUserIsLoggedIn, navigate]);
 
     useEffect(() => void checkLoggedIn(), [checkLoggedIn]);
 

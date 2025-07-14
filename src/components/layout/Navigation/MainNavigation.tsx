@@ -18,6 +18,8 @@ const StyledNavigation = styled.aside`
     position: sticky;
     top: 0;
     left: 0;
+    grid-column: 1 / 2;
+    grid-row: 1 / -1;
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
@@ -30,6 +32,7 @@ const NavigationList = styled.ul`
     display: flex;
     flex-direction: column;
     row-gap: 0.8rem;
+    padding: 0 0.8rem;
 `;
 
 const mainNavigationConfig: MainNavigationConfigItem[] = [

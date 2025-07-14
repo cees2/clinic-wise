@@ -29,7 +29,7 @@ const Login = () => {
     });
     const { login } = useAuthentication();
 
-    const submitSuccess = async (loginData: LoginApi) => {
+    const submitSuccess = (loginData: LoginApi) => {
         login.mutate(loginData);
     };
 
@@ -47,7 +47,7 @@ const Login = () => {
                 onSubmit={onSubmit}
                 customButtons={<Button>Login</Button>}
             >
-                <img src="../../public/logo.png" alt="ClinicWise logo" className="h-[12rem] w-[12rem]" />
+                <img src="/logo.png" alt="ClinicWise logo" className="h-[12rem] w-[12rem]" />
                 <TextInput
                     register={register}
                     control={control}

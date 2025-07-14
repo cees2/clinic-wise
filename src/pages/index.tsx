@@ -18,34 +18,34 @@ import AppLayout from "../components/layout/AppLayout";
 
 const MainLayout = () => {
     return (
-        <div className="flex">
-            <Routes>
-                <Route element={<AppLayout />}>
-                    <Route index element={<Navigate to="dashboard" />} />
-                    <Route path="dashboard" Component={Dashboard} />
-                    <Route path="appointments">
-                        <Route path="" Component={Appointments} />
-                        <Route path="new" Component={NewAppointment} />
-                        <Route path=":appointmentId/edit" Component={EditAppointment} />
-                    </Route>
-                    <Route path="patients">
-                        <Route path="" Component={Patients} />
-                        <Route path="new" Component={NewPatient} />
-                        <Route path=":patientId/edit" Component={EditPatient} />
-                    </Route>
-                    <Route path="employees">
-                        <Route path="" Component={Employees} />
-                        <Route path="new" Component={NewEmployee} />
-                        <Route path=":employeeId/edit" Component={EditEmployee} />
-                    </Route>
-                    <Route path="rooms" Component={Rooms} />
-                    <Route path="availabilities" Component={Availabilities} />
-                    <Route path="settings" Component={Settings} />
-                    <Route path="*" Component={Page404} />
+        <Routes>
+            <Route element={<AppLayout />}>
+                <Route index element={<Navigate to="dashboard" />} />
+                <Route path="dashboard" Component={Dashboard} />
+                <Route path="appointments">
+                    <Route path="" Component={Appointments} />
+                    <Route path="new" Component={NewAppointment} />
+                    <Route path=":appointmentId/edit" Component={EditAppointment} />
                 </Route>
-                <Route path="login" Component={Login} />
-            </Routes>
-        </div>
+                <Route path="patients">
+                    <Route path="" Component={Patients} />
+                    <Route path="new" Component={NewPatient} />
+                    <Route path=":patientId/edit" Component={EditPatient} />
+                </Route>
+                <Route path="employees">
+                    <Route path="" Component={Employees} />
+                    <Route path="new" Component={NewEmployee} />
+                    <Route path=":employeeId/edit" Component={EditEmployee} />
+                </Route>
+                <Route path="rooms" Component={Rooms} />
+                <Route path="availabilities" Component={Availabilities} />
+                <Route path="settings" Component={Settings} />
+                <Route path="*" Component={Page404} />
+            </Route>
+            <Route index element={<Navigate to="login" />} />
+            <Route path="login" Component={Login} />
+            <Route path="*" Component={Page404} />
+        </Routes>
     );
 };
 
