@@ -42,21 +42,22 @@ export const useAuthentication = () => {
     });
 
     const checkIfUserIsLoggedIn = useCallback(async () => {
+        let isAuthenticated = false;
         const { session } = await queryClient.fetchQuery({
             queryFn: getSession,
             queryKey: ["session"],
         });
 
-        if (!session) return false;
-
-        if (session.user.role === "authenticated") return true;
+        if (session?.user.role === "authenticated") isAuthenticated = true;
 
         const { user } = await queryClient.fetchQuery({
             queryFn: getUser,
             queryKey: ["user"],
         });
 
-        return user.role === "authenticated";
+        if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
+
+        return { isAuthenticated, user };
     }, [queryClient]);
 
     return { login, register, logout, checkIfUserIsLoggedIn };

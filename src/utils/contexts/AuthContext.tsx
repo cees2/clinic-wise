@@ -1,33 +1,45 @@
 import { createContext, use, useEffect, useMemo, useState } from "react";
 import type { AuthContextType } from "../projectTypes";
 import { useAuthentication } from "../../services/hooks/authentication/useAuthentication";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner";
+import type { User } from "@supabase/supabase-js";
 
 const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
     setIsAuthenticated: () => {},
+    user: undefined,
+    setUser: () => {},
 });
 
 export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+    const [isCheckingAuthentication, setIsCheckingAuthentication] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [user, setUser] = useState<undefined | User>(undefined);
     const { checkIfUserIsLoggedIn } = useAuthentication();
 
     useEffect(() => {
         const checkLogin = async () => {
-            const isLoggedIn = await checkIfUserIsLoggedIn();
+            const { isAuthenticated, user: fetchedUser } = await checkIfUserIsLoggedIn();
 
-            setIsAuthenticated(isLoggedIn);
+            setIsAuthenticated(isAuthenticated);
+            setIsCheckingAuthentication(false);
+            setUser(fetchedUser);
         };
 
         void checkLogin();
-    }, [setIsAuthenticated, checkIfUserIsLoggedIn]);
+    }, [setIsAuthenticated, checkIfUserIsLoggedIn, setIsCheckingAuthentication, setUser]);
 
     const memoizedAuthContext = useMemo(
         () => ({
             isAuthenticated,
             setIsAuthenticated,
+            user,
+            setUser,
         }),
-        [isAuthenticated, setIsAuthenticated],
+        [isAuthenticated, setIsAuthenticated, user, setUser],
     );
+
+    if (isCheckingAuthentication) return <LoadingSpinner />;
 
     return <AuthContext value={memoizedAuthContext}>{children}</AuthContext>;
 };

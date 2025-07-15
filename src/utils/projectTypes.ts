@@ -4,6 +4,7 @@ import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, Path, RegisterOptions } from "react-hook-form";
 import type { Props as SelectProps } from "react-select";
 import type { KnownTarget } from "styled-components/dist/types";
+import type { User } from "@supabase/supabase-js";
 
 export interface MainNavigationConfigItem {
     to: string;
@@ -245,6 +246,7 @@ export interface GridLayoutProps {
     columnGap?: string;
     rowGap?: string;
     gap?: string;
+    className?: string;
 }
 
 export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement> {
@@ -327,4 +329,18 @@ export interface LoginApi {
 export interface AuthContextType {
     isAuthenticated: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+    user?: User;
+    setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+}
+
+export interface UpdateUserFormType {
+    email: string;
+    fullName: string;
+    avatar: string;
+}
+
+export interface SettingsFormSectionProps<FormType extends Record<string, any>>
+    extends GridLayoutProps,
+        FormSubmitProps<FormType> {
+    headerTitle: string;
 }
