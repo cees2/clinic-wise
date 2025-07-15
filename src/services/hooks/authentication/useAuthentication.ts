@@ -4,8 +4,10 @@ import { getSession, getUser, loginUser, logoutUser, registerUser } from "../../
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
+import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 export const useAuthentication = () => {
+    const { setIsAuthenticated } = useAuthContext();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -14,7 +16,10 @@ export const useAuthentication = () => {
         onError: () => {
             toast.error("Wrong credentials provided");
         },
-        onSuccess: () => void navigate("/dashboard", { replace: true }),
+        onSuccess: () => {
+            setIsAuthenticated(true);
+            void navigate("/dashboard", { replace: true });
+        },
     });
 
     const register = useMutation({
@@ -30,7 +35,10 @@ export const useAuthentication = () => {
         onError: () => {
             toast.error("Could not log out");
         },
-        onSuccess: () => void navigate("/login"),
+        onSuccess: () => {
+            setIsAuthenticated(false);
+            void navigate("/login");
+        },
     });
 
     const checkIfUserIsLoggedIn = useCallback(async () => {

@@ -8,6 +8,7 @@ import { ConfirmationProvider } from "./utils/useConfirmation";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DEFAULT_DATA_STALE_TIME } from "./utils/constants";
+import { AuthContextProvider } from "./utils/contexts/AuthContext";
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: DEFAULT_DATA_STALE_TIME } } });
 
@@ -16,10 +17,12 @@ function App() {
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <ConfirmationProvider>
-                    <ToastContainer />
-                    <ReactQueryDevtools initialIsOpen={false} />
-                    <GlobalStyles />
-                    <MainLayout />
+                    <AuthContextProvider>
+                        <ToastContainer />
+                        <ReactQueryDevtools initialIsOpen={false} />
+                        <GlobalStyles />
+                        <MainLayout />
+                    </AuthContextProvider>
                 </ConfirmationProvider>
             </QueryClientProvider>
         </BrowserRouter>

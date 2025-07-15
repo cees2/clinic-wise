@@ -6,6 +6,10 @@ import { useAuthentication } from "../../../services/hooks/authentication/useAut
 import type { LoginApi } from "../../../utils/projectTypes";
 import styled from "styled-components";
 import { FormSubmit } from "../../../components/common/Form/FormSubmit";
+import { useAuthContext } from "../../../utils/contexts/AuthContext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
 
 const StyledLogin = styled.div`
     height: 100vh;
@@ -28,6 +32,14 @@ const Login = () => {
         },
     });
     const { login } = useAuthentication();
+    const { isAuthenticated } = useAuthContext();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            void navigate("/dashboard");
+        }
+    }, [isAuthenticated, navigate]);
 
     const submitSuccess = (loginData: LoginApi) => {
         login.mutate(loginData);
@@ -38,6 +50,8 @@ const Login = () => {
     };
 
     const onSubmit = handleSubmit(submitSuccess, submitError);
+
+    if (isAuthenticated) return <LoadingSpinner />;
 
     return (
         <StyledLogin>

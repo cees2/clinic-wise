@@ -42,7 +42,7 @@ const MainLayout = () => {
                 <Route path="settings" Component={Settings} />
                 <Route path="*" Component={Page404} />
             </Route>
-            <Route index element={<Navigate to="login" />} />
+            <Route index element={<Navigate to="login" replace />} />
             <Route path="login" Component={Login} />
             <Route path="*" Component={Page404} />
         </Routes>

@@ -1,24 +1,21 @@
 import type React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthentication } from "../../services/hooks/authentication/useAuthentication";
+import { useAuthContext } from "../../utils/contexts/AuthContext";
 
 export const ProtectRouteLogin = ({ children }: { children: React.ReactNode }) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const { isAuthenticated } = useAuthContext();
     const navigate = useNavigate();
-    const { checkIfUserIsLoggedIn } = useAuthentication();
 
-    const checkLoggedIn = useCallback(async () => {
-        const authenticated = await checkIfUserIsLoggedIn();
+    useEffect(() => {
+        const checkLoggedIn = async () => {
+            if (!isAuthenticated) {
+                await navigate("/login");
+            }
+        };
 
-        if (authenticated) {
-            setIsAuthenticated(authenticated);
-        } else {
-            await navigate("/login");
-        }
-    }, [checkIfUserIsLoggedIn, navigate]);
-
-    useEffect(() => void checkLoggedIn(), [checkLoggedIn]);
+        void checkLoggedIn();
+    }, [isAuthenticated, navigate]);
 
     if (!isAuthenticated) return null;
 
