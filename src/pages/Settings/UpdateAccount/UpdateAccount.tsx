@@ -1,19 +1,36 @@
 import { useForm } from "react-hook-form";
-import { useAuthContext } from "../../../utils/contexts/AuthContext";
 import { SettingsFormSection } from "../components/SettingsFormSection";
-import type { UpdateUserFormType } from "../../../utils/projectTypes";
+import type { UpdateUserCompleteInfo, UpdateUserFormType } from "../../../utils/projectTypes";
 import { TextInput } from "../../../components/common/Input/TextInput";
 import { FileInput } from "../../../components/common/Input/FileInput";
+import { Button } from "../../../components/layout/Button";
+import { useMutateUser } from "../../../services/hooks/user/useMutateUser";
+import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 const UpdateAccount = () => {
     const { user } = useAuthContext();
-    const { handleSubmit, register, control, formState } = useForm<UpdateUserFormType>();
+    const { handleSubmit, register, control, formState } = useForm<UpdateUserFormType>({
+        defaultValues: {
+            email: user?.email ?? "",
+            fullName: (user?.user_metadata.fullName as string | undefined) ?? "",
+            avatar: (user?.user_metadata.avatar as string | undefined) ?? "",
+        },
+    });
+    const { mutateUpdate } = useMutateUser();
 
-    const submitSuccess = () => {};
+    const submitSuccess = (data: UpdateUserFormType) => {
+        // TODO: DO sth on no user presence
+        if (!user) return;
+
+        const dataWithUserId: UpdateUserCompleteInfo = { ...data, userId: user.id };
+        mutateUpdate.mutate(dataWithUserId);
+    };
 
     const submitError = () => {};
 
     const onSubmit = handleSubmit(submitSuccess, submitError);
+
+    const customButtons = <Button className="mt-12">Update</Button>;
 
     return (
         <SettingsFormSection
@@ -22,6 +39,7 @@ const UpdateAccount = () => {
             formState={formState}
             columns={2}
             gap="2.4rem"
+            customButtons={customButtons}
         >
             <TextInput
                 type="email"
@@ -38,13 +56,7 @@ const UpdateAccount = () => {
                 label="Full name"
                 rules={{ required: true }}
             />
-            <FileInput
-                register={register}
-                control={control}
-                registerName="avatar"
-                label="Avatar"
-                rules={{ required: true }}
-            />
+            <FileInput register={register} control={control} registerName="avatar" label="Avatar" />
         </SettingsFormSection>
     );
 };

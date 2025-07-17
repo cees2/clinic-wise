@@ -1,14 +1,12 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { LoginApi } from "../../../utils/projectTypes";
 import { getSession, getUser, loginUser, logoutUser, registerUser } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { useCallback } from "react";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 export const useAuthentication = () => {
     const { setIsAuthenticated } = useAuthContext();
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const login = useMutation({
@@ -41,24 +39,19 @@ export const useAuthentication = () => {
         },
     });
 
-    const checkIfUserIsLoggedIn = useCallback(async () => {
+    const checkIfUserIsLoggedIn = async () => {
         let isAuthenticated = false;
-        const { session } = await queryClient.fetchQuery({
-            queryFn: getSession,
-            queryKey: ["session"],
-        });
 
-        if (session?.user.role === "authenticated") isAuthenticated = true;
+        const { session: sessionData } = await getSession();
 
-        const { user } = await queryClient.fetchQuery({
-            queryFn: getUser,
-            queryKey: ["user"],
-        });
+        if (sessionData?.user.role === "authenticated") isAuthenticated = true;
+
+        const { user } = await getUser();
 
         if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
 
         return { isAuthenticated, user };
-    }, [queryClient]);
+    };
 
     return { login, register, logout, checkIfUserIsLoggedIn };
 };

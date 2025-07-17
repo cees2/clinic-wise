@@ -6,9 +6,11 @@ import type {
     LoginApi,
     PatientFormType,
     PatientUpdateType,
+    UpdateUserCompleteInfo,
+    UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { EmployeeSelect } from "./apiTypes";
-import { supabase } from "./services";
+import { supabase, supabaseURL } from "./services";
 
 // TODO: possible refactor
 
@@ -99,7 +101,6 @@ export const getEmployee = async (employeeId: string) => {
 export const removeEmployee = async (employeeId: number) => {
     const { data, error } = await supabase.from("employees").delete().eq("id", Number(employeeId));
 
-    console.log("ERROR", error);
     if (error) {
         throw new Error(error.message);
     }
@@ -278,3 +279,66 @@ export const getSession = async () => {
 
     return data;
 };
+
+// USER
+
+const updateUserData = async (userCompleteData: UpdateUserRequestType, avatarFullPath?: string) => {
+    const { data, error } = await supabase.auth.updateUser(userCompleteData);
+
+    if (error && avatarFullPath) {
+        await supabase.storage.from("user-avatars").remove([avatarFullPath]);
+
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
+    const { avatar, userId } = updatedUser;
+    const userAvatarUploadedAndNotChanged = typeof avatar === "string";
+
+    if (userAvatarUploadedAndNotChanged) {
+        const userCompleteData = {
+            email: updatedUser.email,
+            data: {
+                fullName: updatedUser.fullName,
+                avatarURL: avatar,
+            },
+        };
+
+        return updateUserData(userCompleteData);
+    } else {
+        const newAvatarName = `user-${userId}-avatar`;
+        const avatarURL = `${supabaseURL}/storage/v1/object/public/user-avatars/${newAvatarName}`;
+        const avatarItem = avatar.item(0);
+        let updateUserAvatarsBucketData;
+
+        if (avatarItem) {
+            const { error, data } = await supabase.storage.from("user-avatars").update(newAvatarName, avatarItem);
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            updateUserAvatarsBucketData = data;
+        }
+
+        const { fullPath } = updateUserAvatarsBucketData ?? {};
+        const userCompleteData = {
+            email: updatedUser.email,
+            data: {
+                fullName: updatedUser.fullName,
+                avatarURL,
+            },
+        };
+
+        return updateUserData(userCompleteData, fullPath);
+    }
+};
+
+// TODO: DO PRZETESTOWANIA CASES:
+// - uzytkownik nie ma avatara i nie zalaczyl nowego
+// - uzytkownik nie ma avatara i zalaczyl nowy
+// - uzytkownik ma avatar i nie zmienil go
+// - uzytkownik ma avatar i zmienil go

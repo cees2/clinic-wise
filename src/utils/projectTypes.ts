@@ -329,14 +329,28 @@ export interface LoginApi {
 export interface AuthContextType {
     isAuthenticated: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-    user?: User;
-    setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+    user?: User | null;
+    setUser: React.Dispatch<React.SetStateAction<User | undefined | null>>;
 }
 
 export interface UpdateUserFormType {
     email: string;
     fullName: string;
-    avatar: string;
+    avatar: FileList | string;
+}
+
+export interface UpdateUserCompleteInfo extends UpdateUserFormType {
+    userId: string;
+}
+
+export interface UpdateUserRequestType {
+    email: string;
+    data: { fullName: string; avatarURL: string };
+}
+
+export interface UpdatePasswordType {
+    password: string;
+    passwordConfirm: string;
 }
 
 export interface SettingsFormSectionProps<FormType extends Record<string, any>>
