@@ -12,7 +12,6 @@ const MainBarUser = () => {
     const userName = user?.user_metadata.fullName as string;
     const avatarURL = (user?.user_metadata.avatarURL as string | undefined) ?? "./logo.png";
 
-    console.log(avatarURL);
     return (
         <div className="flex items-center gap-x-3">
             <Image src={avatarURL} alt={userName ? `Avatar of ${userName}` : "User avatar"} />

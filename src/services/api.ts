@@ -296,9 +296,9 @@ const updateUserData = async (userCompleteData: UpdateUserRequestType, avatarFul
 
 export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
     const { avatar, userId } = updatedUser;
-    const userAvatarUploadedAndNotChanged = typeof avatar === "string";
+    const userDidNotChangeOrUploadAvatar = typeof avatar === "string" || !avatar;
 
-    if (userAvatarUploadedAndNotChanged) {
+    if (userDidNotChangeOrUploadAvatar) {
         const userCompleteData = {
             email: updatedUser.email,
             data: {

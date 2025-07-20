@@ -13,7 +13,7 @@ const UpdateAccount = () => {
         defaultValues: {
             email: user?.email ?? "",
             fullName: (user?.user_metadata.fullName as string | undefined) ?? "",
-            avatar: (user?.user_metadata.avatar as string | undefined) ?? "",
+            avatar: (user?.user_metadata.avatarURL as string | undefined) ?? "",
         },
     });
     const { mutateUpdate } = useMutateUser();
@@ -56,7 +56,7 @@ const UpdateAccount = () => {
                 label="Full name"
                 rules={{ required: true }}
             />
-            <FileInput register={register} control={control} registerName="avatar" label="Avatar" />
+            <FileInput register={register} control={control} registerName="avatar" label="Avatar" withClearButton />
         </SettingsFormSection>
     );
 };

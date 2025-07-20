@@ -9,6 +9,8 @@ import {
 import styled from "styled-components";
 import { ErrorMessage } from "./common/ErrorMessage";
 import { getInputFieldErrorName } from "../utils/inputs";
+import { Button } from "../../layout/Button";
+import { CiCircleRemove } from "react-icons/ci";
 
 interface Props<FormType extends Record<string, any>> extends InputHTMLAttributes<HTMLInputElement> {
     register: UseFormRegister<FormType>;
@@ -16,6 +18,7 @@ interface Props<FormType extends Record<string, any>> extends InputHTMLAttribute
     label: string;
     rules?: RegisterOptions<FieldValues, string>;
     control: Control<FormType, any, FormType>;
+    withClearButton?: true;
 }
 
 const StyledFileInput = styled.div`
@@ -46,12 +49,19 @@ const StyledFileInput = styled.div`
     padding: 0;
 `;
 
+const ClearButton = styled.button`
+    background-color: var(--color-red-400);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.6rem;
+`;
+
 export const FileInput = <FormType extends Record<string, any>>({
     register,
     registerName,
     label,
     rules,
     control,
+    withClearButton,
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const isRequired = rules?.required;
@@ -62,6 +72,12 @@ export const FileInput = <FormType extends Record<string, any>>({
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
             <input type="file" id={registerName} {...register(registerName, rules)} />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+            {withClearButton && (
+                <div className="flex column-gap-2 items-stretch">
+                    <CiCircleRemove />
+                    <ClearButton>Clear</ClearButton>
+                </div>
+            )}
         </StyledFileInput>
     );
 };
