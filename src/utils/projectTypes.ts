@@ -336,7 +336,7 @@ export interface AuthContextType {
 export interface UpdateUserFormType {
     email: string;
     fullName: string;
-    avatar: FileList | string;
+    avatar: FileList | string | null;
 }
 
 export interface UpdateUserCompleteInfo extends UpdateUserFormType {
@@ -345,12 +345,12 @@ export interface UpdateUserCompleteInfo extends UpdateUserFormType {
 
 export interface UpdateUserRequestType {
     email: string;
-    data: { fullName: string; avatarURL: string };
+    data: { fullName: string; avatarURL: string | null };
 }
 
 export interface UpdatePasswordType {
-    password: string;
-    passwordConfirm: string;
+    newPassword: string;
+    confirmNewPassword: string;
 }
 
 export interface SettingsFormSectionProps<FormType extends Record<string, any>>

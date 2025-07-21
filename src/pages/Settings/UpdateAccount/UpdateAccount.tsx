@@ -9,11 +9,11 @@ import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 const UpdateAccount = () => {
     const { user } = useAuthContext();
-    const { handleSubmit, register, control, formState } = useForm<UpdateUserFormType>({
+    const { handleSubmit, register, control, formState, setValue } = useForm<UpdateUserFormType>({
         defaultValues: {
             email: user?.email ?? "",
             fullName: (user?.user_metadata.fullName as string | undefined) ?? "",
-            avatar: (user?.user_metadata.avatarURL as string | undefined) ?? "",
+            avatar: user?.user_metadata.avatarURL as string | null,
         },
     });
     const { mutateUpdate } = useMutateUser();
@@ -56,7 +56,14 @@ const UpdateAccount = () => {
                 label="Full name"
                 rules={{ required: true }}
             />
-            <FileInput register={register} control={control} registerName="avatar" label="Avatar" withClearButton />
+            <FileInput
+                register={register}
+                control={control}
+                registerName="avatar"
+                label="Avatar"
+                withClearButton
+                setValue={setValue}
+            />
         </SettingsFormSection>
     );
 };

@@ -282,8 +282,13 @@ export const getSession = async () => {
 
 // USER
 
-const updateUserData = async (userCompleteData: UpdateUserRequestType, avatarFullPath?: string) => {
+const updateUserData = async (userCompleteData: UpdateUserRequestType, userId?: string, avatarFullPath?: string) => {
     const { data, error } = await supabase.auth.updateUser(userCompleteData);
+
+    if (!userCompleteData.data.avatarURL && userId) {
+        const previousAvatarName = `user-${userId}-avatar`;
+        await supabase.storage.from("user-avatars").remove([previousAvatarName]);
+    }
 
     if (error && avatarFullPath) {
         await supabase.storage.from("user-avatars").remove([avatarFullPath]);
@@ -307,7 +312,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData);
+        return updateUserData(userCompleteData, userId);
     } else {
         const newAvatarName = `user-${userId}-avatar`;
         const avatarURL = `${supabaseURL}/storage/v1/object/public/user-avatars/${newAvatarName}`;
@@ -333,12 +338,12 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData, fullPath);
+        return updateUserData(userCompleteData, undefined, fullPath);
     }
 };
 
 // TODO: DO PRZETESTOWANIA CASES:
 // - uzytkownik nie ma avatara i nie zalaczyl nowego
-// - uzytkownik nie ma avatara i zalaczyl nowy
+// - uzytkownik nie ma avatara i zalaczyl nowy --> dziala
 // - uzytkownik ma avatar i nie zmienil go
 // - uzytkownik ma avatar i zmienil go

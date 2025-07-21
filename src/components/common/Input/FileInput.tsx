@@ -5,12 +5,13 @@ import {
     type FieldValues,
     type RegisterOptions,
     type UseFormRegister,
+    type UseFormSetValue,
 } from "react-hook-form";
 import styled from "styled-components";
 import { ErrorMessage } from "./common/ErrorMessage";
 import { getInputFieldErrorName } from "../utils/inputs";
-import { Button } from "../../layout/Button";
 import { CiCircleRemove } from "react-icons/ci";
+import { useRef } from "react";
 
 interface Props<FormType extends Record<string, any>> extends InputHTMLAttributes<HTMLInputElement> {
     register: UseFormRegister<FormType>;
@@ -19,6 +20,7 @@ interface Props<FormType extends Record<string, any>> extends InputHTMLAttribute
     rules?: RegisterOptions<FieldValues, string>;
     control: Control<FormType, any, FormType>;
     withClearButton?: true;
+    setValue?: UseFormSetValue<FormType>;
 }
 
 const StyledFileInput = styled.div`
@@ -50,9 +52,15 @@ const StyledFileInput = styled.div`
 `;
 
 const ClearButton = styled.button`
-    background-color: var(--color-red-400);
-    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--color-red-600);
+    color: var(--color-red-600);
+    padding: 0.2rem 0.4rem;
+    font-size: 1.2rem;
     border-radius: 0.6rem;
+    display: flex;
+    align-items: center;
+    column-gap: 1rem;
+    width: max-content;
 `;
 
 export const FileInput = <FormType extends Record<string, any>>({
@@ -62,21 +70,40 @@ export const FileInput = <FormType extends Record<string, any>>({
     rules,
     control,
     withClearButton,
+    setValue,
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const isRequired = rules?.required;
     const inputErrorName = getInputFieldErrorName(errors, registerName);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const clearFileInputHandler = () => {
+        if (setValue) {
+            setValue(registerName, null);
+        }
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
 
     return (
         <StyledFileInput>
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
-            <input type="file" id={registerName} {...register(registerName, rules)} />
+            <input
+                type="file"
+                id={registerName}
+                {...register(registerName, rules)}
+                ref={(element) => {
+                    register(registerName, rules).ref(element);
+                    fileInputRef.current = element;
+                }}
+            />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
-            {withClearButton && (
-                <div className="flex column-gap-2 items-stretch">
+            {withClearButton && setValue && (
+                <ClearButton type="button" onClick={clearFileInputHandler}>
                     <CiCircleRemove />
-                    <ClearButton>Clear</ClearButton>
-                </div>
+                    Clear
+                </ClearButton>
             )}
         </StyledFileInput>
     );

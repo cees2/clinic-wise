@@ -7,7 +7,9 @@ import { Button } from "../../../components/layout/Button";
 const UpdatePassword = () => {
     const { handleSubmit, register, control, formState, getValues } = useForm<UpdatePasswordType>();
 
-    const submitSuccess = () => {};
+    const submitSuccess = (data: UpdatePasswordType) => {
+        
+    };
 
     const submitError = () => {};
 
@@ -28,8 +30,8 @@ const UpdatePassword = () => {
                 type="password"
                 register={register}
                 control={control}
-                registerName="password"
-                label="Password"
+                registerName="newPassword"
+                label="New password"
                 rules={{
                     required: true,
                     minLength: { value: 6, message: "Password has to be at least 6 characters long" },
@@ -39,13 +41,13 @@ const UpdatePassword = () => {
                 type="password"
                 register={register}
                 control={control}
-                registerName="passwordConfirm"
-                label="Confirm password"
+                registerName="confirmNewPassword"
+                label="Confirm new password"
                 rules={{
                     required: true,
                     minLength: { value: 6, message: "Confirm password has to be at least 6 characters long" },
                     validate: (confirmPasswordValue) => {
-                        return getValues("password") === confirmPasswordValue
+                        return getValues("newPassword") === confirmPasswordValue
                             ? true
                             : "Provided passwords do not match";
                     },
