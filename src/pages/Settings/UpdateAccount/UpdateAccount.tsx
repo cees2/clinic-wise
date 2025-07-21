@@ -13,7 +13,8 @@ const UpdateAccount = () => {
         defaultValues: {
             email: user?.email ?? "",
             fullName: (user?.user_metadata.fullName as string | undefined) ?? "",
-            avatar: user?.user_metadata.avatarURL as string | null,
+            avatar: user?.user_metadata.avatarURL as string | undefined | null,
+            isAdmin: (user?.user_metadata.isAdmin as boolean | undefined) ?? false,
         },
     });
     const { mutateUpdate } = useMutateUser();

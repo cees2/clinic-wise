@@ -309,6 +309,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             data: {
                 fullName: updatedUser.fullName,
                 avatarURL: avatar,
+                isAdmin: updatedUser.isAdmin,
             },
         };
 
@@ -347,3 +348,15 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
 // - uzytkownik nie ma avatara i zalaczyl nowy --> dziala
 // - uzytkownik ma avatar i nie zmienil go
 // - uzytkownik ma avatar i zmienil go
+
+export const updatePassword = async (newPassword: string) => {
+    const { data, error } = await supabase.auth.updateUser({
+        password: newPassword,
+    });
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};

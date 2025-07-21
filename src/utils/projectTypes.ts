@@ -337,6 +337,7 @@ export interface UpdateUserFormType {
     email: string;
     fullName: string;
     avatar: FileList | string | null;
+    isAdmin: boolean;
 }
 
 export interface UpdateUserCompleteInfo extends UpdateUserFormType {
@@ -345,7 +346,7 @@ export interface UpdateUserCompleteInfo extends UpdateUserFormType {
 
 export interface UpdateUserRequestType {
     email: string;
-    data: { fullName: string; avatarURL: string | null };
+    data: { fullName: string; avatarURL: string | null; isAdmin: boolean };
 }
 
 export interface UpdatePasswordType {

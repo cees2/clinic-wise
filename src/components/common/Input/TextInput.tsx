@@ -29,6 +29,7 @@ export const TextInput = <FormType extends Record<string, any>>({
     control,
     helpText,
     className,
+    disabled,
     ...restProps
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
@@ -36,10 +37,16 @@ export const TextInput = <FormType extends Record<string, any>>({
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     return (
-        <StyledInput className={className}>
+        <StyledInput className={className} disabled={disabled}>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             {helpText && <InputHelp>{helpText}</InputHelp>}
-            <input type="text" id={registerName} {...register(registerName, rules)} {...restProps} />
+            <input
+                type="text"
+                id={registerName}
+                {...register(registerName, rules)}
+                disabled={disabled}
+                {...restProps}
+            />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
         </StyledInput>
     );

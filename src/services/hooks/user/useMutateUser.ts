@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { updateUser } from "../../api";
+import { updatePassword, updateUser } from "../../api";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 export const useMutateUser = () => {
@@ -17,5 +17,15 @@ export const useMutateUser = () => {
         },
     });
 
-    return { mutateUpdate };
+    const mutatePassword = useMutation({
+        mutationFn: updatePassword,
+        onSuccess: () => {
+            toast.success("The password updated successfully");
+        },
+        onError: () => {
+            toast.error("Could not update the password");
+        },
+    });
+
+    return { mutateUpdate, mutatePassword };
 };
