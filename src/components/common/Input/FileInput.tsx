@@ -1,4 +1,5 @@
 import {
+    useController,
     useFormState,
     type Control,
     type FieldPath,
@@ -11,7 +12,7 @@ import styled from "styled-components";
 import { ErrorMessage } from "./common/ErrorMessage";
 import { getInputFieldErrorName } from "../utils/inputs";
 import { CiCircleRemove } from "react-icons/ci";
-import { useRef } from "react";
+import { useRef, type ChangeEvent } from "react";
 
 interface Props<FormType extends Record<string, any>> extends InputHTMLAttributes<HTMLInputElement> {
     register: UseFormRegister<FormType>;
@@ -64,7 +65,6 @@ const ClearButton = styled.button`
 `;
 
 export const FileInput = <FormType extends Record<string, any>>({
-    register,
     registerName,
     label,
     rules,
@@ -73,31 +73,28 @@ export const FileInput = <FormType extends Record<string, any>>({
     setValue,
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
+    const {
+        field: { onChange, onBlur },
+    } = useController({ name: registerName, control, rules });
     const isRequired = rules?.required;
     const inputErrorName = getInputFieldErrorName(errors, registerName);
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const clearFileInputHandler = () => {
-        if (setValue) {
-            setValue(registerName, null);
+        onChange(null);
+        if (inputRef.current) {
+            inputRef.current.value = "";
         }
-        if (fileInputRef.current) {
-            fileInputRef.current.value = "";
-        }
+    };
+
+    const onChangeInternal = (event: ChangeEvent<HTMLInputElement>) => {
+        onChange(event.target.files);
     };
 
     return (
         <StyledFileInput>
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
-            <input
-                type="file"
-                id={registerName}
-                {...register(registerName, rules)}
-                ref={(element) => {
-                    register(registerName, rules).ref(element);
-                    fileInputRef.current = element;
-                }}
-            />
+            <input type="file" id={registerName} ref={inputRef} onChange={onChangeInternal} onBlur={onBlur} />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
             {withClearButton && setValue && (
                 <ClearButton type="button" onClick={clearFileInputHandler}>

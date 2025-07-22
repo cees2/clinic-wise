@@ -10,7 +10,7 @@ export interface MainNavigationConfigItem {
     to: string;
     icon: React.ReactNode;
     title: string;
-    isHidden?: true;
+    visible?: boolean;
 }
 
 export interface HeaderActions {
@@ -333,20 +333,27 @@ export interface AuthContextType {
     setUser: React.Dispatch<React.SetStateAction<User | undefined | null>>;
 }
 
+export enum UserRole {
+    ADMIN = "ADMIN",
+    DOCTOR = "DOCTOR",
+    REGISTRATION = "REGISTRATION",
+}
+
 export interface UpdateUserFormType {
     email: string;
     fullName: string;
     avatar: FileList | string | null;
-    isAdmin: boolean;
 }
 
 export interface UpdateUserCompleteInfo extends UpdateUserFormType {
     userId: string;
+    previousAvatarName?: string;
+    role: UserRole;
 }
 
 export interface UpdateUserRequestType {
     email: string;
-    data: { fullName: string; avatarURL: string | null; isAdmin: boolean };
+    data: { fullName: string; avatarURL: string | null; role: UserRole };
 }
 
 export interface UpdatePasswordType {

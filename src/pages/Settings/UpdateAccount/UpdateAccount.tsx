@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SettingsFormSection } from "../components/SettingsFormSection";
-import type { UpdateUserCompleteInfo, UpdateUserFormType } from "../../../utils/projectTypes";
+import type { UpdateUserCompleteInfo, UpdateUserFormType, UserRole } from "../../../utils/projectTypes";
 import { TextInput } from "../../../components/common/Input/TextInput";
 import { FileInput } from "../../../components/common/Input/FileInput";
 import { Button } from "../../../components/layout/Button";
@@ -14,7 +14,6 @@ const UpdateAccount = () => {
             email: user?.email ?? "",
             fullName: (user?.user_metadata.fullName as string | undefined) ?? "",
             avatar: user?.user_metadata.avatarURL as string | undefined | null,
-            isAdmin: (user?.user_metadata.isAdmin as boolean | undefined) ?? false,
         },
     });
     const { mutateUpdate } = useMutateUser();
@@ -23,8 +22,23 @@ const UpdateAccount = () => {
         // TODO: DO sth on no user presence
         if (!user) return;
 
-        const dataWithUserId: UpdateUserCompleteInfo = { ...data, userId: user.id };
-        mutateUpdate.mutate(dataWithUserId);
+        const {
+            id,
+            user_metadata: { role, avatarURL },
+        } = user;
+        const userCompleteInfo: UpdateUserCompleteInfo = {
+            ...data,
+            userId: id,
+            role: role as UserRole,
+        };
+
+        if (avatarURL) {
+            const previousAvatarNameStartIndex = (avatarURL as string).indexOf(`user-${id}`);
+            const previousAvatarName = (avatarURL as string).substring(previousAvatarNameStartIndex);
+            userCompleteInfo.previousAvatarName = previousAvatarName;
+        }
+
+        mutateUpdate.mutate(userCompleteInfo);
     };
 
     const submitError = () => {};
@@ -49,6 +63,7 @@ const UpdateAccount = () => {
                 registerName="email"
                 label="Email"
                 rules={{ required: true }}
+                disabled
             />
             <TextInput
                 register={register}

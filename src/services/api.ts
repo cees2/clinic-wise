@@ -282,17 +282,24 @@ export const getSession = async () => {
 
 // USER
 
-const updateUserData = async (userCompleteData: UpdateUserRequestType, userId?: string, avatarFullPath?: string) => {
+const updateUserData = async (
+    userCompleteData: UpdateUserRequestType,
+    uploadedAvatarFullPath?: string,
+    previousAvatarName?: string,
+) => {
     const { data, error } = await supabase.auth.updateUser(userCompleteData);
+    const userClearedAvatarInput = !userCompleteData.data.avatarURL;
+    const userChangedAvatar = Boolean(uploadedAvatarFullPath);
 
-    if (!userCompleteData.data.avatarURL && userId) {
-        const previousAvatarName = `user-${userId}-avatar`;
+    if ((userChangedAvatar || userClearedAvatarInput) && previousAvatarName) {
         await supabase.storage.from("user-avatars").remove([previousAvatarName]);
     }
 
-    if (error && avatarFullPath) {
-        await supabase.storage.from("user-avatars").remove([avatarFullPath]);
+    if (error && uploadedAvatarFullPath) {
+        await supabase.storage.from("user-avatars").remove([uploadedAvatarFullPath]);
+    }
 
+    if (error) {
         throw new Error(error.message);
     }
 
@@ -300,28 +307,40 @@ const updateUserData = async (userCompleteData: UpdateUserRequestType, userId?: 
 };
 
 export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
-    const { avatar, userId } = updatedUser;
-    const userDidNotChangeOrUploadAvatar = typeof avatar === "string" || !avatar;
+    const { avatar, userId, previousAvatarName } = updatedUser;
+    const userDidNotChangeAvatar = typeof avatar === "string";
+    const userClearedAvatar = !avatar;
 
-    if (userDidNotChangeOrUploadAvatar) {
+    if (userDidNotChangeAvatar) {
         const userCompleteData = {
             email: updatedUser.email,
             data: {
                 fullName: updatedUser.fullName,
                 avatarURL: avatar,
-                isAdmin: updatedUser.isAdmin,
+                role: updatedUser.role,
             },
         };
 
-        return updateUserData(userCompleteData, userId);
+        return updateUserData(userCompleteData);
+    } else if (userClearedAvatar) {
+        const userCompleteData = {
+            email: updatedUser.email,
+            data: {
+                fullName: updatedUser.fullName,
+                avatarURL: null,
+                role: updatedUser.role,
+            },
+        };
+
+        return updateUserData(userCompleteData, undefined, previousAvatarName);
     } else {
-        const newAvatarName = `user-${userId}-avatar`;
+        const newAvatarName = `user-${userId}-avatar-${Date.now()}`;
         const avatarURL = `${supabaseURL}/storage/v1/object/public/user-avatars/${newAvatarName}`;
         const avatarItem = avatar.item(0);
         let updateUserAvatarsBucketData;
 
         if (avatarItem) {
-            const { error, data } = await supabase.storage.from("user-avatars").update(newAvatarName, avatarItem);
+            const { error, data } = await supabase.storage.from("user-avatars").upload(newAvatarName, avatarItem);
 
             if (error) {
                 throw new Error(error.message);
@@ -336,18 +355,13 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             data: {
                 fullName: updatedUser.fullName,
                 avatarURL,
+                role: updatedUser.role,
             },
         };
 
-        return updateUserData(userCompleteData, undefined, fullPath);
+        return updateUserData(userCompleteData, fullPath, previousAvatarName);
     }
 };
-
-// TODO: DO PRZETESTOWANIA CASES:
-// - uzytkownik nie ma avatara i nie zalaczyl nowego
-// - uzytkownik nie ma avatara i zalaczyl nowy --> dziala
-// - uzytkownik ma avatar i nie zmienil go
-// - uzytkownik ma avatar i zmienil go
 
 export const updatePassword = async (newPassword: string) => {
     const { data, error } = await supabase.auth.updateUser({
