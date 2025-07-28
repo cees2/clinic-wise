@@ -10,7 +10,7 @@ import { Alert } from "../../../components/common/Alert";
 
 const UpdatePassword = () => {
     const { user } = useAuthContext();
-    const { handleSubmit, register, control, formState, getValues } = useForm<UpdatePasswordType>();
+    const { handleSubmit, register, control, formState } = useForm<UpdatePasswordType>();
     const { mutatePassword } = useMutateUser();
     const isAdmin = user?.user_metadata.isAdmin as boolean | undefined;
 
@@ -64,10 +64,8 @@ const UpdatePassword = () => {
                 rules={{
                     required: true,
                     minLength: { value: 6, message: "Confirm password has to be at least 6 characters long" },
-                    validate: (confirmPasswordValue) => {
-                        return getValues("newPassword") === confirmPasswordValue
-                            ? true
-                            : "Provided passwords do not match";
+                    validate: (confirmPasswordValue, { newPassword }) => {
+                        return newPassword === confirmPasswordValue ? true : "Provided passwords do not match";
                     },
                 }}
                 disabled={isAdmin}

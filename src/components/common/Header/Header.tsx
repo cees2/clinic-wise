@@ -69,7 +69,11 @@ export const Header = ({ as, title, buttons }: HeaderProps) => {
             {buttons && (
                 <HeaderButtons>
                     {buttons.map((button) => {
-                        const { title, path, onClick } = button;
+                        const { title, path, onClick, visible } = button;
+
+                        if (!visible) {
+                            return null;
+                        }
 
                         const onClickInternal = async () => {
                             if (path) {

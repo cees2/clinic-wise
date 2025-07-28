@@ -51,6 +51,7 @@ export interface TableDataAction<T extends TableDataResourceType> {
     name: string;
     path?: (item: T) => string;
     action?: (item: T) => void | Promise<void>;
+    visible?: (item: T) => boolean;
 }
 
 export interface TableDataConfig<T extends TableDataResourceType> {
@@ -192,11 +193,18 @@ export enum SortTableEnum {
     NONE,
 }
 
+interface EmployeeFormAdditionalData {
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+    role?: UserRole;
+}
+
 export type AppointmentFormType = Partial<Omit<Tables<"appointments">, "created_at" | "id" | "status">>;
 export type AppointmentUpdateType = Partial<Omit<Tables<"appointments">, "created_at">>;
 export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "id">>;
 export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
-export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">>;
+export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">> & EmployeeFormAdditionalData;
 export type EmployeeUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
 
 export interface Person {
@@ -296,6 +304,7 @@ export interface HeaderButton {
     variant?: ButtonVariant;
     onClick?: () => void;
     path?: string;
+    visible?: boolean;
 }
 
 export interface HeaderProps {

@@ -15,7 +15,7 @@ const EditEmployee = () => {
 
     useEffect(() => {
         if (fetchingWentWrong) {
-            toast.error("Could not fetch the employee with given ID. Please choose a valid appointment");
+            toast.error("Could not fetch the employee with given ID. Please choose a valid employee");
             void navigate("/employees");
         }
     }, [navigate, fetchingWentWrong]);
@@ -27,6 +27,8 @@ const EditEmployee = () => {
     if (isLoading) {
         return <LoadingSpinner />;
     }
+
+    console.log("EXEC");
 
     return (
         <FormLayout>

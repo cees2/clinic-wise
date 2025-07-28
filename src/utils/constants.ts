@@ -1,3 +1,6 @@
+import { UserRole } from "./projectTypes";
+import { capitalizeFirstLetter } from "./utils";
+
 export const DB_DATE_FORMAT = "yyyy-MM-dd";
 export const DB_DATE_FORMAT_WITH_TIME = "yyyy-MM-dd HH:mm:ss";
 export const DISPLAY_DATE_FORMAT = "dd.MM.yyyy";
@@ -26,7 +29,13 @@ export const genderFormOptions = [
     },
 ];
 
+export const rolesFormOptions = Object.values(UserRole)
+    .filter((role) => role !== UserRole.ADMIN)
+    .map((role) => ({ value: role, label: capitalizeFirstLetter(role.toLocaleLowerCase()) }));
+
 export const nationalityOptions = Object.values(SUPPORTED_NATIONALITIES).map((nationality) => ({
     label: nationality,
     value: nationality,
 }));
+
+export const emailPattern = /^\S+@\S+\.\S+$/;

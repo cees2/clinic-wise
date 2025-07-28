@@ -1,19 +1,17 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import type { EmployeeFormType, EmployeeUpdateType } from "../../../utils/projectTypes";
 import { createEmployee, removeEmployee, updateEmployee } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export const useMutateEmployee = () => {
-    const queryClient = useQueryClient();
     const navigate = useNavigate();
 
     const mutationCreate = useMutation({
         mutationFn: (employee: EmployeeFormType) => createEmployee(employee),
-        onSuccess: async (data) => {
+        onSuccess: async ({ uploadedEmployeeData }) => {
             toast.success("The employee created successfully");
-            await queryClient.invalidateQueries({ queryKey: ["employees"] });
-            await navigate(`/employees/${data.id}/edit`);
+            await navigate(`/employees/${uploadedEmployeeData.id}/edit`);
         },
         onError: () => {
             toast.error("Could not create the employee");
@@ -24,7 +22,6 @@ export const useMutateEmployee = () => {
         mutationFn: (employee: EmployeeUpdateType) => updateEmployee(employee),
         onSuccess: async (data) => {
             toast.success("The employee updated successfully");
-            await queryClient.invalidateQueries({ queryKey: ["employeess"] });
             await navigate(`/employees/${data.id}/edit`);
         },
         onError: () => {
@@ -34,9 +31,8 @@ export const useMutateEmployee = () => {
 
     const mutationRemove = useMutation({
         mutationFn: (employeeId: number) => removeEmployee(employeeId),
-        onSuccess: async () => {
+        onSuccess: () => {
             toast.success("The employee removed successfully");
-            await queryClient.invalidateQueries({ queryKey: ["employees"] });
         },
         onError: () => {
             toast.error("Could not remove the employee");

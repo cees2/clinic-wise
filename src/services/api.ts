@@ -79,13 +79,35 @@ export const updateAppointment = async (appointment: AppointmentUpdateType) => {
 // EMPLOYEE
 
 export const createEmployee = async (employee: EmployeeFormType) => {
-    const { data, error } = await supabase.from("employees").insert(employee).select().single();
+    const newEmployeeData = { ...employee };
+    const { email, password, role, name, surname } = employee;
+    const userData = {
+        email,
+        password,
+        options: { data: { role, fullName: `${name} ${surname}` } },
+    };
+    delete newEmployeeData.password;
+    delete newEmployeeData.confirmPassword;
 
-    if (error) {
-        throw new Error(error.message);
+    const { data: uploadedUserData, error: uploadedUserError } = await supabase.auth.signUp(userData);
+
+    if (uploadedUserError) {
+        throw new Error(uploadedUserError.message);
     }
 
-    return data;
+    newEmployeeData.user_id = uploadedUserData.user?.id;
+
+    const { data: uploadedEmployeeData, error: uploadedEmployeeError } = await supabase
+        .from("employees")
+        .insert(newEmployeeData)
+        .select()
+        .single();
+
+    if (uploadedEmployeeError) {
+        throw new Error(uploadedEmployeeError.message);
+    }
+
+    return { uploadedUserData, uploadedEmployeeData };
 };
 
 export const getEmployee = async (employeeId: string) => {
@@ -361,6 +383,8 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
 
         return updateUserData(userCompleteData, fullPath, previousAvatarName);
     }
+
+    
 };
 
 export const updatePassword = async (newPassword: string) => {

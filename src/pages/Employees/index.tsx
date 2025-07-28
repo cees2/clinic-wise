@@ -3,16 +3,20 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { TableLayout } from "../../components/layout/TableData/TableLayout";
 import type { Tables } from "../../services/database.types";
-import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
+import { FilterType, UserRole, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
 import { useConfirmation } from "../../utils/useConfirmation";
 import { useMutateEmployee } from "../../services/hooks/employees/useMutateEmployee";
+import { useAuthContext } from "../../utils/contexts/AuthContext";
 
 const Employees = () => {
     const { confirmation } = useConfirmation();
     const { mutationRemove } = useMutateEmployee();
+    const { user } = useAuthContext();
+    const HasPermissionsToPerformActions =
+        user?.user_metadata.role === UserRole.ADMIN || user?.user_metadata.role === UserRole.REGISTRATION;
 
     const config: TableDataConfig<Tables<"employees">> = {
         columns: [
@@ -73,11 +77,13 @@ const Employees = () => {
                         },
                     });
                 },
+                visible: () => HasPermissionsToPerformActions,
             },
             {
                 id: "edit",
                 name: "Edit",
                 path: (item) => `/employees/${item.id}/edit`,
+                visible: () => HasPermissionsToPerformActions,
             },
         ],
         resourceName: "employees",
@@ -87,6 +93,7 @@ const Employees = () => {
         {
             title: "Add new",
             path: "/employees/new",
+            visible: HasPermissionsToPerformActions,
         },
     ];
 

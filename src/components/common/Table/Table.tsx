@@ -64,7 +64,7 @@ const Table = ({ children, gridTemplateColumns, numberOfColumns }: Props) => {
 
     return (
         <TableContext value={contextValue}>
-            <StyledTable>{children}</StyledTable>
+            <StyledTable role="table">{children}</StyledTable>
         </TableContext>
     );
 };

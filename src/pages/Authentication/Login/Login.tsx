@@ -10,6 +10,7 @@ import { useAuthContext } from "../../../utils/contexts/AuthContext";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
+import { emailPattern } from "../../../utils/constants";
 
 const StyledLogin = styled.div`
     height: 100vh;
@@ -68,7 +69,7 @@ const Login = () => {
                     registerName="email"
                     label="Email"
                     className="w-full"
-                    rules={{ required: true, pattern: { value: /^\S+@\S+\.\S+$/, message: "Wrong email pattern" } }}
+                    rules={{ required: true, pattern: { value: emailPattern, message: "Wrong email pattern" } }}
                 />
                 <TextInput
                     register={register}

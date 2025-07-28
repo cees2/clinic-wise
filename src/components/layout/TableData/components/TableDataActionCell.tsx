@@ -25,7 +25,9 @@ const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Prop
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     {actions.map((action) => {
-                        const { id, name, action: actionCallback, path } = action;
+                        const { id, name, action: actionCallback, path, visible } = action;
+
+                        if (!visible?.(resource)) return null;
 
                         const onClick = async () => {
                             if (path) {

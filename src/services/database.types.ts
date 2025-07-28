@@ -65,42 +65,54 @@ export type Database = {
       employees: {
         Row: {
           address: string | null
+          avatar_url: string | null
           created_at: string
           date_of_birth: string
           document_id: string
+          email: string | null
           gender: string
           id: number
           name: string
           nationality: string
           phone_number: string | null
+          role: Database["public"]["Enums"]["UserRole"] | null
           start_date: string
           surname: string
+          user_id: string | null
         }
         Insert: {
           address?: string | null
+          avatar_url?: string | null
           created_at?: string
           date_of_birth: string
           document_id: string
+          email?: string | null
           gender: string
           id?: number
           name: string
           nationality: string
           phone_number?: string | null
+          role?: Database["public"]["Enums"]["UserRole"] | null
           start_date: string
           surname: string
+          user_id?: string | null
         }
         Update: {
           address?: string | null
+          avatar_url?: string | null
           created_at?: string
           date_of_birth?: string
           document_id?: string
+          email?: string | null
           gender?: string
           id?: number
           name?: string
           nationality?: string
           phone_number?: string | null
+          role?: Database["public"]["Enums"]["UserRole"] | null
           start_date?: string
           surname?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -155,6 +167,7 @@ export type Database = {
     }
     Enums: {
       AppointmentStatus: "SCHEDULED" | "CANCELLED" | "COMPLETED"
+      UserRole: "REGISTRATION" | "ADMIN" | "DOCTOR"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -283,6 +296,7 @@ export const Constants = {
   public: {
     Enums: {
       AppointmentStatus: ["SCHEDULED", "CANCELLED", "COMPLETED"],
+      UserRole: ["REGISTRATION", "ADMIN", "DOCTOR"],
     },
   },
 } as const
