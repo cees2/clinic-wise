@@ -71,7 +71,7 @@ export const Header = ({ as, title, buttons }: HeaderProps) => {
                     {buttons.map((button) => {
                         const { title, path, onClick, visible } = button;
 
-                        if (!visible) {
+                        if (visible === false) {
                             return null;
                         }
 

@@ -13,6 +13,6 @@ export const getEmployeeFormDefaultValues = (appointmentData?: Tables<"employees
     document_id: appointmentData?.document_id ?? "",
     address: appointmentData?.address ?? "",
     phone_number: appointmentData?.phone_number ?? "",
-    role: appointmentData?.role ?? "",
+    role: appointmentData?.role,
     email: appointmentData?.email ?? "",
 });

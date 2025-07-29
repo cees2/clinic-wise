@@ -27,7 +27,7 @@ const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Prop
                     {actions.map((action) => {
                         const { id, name, action: actionCallback, path, visible } = action;
 
-                        if (!visible?.(resource)) return null;
+                        if (visible?.(resource) === false) return null;
 
                         const onClick = async () => {
                             if (path) {

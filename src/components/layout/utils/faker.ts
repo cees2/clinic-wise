@@ -75,6 +75,8 @@ export const generateFakeEmployees = () => {
         const newEmployee: EmployeeFormType = {
             ...createMockPerson(),
             start_date: format(faker.date.past({ years: 4 }), DB_DATE_FORMAT),
+            role: faker.helpers.arrayElement(["REGISTRATION", "DOCTOR"]),
+            email: faker.internet.email(),
         };
 
         mockEmployees.push(newEmployee);

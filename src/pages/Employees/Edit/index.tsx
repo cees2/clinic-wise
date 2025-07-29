@@ -28,8 +28,6 @@ const EditEmployee = () => {
         return <LoadingSpinner />;
     }
 
-    console.log("EXEC");
-
     return (
         <FormLayout>
             <Header as="h3" title={`Edit employee "${data.name} ${data?.surname}"`} />
