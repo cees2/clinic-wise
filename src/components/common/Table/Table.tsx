@@ -44,6 +44,7 @@ const StyledTableCell = styled.div.attrs({
     role: "cell",
 })`
     padding: 0.6rem 1.2rem;
+    word-break: break-all;
 `;
 
 const TableContext = createContext<Omit<Props, "children">>({});
@@ -84,7 +85,7 @@ const TableHeaderCell = ({ children, columnIndex }: TableHeaderCellProps) => {
 };
 
 const TableRowCell = ({ children }: { children: React.ReactNode }) => {
-    return <StyledTableCell role="cell">{children}</StyledTableCell>;
+    return <StyledTableCell>{children}</StyledTableCell>;
 };
 
 Table.TableRow = TableRow;

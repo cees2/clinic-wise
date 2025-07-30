@@ -31,6 +31,10 @@ const Employees = () => {
                 render: (employee) => capitalizeFirstLetter(employee.gender),
             },
             {
+                id: "email",
+                name: "Email",
+            },
+            {
                 id: "start_date",
                 name: "Start date",
                 render: (employee) => format(new Date(employee.start_date), "dd.MM.yyyy"),
@@ -52,6 +56,11 @@ const Employees = () => {
             {
                 id: "document_id",
                 name: "Document ID",
+            },
+            {
+                id: "role",
+                name: "Role",
+                render: (employee) => capitalizeFirstLetter(employee.role ?? ""),
             },
         ],
         filters: [

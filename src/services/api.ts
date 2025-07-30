@@ -89,13 +89,11 @@ export const createEmployee = async (employee: EmployeeFormType) => {
     delete newEmployeeData.password;
     delete newEmployeeData.confirmPassword;
 
-    const { data: uploadedUserData, error: uploadedUserError } = await supabase.auth.signUp(userData);
+    const { data: uploadedUserData, error: uploadedUserError } = await supabase.auth.admin.createUser(userData);
 
     if (uploadedUserError) {
         throw new Error(uploadedUserError.message);
     }
-
-    newEmployeeData.user_id = uploadedUserData.user?.id;
 
     const { data: uploadedEmployeeData, error: uploadedEmployeeError } = await supabase
         .from("employees")
@@ -383,8 +381,6 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
 
         return updateUserData(userCompleteData, fullPath, previousAvatarName);
     }
-
-    
 };
 
 export const updatePassword = async (newPassword: string) => {
