@@ -89,7 +89,9 @@ export const createEmployee = async (employee: EmployeeFormType) => {
     delete newEmployeeData.password;
     delete newEmployeeData.confirmPassword;
 
-    const { data: uploadedUserData, error: uploadedUserError } = await supabase.auth.admin.createUser(userData);
+    const { data, error } = await supabase.functions.invoke("create-employee-user", {
+        body: userData,
+    });
 
     if (uploadedUserError) {
         throw new Error(uploadedUserError.message);
