@@ -84,17 +84,17 @@ export const createEmployee = async (employee: EmployeeFormType) => {
     const userData = {
         email,
         password,
-        options: { data: { role, fullName: `${name} ${surname}` } },
+        user_metadata: { role, fullName: `${name} ${surname}` },
     };
     delete newEmployeeData.password;
     delete newEmployeeData.confirmPassword;
 
-    const { data, error } = await supabase.functions.invoke("create-employee-user", {
+    const { data: createUserData, error: createUserError } = await supabase.functions.invoke("create-employee-user", {
         body: userData,
     });
 
-    if (uploadedUserError) {
-        throw new Error(uploadedUserError.message);
+    if (createUserError) {
+        throw new Error(createUserError.message);
     }
 
     const { data: uploadedEmployeeData, error: uploadedEmployeeError } = await supabase

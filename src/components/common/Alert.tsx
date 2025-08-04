@@ -79,7 +79,7 @@ export const Alert = ({ variant, className, title, message }: Props) => {
         <StyledAlert className={className} variant={variant}>
             {getSVG()}
             <div>
-                {title && <h4 className="font-bold mb-2">{title}</h4>}
+                {title && <h4 className="font-bold">{title}</h4>}
                 {message && <span>{message}</span>}
             </div>
         </StyledAlert>
