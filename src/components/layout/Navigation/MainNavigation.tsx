@@ -63,6 +63,8 @@ const MainNavigation = () => {
                 to: "/employees",
                 title: "Employees",
                 icon: <GrUserWorker />,
+                visible:
+                    user?.user_metadata.role === UserRole.ADMIN || user?.user_metadata.role === UserRole.REGISTRATION,
             },
             {
                 to: "/rooms",

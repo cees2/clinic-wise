@@ -4,7 +4,7 @@ import { StyledHeader } from "../../common/Header/Header";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import { useFakeAppointments } from "../../../services/hooks/faker/useFakeAppointments";
 import { useFakePatients } from "../../../services/hooks/faker/useFakePatients";
-import { generateFakeAppointments, generateFakeEmployees, generateFakePatients } from "../utils/faker";
+import { generateFakeAppointments, generateFakePatients } from "../utils/faker";
 import { useFakeEmployees } from "../../../services/hooks/faker/useFakeEmployees";
 import { useQueryClient } from "@tanstack/react-query";
 import { getEmployees, getPatients } from "../../../services/api";
@@ -37,8 +37,7 @@ const FakerComponent = () => {
     const queryClient = useQueryClient();
     const { isPending: pendingAppointments, mutate: mutateAppointments } = useFakeAppointments();
     const { isPending: pendingPatients, mutate: mutatePatients } = useFakePatients();
-    const { isPending: pendingEmployees, mutate: mutateEmployees } = useFakeEmployees();
-    const isPending = pendingAppointments || pendingPatients || pendingEmployees;
+    const isPending = pendingAppointments || pendingPatients;
 
     const uploadAppointments = async () => {
         const [patients, employees] = await Promise.all([
@@ -55,11 +54,6 @@ const FakerComponent = () => {
         mutatePatients(mockPatients);
     };
 
-    const uploadFakeEmployees = () => {
-        const mockEmployees = generateFakeEmployees();
-        mutateEmployees(mockEmployees);
-    };
-
     return (
         <StyledFaker>
             <FakerHeader as="h5">Upload fake data</FakerHeader>
@@ -69,7 +63,6 @@ const FakerComponent = () => {
                 <FakerButtons>
                     <Button onClick={uploadAppointments}>Upload appointments</Button>
                     <Button onClick={uploadPatients}>Upload patients</Button>
-                    <Button onClick={uploadFakeEmployees}>Upload employees</Button>
                 </FakerButtons>
             )}
         </StyledFaker>

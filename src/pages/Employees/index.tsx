@@ -7,13 +7,9 @@ import { FilterType, UserRole, type HeaderButton, type TableDataConfig } from ".
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
-import { useConfirmation } from "../../utils/useConfirmation";
-import { useMutateEmployee } from "../../services/hooks/employees/useMutateEmployee";
 import { useAuthContext } from "../../utils/contexts/AuthContext";
 
 const Employees = () => {
-    const { confirmation } = useConfirmation();
-    const { mutationRemove } = useMutateEmployee();
     const { user } = useAuthContext();
     const HasPermissionsToPerformActions =
         user?.user_metadata.role === UserRole.ADMIN || user?.user_metadata.role === UserRole.REGISTRATION;
@@ -76,18 +72,6 @@ const Employees = () => {
             },
         ],
         actions: [
-            {
-                id: "remove",
-                name: "Remove",
-                action: (item) => {
-                    confirmation({
-                        onConfirm: () => {
-                            mutationRemove.mutate(item.id);
-                        },
-                    });
-                },
-                visible: () => HasPermissionsToPerformActions,
-            },
             {
                 id: "edit",
                 name: "Edit",

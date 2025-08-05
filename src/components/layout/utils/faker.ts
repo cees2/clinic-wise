@@ -1,6 +1,5 @@
 import { fakerEN, faker } from "@faker-js/faker";
-import type { AppointmentFormType, EmployeeFormType, PatientFormType, Person } from "../../../utils/projectTypes";
-import type { Tables } from "../../../services/database.types";
+import { UserRole, type AppointmentFormType, type EmployeeFormType, type PatientFormType, type Person } from "../../../utils/projectTypes";
 import { format } from "date-fns";
 import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
 
@@ -23,7 +22,7 @@ const createMockPerson = (): Person => {
         ]),
         address: `${fakerEN.location.streetAddress({ useFullAddress: false })} ${fakerEN.location.city()}, ${fakerEN.location.state()}`,
         gender,
-        phone_number: faker.phone.number(),
+        phone_number: `${faker.string.numeric({length: 3})}-${faker.string.numeric({length: 3})}-${faker.string.numeric({length: 3})}`,
         document_id: `${faker.string.alpha(3)} ${faker.number.int({ min: 10, max: 99 })}`,
     };
 };
@@ -75,7 +74,7 @@ export const generateFakeEmployees = () => {
         const newEmployee: EmployeeFormType = {
             ...createMockPerson(),
             start_date: format(faker.date.past({ years: 4 }), DB_DATE_FORMAT),
-            role: faker.helpers.arrayElement(["REGISTRATION", "DOCTOR"]),
+            role: faker.helpers.arrayElement([UserRole.REGISTRATION, UserRole.DOCTOR]),
             email: faker.internet.email(),
         };
 

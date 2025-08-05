@@ -20,9 +20,8 @@ export const useMutateEmployee = () => {
 
     const mutationUpdate = useMutation({
         mutationFn: (employee: EmployeeUpdateType) => updateEmployee(employee),
-        onSuccess: async (data) => {
+        onSuccess: () => {
             toast.success("The employee updated successfully");
-            await navigate(`/employees/${data.id}/edit`);
         },
         onError: () => {
             toast.error("Could not create the employee");

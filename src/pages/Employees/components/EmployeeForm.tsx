@@ -6,12 +6,10 @@ import { DatePickerInput } from "../../../components/common/Input/DatePickerInpu
 import { TextInput } from "../../../components/common/Input/TextInput";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { emailPattern, genderFormOptions, nationalityOptions, rolesFormOptions } from "../../../utils/constants";
-import type { Tables } from "../../../services/database.types";
 import { useMutateEmployee } from "../../../services/hooks/employees/useMutateEmployee";
 import { add, sub } from "date-fns";
 import { getEmployeeFormDefaultValues } from "../utils/utils";
 import { toast } from "react-toastify";
-import { Alert } from "../../../components/common/Alert";
 
 export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employees"> }) => {
     const isEdit = Boolean(employeeData);
@@ -39,11 +37,6 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
 
     return (
         <div>
-            <Alert
-                title="Password change"
-                message="If you want to change the password, navigate to the settings tab"
-                className="mb-12 w-max"
-            />
             <GridForm
                 formState={formState}
                 onSubmit={onSubmit}

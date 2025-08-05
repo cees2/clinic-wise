@@ -15,4 +15,5 @@ export const getEmployeeFormDefaultValues = (appointmentData?: Tables<"employees
     phone_number: appointmentData?.phone_number ?? "",
     role: appointmentData?.role,
     email: appointmentData?.email ?? "",
+    user_id: appointmentData?.user_id ?? undefined
 });

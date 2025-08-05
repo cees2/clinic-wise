@@ -89,22 +89,22 @@ export const createEmployee = async (employee: EmployeeFormType) => {
     delete newEmployeeData.password;
     delete newEmployeeData.confirmPassword;
 
-    const { data: createUserData, error: createUserError } = await supabase.functions.invoke("create-employee-user", {
+    const { data: uploadedUserData, error: uploadUserError } = await supabase.functions.invoke("create-employee-user", {
         body: userData,
     });
 
-    if (createUserError) {
-        throw new Error(createUserError.message);
+    if (uploadUserError) {
+        throw new Error(uploadUserError.message);
     }
 
-    const { data: uploadedEmployeeData, error: uploadedEmployeeError } = await supabase
+    const { data: uploadedEmployeeData, error: uploadEmployeeError } = await supabase
         .from("employees")
         .insert(newEmployeeData)
         .select()
         .single();
 
-    if (uploadedEmployeeError) {
-        throw new Error(uploadedEmployeeError.message);
+    if (uploadEmployeeError) {
+        throw new Error(uploadEmployeeError.message);
     }
 
     return { uploadedUserData, uploadedEmployeeData };
@@ -166,6 +166,20 @@ export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSe
 };
 
 export const updateEmployee = async (employee: EmployeeUpdateType) => {
+    const userData = {
+        role: employee.role,
+        fullName: `${employee.name} ${employee.surname}`,
+        user_id: employee.user_id
+    }
+
+    const {data: updatedUserData, error: updateUserError} = await supabase.functions.invoke("update-employee-user", {
+        body: userData,
+    });
+
+    if(updateUserError){
+        throw new Error(updateUserError.message);
+    }
+
     const { data, error } = await supabase.from("employees").update(employee).eq("id", employee.id).select().single();
 
     if (error) {
