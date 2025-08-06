@@ -320,12 +320,21 @@ export const getSession = async () => {
 
 const updateUserData = async (
     userCompleteData: UpdateUserRequestType,
+    userId:string,
     uploadedAvatarFullPath?: string,
     previousAvatarName?: string,
 ) => {
+    const [name, surname] = userCompleteData.data.fullName.split(" ")
+    const { error: updateEmployeeError} = await supabase.from("employees").update({name, surname}).eq("user_id", userId)
+
+    if(updateEmployeeError){
+        throw new Error(updateEmployeeError.message)
+    }
+
     const { data, error } = await supabase.auth.updateUser(userCompleteData);
     const userClearedAvatarInput = !userCompleteData.data.avatarURL;
     const userChangedAvatar = Boolean(uploadedAvatarFullPath);
+
 
     if ((userChangedAvatar || userClearedAvatarInput) && previousAvatarName) {
         await supabase.storage.from("user-avatars").remove([previousAvatarName]);
@@ -357,7 +366,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData);
+        return updateUserData(userCompleteData, updatedUser.userId);
     } else if (userClearedAvatar) {
         const userCompleteData = {
             email: updatedUser.email,
@@ -368,7 +377,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData, undefined, previousAvatarName);
+        return updateUserData(userCompleteData, updatedUser.userId,undefined, previousAvatarName);
     } else {
         const newAvatarName = `user-${userId}-avatar-${Date.now()}`;
         const avatarURL = `${supabaseURL}/storage/v1/object/public/user-avatars/${newAvatarName}`;
@@ -395,7 +404,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData, fullPath, previousAvatarName);
+        return updateUserData(userCompleteData,updatedUser.userId, fullPath, previousAvatarName);
     }
 };
 
