@@ -16,10 +16,10 @@ function App() {
         <BrowserRouter>
             <QueryClientProvider client={queryClient}>
                 <ConfirmationProvider>
+                    <GlobalStyles />
                     <AuthContextProvider>
                         <ToastContainer />
                         <ReactQueryDevtools initialIsOpen={false} />
-                        <GlobalStyles />
                         <MainLayout />
                     </AuthContextProvider>
                 </ConfirmationProvider>
