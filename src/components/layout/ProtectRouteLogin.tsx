@@ -1,21 +1,22 @@
 import type React from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../utils/contexts/AuthContext";
 
 export const ProtectRouteLogin = ({ children }: { children: React.ReactNode }) => {
     const { isAuthenticated } = useAuthContext();
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const checkLoggedIn = async () => {
             if (!isAuthenticated) {
-                await navigate("/login");
+                await navigate("/login", { state: location.pathname });
             }
         };
 
         void checkLoggedIn();
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated, navigate, location]);
 
     if (!isAuthenticated) return null;
 

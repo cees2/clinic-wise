@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 export const useAuthentication = () => {
-    const { setIsAuthenticated } = useAuthContext();
+    const { setIsAuthenticated, setUser } = useAuthContext();
     const navigate = useNavigate();
 
     const login = useMutation({
@@ -14,8 +14,9 @@ export const useAuthentication = () => {
         onError: () => {
             toast.error("Wrong credentials provided");
         },
-        onSuccess: () => {
+        onSuccess: (data) => {
             setIsAuthenticated(true);
+            setUser(data.user)
             void navigate("/dashboard", { replace: true });
         },
     });

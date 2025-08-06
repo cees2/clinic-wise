@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { FormSubmit } from "../../../components/common/Form/FormSubmit";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
 import { emailPattern } from "../../../utils/constants";
 
@@ -35,12 +35,15 @@ const Login = () => {
     const { login } = useAuthentication();
     const { isAuthenticated } = useAuthContext();
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         if (isAuthenticated) {
-            void navigate("/dashboard");
+            const isRedirectedFromLogin =
+                typeof location.state === "string" && location.state === "/login";
+            void navigate(isRedirectedFromLogin ? "/" : location.state);
         }
-    }, [isAuthenticated, navigate]);
+    }, [isAuthenticated, navigate, location.state]);
 
     const submitSuccess = (loginData: LoginApi) => {
         login.mutate(loginData);
