@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
-import { TableLayout } from "../../components/layout/TableData/TableLayout";
+import { ContentLayout } from "../../components/layout/ContentLayout";
 import type { Tables } from "../../services/database.types";
 import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
@@ -114,10 +114,10 @@ const Appointments = () => {
     ];
 
     return (
-        <TableLayout>
+        <ContentLayout>
             <Header as="h3" title="Appointments" buttons={buttons} />
             <TableDataRenderer config={config} />
-        </TableLayout>
+        </ContentLayout>
     );
 };
 

@@ -375,3 +375,24 @@ export interface SettingsFormSectionProps<FormType extends Record<string, any>>
         FormSubmitProps<FormType> {
     headerTitle: string;
 }
+
+
+export enum RoomsFilterIds  {
+    TODAY = "Today",
+    TOMORROW = "Tomorrow",
+    CUSTOM = "Custom",
+    ROOM = "Room"
+}
+
+export const RoomsTimeFilterOptionsArray = [RoomsFilterIds.TODAY, RoomsFilterIds.TOMORROW, RoomsFilterIds.CUSTOM]
+export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM]
+
+export interface RoomsFilter {
+    id: RoomsFilterIds;
+    value?: string
+}
+
+export interface RoomsContextType{
+    filters: RoomsFilter[];
+    setFilters: React.Dispatch<React.SetStateAction<RoomsFilter[]>>
+}

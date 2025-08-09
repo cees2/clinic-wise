@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const TableLayout = styled.div`
+export const ContentLayout = styled.div`
     margin: 2.4rem 3.2rem;
     display: flex;
     flex-direction: column;

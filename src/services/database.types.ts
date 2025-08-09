@@ -155,6 +155,41 @@ export type Database = {
         }
         Relationships: []
       }
+      rooms_occupancy: {
+        Row: {
+          created_at: string
+          employee_id: number
+          end: string
+          id: number
+          name: string
+          start: string
+        }
+        Insert: {
+          created_at?: string
+          employee_id: number
+          end: string
+          id?: number
+          name: string
+          start: string
+        }
+        Update: {
+          created_at?: string
+          employee_id?: number
+          end?: string
+          id?: number
+          name?: string
+          start?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rooms_occupancy_employee_id_fkey"
+            columns: ["employee_id"]
+            isOneToOne: false
+            referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

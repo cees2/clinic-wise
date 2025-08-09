@@ -419,3 +419,16 @@ export const updatePassword = async (newPassword: string) => {
 
     return data;
 };
+
+
+// ROOMS
+
+export const getRooms =async  () => {
+    const {data, error} = await supabase.from("rooms_occupancy").select("*");
+
+    if(error){
+        throw new Error(error.message);
+    }
+
+    return data;
+}

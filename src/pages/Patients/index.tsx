@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
-import { TableLayout } from "../../components/layout/TableData/TableLayout";
+import { ContentLayout } from "../../components/layout/ContentLayout";
 import type { Tables } from "../../services/database.types";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
@@ -103,10 +103,10 @@ const Patients = () => {
     ];
 
     return (
-        <TableLayout>
+        <ContentLayout>
             <Header as="h3" title="Patients" buttons={buttons} />
             <TableDataRenderer config={config} />
-        </TableLayout>
+        </ContentLayout>
     );
 };
 
