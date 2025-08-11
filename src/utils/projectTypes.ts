@@ -206,6 +206,8 @@ export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "i
 export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
 export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">> & EmployeeFormAdditionalData;
 export type EmployeeUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
+export type RoomOccupationFormType = Partial<Omit<Tables<"rooms_occupancy">, "created_at" | "id">>;
+export type RoomUOccupationpdateType = Partial<Omit<Tables<"rooms_occupancy">, "created_at">>;
 
 export interface Person {
     name: string;

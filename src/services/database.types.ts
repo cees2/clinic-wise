@@ -155,13 +155,31 @@ export type Database = {
         }
         Relationships: []
       }
+      rooms: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       rooms_occupancy: {
         Row: {
           created_at: string
           employee_id: number
           end: string
           id: number
-          name: string
+          room_id: number
           start: string
         }
         Insert: {
@@ -169,7 +187,7 @@ export type Database = {
           employee_id: number
           end: string
           id?: number
-          name: string
+          room_id: number
           start: string
         }
         Update: {
@@ -177,7 +195,7 @@ export type Database = {
           employee_id?: number
           end?: string
           id?: number
-          name?: string
+          room_id?: number
           start?: string
         }
         Relationships: [
@@ -186,6 +204,13 @@ export type Database = {
             columns: ["employee_id"]
             isOneToOne: false
             referencedRelation: "employees"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "rooms_occupancy_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
             referencedColumns: ["id"]
           },
         ]

@@ -4,10 +4,10 @@ import { StyledHeader } from "../../common/Header/Header";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import { useFakeAppointments } from "../../../services/hooks/faker/useFakeAppointments";
 import { useFakePatients } from "../../../services/hooks/faker/useFakePatients";
-import { generateFakeAppointments, generateFakePatients } from "../utils/faker";
-import { useFakeEmployees } from "../../../services/hooks/faker/useFakeEmployees";
+import { generateFakeAppointments, generateFakePatients, generateFakeRoomsOccupation } from "../utils/faker";
 import { useQueryClient } from "@tanstack/react-query";
-import { getEmployees, getPatients } from "../../../services/api";
+import { getEmployeesIds, getPatientsIds, getRoomsIds } from "../../../services/api";
+import { useFakeRoomsOccupation } from "../../../services/hooks/faker/useFakeRoomsOccupation";
 
 const StyledFaker = styled.div`
     margin: auto 1.6rem 1.6rem;
@@ -37,21 +37,31 @@ const FakerComponent = () => {
     const queryClient = useQueryClient();
     const { isPending: pendingAppointments, mutate: mutateAppointments } = useFakeAppointments();
     const { isPending: pendingPatients, mutate: mutatePatients } = useFakePatients();
-    const isPending = pendingAppointments || pendingPatients;
+    const { isPending: pendingRoomsOccupation, mutate: mutateRoomsOccupation } = useFakeRoomsOccupation();
+    const isPending = pendingAppointments || pendingPatients || pendingRoomsOccupation;
 
     const uploadAppointments = async () => {
-        const [patients, employees] = await Promise.all([
-            queryClient.fetchQuery({ queryKey: ["patients", 20], queryFn: () => getPatients(20) }),
-            queryClient.fetchQuery({ queryKey: ["employees", 20], queryFn: () => getEmployees(20) }),
+        const [patientsIds, employeesIds] = await Promise.all([
+            queryClient.fetchQuery({ queryKey: ["patientsIds", 20], queryFn: () => getPatientsIds(20) }),
+            queryClient.fetchQuery({ queryKey: ["employeesIds", 20], queryFn: () => getEmployeesIds(20) }),
         ]);
 
-        const mockAppointments = generateFakeAppointments(patients, employees);
+        const mockAppointments = generateFakeAppointments(patientsIds, employeesIds);
         mutateAppointments(mockAppointments);
     };
 
     const uploadPatients = () => {
         const mockPatients = generateFakePatients();
         mutatePatients(mockPatients);
+    };
+
+    const uploadRoomsOccupation = async () => {
+        const [roomsIds, employeesIds] = await Promise.all([
+            queryClient.fetchQuery({ queryKey: ["roomsIds", 20], queryFn: () => getRoomsIds(20) }),
+            queryClient.fetchQuery({ queryKey: ["employeesIds", 20], queryFn: () => getEmployeesIds(20) }),
+        ]);
+        const mockRoomsOccupation = generateFakeRoomsOccupation(roomsIds, employeesIds);
+        mutateRoomsOccupation(mockRoomsOccupation);
     };
 
     return (
@@ -61,8 +71,9 @@ const FakerComponent = () => {
                 <LoadingSpinner />
             ) : (
                 <FakerButtons>
-                    <Button onClick={uploadAppointments}>Upload appointments</Button>
+                    <Button onClick={() => void uploadAppointments()}>Upload appointments</Button>
                     <Button onClick={uploadPatients}>Upload patients</Button>
+                    <Button onClick={() => void uploadRoomsOccupation()}>Upload rooms occupation</Button>
                 </FakerButtons>
             )}
         </StyledFaker>

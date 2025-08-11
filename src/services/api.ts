@@ -142,17 +142,19 @@ export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
     return data;
 };
 
-export const getEmployees = async (size: number) => {
+export const getEmployeesIds = async (size: number) => {
     const { data, error } = await supabase
         .from("employees")
-        .select("*")
+        .select("id")
         .range(0, size - 1);
 
     if (error) {
         throw new Error(error.message);
     }
 
-    return data;
+    const employeesIds = data.map(data => data.id)
+
+    return employeesIds;
 };
 
 export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSelect[]> => {
@@ -243,17 +245,19 @@ export const uploadFakePatients = async (patients: PatientFormType[]) => {
     return data;
 };
 
-export const getPatients = async (size: number) => {
+export const getPatientsIds = async (size: number) => {
     const { data, error } = await supabase
         .from("patients")
-        .select("*")
+        .select("id")
         .range(0, size - 1);
 
     if (error) {
         throw new Error(error.message);
     }
 
-    return data;
+    const patientsIds = data.map(patient => patient.id)
+
+    return patientsIds;
 };
 
 export const getPatient = async (patientId: string) => {
@@ -423,12 +427,37 @@ export const updatePassword = async (newPassword: string) => {
 
 // ROOMS
 
-export const getRooms =async  () => {
-    const {data, error} = await supabase.from("rooms_occupancy").select("*");
+export const getRoomsIds =async  (size: number) => {
+    const {data, error} = await supabase.from("rooms").select("id").range(0, size - 1);
 
     if(error){
         throw new Error(error.message);
     }
+    
+    const roomsIds = data.map(room => room.id);
+
+    return roomsIds;
+}
+
+export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
+    await supabase.from("rooms_occupancy").delete().gte("id", 0);
+
+    const { data, error } = await supabase.from("rooms_occupancy").insert(rooms);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const getRoomsOccupancyIds =async  () => {
+    const {data, error} = await supabase.from("rooms").select("start,end,name,employees:employees_id(id, name, surname),rooms:room_id(name)").range(0, size - 1);
+
+    if(error){
+        throw new Error(error.message);
+    }
+    
 
     return data;
 }

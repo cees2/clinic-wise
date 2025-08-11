@@ -1,7 +1,8 @@
 import { fakerEN, faker } from "@faker-js/faker";
-import { UserRole, type AppointmentFormType, type EmployeeFormType, type PatientFormType, type Person } from "../../../utils/projectTypes";
-import { format } from "date-fns";
+import { UserRole, type AppointmentFormType, type EmployeeFormType, type PatientFormType, type Person, type RoomFormType, type RoomOccupationFormType } from "../../../utils/projectTypes";
+import { add, format } from "date-fns";
 import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
+import type { Tables } from "../../../services/database.types";
 
 const createMockPerson = (): Person => {
     const gender = faker.person.sexType();
@@ -30,8 +31,9 @@ const createMockPerson = (): Person => {
 const getMinutes15Multiplicity = () => faker.helpers.arrayElement([0, 15, 30, 45]);
 const getRandomWorkingHour = () => faker.helpers.arrayElement(Array.from({ length: 8 }, (_, index) => index + 8));
 
-export const generateFakeAppointments = (patients: Tables<"patients">, employees: Tables<"employees">) => {
+export const generateFakeAppointments = (patients: number[], employeesIds: number[]) => {
     const mockAppointments: AppointmentFormType[] = [];
+
     for (let i = 0; i < 50; i++) {
         const startDateObject = faker.date.recent({ days: 5 });
         startDateObject.setMinutes(getMinutes15Multiplicity());
@@ -41,8 +43,8 @@ export const generateFakeAppointments = (patients: Tables<"patients">, employees
 
         const newMockAppointment: AppointmentFormType = {
             start_date: startDate,
-            patient_id: patients[i % 20].id,
-            employee_id: employees[i % 20].id,
+            patient_id: faker.helpers.arrayElement(patients),
+            employee_id: faker.helpers.arrayElement(employeesIds),
             duration: faker.number.int({ min: 10, max: 90, multipleOf: 5 }),
             status: faker.helpers.arrayElement(["SCHEDULED", "CANCELLED", "COMPLETED"]),
             additional_note: faker.lorem.sentence({ min: 3, max: 10 }),
@@ -56,6 +58,7 @@ export const generateFakeAppointments = (patients: Tables<"patients">, employees
 
 export const generateFakePatients = () => {
     const mockPatients: PatientFormType[] = [];
+
     for (let i = 0; i < 20; i++) {
         const newMockPatient: PatientFormType = {
             ...createMockPerson(),
@@ -70,6 +73,7 @@ export const generateFakePatients = () => {
 
 export const generateFakeEmployees = () => {
     const mockEmployees: EmployeeFormType[] = [];
+
     for (let i = 0; i < 20; i++) {
         const newEmployee: EmployeeFormType = {
             ...createMockPerson(),
@@ -83,3 +87,25 @@ export const generateFakeEmployees = () => {
 
     return mockEmployees;
 };
+
+export const generateFakeRoomsOccupation = (roomsIds: number[], employeesIds: number[]) => {
+    const mockRooms: RoomOccupationFormType[] = [];
+    
+    for(let i = 0; i < 30; i++){
+        const startDate = faker.date.soon({days:10})
+        const occupancyPossibleDurations = Array.from({length: 10}, (_, index) => index * 30);
+        const occupancyRandomDuration = faker.helpers.arrayElement(occupancyPossibleDurations)
+        const endDate=  add(startDate, {minutes: occupancyRandomDuration}).toISOString()
+
+        const newRoom: RoomOccupationFormType = {
+            start: startDate.toISOString(),
+            end: endDate,
+            room_id: faker.helpers.arrayElement(roomsIds),
+            employee_id: faker.helpers.arrayElement(employeesIds)
+        }
+
+        mockRooms.push(newRoom)
+    }
+
+    return mockRooms
+}

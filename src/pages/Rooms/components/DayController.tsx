@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { add, format } from "date-fns";
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -24,10 +25,12 @@ const DayController = () => {
     const dateToDisplay = add(new Date(), { days: dayOffset });
     const formattedDate = format(dateToDisplay, "dd MMMM, yyyy");
     const dayOfWeek = format(dateToDisplay, "EEEE");
+    const queryClient = useQueryClient();
 
     const nextDayClickHander = () => {
         setDayOffset((prevOffset) => ++prevOffset);
     };
+
     const previousDayClickHander = () => {
         setDayOffset((prevOffset) => {
             if (prevOffset === 0) return prevOffset;
