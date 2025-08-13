@@ -439,6 +439,18 @@ export const getRoomsIds =async  (size: number) => {
     return roomsIds;
 }
 
+export const getRooms= async  () => {
+    const {data, error} = await supabase.from("rooms").select("name")
+
+    if(error){
+        throw new Error(error.message);
+    }
+    
+    return data;
+}
+
+// ROOMS OCCUPANCIES
+
 export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     await supabase.from("rooms_occupancy").delete().gte("id", 0);
 
@@ -451,13 +463,12 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     return data;
 };
 
-export const getRoomsOccupancyIds =async  () => {
-    const {data, error} = await supabase.from("rooms").select("start,end,name,employees:employees_id(id, name, surname),rooms:room_id(name)").range(0, size - 1);
+export const getRoomsOccupancies = async  () => {
+    const {data, error} = await supabase.from("rooms_occupancy").select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)")
 
     if(error){
         throw new Error(error.message);
     }
     
-
     return data;
 }

@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query"
-import { getRoomsOccupancyIds } from "../../api"
+import { getRooms } from "../../api"
 
-export const useGetRoomsOccupancy = () => {
+export const useGetRooms = () => {
     const query = useQuery({
-        queryFn: getRoomsOccupancyIds,
+        queryFn: getRooms,
         queryKey: ["rooms"]
     })
 
