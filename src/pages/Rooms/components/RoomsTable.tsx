@@ -15,16 +15,36 @@ const MINUTES_OF_DAYS = Array.from(
 );
 
 const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
-    console.log(roomsOccupancies);
-    console.log(rooms);
-    const tableColumns = [{ name: "empty" }, ...rooms];
+    const getMinuteMatchesRoomOccupancy = (minute: number, room: Tables<"rooms">) => {
+        const hourOfDay = minutesToHours(minute);
+        const minuteOfDay = minute % 60;
+
+        return roomsOccupancies.find((roomOccupancy) => {
+            const {
+                start,
+                rooms: { name: roomName },
+            } = roomOccupancy;
+            const startDate = new Date(start);
+
+            if (
+                startDate.getHours() === hourOfDay &&
+                startDate.getMinutes() === minuteOfDay &&
+                roomName === room.name
+            ) {
+                return true;
+            }
+
+            return false;
+        });
+    };
 
     return (
-        <Table numberOfColumns={tableColumns.length}>
+        <Table numberOfColumns={rooms.length + 1}>
             <Table.TableRow>
-                {tableColumns.map(({ name }, index) => (
-                    <Table.TableHeaderCell key={name} columnIndex={index}>
-                        {name === "empty" ? "" : name}
+                <Table.TableHeaderCell columnIndex={0}>{null}</Table.TableHeaderCell>
+                {rooms.map(({ name }, index) => (
+                    <Table.TableHeaderCell key={name} columnIndex={index + 1}>
+                        {name}
                     </Table.TableHeaderCell>
                 ))}
             </Table.TableRow>
@@ -35,15 +55,16 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
 
                 return (
                     <Table.TableRow key={minute}>
-                        {tableColumns.map((column, index) => {
-                            const isTimeCell = index === 0;
-                            let cellContent = "ddd";
+                        <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
+                        {rooms.map((room) => {
+                            let cellContent = null;
+                            const roomOccupancyMatchingCurrentMinute = getMinuteMatchesRoomOccupancy(minute, room);
 
-                            if (isTimeCell) {
-                                cellContent = currentTimeString;
+                            if (roomOccupancyMatchingCurrentMinute) {
+                                cellContent = "zajete";
                             }
 
-                            return <Table.TableRowCell key={column.name}>{cellContent}</Table.TableRowCell>;
+                            return <Table.TableRowCell key={room.name}>{cellContent}</Table.TableRowCell>;
                         })}
                     </Table.TableRow>
                 );

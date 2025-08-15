@@ -1,10 +1,10 @@
 import styled, { css } from "styled-components";
+import type { Children } from "../../utils/projectTypes";
 
 type status = "SCHEDULED" | "CANCELLED" | "COMPLETED";
 type variant = "error" | "warning" | "info" | "success";
 
-interface Props {
-    children: React.ReactNode;
+interface Props extends Children{
     status: status;
 }
 

@@ -439,8 +439,8 @@ export const getRoomsIds =async  (size: number) => {
     return roomsIds;
 }
 
-export const getRooms= async  () => {
-    const {data, error} = await supabase.from("rooms").select("name")
+export const getRooms = async  () => {
+    const {data, error} = await supabase.from("rooms").select("name,id")
 
     if(error){
         throw new Error(error.message);

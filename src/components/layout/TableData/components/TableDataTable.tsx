@@ -9,7 +9,6 @@ const StyledTableDataHeaderCell = styled(StyledHeaderCell)`
     display: flex;
     align-items: center;
     column-gap: 0.6rem;
-    padding: 1rem;
 `;
 
 const TableDataTable = () => {

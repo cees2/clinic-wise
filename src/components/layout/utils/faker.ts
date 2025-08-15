@@ -1,8 +1,7 @@
 import { fakerEN, faker } from "@faker-js/faker";
 import { UserRole, type AppointmentFormType, type EmployeeFormType, type PatientFormType, type Person, type RoomFormType, type RoomOccupationFormType } from "../../../utils/projectTypes";
-import { add, format } from "date-fns";
+import { add, format, startOfHour } from "date-fns";
 import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
-import type { Tables } from "../../../services/database.types";
 
 const createMockPerson = (): Person => {
     const gender = faker.person.sexType();
@@ -90,13 +89,18 @@ export const generateFakeEmployees = () => {
 
 export const generateFakeRoomsOccupation = (roomsIds: number[], employeesIds: number[]) => {
     const mockRooms: RoomOccupationFormType[] = [];
-    
-    for(let i = 0; i < 30; i++){
-        const startDate = faker.date.soon({days:10})
+    const ROOM_OCCUPATION_START_MIN = 6;
+    const ROOM_OCCUPATION_START_MAX = 15
+    const SUPPORTED_NUMBER_OF_HOURS = ROOM_OCCUPATION_START_MAX - ROOM_OCCUPATION_START_MIN
+
+    for(let i = 0; i < 50; i++){
+        const randomHour = faker.helpers.arrayElement(Array.from({length: SUPPORTED_NUMBER_OF_HOURS}, (_,index) => index + ROOM_OCCUPATION_START_MIN))
+        const startDate = startOfHour(faker.date.soon({days:10}))
+        startDate.setHours(randomHour)
+        startDate.setMinutes(faker.helpers.arrayElement([0,30]));
         const occupancyPossibleDurations = Array.from({length: 10}, (_, index) => index * 30);
         const occupancyRandomDuration = faker.helpers.arrayElement(occupancyPossibleDurations)
-        const endDate=  add(startDate, {minutes: occupancyRandomDuration}).toISOString()
-
+        const endDate = add(startDate, {minutes: occupancyRandomDuration}).toISOString()
         const newRoom: RoomOccupationFormType = {
             start: startDate.toISOString(),
             end: endDate,

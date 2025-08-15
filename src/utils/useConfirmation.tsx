@@ -1,5 +1,5 @@
 import React, { createContext, use, useCallback, useMemo, useState } from "react";
-import type { ConfirmationContextType, ConfirmationType } from "./projectTypes";
+import type { Children, ConfirmationContextType, ConfirmationType } from "./projectTypes";
 import { Modal } from "../components/common/Modal/Modal";
 import { Button } from "../components/layout/Button";
 import styled from "styled-components";
@@ -13,7 +13,7 @@ const ConfirmationFooter = styled.div`
     column-gap: 1.2rem;
 `;
 
-export const ConfirmationProvider = ({ children }: { children: React.ReactNode }) => {
+export const ConfirmationProvider = ({ children }: Children) => {
     const [confirmationState, setConfirmationState] = useState<ConfirmationType | undefined>(undefined);
     const shouldDisplayModal = Boolean(confirmationState);
     const { onConfirm, onReject, title, caption } = confirmationState ?? {};

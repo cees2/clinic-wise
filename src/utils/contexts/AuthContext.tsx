@@ -1,5 +1,5 @@
 import { createContext, use, useEffect, useMemo, useState } from "react";
-import type { AuthContextType } from "../projectTypes";
+import type { AuthContextType, Children } from "../projectTypes";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { useGetUser } from "../../services/hooks/user/useGetUser";
 import type { User } from "@supabase/supabase-js";
@@ -11,7 +11,7 @@ const AuthContext = createContext<AuthContextType>({
     setUser: () => {},
 });
 
-export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthContextProvider = ({ children }: Children) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [user, setUser] = useState<undefined | User>(undefined);
     const { isLoading, data } = useGetUser();

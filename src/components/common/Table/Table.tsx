@@ -1,24 +1,18 @@
-import type React from "react";
 import styled, { css } from "styled-components";
-import type { TableHeaderCellProps } from "../../../utils/projectTypes";
+import type { Children, TableHeaderCellProps, TableProps } from "../../../utils/projectTypes";
 import { createContext, use, useMemo } from "react";
-
-interface Props {
-    gridTemplateColumns?: string;
-    numberOfColumns?: number;
-    children: React.ReactNode;
-}
 
 const StyledTable = styled.div.attrs({ role: "table" })`
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
+    overflow: auto;
 `;
 
-const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<Props, "children">>`
+const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<TableProps, "children">>`
     padding: 0.8rem 1.6rem;
     display: grid;
     align-items: center;
+
     &:not(:last-child) {
         border-bottom: 1px solid var(--color-gray-300);
     }
@@ -28,16 +22,10 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<Props, "children">
     `}
 `;
 
-export const StyledHeaderCell = styled.div.attrs({
-    role: "columnheader",
-})<TableHeaderCellProps>`
+export const StyledHeaderCell = styled.div`
     font-weight: var(--font-weight-semibold);
     font-size: 1.8rem;
-    ${({ columnIndex }) => {
-        return css`
-            grid-column: ${columnIndex + 1} / ${columnIndex + 2};
-        `;
-    }}
+    padding: 1.2rem;
 `;
 
 const StyledTableCell = styled.div.attrs({
@@ -47,7 +35,7 @@ const StyledTableCell = styled.div.attrs({
     word-break: break-all;
 `;
 
-const TableContext = createContext<Omit<Props, "children">>({});
+const TableContext = createContext<Omit<TableProps, "children">>({});
 
 const useTableContext = () => {
     const tableContext = use(TableContext);
@@ -57,7 +45,7 @@ const useTableContext = () => {
     return tableContext;
 };
 
-const Table = ({ children, gridTemplateColumns, numberOfColumns }: Props) => {
+const Table = ({ children, gridTemplateColumns, numberOfColumns, className }: TableProps) => {
     const contextValue = useMemo(
         () => ({ gridTemplateColumns, numberOfColumns }),
         [gridTemplateColumns, numberOfColumns],
@@ -65,12 +53,14 @@ const Table = ({ children, gridTemplateColumns, numberOfColumns }: Props) => {
 
     return (
         <TableContext value={contextValue}>
-            <StyledTable role="table">{children}</StyledTable>
+            <StyledTable role="table" className={className}>
+                {children}
+            </StyledTable>
         </TableContext>
     );
 };
 
-const TableRow = ({ children }: { children: React.ReactNode }) => {
+const TableRow = ({ children }: Children) => {
     const { gridTemplateColumns, numberOfColumns } = useTableContext();
 
     return (
@@ -80,11 +70,11 @@ const TableRow = ({ children }: { children: React.ReactNode }) => {
     );
 };
 
-const TableHeaderCell = ({ children, columnIndex }: TableHeaderCellProps) => {
-    return <StyledHeaderCell columnIndex={columnIndex}>{children}</StyledHeaderCell>;
+const TableHeaderCell = ({ children }: TableHeaderCellProps) => {
+    return <StyledHeaderCell>{children}</StyledHeaderCell>;
 };
 
-const TableRowCell = ({ children }: { children: React.ReactNode }) => {
+const TableRowCell = ({ children }: Children) => {
     return <StyledTableCell>{children}</StyledTableCell>;
 };
 

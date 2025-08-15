@@ -1,5 +1,5 @@
 import React, { createContext, use, useMemo, useState } from "react";
-import type { RoomsContextType, RoomsFilter } from "../../../utils/projectTypes";
+import type { Children, RoomsContextType, RoomsFilter } from "../../../utils/projectTypes";
 import { RoomsFilterIds } from "../../../utils/projectTypes";
 
 const RoomsContext = createContext<RoomsContextType>({
@@ -7,7 +7,7 @@ const RoomsContext = createContext<RoomsContextType>({
     setFilters: () => {},
 });
 
-export const RoomsContextProvider = ({ children }: { children: React.ReactNode }) => {
+export const RoomsContextProvider = ({ children }: Children) => {
     const [filters, setFilters] = useState<RoomsFilter>([{ id: RoomsFilterIds.TODAY }]);
     const memoizedContextValue = useMemo(() => ({ filters, setFilters }), [filters, setFilters]);
 

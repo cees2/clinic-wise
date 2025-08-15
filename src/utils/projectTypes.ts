@@ -6,6 +6,10 @@ import type { Props as SelectProps } from "react-select";
 import type { KnownTarget } from "styled-components/dist/types";
 import type { User } from "@supabase/supabase-js";
 
+export interface Children {
+    children: React.ReactNode;
+}
+
 export interface MainNavigationConfigItem {
     to: string;
     icon: React.ReactNode;
@@ -19,6 +23,18 @@ export interface HeaderActions {
     onClick?: () => void;
     path?: string;
 }
+
+export interface TableProps extends Children {
+    gridTemplateColumns?: string;
+    numberOfColumns?: number;
+    className?: string;
+}
+
+export interface TableHeaderCellProps extends Children {
+    columnIndex: number;
+}
+
+
 
 export interface TableDataColumn<T extends Record<string, any>> {
     id: keyof T;
@@ -66,11 +82,6 @@ export type TableDataResourceType = Record<string, any> & { id: number };
 
 // TODO: TableDataConfig with generic type which will allow fields like a TableDataColumn.id have proper type?
 // TODO: Create differenet files for types??
-
-export interface TableHeaderCellProps {
-    children: React.ReactNode;
-    columnIndex: number;
-}
 
 export interface TableDataFilterState<T> {
     id: keyof T;
@@ -170,8 +181,7 @@ export interface DropdownItemsProps<T> {
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-export interface DropdownToggleProps {
-    children: React.ReactNode;
+export interface DropdownToggleProps extends  Children {
     hideDefaultIcon?: true;
     className?: string;
     isForm?: true;
@@ -259,7 +269,7 @@ export interface GridLayoutProps {
     className?: string;
 }
 
-export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement> {
+export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement>{
     onSubmit: (event: React.SyntheticEvent) => Promise<void>;
     children: React.ReactNode;
     formState: FormState<FormType>;
@@ -326,8 +336,7 @@ export type SupportedCountriesShortNames = "us" | "ca" | "mx" | "de" | "pl" | "f
 
 export type DateFilterType = "gte" | "lte";
 
-export interface DropdownMenuProps {
-    children: React.ReactNode;
+export interface DropdownMenuProps extends  Children {
     onHideDropdown?: () => void;
     className?: string;
 }

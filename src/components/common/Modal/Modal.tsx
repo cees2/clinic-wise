@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useMemo, type MouseEvent } from "react";
-import type { ModalContextType } from "../../../utils/projectTypes";
+import type { Children, ModalContextType } from "../../../utils/projectTypes";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { IoMdClose } from "react-icons/io";
@@ -111,19 +111,19 @@ export const Modal = ({
     );
 };
 
-const ModalHeader = ({ children }: { children: React.ReactNode }) => {
+const ModalHeader = ({ children }: Children) => {
     return <StyledModalHeader>{children}</StyledModalHeader>;
 };
 
-const ModalTitle = ({ children }: { children: React.ReactNode }) => {
+const ModalTitle = ({ children }: Children) => {
     return <StyledModalTitle>{children}</StyledModalTitle>;
 };
 
-const ModalBody = ({ children }: { children: React.ReactNode }) => {
+const ModalBody = ({ children }: Children) => {
     return <StyledModalBody>{children}</StyledModalBody>;
 };
 
-const ModalFooter = ({ children }: { children: React.ReactNode }) => {
+const ModalFooter = ({ children }: Children) => {
     return <StyledModalFooter>{children}</StyledModalFooter>;
 };
 
