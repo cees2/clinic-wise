@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import type { Children, TableHeaderCellProps, TableProps } from "../../../utils/projectTypes";
+import { TableVariant, type Children, type TableHeaderCellProps, type TableProps } from "../../../utils/projectTypes";
 import { createContext, use, useMemo } from "react";
 
 const StyledTable = styled.div.attrs({ role: "table" })`
@@ -20,19 +20,46 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<TableProps, "child
     ${({ gridTemplateColumns, numberOfColumns }) => css`
         grid-template-columns: ${gridTemplateColumns ?? `repeat(${numberOfColumns}, 1fr)`};
     `}
+
+    ${({ variant }) => {
+        return (
+            variant === TableVariant.BARE &&
+            css`
+                padding: 0;
+            `
+        );
+    }}
 `;
 
-export const StyledHeaderCell = styled.div`
+export const StyledHeaderCell = styled.div<{ variant?: TableVariant }>`
     font-weight: var(--font-weight-semibold);
     font-size: 1.8rem;
     padding: 1.2rem;
+
+    ${({ variant }) => {
+        return (
+            variant === TableVariant.BARE &&
+            css`
+                padding: 0;
+            `
+        );
+    }}
 `;
 
 const StyledTableCell = styled.div.attrs({
     role: "cell",
-})`
+})<{ variant?: TableVariant }>`
     padding: 0.6rem 1.2rem;
     word-break: break-all;
+
+    ${({ variant }) => {
+        return (
+            variant === TableVariant.BARE &&
+            css`
+                padding: 0;
+            `
+        );
+    }}
 `;
 
 const TableContext = createContext<Omit<TableProps, "children">>({});
@@ -45,10 +72,10 @@ const useTableContext = () => {
     return tableContext;
 };
 
-const Table = ({ children, gridTemplateColumns, numberOfColumns, className }: TableProps) => {
+const Table = ({ children, gridTemplateColumns, numberOfColumns, className, variant }: TableProps) => {
     const contextValue = useMemo(
-        () => ({ gridTemplateColumns, numberOfColumns }),
-        [gridTemplateColumns, numberOfColumns],
+        () => ({ gridTemplateColumns, numberOfColumns, variant }),
+        [gridTemplateColumns, numberOfColumns, variant],
     );
 
     return (
@@ -60,22 +87,43 @@ const Table = ({ children, gridTemplateColumns, numberOfColumns, className }: Ta
     );
 };
 
-const TableRow = ({ children }: Children) => {
-    const { gridTemplateColumns, numberOfColumns } = useTableContext();
+const TableRow = ({ children, className }: { className?: string } & Children) => {
+    const { gridTemplateColumns, numberOfColumns, variant } = useTableContext();
 
     return (
-        <StyledTableRow gridTemplateColumns={gridTemplateColumns} numberOfColumns={numberOfColumns}>
+        <StyledTableRow
+            gridTemplateColumns={gridTemplateColumns}
+            numberOfColumns={numberOfColumns}
+            className={className}
+            variant={variant}
+        >
             {children}
         </StyledTableRow>
     );
 };
 
-const TableHeaderCell = ({ children }: TableHeaderCellProps) => {
-    return <StyledHeaderCell>{children}</StyledHeaderCell>;
+const TableHeaderCell = ({ children, className }: TableHeaderCellProps) => {
+    const { variant } = useTableContext();
+
+    if (!children) return <StyledHeaderCell />;
+
+    return (
+        <StyledHeaderCell className={className} variant={variant}>
+            {children}
+        </StyledHeaderCell>
+    );
 };
 
-const TableRowCell = ({ children }: Children) => {
-    return <StyledTableCell>{children}</StyledTableCell>;
+const TableRowCell = ({ children, className }: { className?: string } & Partial<Children>) => {
+    const { variant } = useTableContext();
+
+    if (!children) return <StyledTableCell />;
+
+    return (
+        <StyledTableCell className={className} variant={variant}>
+            {children}
+        </StyledTableCell>
+    );
 };
 
 Table.TableRow = TableRow;

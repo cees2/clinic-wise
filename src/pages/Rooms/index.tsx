@@ -4,16 +4,19 @@ import type { HeaderButton } from "../../utils/projectTypes";
 import DayController from "./components/DayController";
 import RoomsFilters from "./components/Filters/RoomsFilters";
 import RoomsTable from "./components/RoomsTable";
-import { RoomsContextProvider } from "./utils/RoomsContext";
+import { RoomsContextProvider, useRoomsContext } from "./utils/RoomsContext";
 import { useGetRoomsOccupancies } from "../../services/hooks/roomsOccupancy/useGetRoomsOccupancies";
 import { EmptyPage } from "../../components/common/EmptyPage";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { useGetRooms } from "../../services/hooks/rooms/useGetRooms";
+import { getDateFilterFromRoomsFilters } from "./utils/utils";
 
 const HEADER_BUTTONS: HeaderButton[] = [{ title: "Add room", path: "/rooms/new" }];
 
 const Rooms = () => {
-    const { isLoading: roomsOccupanciesLoading, data: roomsOccupancies } = useGetRoomsOccupancies();
+    const { filters } = useRoomsContext();
+    const dateFilter = getDateFilterFromRoomsFilters(filters);
+    const { isLoading: roomsOccupanciesLoading, data: roomsOccupancies } = useGetRoomsOccupancies(dateFilter?.value);
     const { isLoading: roomsLoading, data: rooms } = useGetRooms();
 
     if (roomsOccupanciesLoading || roomsLoading) return <LoadingSpinner />;

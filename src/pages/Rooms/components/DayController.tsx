@@ -1,8 +1,10 @@
-import { useQueryClient } from "@tanstack/react-query";
-import { add, format } from "date-fns";
+import { add, differenceInDays, format, startOfToday } from "date-fns";
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import styled from "styled-components";
+import { getDateFilterFromRoomsFilters, getDayOffsetStringDate, getDaysOffsetFromADate } from "../utils/utils";
+import { useRoomsContext } from "../utils/RoomsContext";
+import { RoomsFilterIds } from "../../../utils/projectTypes";
 
 const StyledDayController = styled.div`
     display: flex;
@@ -21,22 +23,41 @@ const Arrow = styled.div`
 `;
 
 const DayController = () => {
-    const [dayOffset, setDayOffset] = useState(0);
-    const dateToDisplay = add(new Date(), { days: dayOffset });
-    const formattedDate = format(dateToDisplay, "dd MMMM, yyyy");
-    const dayOfWeek = format(dateToDisplay, "EEEE");
-    const queryClient = useQueryClient();
+    const { setFilters, filters } = useRoomsContext();
+    const dateFilter = getDateFilterFromRoomsFilters(filters);
 
-    const nextDayClickHander = () => {
-        setDayOffset((prevOffset) => ++prevOffset);
+    if (!dateFilter) return null;
+
+    const { value: dateFilterValue } = dateFilter;
+    const dateFilterDateObject = new Date(dateFilterValue);
+    const daysDifference = getDaysOffsetFromADate(dateFilterValue);
+    const formattedDate = format(dateFilterDateObject, "dd MMMM, yyyy");
+    const dayOfWeek = format(dateFilterDateObject, "EEEE");
+
+    const updateDateFilter = (updatedDaysDifference: number) => {
+        const newDayOffsetStringDate = getDayOffsetStringDate(updatedDaysDifference);
+        const newRoomsFilters = [...filters];
+        const dateFilter = newRoomsFilters.find((filter) => filter.id === RoomsFilterIds.DATE);
+
+        if (!dateFilter) return;
+
+        dateFilter.value = newDayOffsetStringDate;
+
+        setFilters(newRoomsFilters);
     };
 
-    const previousDayClickHander = () => {
-        setDayOffset((prevOffset) => {
-            if (prevOffset === 0) return prevOffset;
+    const nextDayClickHandler = () => {
+        const updatedDaysDifference = daysDifference + 1;
 
-            return --prevOffset;
-        });
+        updateDateFilter(updatedDaysDifference);
+    };
+
+    const previousDayClickHandler = () => {
+        if (daysDifference === 0) return;
+
+        const updatedDaysDifference = daysDifference - 1;
+
+        updateDateFilter(updatedDaysDifference);
     };
 
     return (
@@ -46,8 +67,8 @@ const DayController = () => {
                 <small>{formattedDate}</small>
             </div>
             <div className="flex gap-x-6">
-                <Arrow onClick={previousDayClickHander} as={FaChevronLeft} />
-                <Arrow onClick={nextDayClickHander} as={FaChevronRight} />
+                <Arrow onClick={previousDayClickHandler} as={FaChevronLeft} />
+                <Arrow onClick={nextDayClickHandler} as={FaChevronRight} />
             </div>
         </StyledDayController>
     );

@@ -1,3 +1,4 @@
+import { add, format } from "date-fns";
 import type {
     AppointmentFormType,
     AppointmentUpdateType,
@@ -11,6 +12,7 @@ import type {
 } from "../utils/projectTypes";
 import type { EmployeeSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
+import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 
 // TODO: possible refactor
 
@@ -463,8 +465,18 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     return data;
 };
 
-export const getRoomsOccupancies = async  () => {
-    const {data, error} = await supabase.from("rooms_occupancy").select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)")
+export const getRoomsOccupancies = async  (dateFilterValue?: string) => {
+    let query = supabase.from("rooms_occupancy").select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)")
+
+    if(dateFilterValue){
+        const endDate = add(new Date(dateFilterValue), {days: 1});
+        const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME)
+
+        query = query.gte("start",dateFilterValue).lte("end", formattedEndDate);
+
+    }
+
+    const {data, error} = await query
 
     if(error){
         throw new Error(error.message);

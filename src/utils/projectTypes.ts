@@ -28,10 +28,17 @@ export interface TableProps extends Children {
     gridTemplateColumns?: string;
     numberOfColumns?: number;
     className?: string;
+    variant?: TableVariant
 }
 
-export interface TableHeaderCellProps extends Children {
+export enum TableVariant {
+    PRIMARY,
+    BARE
+}
+
+export interface TableHeaderCellProps extends Partial<Children> {
     columnIndex: number;
+    className?: string;
 }
 
 
@@ -389,10 +396,8 @@ export interface SettingsFormSectionProps<FormType extends Record<string, any>>
 
 
 export enum RoomsFilterIds  {
-    TODAY = "Today",
-    TOMORROW = "Tomorrow",
-    CUSTOM = "Custom",
-    ROOM = "Room"
+    ROOM,
+    DATE,
 }
 
 export const RoomsTimeFilterOptionsArray = [RoomsFilterIds.TODAY, RoomsFilterIds.TOMORROW, RoomsFilterIds.CUSTOM]
@@ -400,7 +405,7 @@ export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM]
 
 export interface RoomsFilter {
     id: RoomsFilterIds;
-    value?: string
+    value: string
 }
 
 export interface RoomsContextType{

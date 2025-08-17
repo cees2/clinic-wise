@@ -1,6 +1,7 @@
 import { minutesToHours } from "date-fns";
 import Table from "../../../components/common/Table/Table";
 import type { Tables } from "../../../services/database.types";
+import { TableVariant } from "../../../utils/projectTypes";
 
 interface Props {
     roomsOccupancies: Tables<"rooms_occupancy">[];
@@ -19,7 +20,7 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
         const hourOfDay = minutesToHours(minute);
         const minuteOfDay = minute % 60;
 
-        return roomsOccupancies.find((roomOccupancy) => {
+        return roomsOccupancies.some((roomOccupancy) => {
             const {
                 start,
                 rooms: { name: roomName },
@@ -39,9 +40,9 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
     };
 
     return (
-        <Table numberOfColumns={rooms.length + 1}>
+        <Table numberOfColumns={rooms.length + 1} variant={TableVariant.BARE}>
             <Table.TableRow>
-                <Table.TableHeaderCell columnIndex={0}>{null}</Table.TableHeaderCell>
+                <Table.TableHeaderCell columnIndex={0} />
                 {rooms.map(({ name }, index) => (
                     <Table.TableHeaderCell key={name} columnIndex={index + 1}>
                         {name}
@@ -57,14 +58,18 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
                     <Table.TableRow key={minute}>
                         <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
                         {rooms.map((room) => {
-                            let cellContent = null;
+                            let className = "";
                             const roomOccupancyMatchingCurrentMinute = getMinuteMatchesRoomOccupancy(minute, room);
 
                             if (roomOccupancyMatchingCurrentMinute) {
-                                cellContent = "zajete";
+                                className = "bg-red-500 h-full";
                             }
 
-                            return <Table.TableRowCell key={room.name}>{cellContent}</Table.TableRowCell>;
+                            return (
+                                <Table.TableRowCell key={room.name} className={className}>
+                                    a
+                                </Table.TableRowCell>
+                            );
                         })}
                     </Table.TableRow>
                 );
