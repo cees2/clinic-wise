@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Appointments from "./Appointments";
 import Patients from "./Patients";
-import Rooms from "./Rooms";
+import Rooms from "./RoomsOccupation";
 import Availabilities from "./Availabilities";
 import Settings from "./Settings";
 import Page404 from "../components/layout/Page404";

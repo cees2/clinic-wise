@@ -224,7 +224,8 @@ export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>
 export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">> & EmployeeFormAdditionalData;
 export type EmployeeUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
 export type RoomOccupationFormType = Partial<Omit<Tables<"rooms_occupancy">, "created_at" | "id">>;
-export type RoomUOccupationpdateType = Partial<Omit<Tables<"rooms_occupancy">, "created_at">>;
+export type RoomOccupationpdateType = Partial<Omit<Tables<"rooms_occupancy">, "created_at">>;
+export type RoomOccupationGenerateType = Omit<Tables<"rooms_occupancy">, "created_at" | "id">;
 
 export interface Person {
     name: string;
@@ -400,7 +401,13 @@ export enum RoomsFilterIds  {
     DATE,
 }
 
-export const RoomsTimeFilterOptionsArray = [RoomsFilterIds.TODAY, RoomsFilterIds.TOMORROW, RoomsFilterIds.CUSTOM]
+export enum RoomDateFilters {
+    TODAY = "Today",
+    TOMORROW = "Tomorrow",
+    CUSTOM = "Custom"
+}
+
+export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW, RoomDateFilters.CUSTOM]
 export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM]
 
 export interface RoomsFilter {

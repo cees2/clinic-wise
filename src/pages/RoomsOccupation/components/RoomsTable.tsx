@@ -1,7 +1,9 @@
-import { minutesToHours } from "date-fns";
+import { addMinutes, isWithinInterval, minutesToHours } from "date-fns";
 import Table from "../../../components/common/Table/Table";
 import type { Tables } from "../../../services/database.types";
 import { TableVariant } from "../../../utils/projectTypes";
+import { useRoomsContext } from "../utils/RoomsContext";
+import { getDateFilterFromRoomsFilters } from "../utils/utils";
 
 interface Props {
     roomsOccupancies: Tables<"rooms_occupancy">[];
@@ -16,22 +18,24 @@ const MINUTES_OF_DAYS = Array.from(
 );
 
 const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
+    const { filters } = useRoomsContext();
+    const dateFilter = getDateFilterFromRoomsFilters(filters);
+
     const getMinuteMatchesRoomOccupancy = (minute: number, room: Tables<"rooms">) => {
-        const hourOfDay = minutesToHours(minute);
-        const minuteOfDay = minute % 60;
+        if (!dateFilter?.value) return;
+
+        const dateFilterWithMinutes = addMinutes(new Date(dateFilter.value), minute);
 
         return roomsOccupancies.some((roomOccupancy) => {
             const {
-                start,
+                start: startDateAsString,
+                end: endDateAsString,
                 rooms: { name: roomName },
             } = roomOccupancy;
-            const startDate = new Date(start);
+            const start = new Date(startDateAsString);
+            const end = new Date(endDateAsString);
 
-            if (
-                startDate.getHours() === hourOfDay &&
-                startDate.getMinutes() === minuteOfDay &&
-                roomName === room.name
-            ) {
+            if (isWithinInterval(dateFilterWithMinutes, { start, end }) && roomName === room.name) {
                 return true;
             }
 

@@ -21,7 +21,6 @@ const Rooms = () => {
 
     if (roomsOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
     if (rooms?.length === 0) return <EmptyPage caption="No rooms found for given filters" />;
-    if (roomsOccupancies?.length === 0) return <EmptyPage caption="No rooms found for given filters" />;
 
     return (
         <ContentLayout>
