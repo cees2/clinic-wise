@@ -9,24 +9,22 @@ import { useGetRoomsOccupancies } from "../../services/hooks/roomsOccupancy/useG
 import { EmptyPage } from "../../components/common/EmptyPage";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { useGetRooms } from "../../services/hooks/rooms/useGetRooms";
-import { getDateFilterFromRoomsFilters } from "./utils/utils";
 
 const HEADER_BUTTONS: HeaderButton[] = [{ title: "Add room", path: "/rooms/new" }];
 
 const Rooms = () => {
     const { filters } = useRoomsContext();
-    const dateFilter = getDateFilterFromRoomsFilters(filters);
-    const { isLoading: roomsOccupanciesLoading, data: roomsOccupancies } = useGetRoomsOccupancies(dateFilter?.value);
+    const { isLoading: roomsOccupanciesLoading, data: roomsOccupancies } = useGetRoomsOccupancies(filters);
     const { isLoading: roomsLoading, data: rooms } = useGetRooms();
 
     if (roomsOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
-    if (rooms?.length === 0) return <EmptyPage caption="No rooms found for given filters" />;
+    if (!rooms || rooms.length === 0) return <EmptyPage caption="No rooms found" />;
 
     return (
         <ContentLayout>
             <Header title="Rooms" as="h3" buttons={HEADER_BUTTONS} />
             <div className="flex flex-col">
-                <RoomsFilters />
+                <RoomsFilters rooms={rooms} />
                 <DayController />
                 <RoomsTable roomsOccupancies={roomsOccupancies} rooms={rooms} />
             </div>

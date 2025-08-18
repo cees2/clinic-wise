@@ -1,4 +1,5 @@
 import { Button } from "../../../../components/layout/Button";
+import type { Tables } from "../../../../services/database.types";
 import { RoomsFilterIds, RoomsTimeFilterOptionsArray, type RoomsFilter } from "../../../../utils/projectTypes";
 import { useRoomsContext } from "../../utils/RoomsContext";
 import {
@@ -8,8 +9,11 @@ import {
 } from "../../utils/utils";
 import RoomsFilterComponent from "./RoomsFilter";
 
-// TODO: Add custom date picker
-const RoomsFilters = () => {
+interface Props{
+    rooms: Omit<Tables<"rooms">, "created_at">[]
+}
+
+const RoomsFilters = ({rooms}: Props) => {
     const { filters, setFilters } = useRoomsContext();
 
     return (
@@ -35,7 +39,7 @@ const RoomsFilters = () => {
                     </Button>
                 );
             })}
-            <RoomsFilterComponent />
+            <RoomsFilterComponent rooms={rooms}/>
         </div>
     );
 };

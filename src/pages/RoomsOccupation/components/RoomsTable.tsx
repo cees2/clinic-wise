@@ -3,7 +3,7 @@ import Table from "../../../components/common/Table/Table";
 import type { Tables } from "../../../services/database.types";
 import { TableVariant } from "../../../utils/projectTypes";
 import { useRoomsContext } from "../utils/RoomsContext";
-import { getDateFilterFromRoomsFilters } from "../utils/utils";
+import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../utils/utils";
 
 interface Props {
     roomsOccupancies: Tables<"rooms_occupancy">[];
@@ -20,6 +20,7 @@ const MINUTES_OF_DAYS = Array.from(
 const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
     const { filters } = useRoomsContext();
     const dateFilter = getDateFilterFromRoomsFilters(filters);
+    const filteredRooms = getFilteredRooms(filters, rooms);
 
     const getMinuteMatchesRoomOccupancy = (minute: number, room: Tables<"rooms">) => {
         if (!dateFilter?.value) return;
@@ -44,10 +45,10 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
     };
 
     return (
-        <Table numberOfColumns={rooms.length + 1} variant={TableVariant.BARE}>
+        <Table numberOfColumns={filteredRooms.length + 1} variant={TableVariant.BARE}>
             <Table.TableRow>
                 <Table.TableHeaderCell columnIndex={0} />
-                {rooms.map(({ name }, index) => (
+                {filteredRooms.map(({ name }, index) => (
                     <Table.TableHeaderCell key={name} columnIndex={index + 1}>
                         {name}
                     </Table.TableHeaderCell>
@@ -61,7 +62,7 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
                 return (
                     <Table.TableRow key={minute}>
                         <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
-                        {rooms.map((room) => {
+                        {filteredRooms.map((room) => {
                             let className = "";
                             const roomOccupancyMatchingCurrentMinute = getMinuteMatchesRoomOccupancy(minute, room);
 

@@ -7,12 +7,14 @@ import type {
     LoginApi,
     PatientFormType,
     PatientUpdateType,
+    RoomsFilter,
     UpdateUserCompleteInfo,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { EmployeeSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
 import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
+import { getDateFilterFromRoomsFilters, getRoomFilterFromRoomsFilters } from "../pages/RoomsOccupation/utils/utils";
 
 // TODO: possible refactor
 
@@ -465,15 +467,23 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     return data;
 };
 
-export const getRoomsOccupancies = async  (dateFilterValue?: string) => {
+export const getRoomsOccupancies = async  (filters: RoomsFilter[]) => {
+    const dateFilter = getDateFilterFromRoomsFilters(filters);
+    const roomFilter = getRoomFilterFromRoomsFilters(filters)
     let query = supabase.from("rooms_occupancy").select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)")
 
-    if(dateFilterValue){
-        const endDate = add(new Date(dateFilterValue), {days: 1});
+    if(dateFilter){
+        const endDate = add(new Date(dateFilter.value), {days: 1});
         const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME)
 
-        query = query.gte("start",dateFilterValue).lte("end", formattedEndDate);
+        query = query.gte("start",dateFilter.value).lte("end", formattedEndDate);
 
+    }
+
+    if(roomFilter){
+        const queryFilter = roomFilter.value.split(",").map(filterValue => Number(filterValue));
+
+        query = query.in("room_id", queryFilter);
     }
 
     const {data, error} = await query

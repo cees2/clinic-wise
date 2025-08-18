@@ -1,6 +1,7 @@
 import { add, differenceInDays, format, isToday, isTomorrow, startOfDay, startOfToday } from "date-fns";
 import { RoomDateFilters, RoomsFilterIds, type RoomsFilter } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
+import type { Tables } from "../../../services/database.types";
 
 export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilters, customDate?: Date) => {
     let date: Date | null = null;
@@ -56,6 +57,9 @@ return differenceInDays(new Date(dateFilter), startOfToday())
 export const getDateFilterFromRoomsFilters = (filters: RoomsFilter[]) => {
     return filters.find(filter => filter.id === RoomsFilterIds.DATE)
 }
+export const getRoomFilterFromRoomsFilters = (filters: RoomsFilter[]) => {
+    return filters.find(filter => filter.id === RoomsFilterIds.ROOM)
+}
 
 export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilter[], timeFilter: RoomDateFilters) => {
     const dateFilter = filters.find(filter => filter.id === RoomsFilterIds.DATE)
@@ -77,4 +81,30 @@ export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilter[], timeFi
             return false
         }
     }
+}
+
+export const getFilteredRooms = (filters:RoomsFilter[], rooms: Omit<Tables<"rooms">, "created_at">[]) => {
+    const roomsFilter = getRoomFilterFromRoomsFilters(filters);
+
+    if(!roomsFilter) return rooms;
+
+    const roomsIds = roomsFilter.value.split(",");
+
+    return rooms.filter(room => roomsIds.includes(room.id.toString()))
+}
+
+export const updateRoomFilterValue = (id: string,roomsFilter?: RoomsFilter) => {
+    if(!roomsFilter) return id
+
+    const {value} = roomsFilter;
+    const roomsIdsArray = value.split(",");
+    const indexOfId = roomsIdsArray.indexOf(id);
+
+    if(indexOfId === -1){
+        roomsIdsArray.push(id)
+    } else {
+        roomsIdsArray.splice(indexOfId, 1);
+    }
+
+    return roomsIdsArray.join(",")
 }

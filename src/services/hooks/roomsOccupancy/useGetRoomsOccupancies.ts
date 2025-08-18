@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
 import { getRoomsOccupancies } from "../../api"
+import type { RoomsFilter } from "../../../utils/projectTypes"
 
-export const useGetRoomsOccupancies = (dateFilterValue?:string) => {
+export const useGetRoomsOccupancies = (filters: RoomsFilter[]) => {
     const query = useQuery({
-        queryFn:() =>  getRoomsOccupancies(dateFilterValue),
-        queryKey: ["roomsOccupancies", dateFilterValue]
+        queryFn:() =>  getRoomsOccupancies(filters),
+        queryKey: ["roomsOccupancies", filters]
     })
 
     return query
