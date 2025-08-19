@@ -404,10 +404,9 @@ export enum RoomsFilterIds  {
 export enum RoomDateFilters {
     TODAY = "Today",
     TOMORROW = "Tomorrow",
-    CUSTOM = "Custom"
 }
 
-export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW, RoomDateFilters.CUSTOM]
+export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW]
 export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM]
 
 export interface RoomsFilter {

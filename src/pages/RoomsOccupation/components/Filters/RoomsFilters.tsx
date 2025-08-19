@@ -8,6 +8,7 @@ import {
     updateRoomsFilters,
 } from "../../utils/utils";
 import RoomsFilterComponent from "./RoomsFilter";
+import { RoomsCustomDateFilter } from "./RoomsCustomDateFilter.tsx";
 
 interface Props{
     rooms: Omit<Tables<"rooms">, "created_at">[]
@@ -39,6 +40,7 @@ const RoomsFilters = ({rooms}: Props) => {
                     </Button>
                 );
             })}
+            <RoomsCustomDateFilter />
             <RoomsFilterComponent rooms={rooms}/>
         </div>
     );
