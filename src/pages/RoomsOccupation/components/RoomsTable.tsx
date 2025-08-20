@@ -6,7 +6,7 @@ import { useRoomsContext } from "../utils/RoomsContext";
 import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../utils/utils";
 
 interface Props {
-    roomsOccupancies: Tables<"rooms_occupancy">[];
+    roomOccupancies: Tables<"rooms_occupancy">[];
     rooms: Tables<"rooms">[];
 }
 
@@ -17,7 +17,7 @@ const MINUTES_OF_DAYS = Array.from(
     (_, index) => HOUR_6_AM_AS_MINUTES + index * 30,
 );
 
-const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
+const RoomsTable = ({ roomOccupancies, rooms }: Props) => {
     const { filters } = useRoomsContext();
     const dateFilter = getDateFilterFromRoomsFilters(filters);
     const filteredRooms = getFilteredRooms(filters, rooms);
@@ -27,14 +27,14 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
 
         const dateFilterWithMinutes = addMinutes(new Date(dateFilter.value), minute);
 
-        return roomsOccupancies.some((roomOccupancy) => {
+        return roomOccupancies.some((roomOccupancy) => {
             const {
                 start: startDateAsString,
                 end: endDateAsString,
                 rooms: { name: roomName },
             } = roomOccupancy;
-            const start = new Date(startDateAsString);
-            const end = new Date(endDateAsString);
+            const start = new Date(startDateAsString)
+            const end = new Date(endDateAsString)
 
             if (isWithinInterval(dateFilterWithMinutes, { start, end }) && roomName === room.name) {
                 return true;
@@ -71,9 +71,7 @@ const RoomsTable = ({ roomsOccupancies, rooms }: Props) => {
                             }
 
                             return (
-                                <Table.TableRowCell key={room.name} className={className}>
-                                    a
-                                </Table.TableRowCell>
+                                <Table.TableRowCell key={room.name} className={className}><div/></Table.TableRowCell>
                             );
                         })}
                     </Table.TableRow>

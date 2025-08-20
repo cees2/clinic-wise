@@ -5,19 +5,19 @@ import DayController from "./components/DayController";
 import RoomsFilters from "./components/Filters/RoomsFilters";
 import RoomsTable from "./components/RoomsTable";
 import { RoomsContextProvider, useRoomsContext } from "./utils/RoomsContext";
-import { useGetRoomsOccupancies } from "../../services/hooks/roomsOccupancy/useGetRoomsOccupancies";
 import { EmptyPage } from "../../components/common/EmptyPage";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { useGetRooms } from "../../services/hooks/rooms/useGetRooms";
+import { useGetRoomsOccupancies } from "../../services/hooks/roomsOccupancy/useGetRoomOccupancies.ts";
 
 const HEADER_BUTTONS: HeaderButton[] = [{ title: "Add room", path: "/rooms/new" }];
 
 const Rooms = () => {
     const { filters } = useRoomsContext();
-    const { isLoading: roomsOccupanciesLoading, data: roomsOccupancies } = useGetRoomsOccupancies(filters);
+    const { isLoading: roomOccupanciesLoading, data: roomOccupancies } = useGetRoomsOccupancies(filters);
     const { isLoading: roomsLoading, data: rooms } = useGetRooms();
 
-    if (roomsOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
+    if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
     if (!rooms || rooms.length === 0) return <EmptyPage caption="No rooms found" />;
 
     return (
@@ -26,7 +26,7 @@ const Rooms = () => {
             <div className="flex flex-col">
                 <RoomsFilters rooms={rooms} />
                 <DayController />
-                <RoomsTable roomsOccupancies={roomsOccupancies} rooms={rooms} />
+                <RoomsTable roomOccupancies={roomOccupancies} rooms={rooms} />
             </div>
         </ContentLayout>
     );

@@ -467,9 +467,7 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     return data;
 };
 
-export const getRoomsOccupancies = async  (filters: RoomsFilter[]) => {
-    const dateFilter = getDateFilterFromRoomsFilters(filters);
-    const roomFilter = getRoomFilterFromRoomsFilters(filters)
+export const getRoomsOccupancies = async  (dateFilter?: RoomsFilter, roomFilter?: RoomsFilter) => {
     let query = supabase.from("rooms_occupancy").select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)")
 
     if(dateFilter){
