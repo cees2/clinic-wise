@@ -1,20 +1,20 @@
-import { Button } from "../../../../components/layout/Button";
-import type { Tables } from "../../../../services/database.types";
-import { RoomsFilterIds, RoomsTimeFilterOptionsArray, type RoomsFilter } from "../../../../utils/projectTypes";
-import { useRoomsContext } from "../../utils/RoomsContext";
+import { Button } from "../../../../../components/layout/Button.tsx";
+import type { Tables } from "../../../../../services/database.types.ts";
+import { RoomsFilterIds, RoomsTimeFilterOptionsArray, type RoomsFilter } from "../../../../../utils/projectTypes.ts";
+import { useRoomsContext } from "../../../utils/RoomsContext.tsx";
 import {
     getDateValueFromPredefinedTimeFilters,
     getIsPredefinedTimeFilterSelected,
     updateRoomsFilters,
-} from "../../utils/utils";
-import RoomsFilterComponent from "./RoomsFilter";
+} from "../../../utils/utils.ts";
+import RoomsFilterComponent from "./RoomsFilter.tsx";
 import { RoomsCustomDateFilter } from "./RoomsCustomDateFilter.tsx";
 
-interface Props{
-    rooms: Omit<Tables<"rooms">, "created_at">[]
+interface Props {
+    rooms: Omit<Tables<"rooms">, "created_at">[];
 }
 
-const RoomsFilters = ({rooms}: Props) => {
+const RoomsFilters = ({ rooms }: Props) => {
     const { filters, setFilters } = useRoomsContext();
 
     return (
@@ -41,7 +41,7 @@ const RoomsFilters = ({rooms}: Props) => {
                 );
             })}
             <RoomsCustomDateFilter />
-            <RoomsFilterComponent rooms={rooms}/>
+            <RoomsFilterComponent rooms={rooms} />
         </div>
     );
 };

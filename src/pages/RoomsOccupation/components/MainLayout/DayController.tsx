@@ -2,9 +2,9 @@ import { add, differenceInDays, format, startOfToday } from "date-fns";
 import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import styled from "styled-components";
-import { getDateFilterFromRoomsFilters, getDayOffsetStringDate, getDaysOffsetFromADate } from "../utils/utils";
-import { useRoomsContext } from "../utils/RoomsContext";
-import { RoomsFilterIds } from "../../../utils/projectTypes";
+import { getDateFilterFromRoomsFilters, getDayOffsetStringDate, getDaysOffsetFromADate } from "../../utils/utils.ts";
+import { useRoomsContext } from "../../utils/RoomsContext.tsx";
+import { RoomsFilterIds } from "../../../../utils/projectTypes.ts";
 
 const StyledDayController = styled.div`
     display: flex;

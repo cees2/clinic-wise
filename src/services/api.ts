@@ -7,11 +7,12 @@ import type {
     LoginApi,
     PatientFormType,
     PatientUpdateType,
+    RoomFormType,
     RoomsFilter,
     UpdateUserCompleteInfo,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
-import type { EmployeeSelect } from "./apiTypes";
+import type { EmployeeSelect, RoomSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
 import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 import { getDateFilterFromRoomsFilters, getRoomFilterFromRoomsFilters } from "../pages/RoomsOccupation/utils/utils";
@@ -156,7 +157,7 @@ export const getEmployeesIds = async (size: number) => {
         throw new Error(error.message);
     }
 
-    const employeesIds = data.map(data => data.id)
+    const employeesIds = data.map((data) => data.id);
 
     return employeesIds;
 };
@@ -175,14 +176,14 @@ export const updateEmployee = async (employee: EmployeeUpdateType) => {
     const userData = {
         role: employee.role,
         fullName: `${employee.name} ${employee.surname}`,
-        user_id: employee.user_id
-    }
+        user_id: employee.user_id,
+    };
 
-    const {data: updatedUserData, error: updateUserError} = await supabase.functions.invoke("update-employee-user", {
+    const { data: updatedUserData, error: updateUserError } = await supabase.functions.invoke("update-employee-user", {
         body: userData,
     });
 
-    if(updateUserError){
+    if (updateUserError) {
         throw new Error(updateUserError.message);
     }
 
@@ -259,7 +260,7 @@ export const getPatientsIds = async (size: number) => {
         throw new Error(error.message);
     }
 
-    const patientsIds = data.map(patient => patient.id)
+    const patientsIds = data.map((patient) => patient.id);
 
     return patientsIds;
 };
@@ -328,21 +329,23 @@ export const getSession = async () => {
 
 const updateUserData = async (
     userCompleteData: UpdateUserRequestType,
-    userId:string,
+    userId: string,
     uploadedAvatarFullPath?: string,
     previousAvatarName?: string,
 ) => {
-    const [name, surname] = userCompleteData.data.fullName.split(" ")
-    const { error: updateEmployeeError} = await supabase.from("employees").update({name, surname}).eq("user_id", userId)
+    const [name, surname] = userCompleteData.data.fullName.split(" ");
+    const { error: updateEmployeeError } = await supabase
+        .from("employees")
+        .update({ name, surname })
+        .eq("user_id", userId);
 
-    if(updateEmployeeError){
-        throw new Error(updateEmployeeError.message)
+    if (updateEmployeeError) {
+        throw new Error(updateEmployeeError.message);
     }
 
     const { data, error } = await supabase.auth.updateUser(userCompleteData);
     const userClearedAvatarInput = !userCompleteData.data.avatarURL;
     const userChangedAvatar = Boolean(uploadedAvatarFullPath);
-
 
     if ((userChangedAvatar || userClearedAvatarInput) && previousAvatarName) {
         await supabase.storage.from("user-avatars").remove([previousAvatarName]);
@@ -385,7 +388,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData, updatedUser.userId,undefined, previousAvatarName);
+        return updateUserData(userCompleteData, updatedUser.userId, undefined, previousAvatarName);
     } else {
         const newAvatarName = `user-${userId}-avatar-${Date.now()}`;
         const avatarURL = `${supabaseURL}/storage/v1/object/public/user-avatars/${newAvatarName}`;
@@ -412,7 +415,7 @@ export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
             },
         };
 
-        return updateUserData(userCompleteData,updatedUser.userId, fullPath, previousAvatarName);
+        return updateUserData(userCompleteData, updatedUser.userId, fullPath, previousAvatarName);
     }
 };
 
@@ -428,30 +431,52 @@ export const updatePassword = async (newPassword: string) => {
     return data;
 };
 
-
 // ROOMS
 
-export const getRoomsIds =async  (size: number) => {
-    const {data, error} = await supabase.from("rooms").select("id").range(0, size - 1);
+export const getRoomsIds = async (size: number) => {
+    const { data, error } = await supabase
+        .from("rooms")
+        .select("id")
+        .range(0, size - 1);
 
-    if(error){
+    if (error) {
         throw new Error(error.message);
     }
-    
-    const roomsIds = data.map(room => room.id);
+
+    const roomsIds = data.map((room) => room.id);
 
     return roomsIds;
-}
+};
 
-export const getRooms = async  () => {
-    const {data, error} = await supabase.from("rooms").select("name,id")
+export const getRooms = async () => {
+    const { data, error } = await supabase.from("rooms").select("name,id");
 
-    if(error){
+    if (error) {
         throw new Error(error.message);
     }
-    
+
     return data;
-}
+};
+
+export const createRoom = async (room: RoomFormType) => {
+    const { data, error } = await supabase.from("rooms").insert(room);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> => {
+    const { data, error } = await supabase.from("rooms").select("id,name").ilike("name", `${inputValue}%`);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
 
 // ROOMS OCCUPANCIES
 
@@ -467,28 +492,29 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     return data;
 };
 
-export const getRoomsOccupancies = async  (dateFilter?: RoomsFilter, roomFilter?: RoomsFilter) => {
-    let query = supabase.from("rooms_occupancy").select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)")
+export const getRoomsOccupancies = async (dateFilter?: RoomsFilter, roomFilter?: RoomsFilter) => {
+    let query = supabase
+        .from("rooms_occupancy")
+        .select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)");
 
-    if(dateFilter){
-        const endDate = add(new Date(dateFilter.value), {days: 1});
-        const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME)
+    if (dateFilter) {
+        const endDate = add(new Date(dateFilter.value), { days: 1 });
+        const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
 
-        query = query.gte("start",dateFilter.value).lte("end", formattedEndDate);
-
+        query = query.gte("start", dateFilter.value).lte("end", formattedEndDate);
     }
 
-    if(roomFilter){
-        const queryFilter = roomFilter.value.split(",").map(filterValue => Number(filterValue));
+    if (roomFilter) {
+        const queryFilter = roomFilter.value.split(",").map((filterValue) => Number(filterValue));
 
         query = query.in("room_id", queryFilter);
     }
 
-    const {data, error} = await query
+    const { data, error } = await query;
 
-    if(error){
+    if (error) {
         throw new Error(error.message);
     }
-    
+
     return data;
-}
+};

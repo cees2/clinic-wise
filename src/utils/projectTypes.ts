@@ -28,20 +28,18 @@ export interface TableProps extends Children {
     gridTemplateColumns?: string;
     numberOfColumns?: number;
     className?: string;
-    variant?: TableVariant
+    variant?: TableVariant;
 }
 
 export enum TableVariant {
     PRIMARY,
-    BARE
+    BARE,
 }
 
 export interface TableHeaderCellProps extends Partial<Children> {
     columnIndex: number;
     className?: string;
 }
-
-
 
 export interface TableDataColumn<T extends Record<string, any>> {
     id: keyof T;
@@ -188,7 +186,7 @@ export interface DropdownItemsProps<T> {
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-export interface DropdownToggleProps extends  Children {
+export interface DropdownToggleProps extends Children {
     hideDefaultIcon?: true;
     className?: string;
     isForm?: true;
@@ -224,8 +222,8 @@ export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>
 export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">> & EmployeeFormAdditionalData;
 export type EmployeeUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
 export type RoomOccupationFormType = Partial<Omit<Tables<"rooms_occupancy">, "created_at" | "id">>;
-export type RoomOccupationpdateType = Partial<Omit<Tables<"rooms_occupancy">, "created_at">>;
 export type RoomOccupationGenerateType = Omit<Tables<"rooms_occupancy">, "created_at" | "id">;
+export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id">;
 
 export interface Person {
     name: string;
@@ -277,7 +275,7 @@ export interface GridLayoutProps {
     className?: string;
 }
 
-export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement>{
+export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement> {
     onSubmit: (event: React.SyntheticEvent) => Promise<void>;
     children: React.ReactNode;
     formState: FormState<FormType>;
@@ -344,7 +342,7 @@ export type SupportedCountriesShortNames = "us" | "ca" | "mx" | "de" | "pl" | "f
 
 export type DateFilterType = "gte" | "lte";
 
-export interface DropdownMenuProps extends  Children {
+export interface DropdownMenuProps extends Children {
     onHideDropdown?: () => void;
     className?: string;
 }
@@ -395,8 +393,7 @@ export interface SettingsFormSectionProps<FormType extends Record<string, any>>
     headerTitle: string;
 }
 
-
-export enum RoomsFilterIds  {
+export enum RoomsFilterIds {
     ROOM,
     DATE,
 }
@@ -406,15 +403,15 @@ export enum RoomDateFilters {
     TOMORROW = "Tomorrow",
 }
 
-export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW]
-export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM]
+export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW];
+export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM];
 
 export interface RoomsFilter {
     id: RoomsFilterIds;
-    value: string
+    value: string;
 }
 
-export interface RoomsContextType{
+export interface RoomsContextType {
     filters: RoomsFilter[];
-    setFilters: React.Dispatch<React.SetStateAction<RoomsFilter[]>>
+    setFilters: React.Dispatch<React.SetStateAction<RoomsFilter[]>>;
 }

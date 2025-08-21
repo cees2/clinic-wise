@@ -31,7 +31,7 @@ const AsyncSelectInput = <
         onChange(newUpdatedValue);
     };
 
-    const getAyncSelectValue = () => {
+    const getAsyncSelectValue = () => {
         if (selectedValueFullObject.current) {
             return selectedValueFullObject.current;
         }
@@ -48,7 +48,7 @@ const AsyncSelectInput = <
     return (
         <AsyncSelect
             {...props}
-            value={getAyncSelectValue() ?? value}
+            value={getAsyncSelectValue() ?? value}
             onChange={onChangeInternal}
             onBlur={onBlur}
             defaultOptions

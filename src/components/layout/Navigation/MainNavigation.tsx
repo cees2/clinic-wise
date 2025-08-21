@@ -69,7 +69,7 @@ const MainNavigation = () => {
                     user?.user_metadata.role === UserRole.ADMIN || user?.user_metadata.role === UserRole.REGISTRATION,
             },
             {
-                to: "/rooms",
+                to: "/room-occupancies",
                 title: "Rooms",
                 icon: <MdOutlineRoomPreferences />,
             },

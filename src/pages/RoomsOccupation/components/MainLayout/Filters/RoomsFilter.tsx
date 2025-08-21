@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Dropdown } from "../../../../components/common/Dropdown/Dropdown";
-import type { Tables } from "../../../../services/database.types";
-import { RoomsFilterIds, type RoomsFilter } from "../../../../utils/projectTypes";
-import { useRoomsContext } from "../../utils/RoomsContext";
-import { getRoomFilterFromRoomsFilters, updateRoomFilterValue, updateRoomsFilters } from "../../utils/utils";
+import { Dropdown } from "../../../../../components/common/Dropdown/Dropdown.tsx";
+import type { Tables } from "../../../../../services/database.types.ts";
+import { RoomsFilterIds, type RoomsFilter } from "../../../../../utils/projectTypes.ts";
+import { useRoomsContext } from "../../../utils/RoomsContext.tsx";
+import { getRoomFilterFromRoomsFilters, updateRoomFilterValue, updateRoomsFilters } from "../../../utils/utils.ts";
 
 interface Props {
     rooms: Omit<Tables<"rooms">, "created_at">[];

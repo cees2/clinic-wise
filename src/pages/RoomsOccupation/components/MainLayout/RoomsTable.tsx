@@ -1,9 +1,9 @@
 import { addMinutes, isWithinInterval, minutesToHours } from "date-fns";
-import Table from "../../../components/common/Table/Table";
-import type { Tables } from "../../../services/database.types";
-import { TableVariant } from "../../../utils/projectTypes";
-import { useRoomsContext } from "../utils/RoomsContext";
-import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../utils/utils";
+import Table from "../../../../components/common/Table/Table.tsx";
+import type { Tables } from "../../../../services/database.types.ts";
+import { TableVariant } from "../../../../utils/projectTypes.ts";
+import { useRoomsContext } from "../../utils/RoomsContext.tsx";
+import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../../utils/utils.ts";
 
 interface Props {
     roomOccupancies: Tables<"rooms_occupancy">[];
@@ -33,8 +33,8 @@ const RoomsTable = ({ roomOccupancies, rooms }: Props) => {
                 end: endDateAsString,
                 rooms: { name: roomName },
             } = roomOccupancy;
-            const start = new Date(startDateAsString)
-            const end = new Date(endDateAsString)
+            const start = new Date(startDateAsString);
+            const end = new Date(endDateAsString);
 
             if (isWithinInterval(dateFilterWithMinutes, { start, end }) && roomName === room.name) {
                 return true;
@@ -71,7 +71,9 @@ const RoomsTable = ({ roomOccupancies, rooms }: Props) => {
                             }
 
                             return (
-                                <Table.TableRowCell key={room.name} className={className}><div/></Table.TableRowCell>
+                                <Table.TableRowCell key={room.name} className={className}>
+                                    <div />
+                                </Table.TableRowCell>
                             );
                         })}
                     </Table.TableRow>
