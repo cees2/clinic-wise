@@ -73,7 +73,7 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                                 const tableCellClassName =
                                     "bg-red-500 h-full hover:cursor-pointer hover:bg-red-400 hover:transition-all hover:duration-100";
                                 const tooltip = (
-                                    <Tooltip>
+                                    <Tooltip placement="left">
                                         <span className="text-xl text-nowrap">
                                             Employee
                                             <span className="text-green-700">
