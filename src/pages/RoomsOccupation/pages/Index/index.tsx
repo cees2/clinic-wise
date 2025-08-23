@@ -22,7 +22,6 @@ const Rooms = () => {
         { title: "Add room occupancy", path: "/room-occupancies/new" },
     ];
 
-    if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
     if (!rooms || rooms.length === 0) return <EmptyPage caption="No rooms found" />;
 
     return (
@@ -31,7 +30,12 @@ const Rooms = () => {
             <div className="flex flex-col">
                 <RoomsFilters rooms={rooms} />
                 <DayController />
-                <RoomsTable roomOccupancies={roomOccupancies} rooms={rooms} />
+                <RoomsTable
+                    roomOccupancies={roomOccupancies}
+                    rooms={rooms}
+                    roomOccupanciesLoading={roomOccupanciesLoading}
+                    roomsLoading={roomsLoading}
+                />
             </div>
             <AddRoomModal showModal={showModal} onHide={() => setShowModal(false)} />
         </ContentLayout>

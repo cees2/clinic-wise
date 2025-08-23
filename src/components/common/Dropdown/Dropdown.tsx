@@ -1,5 +1,6 @@
 import React, { createContext, use, useCallback, useEffect, useMemo, useRef, useState, type RefObject } from "react";
 import type {
+    Children,
     DropdownContextType,
     DropdownItemsProps,
     DropdownMenuProps,
@@ -39,6 +40,15 @@ const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: 
             border: 1px solid var(--color-gray-400);
             border-radius: var(--radius-lg);
         `}
+`;
+
+const StyledDropdownToggleLabel = styled.span`
+    display: inline-block;
+    max-width: 16rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.6rem;
+    white-space: nowrap;
 `;
 
 const StyledDropdownMenu = styled.ul.attrs({
@@ -95,7 +105,7 @@ export const Dropdown = ({
 }) => {
     const [open, setOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
-    const dropdownToggleRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
+    const dropdownToggleRef: RefObject<HTMLButtonElement | null> = useRef<HTMLButtonElement>(null);
 
     const setDropdownToggleRef = useCallback((originalDropdownToggleRef: RefObject<HTMLButtonElement> | null) => {
         if (originalDropdownToggleRef) {
@@ -148,6 +158,10 @@ const DropdownToggle = ({ children, hideDefaultIcon, className, isForm }: Dropdo
             {!hideDefaultIcon && <IoMdArrowDropdown />}
         </StyledDropdownToggle>
     );
+};
+
+const DropdownToggleLabel = ({ children }: Children) => {
+    return <StyledDropdownToggleLabel>{children}</StyledDropdownToggleLabel>;
 };
 
 const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps) => {
@@ -236,6 +250,7 @@ const DropdownItem = ({
 };
 
 Dropdown.Toggle = DropdownToggle;
+Dropdown.Toggle.Label = DropdownToggleLabel;
 Dropdown.Menu = DropdownMenu;
 Dropdown.Item = DropdownItem;
 Dropdown.Items = DropdownItems;

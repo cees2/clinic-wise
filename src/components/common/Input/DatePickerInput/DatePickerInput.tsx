@@ -14,7 +14,7 @@ import styled from "styled-components";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { getDefaultMaxDate, getDefaultMinDate, getInputFieldErrorName } from "../../utils/inputs";
-import { DB_DATE_FORMAT } from "../../../../utils/constants";
+import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../../utils/constants";
 
 interface Props<FormType extends Record<string, any>> {
     minDate?: Date | "current";
@@ -58,7 +58,10 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
         name: registerName,
         rules,
     });
-    const formattedDate = format(new Date(value || Date.now()), "dd.MM.yyyy kk:mm");
+    const formattedDate = format(
+        new Date(value || Date.now()),
+        withTimePicker ? DB_DATE_FORMAT_WITH_TIME : DB_DATE_FORMAT,
+    );
     const { errors } = useFormState<FormType>({ control });
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 

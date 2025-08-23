@@ -10,11 +10,23 @@ interface Props {
 }
 
 const RoomsFilter = ({ rooms }: Props) => {
-    const [selectedRoomName, setSelectedRoomName] = useState<string | undefined>(undefined);
+    const [selectedRoomNames, setSelectedRoomName] = useState<string[] | undefined>(undefined);
     const { setFilters } = useRoomsContext();
 
     const onRoomClick = ({ id, name }: Omit<Tables<"rooms">, "created_at">) => {
-        setSelectedRoomName(name);
+        setSelectedRoomName((prevRoomNames) => {
+            if (!prevRoomNames) return [name];
+
+            const newPrevRoomNames = [...prevRoomNames];
+            const indexOfClickedRoomName = prevRoomNames?.indexOf(name);
+
+            if (indexOfClickedRoomName !== -1) {
+                newPrevRoomNames.splice(indexOfClickedRoomName, 1);
+                return newPrevRoomNames;
+            }
+
+            return [...newPrevRoomNames, name];
+        });
         setFilters((prevFilters) => {
             const roomsFilter = getRoomFilterFromRoomsFilters(prevFilters);
             const roomsFilterNewValue = updateRoomFilterValue(id.toString(), roomsFilter);
@@ -23,10 +35,13 @@ const RoomsFilter = ({ rooms }: Props) => {
             return updateRoomsFilters(prevFilters, newFilter);
         });
     };
+    const toggleString = `Rooms${selectedRoomNames && selectedRoomNames.length > 0 ? `: ${selectedRoomNames.join(", ")}` : ""}`;
 
     return (
-        <Dropdown>
-            <Dropdown.Toggle>{selectedRoomName ?? "Rooms"}</Dropdown.Toggle>
+        <Dropdown autoClose={false}>
+            <Dropdown.Toggle>
+                <Dropdown.Toggle.Label>{toggleString}</Dropdown.Toggle.Label>
+            </Dropdown.Toggle>
             <Dropdown.Menu>
                 {rooms.map((room) => {
                     return (

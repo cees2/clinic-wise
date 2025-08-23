@@ -8,6 +8,7 @@ import type {
     PatientFormType,
     PatientUpdateType,
     RoomFormType,
+    RoomOccupationFormType,
     RoomsFilter,
     UpdateUserCompleteInfo,
     UpdateUserRequestType,
@@ -514,6 +515,33 @@ export const getRoomsOccupancies = async (dateFilter?: RoomsFilter, roomFilter?:
 
     if (error) {
         throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const createRoomOccupancy = async (roomOccupancy: RoomOccupationFormType) => {
+    // TODO: Add checking confclits with existing data
+    const { data, error } = await supabase.from("rooms_occupancy").insert(roomOccupancy).select().single();
+
+    const contextMessage =
+        (error as any)?.context && typeof (error as any).context === "object"
+            ? (error as any).context.error?.message || (error as any).context.message
+            : undefined;
+
+    const detailedMessage = (data as any)?.error?.message ?? contextMessage;
+
+    if (error) {
+        throw new Error(
+            detailedMessage ||
+                error.message ||
+                "Could not create the room occupancy due to the conflicts with the existing data",
+        );
+    }
+
+    // In case the function responded with 200 but included an error payload
+    if (detailedMessage) {
+        throw new Error(detailedMessage);
     }
 
     return data;

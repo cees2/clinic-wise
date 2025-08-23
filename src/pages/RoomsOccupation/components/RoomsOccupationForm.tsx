@@ -10,7 +10,8 @@ import type { Tables } from "../../../services/database.types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getRoomsOccupancyFormDefaultValues } from "../utils/utils.ts";
-import { compareAsc, compareDesc, startOfToday } from "date-fns";
+import { compareDesc, startOfToday } from "date-fns";
+import { useMutateRoomsOccupancy } from "../../../services/hooks/rooms/useMutateRoomsOccupancy.ts";
 
 interface Props {
     roomOccupation?: Tables<"rooms_occupancy">;
@@ -22,6 +23,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
     });
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const mutateRoomOccupancy = useMutateRoomsOccupancy();
 
     const loadEmployees = (inputValue: string) => {
         return queryClient.fetchQuery({
@@ -38,9 +40,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
     };
 
     const submitSuccess = (data: RoomOccupationFormType) => {
-        // TODO: wire up create/update mutations for room occupancy when available
-        console.log("Room occupancy submit:", data);
-        toast.success("Form data is valid");
+        mutateRoomOccupancy.mutate(data);
     };
 
     const submitError = (errors: FieldErrors<RoomOccupationFormType>) => {
@@ -99,18 +99,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 registerName="end"
                 label="End date"
                 withTimePicker
-                rules={{
-                    required: true,
-                    validate: (value: string | number | undefined, formValues: RoomOccupationFormType) => {
-                        const startDate = new Date(value ?? Date.now());
-                        const endDate = new Date(formValues.end ?? Date.now());
-                        const comparationResult = compareAsc(startDate, endDate);
-
-                        if (comparationResult === 1) return "Start date must be before the end date";
-
-                        return true;
-                    },
-                }}
+                rules={{ required: true }}
                 minDate={startOfToday()}
             />
         </GridForm>

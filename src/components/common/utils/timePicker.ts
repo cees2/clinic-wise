@@ -1,4 +1,5 @@
 import { TimePickerMode } from "../../../utils/projectTypes";
+import { add } from "date-fns";
 
 export const getSelectedHourBasedOnValue = (value: string | Date): number => {
     if (typeof value === "string") {
@@ -16,30 +17,19 @@ export const getSelectedMinuteBasedOnValue = (value: string | Date): number => {
     return value.getMinutes();
 };
 
-export function getUpdatedTimeValue(
-    value: string,
-    newSelectedValue: number,
-    mode: TimePickerMode,
-): string;
+export function getUpdatedTimeValue(value: string, newSelectedValue: number, mode: TimePickerMode): string;
 export function getUpdatedTimeValue(value: Date, newSelectedValue: number, mode: TimePickerMode): Date;
-export function getUpdatedTimeValue(
-    value: string | Date,
-    newSelectedValue: number,
-    mode: TimePickerMode
-) {
+export function getUpdatedTimeValue(value: string | Date, newSelectedValue: number, mode: TimePickerMode) {
     if (typeof value === "string") {
-        let valueToBeUpdated = newSelectedValue.toString();
+        let updatedDate;
 
-        if (valueToBeUpdated.length === 1) valueToBeUpdated = valueToBeUpdated.padStart(2, "0");
-
-        let updatedISODate = "";
         if (mode === TimePickerMode.HOURS) {
-            updatedISODate = `${value.slice(0, 11)}${valueToBeUpdated}${value.slice(13)}`;
+            updatedDate = add(new Date(value), { hours: Number(newSelectedValue) });
         } else {
-            updatedISODate = `${value.slice(0, 14)}${valueToBeUpdated}${value.slice(16)}`;
+            updatedDate = add(new Date(value), { minutes: Number(newSelectedValue) });
         }
 
-        return updatedISODate;
+        return updatedDate;
     }
 
     const newDate = new Date(value);

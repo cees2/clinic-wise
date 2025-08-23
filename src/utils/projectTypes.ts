@@ -166,7 +166,7 @@ export interface DropdownContextType {
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     isOpening: boolean;
     setIsOpening: React.Dispatch<React.SetStateAction<boolean>>;
-    dropdownToggleRef: RefObject<HTMLButtonElement> | null;
+    dropdownToggleRef: RefObject<HTMLButtonElement | null>;
     setDropdownToggleRef: (dropdownToggleRef: RefObject<HTMLButtonElement> | null) => void;
     placement: DropdownPlacementType;
     autoClose: boolean;
@@ -406,12 +406,26 @@ export enum RoomDateFilters {
 export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW];
 export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM];
 
-export interface RoomsFilter {
+export interface RoomsFilterType {
     id: RoomsFilterIds;
     value: string;
 }
 
 export interface RoomsContextType {
-    filters: RoomsFilter[];
-    setFilters: React.Dispatch<React.SetStateAction<RoomsFilter[]>>;
+    filters: RoomsFilterType[];
+    setFilters: React.Dispatch<React.SetStateAction<RoomsFilterType[]>>;
+}
+
+export interface TooltipOverlayProps extends Children {
+    className?: string;
+    Tooltip: React.ReactElement;
+    show?: boolean;
+    showOnHover?: true;
+}
+
+export type tooltipPlacement = "top" | "bottom" | "left" | "right";
+
+export interface TooltipProps extends Children {
+    placement?: tooltipPlacement;
+    className?: string;
 }

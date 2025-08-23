@@ -4,10 +4,14 @@ import type { Tables } from "../../../../services/database.types.ts";
 import { TableVariant } from "../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../../utils/utils.ts";
+import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
+import { Tooltip, TooltipOverlay } from "../../../../components/common/Tooltip/Tootlip.tsx";
 
 interface Props {
     roomOccupancies: Tables<"rooms_occupancy">[];
     rooms: Tables<"rooms">[];
+    roomOccupanciesLoading: boolean;
+    roomsLoading: boolean;
 }
 
 const SUPPORTED_HOURS_LENGTH = 14;
@@ -17,17 +21,17 @@ const MINUTES_OF_DAYS = Array.from(
     (_, index) => HOUR_6_AM_AS_MINUTES + index * 30,
 );
 
-const RoomsTable = ({ roomOccupancies, rooms }: Props) => {
+const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoading }: Props) => {
     const { filters } = useRoomsContext();
     const dateFilter = getDateFilterFromRoomsFilters(filters);
     const filteredRooms = getFilteredRooms(filters, rooms);
 
-    const getMinuteMatchesRoomOccupancy = (minute: number, room: Tables<"rooms">) => {
+    const getRoomOccupancyMatchesCurrentData = (minute: number, room: Tables<"rooms">) => {
         if (!dateFilter?.value) return;
 
         const dateFilterWithMinutes = addMinutes(new Date(dateFilter.value), minute);
 
-        return roomOccupancies.some((roomOccupancy) => {
+        return roomOccupancies.find((roomOccupancy) => {
             const {
                 start: startDateAsString,
                 end: endDateAsString,
@@ -39,10 +43,10 @@ const RoomsTable = ({ roomOccupancies, rooms }: Props) => {
             if (isWithinInterval(dateFilterWithMinutes, { start, end }) && roomName === room.name) {
                 return true;
             }
-
-            return false;
         });
     };
+
+    if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
 
     return (
         <Table numberOfColumns={filteredRooms.length + 1} variant={TableVariant.BARE}>
@@ -63,15 +67,35 @@ const RoomsTable = ({ roomOccupancies, rooms }: Props) => {
                     <Table.TableRow key={minute}>
                         <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
                         {filteredRooms.map((room) => {
-                            let className = "";
-                            const roomOccupancyMatchingCurrentMinute = getMinuteMatchesRoomOccupancy(minute, room);
+                            const roomOccupancyMatchingCurrentMinute = getRoomOccupancyMatchesCurrentData(minute, room);
 
                             if (roomOccupancyMatchingCurrentMinute) {
-                                className = "bg-red-500 h-full";
+                                const tableCellClassName =
+                                    "bg-red-500 h-full hover:cursor-pointer hover:bg-red-400 hover:transition-all hover:duration-100";
+                                const tooltip = (
+                                    <Tooltip>
+                                        <span className="text-xl text-nowrap">
+                                            Employee
+                                            <span className="text-green-700">
+                                                {`: ${roomOccupancyMatchingCurrentMinute.employees.name} ${roomOccupancyMatchingCurrentMinute.employees.surname}`}
+                                            </span>
+                                        </span>
+                                    </Tooltip>
+                                );
+
+                                return (
+                                    <TooltipOverlay
+                                        Tooltip={tooltip}
+                                        key={`${room.name}_${room.id}_${minute}`}
+                                        showOnHover
+                                    >
+                                        <Table.TableRowCell className={tableCellClassName}>aa</Table.TableRowCell>
+                                    </TooltipOverlay>
+                                );
                             }
 
                             return (
-                                <Table.TableRowCell key={room.name} className={className}>
+                                <Table.TableRowCell key={`${room.name}_${room.id}_${minute}`}>
                                     <div />
                                 </Table.TableRowCell>
                             );

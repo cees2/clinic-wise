@@ -1,13 +1,17 @@
 import { Button } from "../../../../../components/layout/Button.tsx";
 import type { Tables } from "../../../../../services/database.types.ts";
-import { RoomsFilterIds, RoomsTimeFilterOptionsArray, type RoomsFilter } from "../../../../../utils/projectTypes.ts";
+import {
+    RoomsFilterIds,
+    RoomsTimeFilterOptionsArray,
+    type RoomsFilterType,
+} from "../../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../../utils/RoomsContext.tsx";
 import {
     getDateValueFromPredefinedTimeFilters,
     getIsPredefinedTimeFilterSelected,
     updateRoomsFilters,
 } from "../../../utils/utils.ts";
-import RoomsFilterComponent from "./RoomsFilter.tsx";
+import RoomsFilter from "./RoomsFilter.tsx";
 import { RoomsCustomDateFilter } from "./RoomsCustomDateFilter.tsx";
 
 interface Props {
@@ -24,7 +28,7 @@ const RoomsFilters = ({ rooms }: Props) => {
                 const variant = isSelected ? "primary" : "cancel";
 
                 const onClick = () => {
-                    const newTimeFilter: RoomsFilter = {
+                    const newTimeFilter: RoomsFilterType = {
                         id: RoomsFilterIds.DATE,
                         value: getDateValueFromPredefinedTimeFilters(timeFilter),
                     };
@@ -41,7 +45,7 @@ const RoomsFilters = ({ rooms }: Props) => {
                 );
             })}
             <RoomsCustomDateFilter />
-            <RoomsFilterComponent rooms={rooms} />
+            <RoomsFilter rooms={rooms} />
         </div>
     );
 };
