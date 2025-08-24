@@ -24,20 +24,30 @@ export interface HeaderActions {
     path?: string;
 }
 
-export interface TableProps extends Children {
+export enum TableVariant {
+    PRIMARY,
+    BARE,
+}
+
+export interface TableProps extends React.ComponentProps<"table"> {
     gridTemplateColumns?: string;
     numberOfColumns?: number;
     className?: string;
     variant?: TableVariant;
 }
 
-export enum TableVariant {
-    PRIMARY,
-    BARE,
+export interface TableHeaderCellProps extends React.ComponentProps<"th"> {
+    columnIndex: number;
+    className?: string;
 }
 
-export interface TableHeaderCellProps extends Partial<Children> {
-    columnIndex: number;
+export interface TableRowProps extends React.ComponentProps<"tr"> {
+    className?: string;
+}
+export interface TableRowCellProps extends React.ComponentProps<"td"> {
+    className?: string;
+}
+export interface TableRowCellProps extends React.ComponentProps<"td"> {
     className?: string;
 }
 

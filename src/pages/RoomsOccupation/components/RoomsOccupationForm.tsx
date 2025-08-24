@@ -65,6 +65,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
+                defaultValue={roomOccupation?.employee}
             />
             <FormSelectInput<RoomSelect, false, RoomOccupationFormType>
                 loadOptions={loadRooms}
@@ -74,6 +75,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 control={control}
                 label="Room"
                 rules={{ required: true }}
+                defaultValue={roomOccupation?.room}
             />
             <DatePickerInput
                 control={control}

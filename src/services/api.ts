@@ -496,7 +496,7 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
 export const getRoomsOccupancies = async (dateFilter?: RoomsFilter, roomFilter?: RoomsFilter) => {
     let query = supabase
         .from("rooms_occupancy")
-        .select("start,end,employees:employee_id(id, name, surname),rooms:room_id(name)");
+        .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name)");
 
     if (dateFilter) {
         const endDate = add(new Date(dateFilter.value), { days: 1 });
@@ -542,6 +542,20 @@ export const createRoomOccupancy = async (roomOccupancy: RoomOccupationFormType)
     // In case the function responded with 200 but included an error payload
     if (detailedMessage) {
         throw new Error(detailedMessage);
+    }
+
+    return data;
+};
+
+export const getRoomOccupancy = async (roomOccupancyId: number) => {
+    const { data, error } = await supabase
+        .from("rooms_occupancy")
+        .select("id,start,end,employee:employee_id(id, name, surname),room:room_id(name)")
+        .eq("id", roomOccupancyId)
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
     }
 
     return data;

@@ -1,10 +1,10 @@
-import { add, differenceInDays, format, startOfToday } from "date-fns";
-import { useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { getDateFilterFromRoomsFilters, getDayOffsetStringDate, getDaysOffsetFromADate } from "../../utils/utils.ts";
 import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { RoomsFilterIds } from "../../../../utils/projectTypes.ts";
+import { format } from "date-fns";
+import classNames from "classnames";
 
 const StyledDayController = styled.div`
     display: flex;
@@ -14,25 +14,36 @@ const StyledDayController = styled.div`
     margin-bottom: 4.8rem;
 `;
 
-const Arrow = styled.div`
+const Arrow = styled.div<{ disabled?: boolean }>`
+    ${({ disabled }) => {
+        if (disabled)
+            return css`
+                color: var(--color-gray-400);
+            `;
+    }}
+    
+    
     &:hover {
-        cursor: pointer;
-        transform: scale(120%);
-        transition: all 200ms;
-    }
+        ${({ disabled }) => {
+            if (!disabled) {
+                return css`
+                    cursor: pointer;
+                    transform: scale(120%);
+                    transition: all 200ms;
+                `;
+            }
+        }}
 `;
 
 const DayController = () => {
     const { setFilters, filters } = useRoomsContext();
     const dateFilter = getDateFilterFromRoomsFilters(filters);
-
-    if (!dateFilter) return null;
-
     const { value: dateFilterValue } = dateFilter;
     const dateFilterDateObject = new Date(dateFilterValue);
     const daysDifference = getDaysOffsetFromADate(dateFilterValue);
     const formattedDate = format(dateFilterDateObject, "dd MMMM, yyyy");
     const dayOfWeek = format(dateFilterDateObject, "EEEE");
+    const disablePrevDay = daysDifference === 0;
 
     const updateDateFilter = (updatedDaysDifference: number) => {
         const newDayOffsetStringDate = getDayOffsetStringDate(updatedDaysDifference);
@@ -67,7 +78,7 @@ const DayController = () => {
                 <small>{formattedDate}</small>
             </div>
             <div className="flex gap-x-6">
-                <Arrow onClick={previousDayClickHandler} as={FaChevronLeft} />
+                <Arrow onClick={previousDayClickHandler} as={FaChevronLeft} disabled={disablePrevDay} />
                 <Arrow onClick={nextDayClickHandler} as={FaChevronRight} />
             </div>
         </StyledDayController>

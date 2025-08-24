@@ -58,6 +58,7 @@ const StyledDropdownMenu = styled.ul.attrs({
     min-width: 12rem;
     border-radius: var(--radius-lg);
     background-color: var(--color-gray-200);
+    z-index: 1;
     ${({ toggleHeight, toggleWidth, placement }) => {
         switch (placement) {
             case "top": {

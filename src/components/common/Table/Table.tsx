@@ -1,5 +1,12 @@
 import styled, { css } from "styled-components";
-import { TableVariant, type Children, type TableHeaderCellProps, type TableProps } from "../../../utils/projectTypes";
+import {
+    TableVariant,
+    type Children,
+    type TableHeaderCellProps,
+    type TableProps,
+    type TableRowCellProps,
+    type TableRowProps,
+} from "../../../utils/projectTypes";
 import { createContext, use, useMemo } from "react";
 
 const StyledTable = styled.div.attrs({ role: "table" })`
@@ -72,7 +79,8 @@ const useTableContext = () => {
     return tableContext;
 };
 
-const Table = ({ children, gridTemplateColumns, numberOfColumns, className, variant }: TableProps) => {
+const Table = (props: TableProps) => {
+    const { children, gridTemplateColumns, numberOfColumns, className, variant } = props;
     const contextValue = useMemo(
         () => ({ gridTemplateColumns, numberOfColumns, variant }),
         [gridTemplateColumns, numberOfColumns, variant],
@@ -80,14 +88,15 @@ const Table = ({ children, gridTemplateColumns, numberOfColumns, className, vari
 
     return (
         <TableContext value={contextValue}>
-            <StyledTable role="table" className={className}>
+            <StyledTable role="table" className={className} {...props}>
                 {children}
             </StyledTable>
         </TableContext>
     );
 };
 
-const TableRow = ({ children, className }: { className?: string } & Children) => {
+const TableRow = (props: TableRowProps) => {
+    const { children, className } = props;
     const { gridTemplateColumns, numberOfColumns, variant } = useTableContext();
 
     return (
@@ -96,31 +105,34 @@ const TableRow = ({ children, className }: { className?: string } & Children) =>
             numberOfColumns={numberOfColumns}
             className={className}
             variant={variant}
+            {...props}
         >
             {children}
         </StyledTableRow>
     );
 };
 
-const TableHeaderCell = ({ children, className }: TableHeaderCellProps) => {
+const TableHeaderCell = (props: TableHeaderCellProps) => {
+    const { children, className } = props;
     const { variant } = useTableContext();
 
     if (!children) return <StyledHeaderCell />;
 
     return (
-        <StyledHeaderCell className={className} variant={variant}>
+        <StyledHeaderCell className={className} variant={variant} {...props}>
             {children}
         </StyledHeaderCell>
     );
 };
 
-const TableRowCell = ({ children, className }: { className?: string } & Partial<Children>) => {
+const TableRowCell = (props: TableRowCellProps) => {
+    const { children, className } = props;
     const { variant } = useTableContext();
 
     if (!children) return <StyledTableCell />;
 
     return (
-        <StyledTableCell className={className} variant={variant}>
+        <StyledTableCell className={className} variant={variant} {...props}>
             {children}
         </StyledTableCell>
     );

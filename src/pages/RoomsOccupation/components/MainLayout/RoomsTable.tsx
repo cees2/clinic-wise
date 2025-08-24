@@ -6,6 +6,7 @@ import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../../utils/utils.ts";
 import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
 import { Tooltip, TooltipOverlay } from "../../../../components/common/Tooltip/Tootlip.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     roomOccupancies: Tables<"rooms_occupancy">[];
@@ -25,6 +26,7 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     const { filters } = useRoomsContext();
     const dateFilter = getDateFilterFromRoomsFilters(filters);
     const filteredRooms = getFilteredRooms(filters, rooms);
+    const navigate = useNavigate();
 
     const getRoomOccupancyMatchesCurrentData = (minute: number, room: Tables<"rooms">) => {
         if (!dateFilter?.value) return;
@@ -69,11 +71,19 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                         {filteredRooms.map((room) => {
                             const roomOccupancyMatchingCurrentMinute = getRoomOccupancyMatchesCurrentData(minute, room);
 
+                            const currentCellClickHandler = async () => {
+                                if (!roomOccupancyMatchingCurrentMinute) return;
+
+                                const { id } = roomOccupancyMatchingCurrentMinute;
+
+                                await navigate(`/room-occupancies/${id}/edit`);
+                            };
+
                             if (roomOccupancyMatchingCurrentMinute) {
                                 const tableCellClassName =
                                     "bg-red-500 h-full hover:cursor-pointer hover:bg-red-400 hover:transition-all hover:duration-100";
                                 const tooltip = (
-                                    <Tooltip placement="left">
+                                    <Tooltip>
                                         <span className="text-xl text-nowrap">
                                             Employee
                                             <span className="text-green-700">
@@ -89,7 +99,12 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                                         key={`${room.name}_${room.id}_${minute}`}
                                         showOnHover
                                     >
-                                        <Table.TableRowCell className={tableCellClassName}>aa</Table.TableRowCell>
+                                        <Table.TableRowCell
+                                            className={tableCellClassName}
+                                            onClick={() => void currentCellClickHandler()}
+                                        >
+                                            &nbsp;
+                                        </Table.TableRowCell>
                                     </TooltipOverlay>
                                 );
                             }
