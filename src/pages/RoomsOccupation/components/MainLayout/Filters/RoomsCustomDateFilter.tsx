@@ -9,7 +9,7 @@ import { RoomsFilterIds } from "../../../../../utils/projectTypes.ts";
 
 export const RoomsCustomDateFilter = () => {
     const { setFilters, filters } = useRoomsContext();
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+    const [selectedDate, setSelectedDate] = useState<Date | string>("");
     const menuOpened = useRef<boolean>(false);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export const RoomsCustomDateFilter = () => {
             const areDatesEqual = compareAsc(new Date(dateFilter.value), selectedDate) === 0;
 
             if (!areDatesEqual) {
-                setSelectedDate(undefined);
+                setSelectedDate("");
             }
         }
     }, [filters, selectedDate]);

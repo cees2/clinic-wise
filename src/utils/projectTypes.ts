@@ -439,3 +439,10 @@ export interface TooltipProps extends Children {
     placement?: tooltipPlacement;
     className?: string;
 }
+
+export interface TimePickerProps {
+    value: Date | string;
+    onChange: (updatedValue: string | Date) => void;
+    customHours?: number[];
+    customMinutes?: number[];
+}

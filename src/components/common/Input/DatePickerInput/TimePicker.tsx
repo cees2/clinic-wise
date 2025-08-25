@@ -1,16 +1,14 @@
 import styled, { css } from "styled-components";
-import { getPossibleHours, getPossibleMinutes, timePickerModes } from "../../utils/constants";
-import { TimePickerMode } from "../../../../utils/projectTypes";
+import { getTimePickerItemsToMap, timePickerModes } from "../../utils/constants";
+import { TimePickerMode, type TimePickerProps } from "../../../../utils/projectTypes";
 import {
     getSelectedHourBasedOnValue,
     getSelectedMinuteBasedOnValue,
     getUpdatedTimeValue,
 } from "../../utils/timePicker";
 
-interface Props {
+interface Props extends TimePickerProps {
     mode: TimePickerMode;
-    value: Date | string;
-    onChange: (updatedValue: string | Date) => void;
 }
 
 const StyledTimePicker = styled.div`
@@ -40,8 +38,9 @@ const ColumnItem = styled.li<{ isSelected: boolean }>`
     }
 `;
 
-const TimePickerColumn = ({ mode, value, onChange }: Props) => {
-    const itemsToMap = mode === TimePickerMode.HOURS ? getPossibleHours() : getPossibleMinutes();
+const TimePickerColumn = ({ mode, value, onChange, customHours, customMinutes }: Props) => {
+    const customTime = mode === TimePickerMode.HOURS ? customHours : customMinutes;
+    const itemsToMap = getTimePickerItemsToMap(mode, customTime);
     const selectedValue =
         mode === TimePickerMode.HOURS ? getSelectedHourBasedOnValue(value) : getSelectedMinuteBasedOnValue(value);
 
@@ -67,11 +66,11 @@ const TimePickerColumn = ({ mode, value, onChange }: Props) => {
     );
 };
 
-const TimePicker = ({ value, onChange }: { value: Date | string; onChange: (updatedValue: string | Date) => void }) => {
+const TimePicker = (props: TimePickerProps) => {
     return (
         <StyledTimePicker>
             {timePickerModes.map((mode) => (
-                <TimePickerColumn mode={mode} key={mode} value={value} onChange={onChange} />
+                <TimePickerColumn mode={mode} key={mode} {...props} />
             ))}
         </StyledTimePicker>
     );

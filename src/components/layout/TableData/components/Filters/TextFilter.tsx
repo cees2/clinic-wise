@@ -8,7 +8,7 @@ import {
     type TextFilterForm,
 } from "../../../../../utils/projectTypes";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
-import { TextInput } from "../../../../common/Input/TextInput";
+import { TextInput } from "../../../../common/Input/TextInput/TextInput.tsx";
 import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 
 interface Props<T extends TableDataResourceType> {

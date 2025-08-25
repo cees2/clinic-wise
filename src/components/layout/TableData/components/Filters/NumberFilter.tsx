@@ -7,7 +7,7 @@ import {
 } from "../../../../../utils/projectTypes";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
 import { useForm } from "react-hook-form";
-import { NumberInput } from "../../../../common/Input/NumberInput";
+import { NumberInput } from "../../../../common/Input/NumberInput/NumberInput.tsx";
 import { useTableDataContext } from "../../utils/TableDataContext";
 import { getFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";
 

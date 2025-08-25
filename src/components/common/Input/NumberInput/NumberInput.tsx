@@ -1,5 +1,5 @@
 import { NumericFormat, type NumericFormatProps } from "react-number-format";
-import { InputLabel, StyledInput } from "./common/InputCommon";
+import { InputLabel, StyledInput } from "../common/InputCommon.tsx";
 import {
     useController,
     useFormState,
@@ -8,8 +8,8 @@ import {
     type Path,
     type RegisterOptions,
 } from "react-hook-form";
-import { getInputFieldErrorName } from "../utils/inputs";
-import { ErrorMessage } from "./common/ErrorMessage";
+import { getInputFieldErrorName } from "../../utils/inputs.ts";
+import { ErrorMessage } from "../common/ErrorMessage.tsx";
 
 interface Props<FormType extends Record<string, any>> extends NumericFormatProps {
     label: string;

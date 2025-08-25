@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { SettingsFormSection } from "../components/SettingsFormSection";
 import type { UpdateUserCompleteInfo, UpdateUserFormType, UserRole } from "../../../utils/projectTypes";
-import { TextInput } from "../../../components/common/Input/TextInput";
+import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { FileInput } from "../../../components/common/Input/FileInput";
 import { Button } from "../../../components/layout/Button";
 import { useMutateUser } from "../../../services/hooks/user/useMutateUser";

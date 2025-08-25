@@ -6,13 +6,12 @@ import {
     type RegisterOptions,
     type UseFormRegister,
 } from "react-hook-form";
-import { InputLabel, StyledInput } from "./common/InputCommon";
-import { getInputFieldErrorName } from "../utils/inputs";
-import { ErrorMessage } from "./common/ErrorMessage";
-import { InputHelp } from "./common/InputHelp";
-import type { InputHTMLAttributes } from "react";
+import { InputLabel, StyledInput } from "../common/InputCommon.tsx";
+import { getInputFieldErrorName } from "../../utils/inputs.ts";
+import { ErrorMessage } from "../common/ErrorMessage.tsx";
+import { InputHelp } from "../common/InputHelp.tsx";
 
-interface Props<FormType extends Record<string, any>> extends InputHTMLAttributes<HTMLInputElement> {
+interface Props<FormType extends Record<string, any>> extends React.ComponentProps<"input"> {
     register: UseFormRegister<FormType>;
     registerName: FieldPath<FormType>;
     label: string;

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { TextInput } from "../../../components/common/Input/TextInput";
+import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { Button } from "../../../components/layout/Button";
 import { toast } from "react-toastify";
 import { useAuthentication } from "../../../services/hooks/authentication/useAuthentication";
@@ -39,8 +39,7 @@ const Login = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            const isRedirectedFromLogin =
-                typeof location.state === "string" && location.state === "/login";
+            const isRedirectedFromLogin = typeof location.state === "string" && location.state === "/login";
             void navigate(isRedirectedFromLogin ? "/" : location.state);
         }
     }, [isAuthenticated, navigate, location.state]);

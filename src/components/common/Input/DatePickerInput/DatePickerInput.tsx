@@ -10,13 +10,14 @@ import {
     type RegisterOptions,
 } from "react-hook-form";
 import TimePicker from "./TimePicker";
-import styled from "styled-components";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
 import { getDefaultMaxDate, getDefaultMinDate, getInputFieldErrorName } from "../../utils/inputs";
 import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../../utils/constants";
+import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
+import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
 
-interface Props<FormType extends Record<string, any>> {
+interface Props<FormType extends Record<string, any>> extends TimePickerProps {
     minDate?: Date | "current";
     maxDate?: Date | "current";
     control: Control<FormType>;
@@ -29,16 +30,6 @@ interface Props<FormType extends Record<string, any>> {
     >;
 }
 
-const StyledDatePickerInput = styled.div`
-    display: flex;
-    align-items: flex-start;
-    column-gap: 0.8rem;
-    height: 291px;
-    background-color: #fff;
-    position: relative;
-    z-index: 1;
-`;
-
 export const DatePickerInput = <FormType extends Record<string, any>>({
     minDate,
     maxDate,
@@ -47,6 +38,8 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     withTimePicker,
     label,
     rules,
+    customHours,
+    customMinutes,
 }: Props<FormType>) => {
     const calendarMinDate = getDefaultMinDate(minDate, withTimePicker);
     const calendarMaxDate = getDefaultMaxDate(maxDate, withTimePicker);
@@ -90,7 +83,14 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
                             minDate={calendarMinDate}
                             maxDate={calendarMaxDate}
                         />
-                        {withTimePicker && <TimePicker value={value} onChange={onChange} />}
+                        {withTimePicker && (
+                            <TimePicker
+                                value={value}
+                                onChange={onChange}
+                                customHours={customHours}
+                                customMinutes={customMinutes}
+                            />
+                        )}
                     </StyledDatePickerInput>
                 </Dropdown.Menu>
             </Dropdown>

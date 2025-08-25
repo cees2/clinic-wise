@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Dropdown } from "../../../../common/Dropdown/Dropdown";
-import { CheckboxInput } from "../../../../common/Input/CheckboxInput";
+import { CheckboxInput } from "../../../../common/Input/CheckboxInput/CheckboxInput.tsx";
 import { useTableDataContext } from "../../utils/TableDataContext";
 import { FilterType, TableDataActionsEnum, type TableDataResourceType } from "../../../../../utils/projectTypes";
 import { getEnumFilterDefaultValue, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils";

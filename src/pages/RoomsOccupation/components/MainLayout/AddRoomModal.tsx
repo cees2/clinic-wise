@@ -1,6 +1,6 @@
 import { Modal } from "../../../../components/common/Modal/Modal.tsx";
 import { FormSubmit } from "../../../../components/common/Form/FormSubmit.tsx";
-import { TextInput } from "../../../../components/common/Input/TextInput.tsx";
+import { TextInput } from "../../../../components/common/Input/TextInput/TextInput.tsx";
 import { useForm } from "react-hook-form";
 import { useMutateRooms } from "../../../../services/hooks/rooms/useMutateRooms.ts";
 

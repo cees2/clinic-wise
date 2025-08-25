@@ -3,7 +3,7 @@ import type { EmployeeFormType, EmployeeUpdateType } from "../../../utils/projec
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { useNavigate } from "react-router-dom";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
-import { TextInput } from "../../../components/common/Input/TextInput";
+import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { emailPattern, genderFormOptions, nationalityOptions, rolesFormOptions } from "../../../utils/constants";
 import { useMutateEmployee } from "../../../services/hooks/employees/useMutateEmployee";

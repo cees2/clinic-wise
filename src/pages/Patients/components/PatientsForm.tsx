@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
-import { TextInput } from "../../../components/common/Input/TextInput";
+import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { genderFormOptions, nationalityOptions } from "../../../utils/constants";
 import { add, sub } from "date-fns";

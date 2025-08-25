@@ -116,9 +116,11 @@ export const updateRoomFilterValue = (id: string, roomsFilter?: RoomsFilter) => 
 
 export const getRoomsOccupancyFormDefaultValues = (
     roomsOccupancyData?: Tables<"rooms_occupancy">,
-): Partial<RoomOccupationFormType> => ({
-    room_id: roomsOccupancyData?.room_id,
-    start: roomsOccupancyData?.start ?? format(startOfToday(), DB_DATE_FORMAT_WITH_TIME),
-    end: roomsOccupancyData?.end ?? format(endOfToday(), DB_DATE_FORMAT_WITH_TIME),
-    employee_id: roomsOccupancyData?.employee_id,
-});
+): Partial<RoomOccupationFormType> => {
+    return {
+        room_id: roomsOccupancyData?.room_id,
+        start: roomsOccupancyData?.start ?? format(startOfToday(), DB_DATE_FORMAT_WITH_TIME),
+        end: roomsOccupancyData?.end ?? format(endOfToday(), DB_DATE_FORMAT_WITH_TIME),
+        employee_id: roomsOccupancyData?.employee_id,
+    };
+};

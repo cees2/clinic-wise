@@ -1,5 +1,5 @@
 import { useForm, type FieldErrors } from "react-hook-form";
-import { NumberInput } from "../../../components/common/Input/NumberInput";
+import { NumberInput } from "../../../components/common/Input/NumberInput/NumberInput.tsx";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { useQueryClient } from "@tanstack/react-query";
