@@ -7,7 +7,7 @@ interface Props extends React.ComponentProps<"input"> {
     id: string;
 }
 
-export const TextInput = ({ label, helpText, className, disabled, id, ...restProps }: Props) => {
+export const TextInputSimple = ({ label, helpText, className, disabled, id, ...restProps }: Props) => {
     return (
         <StyledInput className={className} disabled={disabled}>
             <InputLabel htmlFor={id}>{label}</InputLabel>

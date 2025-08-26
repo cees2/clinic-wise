@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { Dropdown } from "../../../../common/Dropdown/Dropdown";
-import { useTableDataContext } from "../../utils/TableDataContext";
-import { FilterType, type TableDataResourceType, type TableDataFilterConfig } from "../../../../../utils/projectTypes";
-import NumberFilter from "./NumberFilter";
-import EnumFilter from "./EnumFilter";
-import TextFilter from "./TextFilter";
-import DateFilter from "./DateFilter";
+import { Dropdown } from "../../../common/Dropdown/Dropdown.tsx";
+import { useTableDataContext } from "../utils/TableDataContext.tsx";
+import { FilterType, type TableDataResourceType, type TableDataFilterConfig } from "../../../../utils/projectTypes.ts";
+import TableDataDateFilter from "./TableDataFilters/TableDataDateFilter.tsx";
+import { TableDataEnumFilter } from "./TableDataFilters/TableDataEnumFilter.tsx";
+import { TableDataNumberFilter } from "./TableDataFilters/TableDataNumberFilter.tsx";
+import { TableDataTextFilter } from "./TableDataFilters/TableDataTextFilter.tsx";
 
 const StyledTableDataFilters = styled.div`
     display: flex;
@@ -17,16 +17,13 @@ const TableDataFilterBody = <T extends TableDataResourceType>({ filter }: { filt
     const { type, id, options } = filter;
     switch (type) {
         case FilterType.NUMBER:
-            return <NumberFilter filterId={id} />;
-        case FilterType.ENUM: {
-            if (!options) return null;
-
-            return <EnumFilter filterId={id} options={options} />;
-        }
+            return <TableDataNumberFilter filterId={id} />;
+        case FilterType.ENUM:
+            return <TableDataEnumFilter filterId={id} options={options} />;
         case FilterType.TEXT:
-            return <TextFilter filterId={id} />;
+            return <TableDataTextFilter filterId={id} />;
         case FilterType.DATE:
-            return <DateFilter filterId={id} />;
+            return <TableDataDateFilter filterId={id} />;
         default:
             return null;
     }

@@ -6,7 +6,7 @@ import type { Tables } from "../../services/database.types";
 import { FilterType, UserRole, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
-import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
+import { SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
 import { useAuthContext } from "../../utils/contexts/AuthContext";
 
 const Employees = () => {
@@ -61,14 +61,22 @@ const Employees = () => {
         ],
         filters: [
             { id: "name", name: "Name", type: FilterType.TEXT },
-            { id: "gender", name: "Gender", type: FilterType.ENUM, options: { female: "Female", male: "Male" } },
+            {
+                id: "gender",
+                name: "Gender",
+                type: FilterType.ENUM,
+                options: [
+                    { name: "Female", value: "female" },
+                    { name: "Male", value: "male" },
+                ],
+            },
             { id: "start_date", name: "Start date", type: FilterType.DATE },
             { id: "date_of_birth", name: "Date of birth", type: FilterType.DATE },
             {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: SUPPORTED_NATIONALITIES,
+                options: SUPPORTED_NATIONALITIES_ENTRIES.map(([value, name]) => ({ name, value })),
             },
         ],
         actions: [

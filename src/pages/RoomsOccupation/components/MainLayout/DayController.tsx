@@ -4,7 +4,6 @@ import { getDateFilterFromRoomsFilters, getDayOffsetStringDate, getDaysOffsetFro
 import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { RoomsFilterIds } from "../../../../utils/projectTypes.ts";
 import { format } from "date-fns";
-import classNames from "classnames";
 
 const StyledDayController = styled.div`
     display: flex;

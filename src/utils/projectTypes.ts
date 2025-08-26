@@ -67,6 +67,11 @@ export enum FilterType {
     DATE,
 }
 
+export interface EnumFilterOption {
+    value: string;
+    name: string;
+}
+
 export interface TableDataFilterConfig<T extends TableDataResourceType> {
     id: keyof T;
     name: string;
@@ -74,7 +79,7 @@ export interface TableDataFilterConfig<T extends TableDataResourceType> {
     conditions?: FilterCondition[];
     maxValue?: number;
     minValue?: number;
-    options?: Record<string, string>;
+    options?: EnumFilterOption[];
 }
 
 export interface TableDataAction<T extends TableDataResourceType> {
@@ -350,8 +355,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 export type SupportedCountriesShortNames = "us" | "ca" | "mx" | "de" | "pl" | "fr" | "no" | "it";
 
-export type DateFilterType = "gte" | "lte";
-
 export interface DropdownMenuProps extends Children {
     onHideDropdown?: () => void;
     className?: string;
@@ -445,4 +448,12 @@ export interface TimePickerProps {
     onChange: (updatedValue: string | Date) => void;
     customHours?: number[];
     customMinutes?: number[];
+}
+
+export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
+export type DateFilterCondition = "gte" | "lte";
+
+export interface FilterState<FilterType, FilterCondition> {
+    filterValue: FilterType;
+    filterCondition: FilterCondition;
 }

@@ -4,7 +4,7 @@ import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { ContentLayout } from "../../components/layout/ContentLayout";
 import type { Tables } from "../../services/database.types";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
-import { SUPPORTED_NATIONALITIES } from "../../utils/constants";
+import { SUPPORTED_NATIONALITIES, SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { useConfirmation } from "../../utils/useConfirmation";
@@ -80,16 +80,16 @@ const Patients = () => {
                 id: "gender",
                 name: "Gender",
                 type: FilterType.ENUM,
-                options: {
-                    female: "Female",
-                    male: "Male",
-                },
+                options: [
+                    { name: "Female", value: "female" },
+                    { name: "Male", value: "male" },
+                ],
             },
             {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: SUPPORTED_NATIONALITIES,
+                options: SUPPORTED_NATIONALITIES_ENTRIES.map(([value, name]) => ({ name, value })),
             },
         ],
         resourceName: "patients",

@@ -18,6 +18,8 @@ export const SUPPORTED_NATIONALITIES = {
     Italy: "Italy",
 };
 
+export const SUPPORTED_NATIONALITIES_ENTRIES = Object.entries(SUPPORTED_NATIONALITIES);
+
 export const genderFormOptions = [
     {
         label: "Male",

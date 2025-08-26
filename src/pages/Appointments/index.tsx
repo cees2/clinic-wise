@@ -69,11 +69,11 @@ const Appointments = () => {
                 id: "status",
                 name: "Status",
                 type: FilterType.ENUM,
-                options: {
-                    SCHEDULED: "Scheduled",
-                    COMPLETED: "Completed",
-                    CANCELLED: "Cancelled",
-                },
+                options: [
+                    { value: "SCHEDULED", name: "Scheduled" },
+                    { value: "COMPLETED", name: "Completed" },
+                    { value: "CANCELLED", name: "Cancelled" },
+                ],
             },
             {
                 id: "additional_note",
