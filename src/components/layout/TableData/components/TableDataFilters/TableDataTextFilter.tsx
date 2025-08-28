@@ -6,16 +6,20 @@ import {
     TableDataActionsEnum,
     type TextFilterCondition,
 } from "../../../../../utils/projectTypes.ts";
+import { getFilterDefaultValue } from "../../utils/filters/filtersUtils.ts";
 
 interface Props {
     filterId: string;
 }
 
 export const TableDataTextFilter = ({ filterId }: Props) => {
-    const { dispatch } = useTableDataContext();
+    const {
+        dispatch,
+        tableDataState: { selectedFilters },
+    } = useTableDataContext();
 
-    const hideDropdownHandler = (textFilterState?: FilterState<string, TextFilterCondition>) => {
-        if (!textFilterState) {
+    const hideDropdownHandler = (textFilterState: FilterState<string | undefined, TextFilterCondition>) => {
+        if (!textFilterState.filterValue) {
             dispatch({ type: TableDataActionsEnum.REMOVE_FILTER, payload: filterId });
             return;
         }
@@ -27,5 +31,11 @@ export const TableDataTextFilter = ({ filterId }: Props) => {
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };
 
-    return <TextFilter filterId={filterId} onHideDropdown={hideDropdownHandler} />;
+    return (
+        <TextFilter
+            filterId={filterId}
+            onHideDropdown={hideDropdownHandler}
+            defaultValue={getFilterDefaultValue(selectedFilters, filterId)}
+        />
+    );
 };

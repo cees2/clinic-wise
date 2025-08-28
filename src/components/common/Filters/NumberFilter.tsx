@@ -10,23 +10,26 @@ const numberFilterConditions: NumberFilterConditionType[] = ["e", "ne", "gt", "g
 
 interface Props extends NumericFormatProps {
     filterId: string;
-    onHideDropdown: (filterData?: FilterState<number, NumberFilterConditionType>) => void;
+    onHideDropdown: (filterData: FilterState<number | undefined, NumberFilterConditionType>) => void;
+    defaultValue?: FilterState<number | undefined, NumberFilterConditionType>;
 }
 
-const NumberFilter = ({ filterId, onHideDropdown, ...restProps }: Props) => {
+const NumberFilter = ({ filterId, onHideDropdown, defaultValue, ...restProps }: Props) => {
     const [selectedFilterState, setSelectedFilterState] = useState<
-        FilterState<number, NumberFilterConditionType> | undefined
-    >(undefined);
+        FilterState<number | undefined, NumberFilterConditionType>
+    >({
+        filterValue: defaultValue?.filterValue,
+        filterCondition: defaultValue?.filterCondition ?? "e",
+    });
 
-    console.log("NUMBER", selectedFilterState);
     return (
         <Dropdown.Menu onHideDropdown={() => onHideDropdown(selectedFilterState)}>
             {numberFilterConditions.map((condition) => {
                 const onChange = ({ floatValue }: NumberFormatValues) => {
-                    if (!floatValue) return;
+                    if (!floatValue && condition !== selectedFilterState.filterCondition) return;
 
                     setSelectedFilterState({
-                        filterValue: floatValue ?? 0,
+                        filterValue: floatValue,
                         filterCondition: condition,
                     });
                 };

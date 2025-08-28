@@ -6,15 +6,16 @@ import { getTextFilterConditionLabel } from "../../layout/TableData/utils/filter
 
 interface Props extends React.ComponentProps<"input"> {
     filterId: string;
-    onHideDropdown: (textFilterState?: FilterState<string, TextFilterCondition>) => void;
+    onHideDropdown: (textFilterState: FilterState<string | undefined, TextFilterCondition>) => void;
+    defaultValue?: FilterState<string | undefined, TextFilterCondition>;
 }
 
 const numberFilterConditions: TextFilterCondition[] = ["e", "c"];
 
-const TextFilter = ({ filterId, onHideDropdown, ...restProps }: Props) => {
+const TextFilter = ({ filterId, onHideDropdown, defaultValue, ...restProps }: Props) => {
     const [selectedFilterState, setSelectedFilterState] = useState<
-        FilterState<string, TextFilterCondition> | undefined
-    >(undefined);
+        FilterState<string | undefined, TextFilterCondition>
+    >({ filterValue: defaultValue?.filterValue, filterCondition: defaultValue?.filterCondition ?? "e" });
 
     return (
         <Dropdown.Menu onHideDropdown={() => onHideDropdown(selectedFilterState)}>

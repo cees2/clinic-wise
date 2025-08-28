@@ -6,7 +6,7 @@ import {
 } from "../../../../../utils/projectTypes.ts";
 import EnumFilter from "../../../../common/Filters/EnumFilter.tsx";
 import { useTableDataContext } from "../../utils/TableDataContext.tsx";
-import { getEnumFilterInitialState, getFiltersConditionsWithValue } from "../../utils/filters/filtersUtils.ts";
+import { getEnumFilterInitialState } from "../../utils/filters/filtersUtils.ts";
 
 interface Props {
     filterId: string;
@@ -18,7 +18,6 @@ export const TableDataEnumFilter = ({ options, filterId }: Props) => {
         dispatch,
         tableDataState: { selectedFilters },
     } = useTableDataContext();
-    const defaultValue = getEnumFilterInitialState(selectedFilters, filterId);
 
     const onHideDropdown = (selectedFilterState: FilterState<string[], "e">) => {
         const { filterValue, filterCondition } = selectedFilterState;
@@ -28,12 +27,22 @@ export const TableDataEnumFilter = ({ options, filterId }: Props) => {
             return;
         }
 
-        const selectedFilter = { id: filterId, filterValue, filterCondition, filterType: FilterType.ENUM };
+        const selectedFilter = {
+            id: filterId,
+            filterValue: filterValue.join(","),
+            filterCondition,
+            filterType: FilterType.ENUM,
+        };
 
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };
 
     return (
-        <EnumFilter options={options} filterId={filterId} onHideDropdown={onHideDropdown} defaultValue={defaultValue} />
+        <EnumFilter
+            options={options}
+            filterId={filterId}
+            onHideDropdown={onHideDropdown}
+            defaultValue={getEnumFilterInitialState(selectedFilters, filterId)}
+        />
     );
 };

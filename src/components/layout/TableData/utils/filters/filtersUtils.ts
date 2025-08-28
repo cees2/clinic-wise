@@ -20,35 +20,6 @@ const getAlreadySelectedFilter = <T extends TableDataResourceType>(
     return selectedFilter;
 };
 
-export const getFilterDefaultValue = <T extends TableDataResourceType>(
-    filterId: keyof T,
-    filterConditions: FilterCondition[],
-    selectedFilters: TableDataFilterState<T>[],
-) => {
-    const defaultValues = filterConditions.reduce<Partial<Record<FilterCondition, string | undefined>>>(
-        (defaultValuesObject, filterCondition) => {
-            const newDefaultValuesObject = { ...defaultValuesObject };
-
-            newDefaultValuesObject[filterCondition] = undefined;
-
-            return newDefaultValuesObject;
-        },
-        {},
-    );
-
-    const selectedFilter = getAlreadySelectedFilter(filterId, selectedFilters);
-
-    if (!selectedFilter) {
-        return defaultValues;
-    }
-
-    const { filterValue, filterCondition } = selectedFilter;
-
-    defaultValues[filterCondition] = filterValue;
-
-    return defaultValues;
-};
-
 export const getEnumFilterDefaultValue = <T extends TableDataResourceType>(
     filterId: keyof T,
     selectedFilters: TableDataFilterState<T>[],
@@ -123,6 +94,13 @@ export const getEnumFilterInitialState = <T extends TableDataResourceType>(
     const selectedFilter = filters.find((filter) => filter.id === filterId);
 
     return selectedFilter ? selectedFilter.filterValue.split(",") : [];
+};
+
+export const getFilterDefaultValue = <T extends TableDataResourceType>(
+    filters: TableDataFilterState<T>[],
+    filterId: string,
+) => {
+    return filters.find((filter) => filter.id === filterId);
 };
 
 export const getNumberFilterConditionLabel = (filterCondition: Exclude<FilterCondition, "c">) => {
