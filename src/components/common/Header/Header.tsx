@@ -3,6 +3,7 @@ import type { KnownTarget } from "styled-components/dist/types";
 import type { HeaderProps } from "../../../utils/projectTypes";
 import { Button } from "../../layout/Button";
 import { useNavigate } from "react-router-dom";
+import { ButtonGroup } from "../ButtonGroup.tsx";
 
 export const StyledHeader = styled.h1<{ as: KnownTarget }>`
     ${(props) => {
@@ -55,11 +56,6 @@ export const StyledHeader = styled.h1<{ as: KnownTarget }>`
     justify-content: space-between;
 `;
 
-const HeaderButtons = styled.div.attrs({ role: "group" })`
-    display: flex;
-    column-gap: 1.2rem;
-`;
-
 export const Header = ({ as, title, buttons }: HeaderProps) => {
     const navigate = useNavigate();
 
@@ -67,9 +63,9 @@ export const Header = ({ as, title, buttons }: HeaderProps) => {
         <StyledHeader as={as}>
             {title}
             {buttons && (
-                <HeaderButtons>
+                <ButtonGroup>
                     {buttons.map((button) => {
-                        const { title, path, onClick, visible } = button;
+                        const { title, path, onClick, visible, variant } = button;
 
                         if (visible === false) {
                             return null;
@@ -84,12 +80,12 @@ export const Header = ({ as, title, buttons }: HeaderProps) => {
                         };
 
                         return (
-                            <Button key={title} onClick={() => void onClickInternal()}>
+                            <Button key={title} onClick={() => void onClickInternal()} variant={variant}>
                                 {title}
                             </Button>
                         );
                     })}
-                </HeaderButtons>
+                </ButtonGroup>
             )}
         </StyledHeader>
     );

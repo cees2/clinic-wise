@@ -330,7 +330,7 @@ export interface FormSelectInputAsyncProps<
     loadOptions: (inputValue: string) => Promise<OptionsType[]>;
 }
 
-export type ButtonVariant = "primary" | "danger" | "cancel";
+export type ButtonVariant = "primary" | "danger" | "cancel" | "inactive";
 
 export interface HeaderButton {
     title: string;

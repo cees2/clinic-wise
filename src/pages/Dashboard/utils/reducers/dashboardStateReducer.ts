@@ -1,10 +1,4 @@
-import {
-    type DashboardChartData,
-    type DashboardFilter,
-    type DashboardState,
-    type DashboardStateAction,
-    DashboardStateActions,
-} from "../types.ts";
+import { type DashboardState, type DashboardStateAction, DashboardStateActions } from "../types.ts";
 
 const dashboardStateReducer = (state: DashboardState, action: DashboardStateAction) => {
     switch (action.type) {

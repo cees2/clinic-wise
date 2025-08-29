@@ -9,14 +9,14 @@ import type {
     PatientUpdateType,
     RoomFormType,
     RoomOccupationFormType,
-    RoomsFilter,
     UpdateUserCompleteInfo,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { EmployeeSelect, RoomSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
 import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
-import { getDateFilterFromRoomsFilters, getRoomFilterFromRoomsFilters } from "../pages/RoomsOccupation/utils/utils";
+import type { DashboardState } from "../pages/Dashboard/utils/types.ts";
+import { getTimeFilterDates } from "../pages/Dashboard/utils";
 
 // TODO: possible refactor
 
@@ -559,4 +559,22 @@ export const getRoomOccupancy = async (roomOccupancyId: number) => {
     }
 
     return data;
+};
+
+// DASHBOARD
+
+export const getDashboardData = async (dashboardState: DashboardState) => {
+    const [startDate, endDate] = getTimeFilterDates(dashboardState.selectedFilters) ?? [];
+
+    if (!startDate || !endDate) {
+        throw new Error("Invalid date filter");
+    }
+
+    const numberOfPatientsRequest = supabase
+        .from("patients")
+        .select("*", { count: "exact" })
+        .gte("start_date", startDate)
+        .lte("start_date", endDate);
+
+    const [numberOfPatients] = await Promise.all([numberOfPatientsRequest]);
 };

@@ -1,16 +1,12 @@
-import type { DashboardReducer } from "./types.ts";
+import { DashboardFilterId, type DashboardReducer, DashboardTimeFilter } from "./types.ts";
 
 export const DASHBOARD_INITIAL_STATE: DashboardReducer = {
-    data: {
-        general: {
-            numberOfPatients: 0,
-            numberOfAppointments: 0,
-            workedHours: 0,
-            averageNumberOfPatients: 0,
-        },
-        appointments: [],
-    },
-    state: {
-        selectedFilters: [],
+    dashboardState: {
+        selectedFilters: [
+            {
+                id: DashboardFilterId.TIME,
+                value: DashboardTimeFilter.TODAY,
+            },
+        ],
     },
 };

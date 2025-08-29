@@ -1,18 +1,5 @@
 export interface DashboardReducer {
-    data: DashboardData;
-    state: DashboardState;
-}
-
-export interface DashboardData {
-    general: DashboardStateGeneral;
-    appointments: DashboardChartData[];
-}
-
-export interface DashboardStateGeneral {
-    numberOfPatients: number;
-    numberOfAppointments: number;
-    workedHours: number;
-    averageNumberOfPatients: number;
+    dashboardState: DashboardState;
 }
 
 export interface DashboardChartData {
@@ -20,23 +7,16 @@ export interface DashboardChartData {
     date: string;
 }
 
-export enum DashboardDataActions {
-    SET_DATA,
-    SET_GENERAL_DATA,
-    SET_APPOINTMENTS_DATA,
-}
-
-export type DashboardDataAction =
-    | { type: DashboardDataActions.SET_DATA; payload: DashboardData }
-    | { type: DashboardDataActions.SET_GENERAL_DATA; payload: DashboardStateGeneral }
-    | { type: DashboardDataActions.SET_APPOINTMENTS_DATA; payload: DashboardChartData[] };
-
 export interface DashboardState {
     selectedFilters: DashboardFilter[];
 }
 
+export enum DashboardFilterId {
+    TIME,
+}
+
 export interface DashboardFilter {
-    id: string;
+    id: DashboardFilterId;
     value: string;
 }
 
@@ -48,14 +28,23 @@ export enum DashboardStateActions {
     SET_FILTERS,
 }
 
-export type DashboardDataAction =
-    | { type: DashboardDataActions.SET_DATA; payload: DashboardData }
-    | { type: DashboardDataActions.SET_GENERAL_DATA; payload: DashboardStateGeneral }
-    | { type: DashboardDataActions.SET_APPOINTMENTS_DATA; payload: DashboardChartData[] };
-
 export type DashboardStateAction =
     | { type: DashboardStateActions.SET_DATA; payload: DashboardState }
     | { type: DashboardStateActions.ADD_FILTER; payload: DashboardFilter }
     | { type: DashboardStateActions.REMOVE_FILTER; payload: string }
     | { type: DashboardStateActions.UPDATE_FILTER; payload: DashboardFilter }
     | { type: DashboardStateActions.SET_FILTERS; payload: DashboardFilter[] };
+
+export enum DashboardTimeFilter {
+    TODAY = "Today",
+    YESTERDAY = "Yesterday",
+    THIS_WEEK = "This week",
+    LAST_7_DAYS = "Last 7 days",
+    LAST_30_DAYS = "Last 30 days",
+}
+
+export const dashboardTimeFilterOptions = Object.values(DashboardTimeFilter);
+
+export interface DashboardContextType extends DashboardReducer {
+    dispatch: React.Dispatch<DashboardStateAction>;
+}

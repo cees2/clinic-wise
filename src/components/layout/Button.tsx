@@ -22,6 +22,10 @@ const StyledButton = styled.button<ButtonProps>`
                     return css`
                         background-color: var(--color-red-800);
                     `;
+                case "inactive":
+                    return css`
+                        background-color: var(--color-neutral-200);
+                    `;
                 case "primary":
                 default:
                     return css`
@@ -41,6 +45,11 @@ const StyledButton = styled.button<ButtonProps>`
             case "danger":
                 return css`
                     background-color: var(--color-red-700);
+                `;
+            case "inactive":
+                return css`
+                    background-color: var(--color-neutral-100);
+                    color: var(--color-gray-800);
                 `;
             case "primary":
             default:

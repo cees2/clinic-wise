@@ -1,19 +1,34 @@
-import { ContentLayout } from "../../components/layout/ContentLayout.tsx";
-import { Header } from "../../components/common/Header/Header.tsx";
-import type { HeaderButton } from "../../utils/projectTypes.ts";
-import { useReducer } from "react";
+import { useMemo, useReducer } from "react";
 import { dashboardReducer } from "./utils/reducers";
 import { DASHBOARD_INITIAL_STATE } from "./utils/constants.ts";
+import styled from "styled-components";
+import { DashboardHeader } from "./components/DashboardHeader.tsx";
+import DashboardContext from "./utils/context.ts";
+import { useDashboardQuery } from "./hooks/useDashboardQuery.ts";
+import { LoadingSpinner } from "../../components/common/LoadingSpinner.tsx";
 
-const headerButtons: HeaderButton[] = [];
+const StyledDashboard = styled.div`
+    padding: 2.4rem 3.2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 4.8rem;
+`;
 
 const Dashboard = () => {
-    const [dashboardState, dispatch] = useReducer(dashboardReducer, DASHBOARD_INITIAL_STATE);
+    const [state, dispatch] = useReducer(dashboardReducer, DASHBOARD_INITIAL_STATE);
+    const memoizedContextValue = useMemo(() => ({ ...state, dispatch }), [state]);
+    const { loading, data } = useDashboardQuery(state.dashboardState);
+
+    if (loading) return <LoadingSpinner />;
+
+    console.log("DATA", data);
 
     return (
-        <ContentLayout>
-            <Header as="h3" title="Employees" buttons={headerButtons} />
-        </ContentLayout>
+        <DashboardContext.Provider value={memoizedContextValue}>
+            <StyledDashboard>
+                <DashboardHeader />
+            </StyledDashboard>
+        </DashboardContext.Provider>
     );
 };
 
