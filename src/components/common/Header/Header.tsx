@@ -56,11 +56,11 @@ export const StyledHeader = styled.h1<{ as: KnownTarget }>`
     justify-content: space-between;
 `;
 
-export const Header = ({ as, title, buttons }: HeaderProps) => {
+export const Header = ({ as, title, buttons, className }: HeaderProps) => {
     const navigate = useNavigate();
 
     return (
-        <StyledHeader as={as}>
+        <StyledHeader as={as} className={className}>
             {title}
             {buttons && (
                 <ButtonGroup>

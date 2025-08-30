@@ -48,3 +48,19 @@ export const dashboardTimeFilterOptions = Object.values(DashboardTimeFilter);
 export interface DashboardContextType extends DashboardReducer {
     dispatch: React.Dispatch<DashboardStateAction>;
 }
+
+export enum DashboardStatisticsType {
+    NUMBER_OF_APPOINTMENTS = "Number of appointments",
+    WORKED_MINUTES = "Worked Time",
+    COMPLETED_APPOINTMENTS = "Completed appointments",
+    CANCELLED_APPOINTMENTS = "Cancelled appointments",
+}
+
+export const dashboardStatisticsOptions = Object.values(DashboardStatisticsType);
+
+export interface DashboardRemoteData {
+    numberOfAppointments: number | null;
+    workedMinutes: number | null | undefined;
+    completedAppointments: number | null;
+    cancelledAppointments: number | null;
+}

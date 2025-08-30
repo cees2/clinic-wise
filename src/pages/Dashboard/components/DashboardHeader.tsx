@@ -21,5 +21,5 @@ export const DashboardHeader = () => {
             }),
     }));
 
-    return <Header as="h3" title="Dashbaord" buttons={headerButtons} />;
+    return <Header as="h3" title="Dashbaord" buttons={headerButtons} className="" />;
 };

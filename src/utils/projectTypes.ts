@@ -344,6 +344,7 @@ export interface HeaderProps {
     title: string;
     as: KnownTarget;
     buttons?: HeaderButton[];
+    className?: string;
 }
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

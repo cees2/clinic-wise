@@ -15,7 +15,7 @@ import type {
 import type { EmployeeSelect, RoomSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
 import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
-import type { DashboardState } from "../pages/Dashboard/utils/types.ts";
+import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 
 // TODO: possible refactor
@@ -563,18 +563,56 @@ export const getRoomOccupancy = async (roomOccupancyId: number) => {
 
 // DASHBOARD
 
-export const getDashboardData = async (dashboardState: DashboardState) => {
+export const getDashboardData = async (dashboardState: DashboardState): Promise<DashboardRemoteData> => {
     const [startDate, endDate] = getTimeFilterDates(dashboardState.selectedFilters) ?? [];
 
     if (!startDate || !endDate) {
         throw new Error("Invalid date filter");
     }
 
-    const numberOfPatientsRequest = supabase
-        .from("patients")
-        .select("*", { count: "exact" })
+    const numberOfAppointmentsRequest = supabase
+        .from("appointments")
+        .select("id.count()", { count: "exact" })
+        .gte("start_date", startDate)
+        .lte("start_date", endDate);
+    const workedMinutesRequest = supabase
+        .from("appointments")
+        .select("duration.sum()")
+        .gte("start_date", startDate)
+        .lte("start_date", endDate);
+    const completedAppointmentsRequest = supabase
+        .from("appointments")
+        .select("id.count()", { count: "exact" })
+        .eq("status", "COMPLETED")
+        .gte("start_date", startDate)
+        .lte("start_date", endDate);
+    const cancelledAppointmentsRequest = supabase
+        .from("appointments")
+        .select("id.count()", { count: "exact" })
+        .eq("status", "CANCELLED")
         .gte("start_date", startDate)
         .lte("start_date", endDate);
 
-    const [numberOfPatients] = await Promise.all([numberOfPatientsRequest]);
+    const [numberOfAppointments, workedMinutes, completedAppointments, cancelledAppointments] = await Promise.all([
+        numberOfAppointmentsRequest,
+        workedMinutesRequest,
+        completedAppointmentsRequest,
+        cancelledAppointmentsRequest,
+    ]);
+
+    if (
+        numberOfAppointments.error ||
+        workedMinutes.error ||
+        completedAppointments.error ||
+        cancelledAppointments.error
+    ) {
+        throw new Error("Could not fetch the dashboard data");
+    }
+
+    return {
+        numberOfAppointments: numberOfAppointments.count,
+        workedMinutes: workedMinutes.data?.[0].sum,
+        completedAppointments: completedAppointments.count,
+        cancelledAppointments: cancelledAppointments.count,
+    };
 };
