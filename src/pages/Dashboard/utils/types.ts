@@ -4,7 +4,7 @@ export interface DashboardReducer {
 
 export interface DashboardChartData {
     count: number;
-    date: string;
+    label: string;
 }
 
 export interface DashboardState {
@@ -63,4 +63,5 @@ export interface DashboardRemoteData {
     workedMinutes: number | null | undefined;
     completedAppointments: number | null;
     cancelledAppointments: number | null;
+    appointmentsChartData: DashboardChartData[];
 }

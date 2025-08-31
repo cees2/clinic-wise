@@ -2,6 +2,7 @@ import { DashboardStatistics } from "./Statistics/DashboardStatistics.tsx";
 import { useDashboardQuery } from "../../hooks/useDashboardQuery.ts";
 import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
 import styled from "styled-components";
+import { AppointmentsChart } from "./AppointmentsChart.tsx";
 
 const StyledDashboardMain = styled.div`
     display: grid;
@@ -18,6 +19,7 @@ export const DashboardMain = () => {
     return (
         <StyledDashboardMain>
             <DashboardStatistics />
+            <AppointmentsChart />
         </StyledDashboardMain>
     );
 };

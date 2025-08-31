@@ -1,4 +1,4 @@
-import { add, format } from "date-fns";
+import { add, compareAsc, format } from "date-fns";
 import type {
     AppointmentFormType,
     AppointmentUpdateType,
@@ -592,27 +592,43 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         .eq("status", "CANCELLED")
         .gte("start_date", startDate)
         .lte("start_date", endDate);
+    const appointmentsChartDataRequest = supabase
+        .from("appointments")
+        .select("label:start_date::date,count()", { count: "exact" })
+        .gte("start_date", startDate)
+        .lte("start_date", endDate);
 
-    const [numberOfAppointments, workedMinutes, completedAppointments, cancelledAppointments] = await Promise.all([
-        numberOfAppointmentsRequest,
-        workedMinutesRequest,
-        completedAppointmentsRequest,
-        cancelledAppointmentsRequest,
-    ]);
+    const [numberOfAppointments, workedMinutes, completedAppointments, cancelledAppointments, appointmentsChartData] =
+        await Promise.all([
+            numberOfAppointmentsRequest,
+            workedMinutesRequest,
+            completedAppointmentsRequest,
+            cancelledAppointmentsRequest,
+            appointmentsChartDataRequest,
+        ]);
 
     if (
         numberOfAppointments.error ||
         workedMinutes.error ||
         completedAppointments.error ||
-        cancelledAppointments.error
+        cancelledAppointments.error ||
+        appointmentsChartData.error
     ) {
         throw new Error("Could not fetch the dashboard data");
     }
+
+    const sortedAppointmentsChartData = appointmentsChartData.data.sort((prevDate, nextDate) => {
+        const { label: prevDateDay } = prevDate;
+        const { label: nextDateDay } = nextDate;
+
+        return compareAsc(prevDateDay, nextDateDay);
+    });
 
     return {
         numberOfAppointments: numberOfAppointments.count,
         workedMinutes: workedMinutes.data?.[0].sum,
         completedAppointments: completedAppointments.count,
         cancelledAppointments: cancelledAppointments.count,
+        appointmentsChartData: sortedAppointmentsChartData,
     };
 };

@@ -10,7 +10,6 @@ import {
     endOfWeek,
     format,
     intervalToDuration,
-    minutesToHours,
     startOfToday,
     startOfTomorrow,
     startOfWeek,
@@ -18,11 +17,9 @@ import {
     sub,
 } from "date-fns";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants.ts";
-import { IoBriefcaseOutline } from "react-icons/io5";
-import { CiTimer } from "react-icons/ci";
+import { IoBriefcaseOutline, IoTimeOutline } from "react-icons/io5";
 import { VscError } from "react-icons/vsc";
 import { BsCheck2Circle } from "react-icons/bs";
-import { JSX } from "react";
 
 export const getDashboardTimeFilter = (selectedFilters: DashboardFilter[]) => {
     return selectedFilters.find((selectedFilter) => selectedFilter.id === DashboardFilterId.TIME);
@@ -82,7 +79,7 @@ export const getStatisticsBoxData = (
 
     switch (name) {
         case DashboardStatisticsType.WORKED_MINUTES:
-            return [<CiTimer />, getWorkedTime(dashboardData.workedMinutes), "--color-violet-300"];
+            return [<IoTimeOutline />, getWorkedTime(dashboardData.workedMinutes), "--color-violet-300"];
         case DashboardStatisticsType.CANCELLED_APPOINTMENTS:
             return [<VscError />, dashboardData.cancelledAppointments, "--color-red-300"];
         case DashboardStatisticsType.COMPLETED_APPOINTMENTS:
