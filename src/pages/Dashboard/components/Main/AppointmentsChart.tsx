@@ -1,7 +1,7 @@
 import { useDashboardQuery } from "../../hooks/useDashboardQuery.ts";
 import { Bar } from "react-chartjs-2";
 import styled from "styled-components";
-import { CategoryScale } from "chart.js";
+import { CategoryScale, type ChartOptions } from "chart.js";
 import Chart from "chart.js/auto";
 import { getAppointmentsChartDataset } from "../../utils";
 import { useDashboardContext } from "../../utils/context.ts";
@@ -19,14 +19,14 @@ export const AppointmentsChart = () => {
     const { data } = useDashboardQuery();
     const { appointmentsChartData } = data ?? {};
     const chartData = getAppointmentsChartDataset(selectedFilters, appointmentsChartData);
-    const options = {
+    const options: ChartOptions<"bar"> = {
+        elements: { bar: { backgroundColor: "#16a34a", borderRadius: 10 } },
         plugins: {
-            legend: {
-                display: false,
-            },
+            title: { text: "Number of appointments", display: true, font: { size: 18 } },
+            legend: { display: false },
         },
+        scales: { y: { ticks: { stepSize: 1 } } },
     };
-    console.log(chartData);
 
     return (
         <StyledAppointmentsChart>
