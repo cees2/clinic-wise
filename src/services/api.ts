@@ -14,7 +14,7 @@ import type {
 } from "../utils/projectTypes";
 import type { EmployeeSelect, RoomSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
-import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
+import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 
@@ -597,22 +597,36 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         .select("label:start_date::date,count()", { count: "exact" })
         .gte("start_date", startDate)
         .lte("start_date", endDate);
+    const nextAppointmentsRequest = supabase
+        .from("appointments")
+        .select("start_date,duration,status", { count: "exact" })
+        .gte("start_date", format(new Date(), DB_DATE_FORMAT_WITH_TIME))
+        .order("start_date", { ascending: true })
+        .limit(5);
 
-    const [numberOfAppointments, workedMinutes, completedAppointments, cancelledAppointments, appointmentsChartData] =
-        await Promise.all([
-            numberOfAppointmentsRequest,
-            workedMinutesRequest,
-            completedAppointmentsRequest,
-            cancelledAppointmentsRequest,
-            appointmentsChartDataRequest,
-        ]);
+    const [
+        numberOfAppointments,
+        workedMinutes,
+        completedAppointments,
+        cancelledAppointments,
+        appointmentsChartData,
+        nextAppointments,
+    ] = await Promise.all([
+        numberOfAppointmentsRequest,
+        workedMinutesRequest,
+        completedAppointmentsRequest,
+        cancelledAppointmentsRequest,
+        appointmentsChartDataRequest,
+        nextAppointmentsRequest,
+    ]);
 
     if (
         numberOfAppointments.error ||
         workedMinutes.error ||
         completedAppointments.error ||
         cancelledAppointments.error ||
-        appointmentsChartData.error
+        appointmentsChartData.error ||
+        nextAppointments.error
     ) {
         throw new Error("Could not fetch the dashboard data");
     }
@@ -630,5 +644,6 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         completedAppointments: completedAppointments.count,
         cancelledAppointments: cancelledAppointments.count,
         appointmentsChartData: sortedAppointmentsChartData,
+        nextAppointments: nextAppointments.data,
     };
 };

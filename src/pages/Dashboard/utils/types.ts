@@ -1,3 +1,5 @@
+import type { Tables } from "../../../services/database.types.ts";
+
 export interface DashboardReducer {
     dashboardState: DashboardState;
 }
@@ -58,10 +60,13 @@ export enum DashboardStatisticsType {
 
 export const dashboardStatisticsOptions = Object.values(DashboardStatisticsType);
 
+export type DashboardNextAppointment = Pick<Tables<"appointments">, "start_date" | "duration" | "status">[];
+
 export interface DashboardRemoteData {
     numberOfAppointments: number | null;
     workedMinutes: number | null | undefined;
     completedAppointments: number | null;
     cancelledAppointments: number | null;
     appointmentsChartData: DashboardChartData[];
+    nextAppointments: DashboardNextAppointment[];
 }
