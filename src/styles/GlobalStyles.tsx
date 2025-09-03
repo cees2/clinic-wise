@@ -15,7 +15,6 @@ const GlobalStyles = createGlobalStyle`
 
     html{
         --color-primary: #16a34a;
-
         --duration-fastest: 100ms;
         --duration-fast: 200ms;
         --duration-default: 300ms;

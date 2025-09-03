@@ -4,7 +4,7 @@ import type { Children } from "../../utils/projectTypes";
 type status = "SCHEDULED" | "CANCELLED" | "COMPLETED";
 type variant = "error" | "warning" | "info" | "success";
 
-interface Props extends Children{
+interface Props extends Children {
     status: status;
 }
 
@@ -32,6 +32,12 @@ const StyledStatus = styled.span<{ variant: variant }>`
                 background-color: var(--color-yellow-200);
             `;
         }
+
+        if (variant === "error") {
+            return css`
+                background-color: var(--color-red-300);
+            `;
+        }
     }}
 `;
 
@@ -40,7 +46,7 @@ const getVariant = (status: status): variant => {
         case "SCHEDULED":
             return "info";
         case "CANCELLED":
-            return "warning";
+            return "error";
         case "COMPLETED":
         default:
             return "success";

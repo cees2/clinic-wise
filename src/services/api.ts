@@ -599,10 +599,10 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         .lte("start_date", endDate);
     const nextAppointmentsRequest = supabase
         .from("appointments")
-        .select("start_date,duration,status", { count: "exact" })
+        .select("id,start_date,duration,status", { count: "exact" })
         .gte("start_date", format(new Date(), DB_DATE_FORMAT_WITH_TIME))
         .order("start_date", { ascending: true })
-        .limit(5);
+        .limit(7);
 
     const [
         numberOfAppointments,

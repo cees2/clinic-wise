@@ -7,8 +7,7 @@ import { AppointmentsBox } from "./AppointmentsBox/AppointmentsBox.tsx";
 
 const StyledDashboardMain = styled.div`
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
-    align-items: start;
+    grid-template-columns: repeat(4, 1fr);
     column-gap: 2.4rem;
     row-gap: 6.4rem;
     margin-top: 3.2rem;

@@ -19,6 +19,9 @@ const StyledDashboardStatisticsBox = styled.li<{ boxOrder: number; backgroundCol
     grid-template-columns: 6.4rem 1fr;
     grid-template-rows: 1fr 1fr;
     column-gap: 1.2rem;
+    background-color: var(--color-gray-200);
+    padding: 1.2rem;
+    border-radius: var(--radius-2xl);
 
     & > .icon-background {
         grid-column: 1 / 2;

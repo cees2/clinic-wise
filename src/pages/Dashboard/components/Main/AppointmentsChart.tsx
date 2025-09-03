@@ -10,6 +10,9 @@ Chart.register(CategoryScale);
 const StyledAppointmentsChart = styled.div`
     grid-column: 3 / -1;
     grid-row: 2 / span 1;
+    background-color: var(--color-gray-200);
+    border-radius: var(--radius-2xl);
+    padding: 2.4rem;
 `;
 
 export const AppointmentsChart = () => {
