@@ -53,7 +53,7 @@ export interface DashboardContextType extends DashboardReducer {
 
 export enum DashboardStatisticsType {
     NUMBER_OF_APPOINTMENTS = "Number of appointments",
-    WORKED_MINUTES = "Worked Time",
+    WORKED_MINUTES = "Work Time",
     COMPLETED_APPOINTMENTS = "Completed appointments",
     CANCELLED_APPOINTMENTS = "Cancelled appointments",
 }
@@ -69,4 +69,9 @@ export interface DashboardRemoteData {
     cancelledAppointments: number | null;
     appointmentsChartData: DashboardChartData[];
     nextAppointments: DashboardNextAppointment[];
+}
+
+export interface StatisticsBoxColorConfig {
+    dark: string;
+    light: string;
 }

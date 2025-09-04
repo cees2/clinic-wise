@@ -1,0 +1,22 @@
+@import "tailwindcss/preflight";
+@tailwind utilities;
+
+:root{
+    --background-primary: #f3f4f6;
+    --background-secondary: #e5e7eb;
+    --background-tertiary: #d1d5db;
+
+    --font-primary: #030712;
+    --font-secondary: #111827;
+    --font-tertiary: #1f2937;
+}
+
+:root.dark{
+    --background-primary: #030712;
+    --background-secondary: #111827;
+    --background-tertiary: #1f2937;
+
+    --font-primary: #f3f4f6;
+    --font-secondary: #e5e7eb;
+    --font-tertiary: #d1d5db;
+}

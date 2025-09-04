@@ -7,7 +7,7 @@ import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils
 import { SUPPORTED_NATIONALITIES, SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
-import { useConfirmation } from "../../utils/useConfirmation";
+import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 import { useMutatePatient } from "../../services/hooks/patients/useMutatePatient";
 
 const Patients = () => {

@@ -5,6 +5,10 @@ const Image = styled.img.attrs({ alt: "User avatar" })`
     width: 4rem;
     height: 4rem;
     border-radius: 50%;
+
+    & + span {
+        color: var(--color-font-primary);
+    }
 `;
 
 const MainBarUser = () => {

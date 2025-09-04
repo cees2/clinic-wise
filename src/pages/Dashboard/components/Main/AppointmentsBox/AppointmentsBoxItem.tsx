@@ -16,6 +16,21 @@ const StyledAppointmentsBoxItem = styled.li`
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-gray-200);
+
+    & > .see-more-link {
+        transition: all var(--duration-fast);
+        color: var(--color-primary);
+        font-size: 1.8rem;
+
+        & > svg {
+            display: inline;
+            margin-left: 1rem;
+        }
+
+        &:hover {
+            color: var(--color-green-800);
+        }
+    }
 `;
 
 export const AppointmentsBoxItem = ({ appointment }: Props) => {
@@ -26,9 +41,9 @@ export const AppointmentsBoxItem = ({ appointment }: Props) => {
             <span>{format(new Date(start_date), DISPLAY_DATE_FORMAT_MINUTES)}</span>
             <span>{`${duration} mins`}</span>
             <Status status={status}>{capitalizeFirstLetter(status)}</Status>
-            <Link to={`/appointments/${id}/edit`} className="text-green-600">
+            <Link to={`/appointments/${id}/edit`} className="see-more-link">
                 See more
-                <FaArrowRightLong className="inline ms-4" />
+                <FaArrowRightLong />
             </Link>
         </StyledAppointmentsBoxItem>
     );

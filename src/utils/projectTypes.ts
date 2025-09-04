@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, FormHTMLAttributes, RefObject } from "react";
+import type { ButtonHTMLAttributes, FormHTMLAttributes, RefObject, SetStateAction } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, Path, RegisterOptions } from "react-hook-form";
@@ -457,4 +457,14 @@ export type DateFilterCondition = "gte" | "lte";
 export interface FilterState<FilterType, FilterCondition> {
     filterValue: FilterType;
     filterCondition: FilterCondition;
+}
+
+export enum AppColorMode {
+    LIGHT = "light",
+    DARK = "dark",
+}
+
+export interface DarkModeContextType {
+    appMode: AppColorMode;
+    setAppMode: React.Dispatch<SetStateAction<AppColorMode>>;
 }

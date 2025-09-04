@@ -4,13 +4,12 @@ const GlobalStyles = createGlobalStyle`
     :root{
         font-size: 62.5%;
     }
-
+    
     body{
         font-family: "Lato", sans-serif;
         line-height: 1.5;
         font-weight: var(--font-weight-medium);
         font-size: 1.6rem;
-        color: var(--color-gray-700);
     }
 
     html{
@@ -19,6 +18,10 @@ const GlobalStyles = createGlobalStyle`
         --duration-fast: 200ms;
         --duration-default: 300ms;
         --duration-slow: 400ms;
+    }
+
+    html.dark {
+
     }
 
     input:not([id*="react-select"]):focus,

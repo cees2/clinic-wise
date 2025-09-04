@@ -1,1 +1,12 @@
+@import "./globals.css";
 @import "tailwindcss";
+
+@theme {
+    --color-background-primary: var(--background-primary);
+    --color-background-secondary: var(--background-secondary);
+    --color-background-tertiary: var(--background-tertiary);
+    --color-font-primary: var(--font-primary);
+    --color-font-secondary: var(--font-secondary);
+    --color-font-tertiary: var(--font-tertiary);
+    --color-testblue: var(--background-tertiary);
+}

@@ -1,4 +1,4 @@
-import type { SupportedCountriesShortNames } from "./projectTypes";
+import { AppColorMode, type SupportedCountriesShortNames } from "./projectTypes";
 
 export const getCountryShortName = (countryName: string): SupportedCountriesShortNames => {
     switch (countryName) {
@@ -24,3 +24,17 @@ export const getCountryShortName = (countryName: string): SupportedCountriesShor
 
 export const capitalizeFirstLetter = (word: string) =>
     `${word.charAt(0).toUpperCase()}${word.substring(1).toLowerCase()}`;
+
+export const toggleHTMLElementColorMode = () => {
+    const htmlElement: HTMLHtmlElement | null = document.querySelector("html");
+
+    if (htmlElement) {
+        if (htmlElement.classList.contains(AppColorMode.DARK)) {
+            htmlElement.classList.remove(AppColorMode.DARK);
+            htmlElement.classList.add(AppColorMode.LIGHT);
+        } else {
+            htmlElement.classList.remove(AppColorMode.LIGHT);
+            htmlElement.classList.add(AppColorMode.DARK);
+        }
+    }
+};

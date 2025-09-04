@@ -1,10 +1,10 @@
-import React, { createContext, use, useCallback, useMemo, useState } from "react";
-import type { Children, ConfirmationContextType, ConfirmationType } from "./projectTypes";
-import { Modal } from "../components/common/Modal/Modal";
-import { Button } from "../components/layout/Button";
+import React, { createContext, useCallback, useMemo, useState } from "react";
+import type { Children, ConfirmationContextType, ConfirmationType } from "../projectTypes.ts";
 import styled from "styled-components";
+import { Modal } from "../../components/common/Modal/Modal.tsx";
+import { Button } from "../../components/layout/Button.tsx";
 
-const ConfirmationContext = createContext<ConfirmationContextType>({ confirmation: () => {} });
+export const ConfirmationContext = createContext<ConfirmationContextType>({ confirmation: () => {} });
 
 const ConfirmationFooter = styled.div`
     display: flex;
@@ -58,14 +58,4 @@ export const ConfirmationProvider = ({ children }: Children) => {
             </Modal>
         </ConfirmationContext>
     );
-};
-
-export const useConfirmation = () => {
-    const confirmationContext = use(ConfirmationContext);
-
-    if (!confirmationContext) {
-        throw new Error("Confirmation context used outside its scope");
-    }
-
-    return confirmationContext;
 };

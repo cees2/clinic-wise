@@ -42,6 +42,7 @@ export const StyledHeader = styled.h1<{ as: KnownTarget }>`
         }
     }}
 
+    color: var(--color-font-2);
     & > h1,
     & > h2,
     & > h3,

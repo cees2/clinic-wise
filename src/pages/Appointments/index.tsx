@@ -5,7 +5,7 @@ import { ContentLayout } from "../../components/layout/ContentLayout";
 import type { Tables } from "../../services/database.types";
 import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
-import { useConfirmation } from "../../utils/useConfirmation";
+import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 import { Status } from "../../components/common/Status";
 import { format } from "date-fns";
 import { DISPLAY_DATE_FORMAT_MINUTES } from "../../utils/constants";

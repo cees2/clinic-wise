@@ -5,6 +5,7 @@ import {
     type DashboardRemoteData,
     DashboardStatisticsType,
     DashboardTimeFilter,
+    type StatisticsBoxColorConfig,
 } from "./types.ts";
 import {
     add,
@@ -78,19 +79,35 @@ const getWorkedTime = (workedMinutes: number | undefined | null) => {
 export const getStatisticsBoxData = (
     name: DashboardStatisticsType,
     dashboardData?: DashboardRemoteData,
-): [React.ReactNode, number | string | null | undefined, string] | null => {
+): [React.ReactNode, number | string | null | undefined, StatisticsBoxColorConfig] | null => {
     if (!dashboardData || !name) return null;
 
     switch (name) {
         case DashboardStatisticsType.WORKED_MINUTES:
-            return [<IoTimeOutline />, getWorkedTime(dashboardData.workedMinutes), "--color-violet-300"];
+            return [
+                <IoTimeOutline />,
+                getWorkedTime(dashboardData.workedMinutes),
+                { light: "--color-violet-300", dark: "--color-violet-800" },
+            ];
         case DashboardStatisticsType.CANCELLED_APPOINTMENTS:
-            return [<VscError />, dashboardData.cancelledAppointments, "--color-red-300"];
+            return [
+                <VscError />,
+                dashboardData.cancelledAppointments,
+                { light: "--color-red-300", dark: "--color-red-700" },
+            ];
         case DashboardStatisticsType.COMPLETED_APPOINTMENTS:
-            return [<BsCheck2Circle />, dashboardData.completedAppointments, "--color-green-400"];
+            return [
+                <BsCheck2Circle />,
+                dashboardData.completedAppointments,
+                { light: "--color-green-400", dark: "--color-green-600" },
+            ];
         case DashboardStatisticsType.NUMBER_OF_APPOINTMENTS:
         default:
-            return [<IoBriefcaseOutline />, dashboardData.numberOfAppointments, "--color-indigo-300"];
+            return [
+                <IoBriefcaseOutline />,
+                dashboardData.numberOfAppointments,
+                { light: "--color-indigo-300", dark: "--color-indigo-800" },
+            ];
     }
 };
 
