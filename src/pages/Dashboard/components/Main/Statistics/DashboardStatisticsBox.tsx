@@ -25,20 +25,9 @@ const StyledDashboardStatisticsBox = styled.li<{
     grid-template-columns: 6.4rem 1fr;
     grid-template-rows: 1fr 1fr;
     column-gap: 1.2rem;
-    background-color: var(--color-gray-200);
+    background-color: var(--background-tertiary);
     padding: 1.2rem;
     border-radius: var(--radius-2xl);
-
-    ${({ appMode }) => {
-        return appMode === AppColorMode.DARK
-            ? css`
-                  background-color: color-mix(in srgb, var(--color-gray-700) 80%, transparent);
-                  color: var(--color-gray-200);
-              `
-            : css`
-                  background-color: var(--color-gray-200);
-              `;
-    }}
 
     & > .icon-background {
         grid-column: 1 / 2;

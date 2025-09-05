@@ -45,6 +45,7 @@ export const TextInput = <FormType extends Record<string, any>>({
                 {...register(registerName, rules)}
                 disabled={disabled}
                 {...restProps}
+                className="dark:text-gray-800"
             />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
         </StyledInput>

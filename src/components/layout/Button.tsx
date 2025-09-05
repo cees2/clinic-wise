@@ -1,7 +1,8 @@
 import styled, { css } from "styled-components";
-import type { ButtonProps } from "../../utils/projectTypes";
+import { AppColorMode, type ButtonProps } from "../../utils/projectTypes";
+import { useDarkMode } from "../../utils/hooks/useDarkMode.ts";
 
-const StyledButton = styled.button<ButtonProps>`
+const StyledButton = styled.button<ButtonProps & { appMode: AppColorMode }>`
     padding: 0.8rem 1.6rem;
     color: var(--color-gray-200);
     font-size: 1.4rem;
@@ -14,17 +15,13 @@ const StyledButton = styled.button<ButtonProps>`
         cursor: pointer;
         ${({ variant }) => {
             switch (variant) {
-                case "cancel":
-                    return css`
-                        background-color: var(--color-gray-300);
-                    `;
                 case "danger":
                     return css`
                         background-color: var(--color-red-800);
                     `;
                 case "inactive":
                     return css`
-                        background-color: var(--color-neutral-200);
+                        background-color: var(--color-background-primary);
                     `;
                 case "primary":
                 default:
@@ -37,19 +34,14 @@ const StyledButton = styled.button<ButtonProps>`
 
     ${({ variant }) => {
         switch (variant) {
-            case "cancel":
-                return css`
-                    background-color: var(--color-gray-100);
-                    color: var(--color-gray-800);
-                `;
             case "danger":
                 return css`
                     background-color: var(--color-red-700);
                 `;
             case "inactive":
                 return css`
-                    background-color: var(--color-neutral-100);
-                    color: var(--color-gray-800);
+                    background-color: var(--color-background-tertiary);
+                    color: var(--font-tertiary);
                 `;
             case "primary":
             default:
@@ -61,8 +53,10 @@ const StyledButton = styled.button<ButtonProps>`
 `;
 
 export const Button = ({ children, onClick, variant, disabled, ...restProps }: ButtonProps) => {
+    const { appMode } = useDarkMode();
+
     return (
-        <StyledButton onClick={onClick} variant={variant} disabled={disabled} {...restProps}>
+        <StyledButton onClick={onClick} variant={variant} disabled={disabled} appMode={appMode} {...restProps}>
             {children}
         </StyledButton>
     );

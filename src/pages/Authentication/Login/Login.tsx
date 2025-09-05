@@ -13,11 +13,16 @@ import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
 import { emailPattern } from "../../../utils/constants";
 
 const StyledLogin = styled.div`
-    height: 100vh;
+    background-color: var(--color-background-primary);
     width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 12rem;
+    height: 100vh;
+`;
+
+const LoginBox = styled.div`
+    background-color: var(--color-background-tertiary);
+    border-radius: 1.6rem;
+    padding: 3.2rem 6.4rem;
+    box-shadow: 0 0 1.6rem 0 rgba(0, 0, 0, 0.1);
 
     & button {
         width: 100%;
@@ -57,35 +62,37 @@ const Login = () => {
     if (isAuthenticated) return <LoadingSpinner />;
 
     return (
-        <StyledLogin>
-            <FormSubmit
-                formState={formState}
-                className="flex flex-col items-center w-lg gap-y-8 ml-auto mr-auto"
-                onSubmit={onSubmit}
-                customButtons={<Button>Login</Button>}
-            >
-                <img src="/logo.png" alt="ClinicWise logo" className="h-[12rem] w-[12rem]" />
-                <TextInput
-                    register={register}
-                    control={control}
-                    registerName="email"
-                    label="Email"
-                    className="w-full"
-                    rules={{ required: true, pattern: { value: emailPattern, message: "Wrong email pattern" } }}
-                />
-                <TextInput
-                    register={register}
-                    control={control}
-                    registerName="password"
-                    label="Password"
-                    type="password"
-                    className="w-full"
-                    rules={{
-                        required: true,
-                        minLength: { value: 6, message: "Password has to be at lest 6 characters long" },
-                    }}
-                />
-            </FormSubmit>
+        <StyledLogin className="w-full h-full flex items-center justify-center">
+            <LoginBox>
+                <FormSubmit
+                    formState={formState}
+                    className="flex flex-col items-center w-lg gap-y-8 ml-auto mr-auto"
+                    onSubmit={onSubmit}
+                    customButtons={<Button>Login</Button>}
+                >
+                    <img src="/logo.png" alt="ClinicWise logo" className="h-[12rem] w-[12rem]" />
+                    <TextInput
+                        register={register}
+                        control={control}
+                        registerName="email"
+                        label="Email"
+                        className="w-full"
+                        rules={{ required: true, pattern: { value: emailPattern, message: "Wrong email pattern" } }}
+                    />
+                    <TextInput
+                        register={register}
+                        control={control}
+                        registerName="password"
+                        label="Password"
+                        type="password"
+                        className="w-full"
+                        rules={{
+                            required: true,
+                            minLength: { value: 6, message: "Password has to be at lest 6 characters long" },
+                        }}
+                    />
+                </FormSubmit>
+            </LoginBox>
         </StyledLogin>
     );
 };

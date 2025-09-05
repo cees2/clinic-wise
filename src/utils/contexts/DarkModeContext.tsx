@@ -9,13 +9,16 @@ export const DarkModeContext = createContext<DarkModeContextType>({
 
 export const DarkModeProvider = ({ children }: Children) => {
     const [appMode, setAppMode] = useState<AppColorMode>(() => {
+        const appModeFromLocalStorage = localStorage.getItem("clinic-wise-appMode");
+        if (appModeFromLocalStorage) return appModeFromLocalStorage as AppColorMode;
+
         const isSystemDarkMode = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         return isSystemDarkMode ? AppColorMode.DARK : AppColorMode.LIGHT;
     });
     const memoizedValue = useMemo(() => ({ appMode, setAppMode }), [appMode, setAppMode]);
 
     useEffect(() => {
-        toggleHTMLElementColorMode();
+        toggleHTMLElementColorMode(appMode);
     }, []);
 
     return <DarkModeContext.Provider value={memoizedValue}>{children}</DarkModeContext.Provider>;

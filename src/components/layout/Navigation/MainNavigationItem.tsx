@@ -1,12 +1,13 @@
-import styled from "styled-components";
-import type { MainNavigationConfigItem } from "../../../utils/projectTypes";
+import styled, { css } from "styled-components";
+import { AppColorMode, type MainNavigationConfigItem } from "../../../utils/projectTypes";
 import { NavLink } from "react-router-dom";
+import { useDarkMode } from "../../../utils/hooks/useDarkMode.ts";
 
 interface Props {
     navigationItem: MainNavigationConfigItem;
 }
 
-const StyledMainNavigationItem = styled.a`
+const StyledMainNavigationItem = styled.a<{ appMode: AppColorMode }>`
     &:visited,
     &:link {
         display: flex;
@@ -14,7 +15,6 @@ const StyledMainNavigationItem = styled.a`
         column-gap: 1.6rem;
         padding: 0.8rem 1.6rem;
         transition: var(--duration-fast);
-        color: var(--color-gray-600);
     }
 
     & > svg {
@@ -25,7 +25,7 @@ const StyledMainNavigationItem = styled.a`
     &:hover,
     &.active {
         transform: scale(102%);
-        color: var(--color-gray-800);
+        color: var(--color-primary);
         font-weight: var(--font-weight-medium);
     }
 
@@ -37,11 +37,12 @@ const StyledMainNavigationItem = styled.a`
 
 const MainNavigationItem = ({ navigationItem }: Props) => {
     const { title, icon, to, visible } = navigationItem;
+    const { appMode } = useDarkMode();
 
     if (visible === false) return null;
 
     return (
-        <StyledMainNavigationItem as={NavLink} to={to}>
+        <StyledMainNavigationItem as={NavLink} to={to} appMode={appMode}>
             {icon}
             {title}
         </StyledMainNavigationItem>

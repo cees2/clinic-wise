@@ -21,9 +21,9 @@ const StyledNavigation = styled.aside`
     top: 0;
     left: 0;
     z-index: 20;
-    background-color: #fff;
     grid-column: 1 / 2;
     grid-row: 1 / -1;
+    background-color: var(--background-primary);
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`

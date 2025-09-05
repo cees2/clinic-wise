@@ -13,7 +13,7 @@ const StyledHeader = styled.header`
 
 const MainBar = () => {
     return (
-        <StyledHeader className="flex justify-end col-start-2 col-end-3 row-start-1 row-end-2 p-4 bg-testblue">
+        <StyledHeader className="flex justify-end col-start-2 col-end-3 row-start-1 row-end-2 p-4 bg-background-primary">
             <MainBarUser />
             <MainBarActions />
         </StyledHeader>

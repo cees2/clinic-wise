@@ -1,6 +1,7 @@
 import { add, endOfDay, startOfDay, startOfYear } from "date-fns";
 import type { FieldErrors, FieldPath } from "react-hook-form";
 import type { CSSObjectWithLabel, GetOptionValue, OnChangeValue, StylesConfig } from "react-select";
+import { AppColorMode } from "../../../utils/projectTypes.ts";
 
 export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     errors: FieldErrors<FormType>,
@@ -35,7 +36,7 @@ export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
     }
 };
 
-export const selectInputsStyles: StylesConfig = {
+export const selectInputsStyles = (isDarkMode: boolean): StylesConfig => ({
     control: (baseStyles, { isFocused }) => {
         const additionalStyles: CSSObjectWithLabel = { border: "1px solid var(--color-gray-400)" };
 
@@ -47,7 +48,9 @@ export const selectInputsStyles: StylesConfig = {
         return { ...baseStyles, ...additionalStyles };
     },
     option: (baseStyles, { isSelected, isFocused }) => {
-        const additionalStyles: CSSObjectWithLabel = {};
+        const additionalStyles: CSSObjectWithLabel = {
+            backgroundColor: isDarkMode ? "var(--color-background-tertiary)" : "var(--color-gray-50)",
+        };
 
         if (isSelected) {
             additionalStyles.backgroundColor = "var(--color-primary)";
@@ -61,7 +64,7 @@ export const selectInputsStyles: StylesConfig = {
     input: (baseStyles) => {
         return { ...baseStyles, boxShadow: "none" };
     },
-};
+});
 
 export const getDefaultMinDate = (minDate?: Date | "current", withTimePicker?: true): Date => {
     if (minDate === "current") {

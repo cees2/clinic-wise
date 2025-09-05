@@ -23,7 +23,7 @@ const DropdownContext = createContext<DropdownContextType>({
 });
 
 const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: boolean }>`
-    background-color: #fff;
+    background-color: var(--color-background-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -39,7 +39,7 @@ const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: 
             padding: 0.5rem 1.2rem;
             border: 1px solid var(--color-gray-400);
             border-radius: var(--radius-lg);
-        `}
+        `};
 `;
 
 const StyledDropdownToggleLabel = styled.span`
@@ -57,8 +57,9 @@ const StyledDropdownMenu = styled.ul.attrs({
     position: absolute;
     min-width: 12rem;
     border-radius: var(--radius-lg);
-    background-color: var(--color-gray-200);
+    background-color: var(--color-background-tertiary);
     z-index: 1;
+
     ${({ toggleHeight, toggleWidth, placement }) => {
         switch (placement) {
             case "top": {
@@ -91,7 +92,7 @@ const StyledDropdownItem = styled.li.attrs({ role: "menuitem" })`
 
     &:hover {
         cursor: pointer;
-        background-color: var(--color-gray-100);
+        background-color: var(--color-background-primary);
     }
 `;
 

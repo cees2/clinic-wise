@@ -10,10 +10,10 @@ const GlobalStyles = createGlobalStyle`
         line-height: 1.5;
         font-weight: var(--font-weight-medium);
         font-size: 1.6rem;
+        color: var(--font-primary)
     }
 
     html{
-        --color-primary: #16a34a;
         --duration-fastest: 100ms;
         --duration-fast: 200ms;
         --duration-default: 300ms;

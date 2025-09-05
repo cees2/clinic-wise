@@ -15,7 +15,7 @@ const StyledAppointmentsBoxItem = styled.li`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--color-gray-200);
+    background-color: var(--background-tertiary);
 
     & > .see-more-link {
         transition: all var(--duration-fast);

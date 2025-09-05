@@ -31,7 +31,7 @@ export const FormSubmit = <FormType extends Record<string, any>>({
     const buttons = customButtons ?? (
         <FormButtons>
             {isDirty && (
-                <Button type="button" variant="cancel" onClick={() => void cancelButtonClickHandler()}>
+                <Button type="button" variant="inactive" onClick={() => void cancelButtonClickHandler()}>
                     Cancel
                 </Button>
             )}

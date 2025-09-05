@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import type { FormSelectInputAsyncProps } from "../../../../utils/projectTypes";
+import { AppColorMode, type FormSelectInputAsyncProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
 import type { OnChangeValue } from "react-select";
 import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
 import AsyncSelect from "react-select/async";
+import { useDarkMode } from "../../../../utils/hooks/useDarkMode.ts";
 
 const AsyncSelectInput = <
     OptionsType extends Record<string, any>,
@@ -17,6 +18,7 @@ const AsyncSelectInput = <
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
     const selectedValueFullObject = useRef<OptionsType | null>(null);
+    const { appMode } = useDarkMode();
 
     useEffect(() => {
         if (!value) {
@@ -54,7 +56,7 @@ const AsyncSelectInput = <
             defaultOptions
             name={registerName}
             isClearable
-            styles={selectInputsStyles}
+            styles={selectInputsStyles(appMode === AppColorMode.DARK)}
         />
     );
 };

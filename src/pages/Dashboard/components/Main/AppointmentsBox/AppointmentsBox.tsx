@@ -6,7 +6,7 @@ const StyledAppointmentsBox = styled.div`
     grid-column: 1 / span 2;
     border-radius: var(--radius-2xl);
     padding: 2.4rem;
-    background-color: var(--color-gray-200);
+    background-color: var(--background-tertiary);
 
     & > .appointments-box__title {
         font-weight: var(--font-weight-bold);

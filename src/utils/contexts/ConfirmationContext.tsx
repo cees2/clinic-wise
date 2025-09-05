@@ -50,7 +50,7 @@ export const ConfirmationProvider = ({ children }: Children) => {
                         <Button onClick={onConfirmConfirmation} variant="danger">
                             Yes
                         </Button>
-                        <Button onClick={onRejectConfirmation} variant="cancel">
+                        <Button onClick={onRejectConfirmation} variant="inactive">
                             No
                         </Button>
                     </ConfirmationFooter>

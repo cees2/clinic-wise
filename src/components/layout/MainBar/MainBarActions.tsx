@@ -26,11 +26,15 @@ const StyledMainBarActions = styled.div.attrs({ role: "group" })`
 
 const MainBarActions = () => {
     const { logout } = useAuthentication();
-    const { setAppMode } = useDarkMode();
+    const { setAppMode, appMode } = useDarkMode();
 
     const toggleMode = () => {
         setAppMode((prevMode) => (prevMode === AppColorMode.DARK ? AppColorMode.LIGHT : AppColorMode.DARK));
-        toggleHTMLElementColorMode();
+        toggleHTMLElementColorMode(appMode === AppColorMode.DARK ? AppColorMode.LIGHT : AppColorMode.DARK);
+        localStorage.setItem(
+            "clinic-wise-appMode",
+            appMode === AppColorMode.DARK ? AppColorMode.LIGHT : AppColorMode.DARK,
+        );
     };
 
     return (

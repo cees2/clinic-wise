@@ -12,7 +12,7 @@ export const TextInputSimple = ({ label, helpText, className, disabled, id, ...r
         <StyledInput className={className} disabled={disabled}>
             <InputLabel htmlFor={id}>{label}</InputLabel>
             {helpText && <InputHelp>{helpText}</InputHelp>}
-            <input type="text" id={id} disabled={disabled} {...restProps} />
+            <input type="text" id={id} disabled={disabled} {...restProps} className="dark:text-gray-800" />
         </StyledInput>
     );
 };

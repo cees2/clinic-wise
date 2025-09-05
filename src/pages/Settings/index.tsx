@@ -4,7 +4,7 @@ import UpdatePassword from "./UpdatePassword/UpdatePassword";
 
 const Settings = () => {
     return (
-        <section className="p-12 bg-gray-100 min-h-full">
+        <section className="p-12 min-h-full">
             <Header as="h3" title="Settings" />
             <UpdateAccount />
             <UpdatePassword />

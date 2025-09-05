@@ -12,7 +12,7 @@ import { useFakeRoomsOccupation } from "../../../services/hooks/faker/useFakeRoo
 const StyledFaker = styled.div`
     margin: auto 1.6rem 1.6rem;
     padding-top: 1.2rem;
-    background-color: var(--color-gray-200);
+    background-color: var(--background-tertiary);
     display: flex;
     flex-direction: column;
     align-items: center;

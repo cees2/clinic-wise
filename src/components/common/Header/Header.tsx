@@ -52,6 +52,7 @@ export const StyledHeader = styled.h1<{ as: KnownTarget }>`
         letter-spacing: 1px;
     }
 
+    color: var(--font-primary);
     display: flex;
     align-items: center;
     justify-content: space-between;

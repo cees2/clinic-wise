@@ -34,7 +34,7 @@ const StyledModal = styled.div`
     left: 50%;
     width: 50vw;
     transform: translate(-50%, -50%);
-    background-color: var(--color-gray-200);
+    background-color: var(--background-secondary);
     padding: 2.4rem;
     border-radius: var(--radius-2xl);
     animation: display-modal var(--duration-fast) ease-out;
