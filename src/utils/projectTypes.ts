@@ -56,6 +56,7 @@ export interface TableDataColumn<T extends Record<string, any>> {
     name: string;
     render?: (dataItem: T) => React.ReactNode | number | string;
     foreignTableColumnsName?: string[];
+    customInclude?: string;
 }
 
 export type FilterCondition = "e" | "ne" | "c" | "gt" | "gte" | "lt" | "lte";

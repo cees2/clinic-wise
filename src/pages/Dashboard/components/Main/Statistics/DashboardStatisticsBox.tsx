@@ -81,7 +81,6 @@ export const DashboardStatisticsBox = ({ name, boxOrder }: Props) => {
     const { data } = useDashboardQuery();
     const [Icon, value, backgroundColor] = getStatisticsBoxData(name, data) ?? [];
     const { appMode } = useDarkMode();
-    console.log(appMode);
 
     return (
         <StyledDashboardStatisticsBox boxOrder={boxOrder} backgroundColor={backgroundColor} appMode={appMode}>

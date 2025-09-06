@@ -25,13 +25,19 @@ export const useTableDataFetcher = <T extends TableDataResourceType>(
 };
 
 const getSelectString = (columns: TableDataColumn<T>[]): string => {
-    let select = "*";
+    let select = "";
 
     columns.forEach((column) => {
-        if (!column.foreignTableColumnsName) return;
+        const separator = select === "" ? "" : ",";
 
-        const foreignColumns = column.foreignTableColumnsName.join(",");
-        select += `, ${column.id} (${foreignColumns})`;
+        if (column.foreignTableColumnsName) {
+            const foreignColumns = column.foreignTableColumnsName.join(",");
+            select += `${separator}${column.id}(${foreignColumns})`;
+        } else if (column.customInclude) {
+            select += `${separator}${column.customInclude}`;
+        } else {
+            select += `${separator}${column.id}`;
+        }
     });
 
     return select;

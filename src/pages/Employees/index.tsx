@@ -19,6 +19,7 @@ const Employees = () => {
             {
                 id: "name",
                 name: "Name",
+                customInclude: "name,surname",
                 render: (employee) => `${employee.name} ${employee.surname}`,
             },
             {

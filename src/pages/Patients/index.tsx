@@ -19,6 +19,7 @@ const Patients = () => {
             {
                 id: "name",
                 name: "Name",
+                customInclude: "name,surname",
                 render: (patient) => `${patient.name} ${patient.surname}`,
             },
             {

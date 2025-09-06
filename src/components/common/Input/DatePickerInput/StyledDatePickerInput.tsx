@@ -5,7 +5,7 @@ export const StyledDatePickerInput = styled.div`
     align-items: flex-start;
     column-gap: 0.8rem;
     height: 291px;
-    background-color: #fff;
+    background-color: var(--color-background-tertiary);
     position: relative;
     z-index: 1;
 `;

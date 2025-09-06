@@ -14,7 +14,7 @@ import type {
 } from "../utils/projectTypes";
 import type { EmployeeSelect, RoomSelect } from "./apiTypes";
 import { supabase, supabaseURL } from "./services";
-import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
+import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 
@@ -24,7 +24,7 @@ import { getTimeFilterDates } from "../pages/Dashboard/utils";
 export const uploadFakeAppointments = async (appointments: AppointmentFormType[]) => {
     await supabase.from("appointments").delete().gte("id", 0);
 
-    const { data, error } = await supabase.from("appointments").insert(appointments);
+    const { data, error } = await supabase.functions.invoke("create-fake-appointments", { body: appointments });
 
     if (error) {
         throw new Error(error.message);
