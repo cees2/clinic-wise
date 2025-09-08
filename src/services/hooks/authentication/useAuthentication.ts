@@ -16,7 +16,7 @@ export const useAuthentication = () => {
         },
         onSuccess: (data) => {
             setIsAuthenticated(true);
-            setUser(data.user)
+            setUser(data.user);
             void navigate("/dashboard", { replace: true });
         },
     });
@@ -41,17 +41,21 @@ export const useAuthentication = () => {
     });
 
     const checkIfUserIsLoggedIn = async () => {
-        let isAuthenticated = false;
+        try {
+            let isAuthenticated = false;
 
-        const { session: sessionData } = await getSession();
+            const { session: sessionData } = await getSession();
 
-        if (sessionData?.user.role === "authenticated") isAuthenticated = true;
+            if (sessionData?.user.role === "authenticated") isAuthenticated = true;
 
-        const { user } = await getUser();
+            const { user } = await getUser();
 
-        if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
+            if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
 
-        return { isAuthenticated, user };
+            return { isAuthenticated, user };
+        } catch (err) {
+            await navigate("/login");
+        }
     };
 
     return { login, register, logout, checkIfUserIsLoggedIn };

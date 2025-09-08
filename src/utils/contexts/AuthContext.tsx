@@ -31,7 +31,7 @@ export const AuthContextProvider = ({ children }: Children) => {
         [isAuthenticated, setIsAuthenticated, user, setUser],
     );
 
-    if (isLoading) return <LoadingSpinner />;
+    if (isLoading) return <LoadingSpinner forceDarkText />;
 
     return <AuthContext value={memoizedAuthContext}>{children}</AuthContext>;
 };

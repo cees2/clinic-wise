@@ -16,6 +16,7 @@ import EditEmployee from "./Employees/Edit";
 import AppLayout from "../components/layout/AppLayout.tsx";
 import { NewRoomOccupancy } from "./RoomsOccupation/pages/New/NewRoomOccupancy.tsx";
 import { EditRoomOccupancy } from "./RoomsOccupation/pages/Edit/EditRoomOccupancy.tsx";
+import styled from "styled-components";
 
 const MainLayout = () => {
     return (

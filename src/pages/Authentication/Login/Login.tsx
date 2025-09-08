@@ -45,7 +45,9 @@ const Login = () => {
     useEffect(() => {
         if (isAuthenticated) {
             const isRedirectedFromLogin = typeof location.state === "string" && location.state === "/login";
-            void navigate(isRedirectedFromLogin ? "/" : location.state);
+            const navigateLink = isRedirectedFromLogin || !location.state ? "/" : location.state;
+
+            void navigate(navigateLink);
         }
     }, [isAuthenticated, navigate, location.state]);
 

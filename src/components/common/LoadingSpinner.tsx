@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Spinner = styled.div`
     @keyframes rotateSpinner {
@@ -19,10 +19,19 @@ const Spinner = styled.div`
     animation: rotateSpinner 2s linear infinite;
 `;
 
-const StyledSpinnerText = styled.span`
+const StyledSpinnerText = styled.span<{ forceDarkText?: true }>`
     text-align: center;
     font-size: 2rem;
     font-weight: var(--font-weight-medium);
+    ${({ forceDarkText }) => {
+        return forceDarkText
+            ? css`
+                  color: var(--color-gray-800);
+              `
+            : css`
+                  color: var(--color-font-primary);
+              `;
+    }}
 `;
 
 const StyledLoadingSpinner = styled.div`
@@ -33,7 +42,7 @@ const StyledLoadingSpinner = styled.div`
     margin-top: 2.4rem;
 `;
 
-export const LoadingSpinner = () => {
+export const LoadingSpinner = ({ forceDarkText }: { forceDarkText?: true }) => {
     const [loadingCaption, setLoadingCaption] = useState("Loading");
     const intervalID = useRef<NodeJS.Timeout | undefined>(undefined);
 
@@ -56,7 +65,7 @@ export const LoadingSpinner = () => {
     return (
         <StyledLoadingSpinner>
             <Spinner />
-            <StyledSpinnerText>{loadingCaption}</StyledSpinnerText>
+            <StyledSpinnerText forceDarkText={forceDarkText}>{loadingCaption}</StyledSpinnerText>
         </StyledLoadingSpinner>
     );
 };
