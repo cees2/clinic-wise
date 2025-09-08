@@ -35,6 +35,7 @@ const Appointments = () => {
             {
                 id: "additional_note",
                 name: "Additional note",
+                disableSorting: true,
             },
             {
                 id: "patient_id",

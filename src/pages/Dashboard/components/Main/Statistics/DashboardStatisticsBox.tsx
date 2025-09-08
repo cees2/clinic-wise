@@ -82,11 +82,12 @@ export const DashboardStatisticsBox = ({ name, boxOrder }: Props) => {
     const [Icon, value, backgroundColor] = getStatisticsBoxData(name, data) ?? [];
     const { appMode } = useDarkMode();
 
+    console.log("VALUE", value);
     return (
         <StyledDashboardStatisticsBox boxOrder={boxOrder} backgroundColor={backgroundColor} appMode={appMode}>
             <div className="icon-background">{Icon}</div>
             <h6 className="statistics-name">{name}</h6>
-            <span className="statistics-value">{value}</span>
+            <span className="statistics-value">{value || "-"}</span>
         </StyledDashboardStatisticsBox>
     );
 };

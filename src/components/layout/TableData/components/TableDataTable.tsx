@@ -4,6 +4,7 @@ import Table, { StyledHeaderCell } from "../../../common/Table/Table";
 import { TableData } from "../TableData";
 import { useTableDataContext } from "../utils/TableDataContext";
 import TableDataActionCell from "./TableDataActionCell";
+import type { TableDataColumn } from "../../../../utils/projectTypes.ts";
 
 const StyledTableDataHeaderCell = styled(StyledHeaderCell)`
     display: flex;
@@ -42,7 +43,7 @@ const TableDataHeaderRow = () => {
                 return (
                     <StyledTableDataHeaderCell key={column.name} columnIndex={columnIndex}>
                         {column.name}
-                        <TableData.Sorts columnId={column.id} />
+                        <TableData.Sorts column={column} />
                     </StyledTableDataHeaderCell>
                 );
             })}

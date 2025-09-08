@@ -1,9 +1,14 @@
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import styled from "styled-components";
+import type { EmptyPageAction } from "../../utils/projectTypes.ts";
+import { Button } from "../layout/Button.tsx";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
     icon?: React.ReactNode;
     caption: string;
+    className?: string;
+    actions?: EmptyPageAction[];
 }
 
 const StyledEmptyPage = styled.div`
@@ -20,11 +25,37 @@ const StyledEmptyPage = styled.div`
     }
 `;
 
-export const EmptyPage = ({ caption, icon }: Props) => {
+const EmptyPageActions = ({ actions }: { actions?: EmptyPageAction[] }) => {
+    const navigate = useNavigate();
+    const clickHandler = async (path?: string, action?: () => void) => {
+        if (path) {
+            await navigate(path);
+        }
+
+        action?.();
+    };
+
+    if (!actions) return null;
+
     return (
-        <StyledEmptyPage>
+        <div className="flex gap-x-2">
+            {actions.map(({ title, action, path }) => {
+                return (
+                    <Button onClick={() => void clickHandler(path, action)} key={title}>
+                        {title}
+                    </Button>
+                );
+            })}
+        </div>
+    );
+};
+
+export const EmptyPage = ({ caption, icon, className, actions }: Props) => {
+    return (
+        <StyledEmptyPage className={className}>
             {icon ?? <IoIosInformationCircleOutline />}
             <span>{caption}</span>
+            <EmptyPageActions actions={actions} />
         </StyledEmptyPage>
     );
 };

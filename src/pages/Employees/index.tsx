@@ -30,6 +30,7 @@ const Employees = () => {
             {
                 id: "email",
                 name: "Email",
+                disableSorting: true,
             },
             {
                 id: "start_date",
@@ -44,6 +45,7 @@ const Employees = () => {
             {
                 id: "phone_number",
                 name: "Phone number",
+                disableSorting: true,
             },
             {
                 id: "nationality",

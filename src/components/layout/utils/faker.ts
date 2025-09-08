@@ -40,7 +40,7 @@ const getRandomWorkingHour = () => faker.helpers.arrayElement(Array.from({ lengt
 export const generateFakeAppointments = (patients: number[], employeesIds: number[]) => {
     const mockAppointments: AppointmentFormType[] = [];
 
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 300; i++) {
         const generateFutureAppointment = i % 4 === 0;
         const startDateObject = generateFutureAppointment
             ? faker.date.soon({ days: 10 })

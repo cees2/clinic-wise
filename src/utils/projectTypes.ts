@@ -57,6 +57,7 @@ export interface TableDataColumn<T extends Record<string, any>> {
     render?: (dataItem: T) => React.ReactNode | number | string;
     foreignTableColumnsName?: string[];
     customInclude?: string;
+    disableSorting?: true;
 }
 
 export type FilterCondition = "e" | "ne" | "c" | "gt" | "gte" | "lt" | "lte";
@@ -468,4 +469,11 @@ export enum AppColorMode {
 export interface DarkModeContextType {
     appMode: AppColorMode;
     setAppMode: React.Dispatch<SetStateAction<AppColorMode>>;
+}
+
+export interface EmptyPageAction {
+    title: string;
+    variant?: ButtonVariant;
+    action?: () => void;
+    path?: string;
 }

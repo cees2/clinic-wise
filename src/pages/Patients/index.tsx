@@ -2,9 +2,8 @@ import { format } from "date-fns";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { ContentLayout } from "../../components/layout/ContentLayout";
-import type { Tables } from "../../services/database.types";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
-import { SUPPORTED_NATIONALITIES, SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
+import { SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
@@ -42,6 +41,7 @@ const Patients = () => {
             {
                 id: "phone_number",
                 name: "Phone number",
+                disableSorting: true,
             },
             {
                 id: "document_id",

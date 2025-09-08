@@ -5,10 +5,9 @@ import { LoadingSpinner } from "../../common/LoadingSpinner";
 import { useFakeAppointments } from "../../../services/hooks/faker/useFakeAppointments";
 import { useFakePatients } from "../../../services/hooks/faker/useFakePatients";
 import { generateFakeAppointments, generateFakePatients, generateFakeRoomsOccupation } from "../utils/faker";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesIds, getPatientsIds, getRoomsIds } from "../../../services/api";
 import { useFakeRoomsOccupation } from "../../../services/hooks/faker/useFakeRoomsOccupation";
-import { supabase } from "../../../services/services.ts";
 
 const StyledFaker = styled.div`
     margin: auto 1.6rem 1.6rem;

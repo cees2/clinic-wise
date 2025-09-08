@@ -1,17 +1,15 @@
 import { useTableDataContext } from "../utils/TableDataContext";
 import { LiaLongArrowAltDownSolid, LiaLongArrowAltUpSolid } from "react-icons/lia";
-import { SortTableEnum, TableDataActionsEnum } from "../../../../utils/projectTypes";
+import { SortTableEnum, TableDataActionsEnum, type TableDataColumn } from "../../../../utils/projectTypes";
 import { LuArrowDownUp } from "react-icons/lu";
 
-interface Props {
-    columnId: string;
-}
-
-const TableDataSorts = ({ columnId }: Props) => {
+const TableDataSorts = <T extends Record<string, any>>({ column }: { column: TableDataColumn<T> }) => {
     const {
         tableDataState: { selectedSort },
         dispatch,
     } = useTableDataContext();
+    const { id: columnId, disableSorting } = column;
+    const sortingSVGClassnames = "cursor-pointer hover:scale-110 transition-all duration-100";
 
     const sortColumnHandler = (sortType: SortTableEnum) => {
         switch (sortType) {
@@ -28,6 +26,8 @@ const TableDataSorts = ({ columnId }: Props) => {
         }
     };
 
+    if (disableSorting) return null;
+
     if (selectedSort && selectedSort.id === columnId) {
         if (selectedSort.isAscending) {
             return (
@@ -35,6 +35,7 @@ const TableDataSorts = ({ columnId }: Props) => {
                     onClick={() => {
                         sortColumnHandler(SortTableEnum.DESCENDING);
                     }}
+                    className={sortingSVGClassnames}
                 />
             );
         }
@@ -43,6 +44,7 @@ const TableDataSorts = ({ columnId }: Props) => {
                 onClick={() => {
                     sortColumnHandler(SortTableEnum.NONE);
                 }}
+                className={sortingSVGClassnames}
             />
         );
     }
@@ -52,6 +54,7 @@ const TableDataSorts = ({ columnId }: Props) => {
             onClick={() => {
                 sortColumnHandler(SortTableEnum.ASCENDING);
             }}
+            className={sortingSVGClassnames}
         />
     );
 };
