@@ -20,7 +20,7 @@ const SimpleSelectInput = <
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
     const selectedOption = options.find((option) => getFormSelectValue(option, getOptionValue) === value);
-    const { addMode } = useDarkMode();
+    const { appMode } = useDarkMode();
 
     const onChangeInternal = (updatedValue: OnChangeValue<OptionsType, isMulti>) => {
         const newValue = getFormSelectValue(updatedValue, getOptionValue);
@@ -34,7 +34,7 @@ const SimpleSelectInput = <
             onChange={onChangeInternal}
             onBlur={onBlur}
             options={options}
-            styles={selectInputsStyles(addMode === AppColorMode.DARK)}
+            styles={selectInputsStyles(appMode === AppColorMode.DARK)}
         />
     );
 };

@@ -38,32 +38,45 @@ export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
 
 export const selectInputsStyles = (isDarkMode: boolean): StylesConfig => ({
     control: (baseStyles, { isFocused }) => {
-        const additionalStyles: CSSObjectWithLabel = { border: "1px solid var(--color-gray-400)" };
+        const additionalStyles: CSSObjectWithLabel = {
+            border: "1px solid var(--color-gray-400)",
+            backgroundColor: "var(--color-background-tertiary)",
+        };
 
         if (isFocused) {
             additionalStyles.borderColor = "var(--color-primary)";
             additionalStyles.boxShadow = "0px 0px 3px 0px var(--color-primary)";
         }
 
-        return { ...baseStyles, ...additionalStyles };
+        return {
+            ...baseStyles,
+            ...additionalStyles,
+        };
     },
     option: (baseStyles, { isSelected, isFocused }) => {
         const additionalStyles: CSSObjectWithLabel = {
-            backgroundColor: isDarkMode ? "var(--color-background-tertiary)" : "var(--color-gray-50)",
+            backgroundColor: "var(--color-background-tertiary)",
         };
 
         if (isSelected) {
             additionalStyles.backgroundColor = "var(--color-primary)";
             additionalStyles.color = "var(--color-gray-50)";
         } else if (isFocused) {
-            additionalStyles.background = "color-mix(in srgb, var(--color-primary) 20%, transparent);";
+            additionalStyles.background = "var(--color-background-primary)";
         }
 
         return { ...baseStyles, ...additionalStyles };
     },
+    menu: (baseStyles) => ({ ...baseStyles, backgroundColor: "var(--color-background-tertiary)" }),
     input: (baseStyles) => {
-        return { ...baseStyles, boxShadow: "none" };
+        return { ...baseStyles, boxShadow: "none", color: "var(--color-font-primary)" };
     },
+    placeholder: (baseStyles) => {
+        return { ...baseStyles, color: "var(--color-font-primary)" };
+    },
+    valueContainer: (baseStyles) => ({ ...baseStyles, color: "var(--color-font-primary)" }),
+    singleValue: (baseStyles) => ({ ...baseStyles, color: "var(--color-font-primary)" }),
+    noOptionsMessage: (baseStyles) => ({ ...baseStyles, color: "var(--color-font-primary)" }),
 });
 
 export const getDefaultMinDate = (minDate?: Date | "current", withTimePicker?: true): Date => {

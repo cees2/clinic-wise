@@ -25,7 +25,7 @@ export const useTableDataFetcher = <T extends TableDataResourceType>(
 };
 
 const getSelectString = (columns: TableDataColumn<T>[]): string => {
-    let select = "";
+    let select = "id";
 
     columns.forEach((column) => {
         const separator = select === "" ? "" : ",";
