@@ -14,7 +14,6 @@ export const FormSelectInput = <
     props: FormSelectInputProps<OptionsType, isMulti, FormType>,
 ) => {
     const { registerName, label, control } = props;
-    const hasPredefinedOptions = Boolean(props.options);
     const isRequired = props.rules?.required;
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const inputErrorName = getInputFieldErrorName(errors, registerName);
@@ -22,7 +21,11 @@ export const FormSelectInput = <
     return (
         <div>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
-            {hasPredefinedOptions ? <SimpleSelectInput {...props} /> : <AsyncSelectInput {...props} />}
+            {props.loadOptions ? (
+                <AsyncSelectInput {...props} loadOptions={props.loadOptions} />
+            ) : (
+                <SimpleSelectInput {...props} options={props.options ?? []} />
+            )}
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
         </div>
     );

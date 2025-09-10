@@ -4,6 +4,7 @@ import { getSession, getUser, loginUser, logoutUser, registerUser } from "../../
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
+import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 
 export const useAuthentication = () => {
     const { setIsAuthenticated, setUser } = useAuthContext();
@@ -22,7 +23,7 @@ export const useAuthentication = () => {
     });
 
     const register = useMutation({
-        mutationFn: (registerData) => registerUser(registerData),
+        mutationFn: (registerData: SignUpWithPasswordCredentials) => registerUser(registerData),
         onError: () => {
             toast.error("Wrong credentials provided");
         },

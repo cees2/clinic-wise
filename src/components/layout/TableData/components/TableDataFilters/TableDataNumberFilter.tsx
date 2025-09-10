@@ -35,7 +35,7 @@ export const TableDataNumberFilter = ({ filterId }: Props) => {
             filterId={filterId}
             onHideDropdown={hideDropdownHandler}
             decimalScale={0}
-            defaultValue={getFilterDefaultValue(selectedFilters, filterId)}
+            filterDefaultValue={getFilterDefaultValue(selectedFilters, filterId)}
         />
     );
 };

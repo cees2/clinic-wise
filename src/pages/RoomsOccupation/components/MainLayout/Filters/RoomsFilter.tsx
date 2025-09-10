@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dropdown } from "../../../../../components/common/Dropdown/Dropdown.tsx";
 import type { Tables } from "../../../../../services/database.types.ts";
-import { RoomsFilterIds, type RoomsFilter } from "../../../../../utils/projectTypes.ts";
+import { RoomsFilterIds, type RoomsFilterType } from "../../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../../utils/RoomsContext.tsx";
 import { getRoomFilterFromRoomsFilters, updateRoomFilterValue, updateRoomsFilters } from "../../../utils/utils.ts";
 
@@ -30,7 +30,7 @@ const RoomsFilter = ({ rooms }: Props) => {
         setFilters((prevFilters) => {
             const roomsFilter = getRoomFilterFromRoomsFilters(prevFilters);
             const roomsFilterNewValue = updateRoomFilterValue(id.toString(), roomsFilter);
-            const newFilter: RoomsFilter = { id: RoomsFilterIds.ROOM, value: roomsFilterNewValue };
+            const newFilter: RoomsFilterType = { id: RoomsFilterIds.ROOM, value: roomsFilterNewValue };
 
             return updateRoomsFilters(prevFilters, newFilter);
         });

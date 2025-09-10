@@ -8,13 +8,13 @@ import type {
     DropdownToggleProps,
     StyledDropdownMenuProps,
 } from "../../../utils/projectTypes";
-import styled, { css, type Interpolation } from "styled-components";
+import styled, { css } from "styled-components";
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const DropdownContext = createContext<DropdownContextType>({
     open: false,
     setOpen: () => {},
-    dropdownToggleRef: { current: {} },
+    dropdownToggleRef: { current: null },
     setDropdownToggleRef: () => {},
     isOpening: false,
     setIsOpening: () => {},
@@ -107,10 +107,10 @@ export const Dropdown = ({
 }) => {
     const [open, setOpen] = useState(false);
     const [isOpening, setIsOpening] = useState(false);
-    const dropdownToggleRef: RefObject<HTMLButtonElement | null> = useRef<HTMLButtonElement>(null);
+    const dropdownToggleRef = useRef<HTMLButtonElement>(null);
 
-    const setDropdownToggleRef = useCallback((originalDropdownToggleRef: RefObject<HTMLButtonElement> | null) => {
-        if (originalDropdownToggleRef) {
+    const setDropdownToggleRef = useCallback((originalDropdownToggleRef: RefObject<HTMLButtonElement | null>) => {
+        if (originalDropdownToggleRef.current) {
             dropdownToggleRef.current = originalDropdownToggleRef.current;
         }
     }, []);
@@ -194,12 +194,12 @@ const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps
 
     if (!open || !dropdownToggleRef) return null;
 
-    const { height: toggleHeight, width: toggleWidth } = dropdownToggleRef.current.getBoundingClientRect();
+    const { height: toggleHeight, width: toggleWidth } = dropdownToggleRef.current?.getBoundingClientRect() ?? {};
 
     return (
         <StyledDropdownMenu
-            toggleHeight={toggleHeight}
-            toggleWidth={toggleWidth}
+            toggleHeight={toggleHeight ?? 0}
+            toggleWidth={toggleWidth ?? 0}
             ref={dropdownMenuRef}
             placement={placement}
             className={className}

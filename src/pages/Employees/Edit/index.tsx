@@ -30,7 +30,7 @@ const EditEmployee = () => {
 
     return (
         <FormLayout>
-            <Header as="h3" title={`Edit employee "${data.name} ${data?.surname}"`} />
+            <Header as="h3" title={`Edit employee "${data?.name} ${data?.surname}"`} />
             <EmployeeForm employeeData={data} />
         </FormLayout>
     );

@@ -1,4 +1,4 @@
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { NumberInput } from "../../../components/common/Input/NumberInput/NumberInput.tsx";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
@@ -6,7 +6,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesSelect, getPatientsSelect } from "../../../services/api";
 import { TextAreaInput } from "../../../components/common/Input/TextAreaInput";
 import { GridForm } from "../../../components/common/Form/GridForm";
-import type { AppointmentFormType, AppointmentUpdateType } from "../../../utils/projectTypes";
+import type {
+    AppointmentFormPartialType,
+    AppointmentFormType,
+    AppointmentUpdateType,
+} from "../../../utils/projectTypes";
 import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
 import { useNavigate } from "react-router-dom";
 import type { Tables } from "../../../services/database.types";
@@ -18,7 +22,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
     const isEdit = Boolean(appointmentData);
     const queryClient = useQueryClient();
     const { mutationCreate, mutationUpdate } = useMutateAppointment();
-    const { control, register, handleSubmit, formState } = useForm<AppointmentFormType>({
+    const { control, register, handleSubmit, formState } = useForm<AppointmentFormPartialType>({
         defaultValues: getAppointmentFormDefaultValues(appointmentData),
     });
     const navigate = useNavigate();
@@ -37,7 +41,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
         });
     };
 
-    const submitSuccess = (data: AppointmentFormType) => {
+    const submitSuccess = (data: AppointmentFormPartialType) => {
         if (isEdit && appointmentData?.id) {
             const updateData: AppointmentUpdateType = { ...data, id: appointmentData.id };
             mutationUpdate.mutate(updateData);
@@ -46,7 +50,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
         }
     };
 
-    const submitError = (errors: FieldErrors<AppointmentFormType>) => {
+    const submitError = () => {
         toast.error("Invalid data");
     };
 

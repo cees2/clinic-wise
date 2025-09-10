@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useMemo, useState } from "react";
+import { createContext, useCallback, useMemo, useState } from "react";
 import type { Children, ConfirmationContextType, ConfirmationType } from "../projectTypes.ts";
 import styled from "styled-components";
 import { Modal } from "../../components/common/Modal/Modal.tsx";

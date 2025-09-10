@@ -1,14 +1,11 @@
 import { add, compareAsc, format } from "date-fns";
 import type {
     AppointmentFormType,
-    AppointmentUpdateType,
     EmployeeFormType,
-    EmployeeUpdateType,
     LoginApi,
-    PatientFormType,
-    PatientUpdateType,
     RoomFormType,
-    RoomOccupationFormType,
+    RoomsFilterType,
+    RoomsOccupanciesResponseType,
     UpdateUserCompleteInfo,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
@@ -17,6 +14,8 @@ import { supabase, supabaseURL } from "./services";
 import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
+import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
+import type { Tables } from "./database.types.ts";
 
 // TODO: possible refactor
 
@@ -67,7 +66,7 @@ export const getAppointment = async (appointmentId: string) => {
     return data;
 };
 
-export const updateAppointment = async (appointment: AppointmentUpdateType) => {
+export const updateAppointment = async (appointment: Tables<"appointments">) => {
     const { data, error } = await supabase
         .from("appointments")
         .update(appointment)
@@ -85,15 +84,26 @@ export const updateAppointment = async (appointment: AppointmentUpdateType) => {
 // EMPLOYEE
 
 export const createEmployee = async (employee: EmployeeFormType) => {
-    const newEmployeeData = { ...employee };
     const { email, password, role, name, surname } = employee;
     const userData = {
         email,
         password,
         user_metadata: { role, fullName: `${name} ${surname}` },
     };
-    delete newEmployeeData.password;
-    delete newEmployeeData.confirmPassword;
+    const newEmployeeData: Omit<Tables<"employees">, "id" | "created_at"> = {
+        start_date: employee.start_date ?? "",
+        date_of_birth: employee.date_of_birth ?? "",
+        address: employee.address ?? "",
+        document_id: employee.document_id ?? "",
+        email: employee.email ?? "",
+        gender: employee.gender ?? "",
+        user_id: employee.user_id ?? null,
+        role: employee.role ?? null,
+        name: employee.name ?? "",
+        nationality: employee.nationality ?? "",
+        phone_number: employee.phone_number ?? "",
+        surname: employee.surname ?? "",
+    };
 
     const { data: uploadedUserData, error: uploadUserError } = await supabase.functions.invoke("create-employee-user", {
         body: userData,
@@ -136,7 +146,7 @@ export const removeEmployee = async (employeeId: number) => {
     return data;
 };
 
-export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
+export const uploadFakeEmployees = async (employees: Tables<"employees">[]) => {
     await supabase.from("employees").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("employees").insert(employees);
@@ -173,14 +183,14 @@ export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSe
     return data;
 };
 
-export const updateEmployee = async (employee: EmployeeUpdateType) => {
+export const updateEmployee = async (employee: Tables<"employees">) => {
     const userData = {
         role: employee.role,
         fullName: `${employee.name} ${employee.surname}`,
         user_id: employee.user_id,
     };
 
-    const { data: updatedUserData, error: updateUserError } = await supabase.functions.invoke("update-employee-user", {
+    const { error: updateUserError } = await supabase.functions.invoke("update-employee-user", {
         body: userData,
     });
 
@@ -199,7 +209,7 @@ export const updateEmployee = async (employee: EmployeeUpdateType) => {
 
 // PATIENT
 
-export const createPatient = async (patient: PatientFormType) => {
+export const createPatient = async (patient: Tables<"patients">) => {
     const { data, error } = await supabase.from("patients").insert(patient).select().single();
 
     if (error) {
@@ -209,7 +219,7 @@ export const createPatient = async (patient: PatientFormType) => {
     return data;
 };
 
-export const updatePatient = async (patient: PatientUpdateType) => {
+export const updatePatient = async (patient: Tables<"patients">) => {
     const { data, error } = await supabase.from("patients").update(patient).eq("id", patient.id).select().single();
 
     if (error) {
@@ -239,7 +249,7 @@ export const getPatientsSelect = async (inputValue: string) => {
     return data;
 };
 
-export const uploadFakePatients = async (patients: PatientFormType[]) => {
+export const uploadFakePatients = async (patients: Tables<"patients">[]) => {
     await supabase.from("patients").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("patients").insert(patients);
@@ -288,7 +298,7 @@ export const loginUser = async (loginData: LoginApi) => {
     return data;
 };
 
-export const registerUser = async (registerData) => {
+export const registerUser = async (registerData: SignUpWithPasswordCredentials) => {
     const { data, error } = await supabase.auth.signUp(registerData);
 
     if (error) {
@@ -481,7 +491,7 @@ export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> 
 
 // ROOMS OCCUPANCIES
 
-export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
+export const uploadFakeRoomsOccupation = async (rooms: Tables<"rooms_occupancy">[]) => {
     await supabase.from("rooms_occupancy").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("rooms_occupancy").insert(rooms);
@@ -493,7 +503,10 @@ export const uploadFakeRoomsOccupation = async (rooms: RoomFormType[]) => {
     return data;
 };
 
-export const getRoomsOccupancies = async (dateFilter?: RoomsFilter, roomFilter?: RoomsFilter) => {
+export const getRoomsOccupancies = async (
+    dateFilter?: RoomsFilterType,
+    roomFilter?: RoomsFilterType,
+): Promise<RoomsOccupanciesResponseType[]> => {
     let query = supabase
         .from("rooms_occupancy")
         .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name)");
@@ -520,8 +533,7 @@ export const getRoomsOccupancies = async (dateFilter?: RoomsFilter, roomFilter?:
     return data;
 };
 
-export const createRoomOccupancy = async (roomOccupancy: RoomOccupationFormType) => {
-    // TODO: Add checking confclits with existing data
+export const createRoomOccupancy = async (roomOccupancy: Tables<"rooms_occupancy">) => {
     const { data, error } = await supabase.from("rooms_occupancy").insert(roomOccupancy).select().single();
 
     const contextMessage =
@@ -635,7 +647,7 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         const { label: prevDateDay } = prevDate;
         const { label: nextDateDay } = nextDate;
 
-        return compareAsc(prevDateDay, nextDateDay);
+        return compareAsc(new Date(prevDateDay), new Date(nextDateDay));
     });
 
     return {

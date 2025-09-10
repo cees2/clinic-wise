@@ -11,15 +11,15 @@ const numberFilterConditions: NumberFilterConditionType[] = ["e", "ne", "gt", "g
 interface Props extends NumericFormatProps {
     filterId: string;
     onHideDropdown: (filterData: FilterState<number | undefined, NumberFilterConditionType>) => void;
-    defaultValue?: FilterState<number | undefined, NumberFilterConditionType>;
+    filterDefaultValue?: FilterState<number | undefined, NumberFilterConditionType>;
 }
 
-const NumberFilter = ({ filterId, onHideDropdown, defaultValue, ...restProps }: Props) => {
+const NumberFilter = ({ filterId, onHideDropdown, filterDefaultValue, ...restProps }: Props) => {
     const [selectedFilterState, setSelectedFilterState] = useState<
         FilterState<number | undefined, NumberFilterConditionType>
     >({
-        filterValue: defaultValue?.filterValue,
-        filterCondition: defaultValue?.filterCondition ?? "e",
+        filterValue: filterDefaultValue?.filterValue,
+        filterCondition: filterDefaultValue?.filterCondition ?? "e",
     });
 
     return (

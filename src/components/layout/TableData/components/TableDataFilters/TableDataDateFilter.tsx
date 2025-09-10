@@ -8,7 +8,6 @@ import {
     type FilterState,
     FilterType,
     TableDataActionsEnum,
-    type TableDataResourceType,
 } from "../../../../../utils/projectTypes.ts";
 import { format } from "date-fns";
 import { DB_DATE_FORMAT } from "../../../../../utils/constants.ts";

@@ -9,7 +9,7 @@ const StyledTooltipOverlay = styled.div`
 const StyledTooltip = styled.div.attrs({ role: "tooltip" })<{ placement?: tooltipPlacement }>`
     position: absolute;
     padding: 1.2rem;
-    background-color: var(--color-gray-300);
+    background-color: var(--color-background-tertiary);
     border-radius: var(--radius-lg);
 
     ${({ placement }) => {

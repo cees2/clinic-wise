@@ -17,7 +17,7 @@ const AsyncSelectInput = <
     const {
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
-    const selectedValueFullObject = useRef<OptionsType | null>(null);
+    const selectedValueFullObject = useRef<OnChangeValue<OptionsType, isMulti> | null>(null);
     const { appMode } = useDarkMode();
 
     useEffect(() => {

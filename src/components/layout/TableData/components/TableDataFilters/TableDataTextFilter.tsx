@@ -35,7 +35,7 @@ export const TableDataTextFilter = ({ filterId }: Props) => {
         <TextFilter
             filterId={filterId}
             onHideDropdown={hideDropdownHandler}
-            defaultValue={getFilterDefaultValue(selectedFilters, filterId)}
+            filterDefaultValue={getFilterDefaultValue(selectedFilters, filterId)}
         />
     );
 };

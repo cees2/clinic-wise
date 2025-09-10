@@ -1,4 +1,4 @@
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import type { EmployeeFormType, EmployeeUpdateType } from "../../../utils/projectTypes";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { useNavigate } from "react-router-dom";
@@ -30,7 +30,7 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
         }
     };
 
-    const submitError = (errors: FieldErrors<EmployeeFormType>) => {
+    const submitError = () => {
         toast.error("Invalid data");
     };
 

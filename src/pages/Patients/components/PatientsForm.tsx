@@ -1,4 +1,4 @@
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import type { PatientFormType, PatientUpdateType } from "../../../utils/projectTypes";
 import { getPatientFormDefaultValues } from "../utils/utils";
 import type { Tables } from "../../../services/database.types";
@@ -29,7 +29,7 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
         }
     };
 
-    const submitError = (errors: FieldErrors<PatientFormType>) => {
+    const submitError = () => {
         toast.error("Invalid data");
     };
 

@@ -8,6 +8,7 @@ import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 import { useMutatePatient } from "../../services/hooks/patients/useMutatePatient";
+import type { Tables } from "../../services/database.types.ts";
 
 const Patients = () => {
     const { confirmation } = useConfirmation();

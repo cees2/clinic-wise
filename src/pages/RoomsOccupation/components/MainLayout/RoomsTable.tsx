@@ -1,7 +1,11 @@
 import { addMinutes, isWithinInterval, minutesToHours } from "date-fns";
 import Table from "../../../../components/common/Table/Table.tsx";
 import type { Tables } from "../../../../services/database.types.ts";
-import { TableVariant } from "../../../../utils/projectTypes.ts";
+import {
+    type RoomsOccupanciesResponseType,
+    type RoomsResponseType,
+    TableVariant,
+} from "../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../../utils/utils.ts";
 import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
@@ -9,8 +13,8 @@ import { Tooltip, TooltipOverlay } from "../../../../components/common/Tooltip/T
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-    roomOccupancies: Tables<"rooms_occupancy">[];
-    rooms: Tables<"rooms">[];
+    roomOccupancies?: RoomsOccupanciesResponseType[];
+    rooms?: RoomsResponseType[];
     roomOccupanciesLoading: boolean;
     roomsLoading: boolean;
 }
@@ -28,12 +32,12 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     const filteredRooms = getFilteredRooms(filters, rooms);
     const navigate = useNavigate();
 
-    const getRoomOccupancyMatchesCurrentData = (minute: number, room: Tables<"rooms">) => {
+    const getRoomOccupancyMatchesCurrentData = (minute: number, room: RoomsResponseType) => {
         if (!dateFilter?.value) return;
 
         const dateFilterWithMinutes = addMinutes(new Date(dateFilter.value), minute);
 
-        return roomOccupancies.find((roomOccupancy) => {
+        return roomOccupancies?.find((roomOccupancy) => {
             const {
                 start: startDateAsString,
                 end: endDateAsString,
@@ -51,10 +55,10 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
 
     return (
-        <Table numberOfColumns={filteredRooms.length + 1} variant={TableVariant.BARE}>
+        <Table numberOfColumns={(filteredRooms?.length ?? 0) + 1} variant={TableVariant.BARE}>
             <Table.TableRow>
                 <Table.TableHeaderCell columnIndex={0} />
-                {filteredRooms.map(({ name }, index) => (
+                {filteredRooms?.map(({ name }, index) => (
                     <Table.TableHeaderCell key={name} columnIndex={index + 1}>
                         {name}
                     </Table.TableHeaderCell>

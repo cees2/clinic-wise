@@ -1,4 +1,4 @@
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import type { RoomOccupationFormType } from "../../../utils/projectTypes";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
@@ -44,7 +44,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
         mutateRoomOccupancy.mutate(data);
     };
 
-    const submitError = (errors: FieldErrors<RoomOccupationFormType>) => {
+    const submitError = () => {
         toast.error("Invalid data");
     };
 

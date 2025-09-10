@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { uploadFakeAppointments } from "../../api";
+import type { Tables } from "../../database.types.ts";
 
 export const useFakeAppointments = () => {
     const queryClient = useQueryClient();

@@ -1,9 +1,10 @@
-import { Calendar, CalendarProps } from "react-date-range";
+import { Calendar, type CalendarProps } from "react-date-range";
 import TimePicker from "./TimePicker.tsx";
 import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
 import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
+import * as React from "react";
 
-interface Props extends CalendarProps, TimePickerProps {
+interface Props extends React.Component<CalendarProps>, TimePickerProps {
     withTimePicker?: boolean;
 }
 
@@ -12,7 +13,7 @@ export const DatePickerInputSimple = (props: Props) => {
 
     return (
         <StyledDatePickerInput>
-            <Calendar date={value} onChange={onChange} {...props} />
+            <Calendar date={value} {...props} />
             {props.withTimePicker && <TimePicker value={value} onChange={onChange} />}
         </StyledDatePickerInput>
     );

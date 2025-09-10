@@ -6,7 +6,6 @@ import RoomsFilters from "../../components/MainLayout/Filters/RoomsFilters.tsx";
 import RoomsTable from "../../components/MainLayout/RoomsTable.tsx";
 import { RoomsContextProvider, useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { EmptyPage } from "../../../../components/common/EmptyPage.tsx";
-import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
 import { useGetRooms } from "../../../../services/hooks/rooms/useGetRooms.ts";
 import { useGetRoomsOccupancies } from "../../../../services/hooks/roomsOccupancy/useGetRoomOccupancies.ts";
 import { useState } from "react";

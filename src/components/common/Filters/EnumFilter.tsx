@@ -1,5 +1,5 @@
 import { Dropdown } from "../Dropdown/Dropdown.tsx";
-import { type EnumFilterOption, type FilterState, type TextFilterCondition } from "../../../utils/projectTypes.ts";
+import { type EnumFilterOption, type FilterState } from "../../../utils/projectTypes.ts";
 import { CheckboxInputSimple } from "../Input/CheckboxInput/CheckboxInputSimple.tsx";
 import { useState } from "react";
 

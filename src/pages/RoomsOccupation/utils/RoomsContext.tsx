@@ -1,5 +1,5 @@
 import { createContext, use, useMemo, useState } from "react";
-import type { Children, RoomsContextType, RoomsFilter } from "../../../utils/projectTypes";
+import type { Children, RoomsContextType, RoomsFilterType } from "../../../utils/projectTypes";
 import { RoomsFilterIds } from "../../../utils/projectTypes";
 import { format, startOfToday } from "date-fns";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
@@ -10,7 +10,7 @@ const RoomsContext = createContext<RoomsContextType>({
 });
 
 export const RoomsContextProvider = ({ children }: Children) => {
-    const [filters, setFilters] = useState<RoomsFilter[]>([
+    const [filters, setFilters] = useState<RoomsFilterType[]>([
         { id: RoomsFilterIds.DATE, value: format(startOfToday(), DB_DATE_FORMAT_WITH_TIME) },
     ]);
     const memoizedContextValue = useMemo(() => ({ filters, setFilters }), [filters, setFilters]);

@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, FormHTMLAttributes, RefObject, SetStateAction } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
-import type { Control, FieldPath, FormState, Path, RegisterOptions } from "react-hook-form";
+import type { Control, FieldPath, FormState, RegisterOptions } from "react-hook-form";
 import type { Props as SelectProps } from "react-select";
 import type { KnownTarget } from "styled-components/dist/types";
 import type { User } from "@supabase/supabase-js";
@@ -124,7 +124,7 @@ export interface TableDataState<T extends TableDataResourceType> {
     selectedPaginationSize: number;
 }
 
-export interface TableDataContextType<T> {
+export interface TableDataContextType<T extends TableDataResourceType> {
     config: TableDataConfig<T>;
     tableDataState: TableDataState<T>;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
@@ -184,7 +184,7 @@ export interface DropdownContextType {
     isOpening: boolean;
     setIsOpening: React.Dispatch<React.SetStateAction<boolean>>;
     dropdownToggleRef: RefObject<HTMLButtonElement | null>;
-    setDropdownToggleRef: (dropdownToggleRef: RefObject<HTMLButtonElement> | null) => void;
+    setDropdownToggleRef: (dropdownToggleRef: RefObject<HTMLButtonElement | null>) => void;
     placement: DropdownPlacementType;
     autoClose: boolean;
 }
@@ -232,7 +232,9 @@ interface EmployeeFormAdditionalData {
     role?: UserRole;
 }
 
-export type AppointmentFormType = Partial<Omit<Tables<"appointments">, "created_at" | "id" | "status">>;
+// TODO: Change types
+export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "id" | "status">;
+export type AppointmentFormPartialType = Partial<AppointmentFormType>;
 export type AppointmentUpdateType = Partial<Omit<Tables<"appointments">, "created_at">>;
 export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "id">>;
 export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
@@ -310,10 +312,7 @@ export interface FormSelectInputProps<
     control: Control<FormType>;
     registerName: FieldPath<FormType>;
     label: string;
-    rules?: Omit<
-        RegisterOptions<OptionsType, Path<OptionsType>>,
-        "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
-    >;
+    rules?: Omit<RegisterOptions<FormType>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 }
 
 export interface FormSelectInputSimpleProps<
@@ -372,7 +371,7 @@ export interface AuthContextType {
     isAuthenticated: boolean;
     setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
     user?: User | null;
-    setUser: React.Dispatch<React.SetStateAction<User | undefined | null>>;
+    setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
 
 export enum UserRole {
@@ -448,7 +447,6 @@ export interface TooltipProps extends Children {
 
 export interface TimePickerProps {
     value: Date | string;
-    onChange: (updatedValue: string | Date) => void;
     customHours?: number[];
     customMinutes?: number[];
 }
@@ -477,3 +475,22 @@ export interface EmptyPageAction {
     action?: () => void;
     path?: string;
 }
+
+export interface RoomsOccupanciesResponseType {
+    id: number;
+    start: string;
+    end: string;
+    employees: {
+        id: number;
+        name: string;
+        surname: string;
+    };
+    rooms: {
+        name: string;
+    };
+}
+
+export type RoomsResponseType = {
+    id: number;
+    name: string;
+};

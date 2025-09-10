@@ -60,7 +60,7 @@ export enum DashboardStatisticsType {
 
 export const dashboardStatisticsOptions = Object.values(DashboardStatisticsType);
 
-export type DashboardNextAppointment = Pick<Tables<"appointments">, "start_date" | "duration" | "status">[];
+export type DashboardNextAppointment = Pick<Tables<"appointments">, "start_date" | "duration" | "status" | "id">;
 
 export interface DashboardRemoteData {
     numberOfAppointments: number | null;

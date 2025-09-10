@@ -2,25 +2,17 @@ import { add, differenceInDays, endOfToday, format, isToday, isTomorrow, startOf
 import {
     RoomDateFilters,
     RoomsFilterIds,
-    type RoomsFilter,
     type RoomOccupationFormType,
+    type RoomsFilterType,
+    type RoomsResponseType,
 } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
 import type { Tables } from "../../../services/database.types";
 
-export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilters, customDate?: Date) => {
+export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilters) => {
     let date: Date | null = null;
 
     switch (timeFilter) {
-        case RoomDateFilters.CUSTOM: {
-            if (!customDate) {
-                date = startOfToday();
-            } else {
-                date = startOfDay(customDate);
-            }
-
-            break;
-        }
         case RoomDateFilters.TOMORROW: {
             date = startOfDay(add(new Date(), { days: 1 }));
             break;
@@ -35,7 +27,7 @@ export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilter
     return format(date, DB_DATE_FORMAT_WITH_TIME);
 };
 
-export const updateRoomsFilters = (filters: RoomsFilter[], newFilter: RoomsFilter) => {
+export const updateRoomsFilters = (filters: RoomsFilterType[], newFilter: RoomsFilterType) => {
     const newFilters = [...filters];
     const indexOfFilterWithGivenId = filters.findIndex((filter) => filter.id === newFilter.id);
 
@@ -59,14 +51,14 @@ export const getDaysOffsetFromADate = (dateFilter: string) => {
     return differenceInDays(new Date(dateFilter), startOfToday());
 };
 
-export const getDateFilterFromRoomsFilters = (filters: RoomsFilter[]) => {
+export const getDateFilterFromRoomsFilters = (filters: RoomsFilterType[]) => {
     return filters.find((filter) => filter.id === RoomsFilterIds.DATE);
 };
-export const getRoomFilterFromRoomsFilters = (filters: RoomsFilter[]) => {
+export const getRoomFilterFromRoomsFilters = (filters: RoomsFilterType[]) => {
     return filters.find((filter) => filter.id === RoomsFilterIds.ROOM);
 };
 
-export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilter[], timeFilter: RoomDateFilters) => {
+export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilterType[], timeFilter: RoomDateFilters) => {
     const dateFilter = filters.find((filter) => filter.id === RoomsFilterIds.DATE);
 
     if (!dateFilter) return false;
@@ -81,24 +73,23 @@ export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilter[], timeFi
         case RoomDateFilters.TODAY: {
             return isToday(filterValueAsDate);
         }
-        case RoomDateFilters.CUSTOM:
         default: {
             return false;
         }
     }
 };
 
-export const getFilteredRooms = (filters: RoomsFilter[], rooms: Omit<Tables<"rooms">, "created_at">[]) => {
+export const getFilteredRooms = (filters: RoomsFilterType[], rooms?: RoomsResponseType[]): RoomsResponseType[] => {
     const roomsFilter = getRoomFilterFromRoomsFilters(filters);
 
-    if (!roomsFilter) return rooms;
+    if (!roomsFilter) return rooms ?? [];
 
     const roomsIds = roomsFilter.value.split(",");
 
-    return rooms.filter((room) => roomsIds.includes(room.id.toString()));
+    return rooms?.filter((room) => roomsIds.includes(room.id.toString())) ?? [];
 };
 
-export const updateRoomFilterValue = (id: string, roomsFilter?: RoomsFilter) => {
+export const updateRoomFilterValue = (id: string, roomsFilter?: RoomsFilterType) => {
     if (!roomsFilter) return id;
 
     const { value } = roomsFilter;

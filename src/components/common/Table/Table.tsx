@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 import {
     TableVariant,
-    type Children,
     type TableHeaderCellProps,
     type TableProps,
     type TableRowCellProps,

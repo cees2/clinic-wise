@@ -17,7 +17,7 @@ export const FormSubmit = <FormType extends Record<string, any>>({
     customButtons,
     ...restProps
 }: FormSubmitProps<FormType>) => {
-    const { isDirty, isLoading, isSubmitting } = formState;
+    const { isDirty } = formState;
     const navigate = useNavigate();
 
     const cancelButtonClickHandler = async () => {

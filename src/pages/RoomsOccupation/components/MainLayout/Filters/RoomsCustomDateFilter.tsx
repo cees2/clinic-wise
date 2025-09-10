@@ -16,7 +16,7 @@ export const RoomsCustomDateFilter = () => {
         const dateFilter = filters.find((filter) => filter.id === RoomsFilterIds.DATE);
 
         if (dateFilter && selectedDate && !menuOpened.current) {
-            const areDatesEqual = compareAsc(new Date(dateFilter.value), selectedDate) === 0;
+            const areDatesEqual = compareAsc(new Date(dateFilter.value), new Date(selectedDate)) === 0;
 
             if (!areDatesEqual) {
                 setSelectedDate("");
@@ -25,7 +25,10 @@ export const RoomsCustomDateFilter = () => {
     }, [filters, selectedDate]);
 
     const hideDropdownHandler = () => {
-        const newDateFilter = { id: RoomsFilterIds.DATE, value: format(selectedDate, DB_DATE_FORMAT_WITH_TIME) };
+        const newDateFilter = {
+            id: RoomsFilterIds.DATE,
+            value: format(new Date(selectedDate), DB_DATE_FORMAT_WITH_TIME),
+        };
 
         setFilters((prevFilters) => {
             return updateRoomsFilters(prevFilters, newDateFilter);
@@ -41,7 +44,7 @@ export const RoomsCustomDateFilter = () => {
     return (
         <Dropdown>
             <Dropdown.Toggle>
-                <Dropdown.Toggle.Label>{`Custom date${`${selectedDate ? `: ${format(selectedDate, DISPLAY_DATE_FORMAT)}` : ""}`}`}</Dropdown.Toggle.Label>
+                <Dropdown.Toggle.Label>{`Custom date${`${selectedDate ? `: ${format(new Date(selectedDate), DISPLAY_DATE_FORMAT)}` : ""}`}`}</Dropdown.Toggle.Label>
             </Dropdown.Toggle>
             <Dropdown.Menu onHideDropdown={hideDropdownHandler}>
                 <DatePickerInputSimple value={selectedDate} onChange={onCalendarDateChange} minDate={startOfToday()} />

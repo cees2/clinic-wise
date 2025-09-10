@@ -3,7 +3,6 @@ import {
     useFormState,
     type Control,
     type FieldPath,
-    type FieldValues,
     type RegisterOptions,
     type UseFormRegister,
     type UseFormSetValue,
@@ -14,11 +13,11 @@ import { getInputFieldErrorName } from "../utils/inputs";
 import { CiCircleRemove } from "react-icons/ci";
 import { useRef, type ChangeEvent } from "react";
 
-interface Props<FormType extends Record<string, any>> extends InputHTMLAttributes<HTMLInputElement> {
+interface Props<FormType extends Record<string, any>> extends React.ComponentProps<"input"> {
     register: UseFormRegister<FormType>;
     registerName: FieldPath<FormType>;
     label: string;
-    rules?: RegisterOptions<FieldValues, string>;
+    rules?: Omit<RegisterOptions<FormType>, "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs">;
     control: Control<FormType, any, FormType>;
     withClearButton?: true;
     setValue?: UseFormSetValue<FormType>;

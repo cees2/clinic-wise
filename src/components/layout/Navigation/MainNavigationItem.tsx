@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { AppColorMode, type MainNavigationConfigItem } from "../../../utils/projectTypes";
 import { NavLink } from "react-router-dom";
 import { useDarkMode } from "../../../utils/hooks/useDarkMode.ts";
