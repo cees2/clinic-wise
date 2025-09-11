@@ -15,6 +15,7 @@ interface Props extends NumericFormatProps {
 }
 
 const NumberFilter = ({ filterId, onHideDropdown, filterDefaultValue, ...restProps }: Props) => {
+    console.log("filter", filterDefaultValue);
     const [selectedFilterState, setSelectedFilterState] = useState<
         FilterState<number | undefined, NumberFilterConditionType>
     >({

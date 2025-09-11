@@ -1,25 +1,35 @@
-import React, { createContext, use, useMemo } from "react";
-import type { TableDataResourceType, TableDataContextType, TableDataState } from "../../../../utils/projectTypes";
+import { type ActionDispatch, createContext, type ReactNode, use, useMemo } from "react";
+import type {
+    TableDataResourceType,
+    TableDataContextType,
+    TableDataState,
+    TableDataActionsType,
+} from "../../../../utils/projectTypes";
 
-const TableDataContext = createContext<TableDataContextType<T>>({
-    config: {},
-    tableDataState: {},
+const TableDataContext = createContext<TableDataContextType<Record<string, any> & { id: number }>>({
+    config: { columns: [], resourceName: "appointments" },
+    tableDataState: {
+        selectedSort: { id: "1", isAscending: true },
+        selectedFilters: [],
+        selectedPage: 1,
+        selectedPaginationSize: 10,
+    },
     dispatch: () => {},
     resources: [],
 });
 
-const TableDataContextProvider = <T extends TableDataResourceType>({
+const TableDataContextProvider = <TableDataResource extends TableDataResourceType>({
     children,
     config,
     resources,
     tableDataState,
     dispatch,
     itemsCount,
-}: Pick<TableDataContextType<T>, "config"> & {
-    children: React.ReactNode;
-    resources: T[];
-    tableDataState: TableDataState;
-    dispatch: React.ActionDispatch<React.AnyActionArg>;
+}: Pick<TableDataContextType<TableDataResource>, "config"> & {
+    children: ReactNode;
+    resources: TableDataResource[];
+    tableDataState: TableDataState<TableDataResource>;
+    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResource>]>;
     itemsCount?: number | null;
 }) => {
     const memoizedContextValue = useMemo(

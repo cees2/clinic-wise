@@ -37,8 +37,8 @@ const Arrow = styled.div<{ disabled?: boolean }>`
 const DayController = () => {
     const { setFilters, filters } = useRoomsContext();
     const dateFilter = getDateFilterFromRoomsFilters(filters);
-    const { value: dateFilterValue } = dateFilter;
-    const dateFilterDateObject = new Date(dateFilterValue);
+    const { value: dateFilterValue } = dateFilter ?? {};
+    const dateFilterDateObject = new Date(dateFilterValue ?? Date.now());
     const daysDifference = getDaysOffsetFromADate(dateFilterValue);
     const formattedDate = format(dateFilterDateObject, "dd MMMM, yyyy");
     const dayOfWeek = format(dateFilterDateObject, "EEEE");

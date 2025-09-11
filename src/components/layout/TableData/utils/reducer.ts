@@ -5,10 +5,10 @@ import {
     type TableDataState,
 } from "../../../../utils/projectTypes";
 
-const tableDataContextReducer = <T extends TableDataResourceType>(
-    prevState: TableDataState<T>,
-    action: TableDataActionsType<T>,
-): TableDataState<T> => {
+const tableDataContextReducer = <TableDataResource extends TableDataResourceType>(
+    prevState: TableDataState<TableDataResource>,
+    action: TableDataActionsType<TableDataResource>,
+): TableDataState<TableDataResource> => {
     switch (action.type) {
         case TableDataActionsEnum.ADD_FILTER:
             return { ...prevState, selectedFilters: [...prevState.selectedFilters, action.payload] };

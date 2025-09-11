@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { Dropdown } from "../Dropdown/Dropdown.tsx";
-import { Calendar, type CalendarProps } from "react-date-range";
+import { Calendar } from "react-date-range";
 import { type DateFilterCondition, type FilterState } from "../../../utils/projectTypes.ts";
 import { dateFilterTypesArray, getDateFilterOptionName } from "../../layout/TableData/utils/filters/filtersUtils.ts";
-import * as React from "react";
 
-interface Props extends React.Component<CalendarProps> {
+interface Props {
     defaultDate?: Date;
     defaultCondition?: DateFilterCondition;
     onHideDropdown: (selectedFilterState: FilterState<Date | undefined, DateFilterCondition>) => void;

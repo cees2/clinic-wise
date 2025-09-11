@@ -1,5 +1,5 @@
 import Select, { type OnChangeValue } from "react-select";
-import { AppColorMode, type FormSelectInputSimpleProps } from "../../../../utils/projectTypes";
+import { type FormSelectInputSimpleProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
 import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
 import { useDarkMode } from "../../../../utils/hooks/useDarkMode.ts";
@@ -34,7 +34,7 @@ const SimpleSelectInput = <
             onChange={onChangeInternal}
             onBlur={onBlur}
             options={options}
-            styles={selectInputsStyles(appMode === AppColorMode.DARK)}
+            styles={selectInputsStyles()}
         />
     );
 };

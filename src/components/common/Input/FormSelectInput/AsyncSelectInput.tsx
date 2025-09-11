@@ -1,10 +1,9 @@
 import { useEffect, useRef } from "react";
-import { AppColorMode, type FormSelectInputAsyncProps } from "../../../../utils/projectTypes";
+import { type FormSelectInputAsyncProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
-import type { OnChangeValue } from "react-select";
+import type { OnChangeValue, SingleValue } from "react-select";
 import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
 import AsyncSelect from "react-select/async";
-import { useDarkMode } from "../../../../utils/hooks/useDarkMode.ts";
 
 const AsyncSelectInput = <
     OptionsType extends Record<string, any>,
@@ -18,7 +17,6 @@ const AsyncSelectInput = <
         field: { onChange, value, onBlur },
     } = useController({ name: registerName, control, rules });
     const selectedValueFullObject = useRef<OnChangeValue<OptionsType, isMulti> | null>(null);
-    const { appMode } = useDarkMode();
 
     useEffect(() => {
         if (!value) {
@@ -28,9 +26,14 @@ const AsyncSelectInput = <
 
     const onChangeInternal = (newValue: OnChangeValue<OptionsType, isMulti>) => {
         selectedValueFullObject.current = newValue;
-        const newUpdatedValue = getFormSelectValue(newValue, getOptionValue);
 
-        onChange(newUpdatedValue);
+        if (Array.isArray(newValue)) {
+            const newValues = newValue.map((value) => getFormSelectValue(value, getOptionValue));
+            onChange(newValues);
+        } else {
+            const newUpdatedValue = getFormSelectValue<OptionsType, false>(newValue, getOptionValue);
+            onChange(newUpdatedValue);
+        }
     };
 
     const getAsyncSelectValue = () => {
@@ -56,7 +59,7 @@ const AsyncSelectInput = <
             defaultOptions
             name={registerName}
             isClearable
-            styles={selectInputsStyles(appMode === AppColorMode.DARK)}
+            styles={selectInputsStyles()}
         />
     );
 };

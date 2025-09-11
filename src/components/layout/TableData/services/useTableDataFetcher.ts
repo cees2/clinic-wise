@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, type UseQueryResult } from "@tanstack/react-query";
 import {
     FilterType,
     type TableDataColumn,
@@ -8,10 +8,10 @@ import {
 } from "../../../../utils/projectTypes";
 import { supabase } from "../../../../services/services";
 
-export const useTableDataFetcher = <T extends TableDataResourceType>(
-    config: TableDataConfig<T>,
-    tableDataState: TableDataState<T>,
-) => {
+export const useTableDataFetcher = <TableDataResource extends TableDataResourceType>(
+    config: TableDataConfig<TableDataResource>,
+    tableDataState: TableDataState<TableDataResource>,
+): UseQueryResult<{ data: TableDataResource[] }> => {
     const { resourceName } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
 
@@ -24,7 +24,9 @@ export const useTableDataFetcher = <T extends TableDataResourceType>(
     return { ...resourceRequestSetup, data, count };
 };
 
-const getSelectString = (columns: TableDataColumn<T>[]): string => {
+const getSelectString = <TableDataResource extends TableDataResourceType>(
+    columns: TableDataColumn<TableDataResource>[],
+): string => {
     let select = "id";
 
     columns.forEach((column) => {
@@ -43,9 +45,9 @@ const getSelectString = (columns: TableDataColumn<T>[]): string => {
     return select;
 };
 
-export const getResource = async <T extends TableDataResourceType>(
-    config: TableDataConfig<T>,
-    tableDataState: TableDataState<T>,
+export const getResource = async <TableDataResource extends TableDataResourceType>(
+    config: TableDataConfig<TableDataResource>,
+    tableDataState: TableDataState<TableDataResource>,
 ) => {
     const { resourceName, columns } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;

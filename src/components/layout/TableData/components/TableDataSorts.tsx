@@ -3,7 +3,11 @@ import { LiaLongArrowAltDownSolid, LiaLongArrowAltUpSolid } from "react-icons/li
 import { SortTableEnum, TableDataActionsEnum, type TableDataColumn } from "../../../../utils/projectTypes";
 import { LuArrowDownUp } from "react-icons/lu";
 
-const TableDataSorts = <T extends Record<string, any>>({ column }: { column: TableDataColumn<T> }) => {
+const TableDataSorts = <TableDataResource extends Record<string, any>>({
+    column,
+}: {
+    column: TableDataColumn<TableDataResource>;
+}) => {
     const {
         tableDataState: { selectedSort },
         dispatch,

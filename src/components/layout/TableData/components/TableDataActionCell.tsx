@@ -5,11 +5,13 @@ import { useTableDataContext } from "../utils/TableDataContext";
 import type { TableDataResourceType } from "../../../../utils/projectTypes";
 import { useNavigate } from "react-router-dom";
 
-interface Props<T extends TableDataResourceType> {
-    resource: T;
+interface Props<TableDataResource extends TableDataResourceType> {
+    resource: TableDataResource;
 }
 
-const TableDataActionCell = <T extends TableDataResourceType>({ resource }: Props<T>) => {
+const TableDataActionCell = <TableDataResource extends TableDataResourceType>({
+    resource,
+}: Props<TableDataResource>) => {
     const {
         config: { actions },
     } = useTableDataContext();

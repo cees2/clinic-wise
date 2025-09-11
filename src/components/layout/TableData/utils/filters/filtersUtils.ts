@@ -1,15 +1,14 @@
 import {
     type FilterCondition,
-    type TableDataResourceType,
     type TableDataFilterState,
     type DateFilterCondition,
     type TextFilterCondition,
 } from "../../../../../utils/projectTypes";
 
-const getAlreadySelectedFilter = <T extends TableDataResourceType>(
-    filterId: keyof T,
-    selectedFilters: TableDataFilterState<T>[],
-): TableDataFilterState<T> | null => {
+const getAlreadySelectedFilter = (
+    filterId: string,
+    selectedFilters: TableDataFilterState[],
+): TableDataFilterState | null => {
     const selectedFilter = selectedFilters.find((selectedFilter) => selectedFilter.id === filterId);
     const filterAlreadySelected = selectedFilter === undefined;
 
@@ -20,9 +19,9 @@ const getAlreadySelectedFilter = <T extends TableDataResourceType>(
     return selectedFilter;
 };
 
-export const getEnumFilterDefaultValue = <T extends TableDataResourceType>(
-    filterId: keyof T,
-    selectedFilters: TableDataFilterState<T>[],
+export const getEnumFilterDefaultValue = (
+    filterId: string,
+    selectedFilters: TableDataFilterState[],
     options: Record<string, string>,
 ) => {
     const optionsKeys = Object.keys(options);
@@ -62,45 +61,42 @@ export const getDateFilterOptionName = (dateFilterType: DateFilterCondition) => 
     }
 };
 
-const getDateFilter = <T extends TableDataResourceType>(selectedFilters: TableDataFilterState<T>[], filterId: number) =>
+const getDateFilter = (selectedFilters: TableDataFilterState[], filterId: string) =>
     selectedFilters.find((filter) => filter.id === filterId);
 
-export const getDateFilterDefaultValue = <T extends TableDataResourceType>(
-    selectedFilters: TableDataFilterState<T>[],
-    filterId: number,
-): Date | undefined => {
+export const getDateFilterDefaultValue = (selectedFilters: TableDataFilterState[], filterId: string) => {
     const selectedFilter = getDateFilter(selectedFilters, filterId);
 
     if (!selectedFilter) return selectedFilter;
 
-    return selectedFilter.filterValue;
+    return new Date(selectedFilter.filterValue);
 };
 
-export const getDateFilterDefaultType = <T extends TableDataResourceType>(
-    selectedFilters: TableDataFilterState<T>[],
-    filterId: number,
+export const getDateFilterDefaultType = (
+    selectedFilters: TableDataFilterState[],
+    filterId: string,
 ): DateFilterCondition => {
     const selectedFilter = getDateFilter(selectedFilters, filterId);
 
-    if (!selectedFilter) return "gte";
+    const { filterCondition } = selectedFilter ?? {};
 
-    return selectedFilter.filterCondition;
+    return filterCondition === "gte" || filterCondition === "lte" ? filterCondition : "gte";
 };
 
-export const getEnumFilterInitialState = <T extends TableDataResourceType>(
-    filters: TableDataFilterState<T>[],
-    filterId: string,
-) => {
+export const getEnumFilterInitialState = (filters: TableDataFilterState[], filterId: string) => {
     const selectedFilter = filters.find((filter) => filter.id === filterId);
 
     return selectedFilter ? selectedFilter.filterValue.split(",") : [];
 };
 
-export const getFilterDefaultValue = <T extends TableDataResourceType>(
-    filters: TableDataFilterState<T>[],
-    filterId: string,
-) => {
-    return filters.find((filter) => filter.id === filterId);
+export const getFilterDefaultValue = (filters: TableDataFilterState[], filterId: string) => {
+    const selectedFilter = filters.find((filter) => filter.id === filterId);
+
+    if (!selectedFilter) return selectedFilter;
+
+    const { filterValue, filterCondition } = selectedFilter;
+
+    return { filterValue, filterCondition };
 };
 
 export const getNumberFilterConditionLabel = (filterCondition: Exclude<FilterCondition, "c">) => {

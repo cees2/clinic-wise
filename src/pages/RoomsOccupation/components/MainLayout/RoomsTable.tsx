@@ -1,6 +1,5 @@
 import { addMinutes, isWithinInterval, minutesToHours } from "date-fns";
 import Table from "../../../../components/common/Table/Table.tsx";
-import type { Tables } from "../../../../services/database.types.ts";
 import {
     type RoomsOccupanciesResponseType,
     type RoomsResponseType,

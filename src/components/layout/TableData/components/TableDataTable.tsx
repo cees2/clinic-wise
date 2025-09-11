@@ -38,9 +38,9 @@ const TableDataHeaderRow = () => {
 
     return (
         <Table.TableRow>
-            {columns.map((column, columnIndex) => {
+            {columns.map((column) => {
                 return (
-                    <StyledTableDataHeaderCell key={column.name} columnIndex={columnIndex}>
+                    <StyledTableDataHeaderCell key={column.name}>
                         {column.name}
                         <TableData.Sorts column={column} />
                     </StyledTableDataHeaderCell>

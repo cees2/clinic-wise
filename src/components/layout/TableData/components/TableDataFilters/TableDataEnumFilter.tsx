@@ -10,7 +10,7 @@ import { getEnumFilterInitialState } from "../../utils/filters/filtersUtils.ts";
 
 interface Props {
     filterId: string;
-    options: EnumFilterOption[];
+    options?: EnumFilterOption[];
 }
 
 export const TableDataEnumFilter = ({ options, filterId }: Props) => {
@@ -36,6 +36,8 @@ export const TableDataEnumFilter = ({ options, filterId }: Props) => {
 
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };
+
+    if (!options) return null;
 
     return (
         <EnumFilter

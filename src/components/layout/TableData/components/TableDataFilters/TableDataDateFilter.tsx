@@ -1,5 +1,3 @@
-import * as React from "react";
-import { CalendarProps } from "react-date-range";
 import DateFilter from "../../../../common/Filters/DateFilter.tsx";
 import { useTableDataContext } from "../../utils/TableDataContext.tsx";
 import { getDateFilterDefaultType, getDateFilterDefaultValue } from "../../utils/filters/filtersUtils.ts";
@@ -12,11 +10,11 @@ import {
 import { format } from "date-fns";
 import { DB_DATE_FORMAT } from "../../../../../utils/constants.ts";
 
-interface Props extends React.Component<CalendarProps> {
+interface Props {
     filterId: string;
 }
 
-const TableDataDateFilter = ({ filterId, ...restProps }: Props) => {
+const TableDataDateFilter = ({ filterId }: Props) => {
     const {
         dispatch,
         tableDataState: { selectedFilters },
@@ -36,9 +34,8 @@ const TableDataDateFilter = ({ filterId, ...restProps }: Props) => {
     return (
         <DateFilter
             defaultDate={getDateFilterDefaultValue(selectedFilters, filterId)}
-            defaultFilterCondition={getDateFilterDefaultType(selectedFilters, filterId)}
+            defaultCondition={getDateFilterDefaultType(selectedFilters, filterId)}
             onHideDropdown={onHideDropdown}
-            {...restProps}
         />
     );
 };

@@ -1,5 +1,10 @@
-import { useReducer } from "react";
-import type { TableDataConfig, TableDataResourceType, TableDataState } from "../../../utils/projectTypes";
+import { type ActionDispatch, type ReactNode, useReducer } from "react";
+import type {
+    TableDataActionsType,
+    TableDataConfig,
+    TableDataResourceType,
+    TableDataState,
+} from "../../../utils/projectTypes";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import TableDataFilters from "./components/TableDataFilters.tsx";
 import TableDataPagination from "./components/TableDataPagination";
@@ -10,7 +15,11 @@ import tableDataContextReducer from "./utils/reducer";
 import { tableDataConfigInitialValue } from "./utils/constants";
 import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
-const TableDataRenderer = <T extends TableDataResourceType>({ config }: { config: TableDataConfig<T> }) => {
+const TableDataRenderer = <TableDataResource extends TableDataResourceType>({
+    config,
+}: {
+    config: TableDataConfig<TableDataResource>;
+}) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
     const { isLoading, data: resources, count } = useTableDataFetcher(config, tableDataState);
 
@@ -31,7 +40,7 @@ const TableDataRenderer = <T extends TableDataResourceType>({ config }: { config
     );
 };
 
-export const TableData = <T extends TableDataResourceType>({
+export const TableData = <TableDataResource extends TableDataResourceType>({
     children,
     config,
     resources,
@@ -39,11 +48,11 @@ export const TableData = <T extends TableDataResourceType>({
     dispatch,
     itemsCount,
 }: {
-    children: React.ReactNode;
-    config: TableDataConfig<T>;
-    resources: T[];
-    tableDataState: TableDataState<T>;
-    dispatch: React.ActionDispatch<React.AnyActionArg>;
+    children: ReactNode;
+    config: TableDataConfig<TableDataResource>;
+    resources?: TableDataResource[];
+    tableDataState: TableDataState<TableDataResource>;
+    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResource>]>;
     itemsCount?: number | null;
 }) => {
     return (

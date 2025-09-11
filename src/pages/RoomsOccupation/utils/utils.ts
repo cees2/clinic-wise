@@ -47,8 +47,8 @@ export const getDayOffsetStringDate = (dayOffset: number) => {
     return format(startOfOffsetDay, DB_DATE_FORMAT_WITH_TIME);
 };
 
-export const getDaysOffsetFromADate = (dateFilter: string) => {
-    return differenceInDays(new Date(dateFilter), startOfToday());
+export const getDaysOffsetFromADate = (dateFilter?: string) => {
+    return differenceInDays(new Date(dateFilter ?? Date.now()), startOfToday());
 };
 
 export const getDateFilterFromRoomsFilters = (filters: RoomsFilterType[]) => {

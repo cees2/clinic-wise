@@ -51,10 +51,10 @@ export interface TableRowCellProps extends React.ComponentProps<"td"> {
     className?: string;
 }
 
-export interface TableDataColumn<T extends Record<string, any>> {
-    id: keyof T;
+export interface TableDataColumn<TableDataResource extends Record<string, any>> {
+    id: Extract<keyof TableDataResource, string>;
     name: string;
-    render?: (dataItem: T) => React.ReactNode | number | string;
+    render?: (dataItem: TableDataResource) => React.ReactNode | number | string;
     foreignTableColumnsName?: string[];
     customInclude?: string;
     disableSorting?: true;
@@ -74,8 +74,8 @@ export interface EnumFilterOption {
     name: string;
 }
 
-export interface TableDataFilterConfig<T extends TableDataResourceType> {
-    id: keyof T;
+export interface TableDataFilterConfig {
+    id: string;
     name: string;
     type: FilterType;
     conditions?: FilterCondition[];
@@ -84,20 +84,20 @@ export interface TableDataFilterConfig<T extends TableDataResourceType> {
     options?: EnumFilterOption[];
 }
 
-export interface TableDataAction<T extends TableDataResourceType> {
+export interface TableDataAction<TableDataResource extends TableDataResourceType> {
     id: string;
     name: string;
-    path?: (item: T) => string;
-    action?: (item: T) => void | Promise<void>;
-    visible?: (item: T) => boolean;
+    path?: (item: TableDataResource) => string;
+    action?: (item: TableDataResource) => void | Promise<void>;
+    visible?: (item: TableDataResource) => boolean;
 }
 
-export interface TableDataConfig<T extends TableDataResourceType> {
-    columns: TableDataColumn<T>[];
+export interface TableDataConfig<TableDataResource extends TableDataResourceType> {
+    columns: TableDataColumn<TableDataResource>[];
     gridTemplateColumns?: string;
     resourceName: keyof Database["public"]["Tables"];
-    filters?: TableDataFilterConfig<T>[];
-    actions?: TableDataAction<T>[];
+    filters?: TableDataFilterConfig[];
+    actions?: TableDataAction<TableDataResource>[];
 }
 
 export type TableDataResourceType = Record<string, any> & { id: number };
@@ -105,30 +105,30 @@ export type TableDataResourceType = Record<string, any> & { id: number };
 // TODO: TableDataConfig with generic type which will allow fields like a TableDataColumn.id have proper type?
 // TODO: Create differenet files for types??
 
-export interface TableDataFilterState<T> {
-    id: keyof T;
+export interface TableDataFilterState {
+    id: string;
     filterValue: string;
     filterCondition: FilterCondition;
     filterType: FilterType;
 }
 
-export interface TableDataSortState<T> {
-    id: keyof T;
+export interface TableDataSortState<TableDataResource> {
+    id: Extract<keyof TableDataResource, string>;
     isAscending: boolean;
 }
 
-export interface TableDataState<T extends TableDataResourceType> {
-    selectedSort: TableDataSortState<T> | null;
-    selectedFilters: TableDataFilterState<T>[];
+export interface TableDataState<TableDataResource extends TableDataResourceType> {
+    selectedSort: TableDataSortState<TableDataResource> | null;
+    selectedFilters: TableDataFilterState[];
     selectedPage: number;
     selectedPaginationSize: number;
 }
 
-export interface TableDataContextType<T extends TableDataResourceType> {
-    config: TableDataConfig<T>;
-    tableDataState: TableDataState<T>;
+export interface TableDataContextType<TableDataResource extends TableDataResourceType> {
+    config: TableDataConfig<TableDataResource>;
+    tableDataState: TableDataState<TableDataResource>;
     dispatch: React.ActionDispatch<React.AnyActionArg>;
-    resources: T[];
+    resources: TableDataResource[];
     itemsCount?: number | null;
 }
 
@@ -143,17 +143,17 @@ export enum TableDataActionsEnum {
     SET_PREVIOUS_PAGE,
 }
 
-export type TableDataActionsType<T extends TableDataResourceType> =
+export type TableDataActionsType<TableDataResource extends TableDataResourceType> =
     | {
           type: TableDataActionsEnum.SET_SORT;
           payload: {
-              id: keyof T;
+              id: keyof TableDataResource;
               isAscending: boolean;
           } | null;
       }
     | {
           type: TableDataActionsEnum.ADD_FILTER;
-          payload: TableDataFilterState<T>;
+          payload: TableDataFilterState;
       }
     | {
           type: TableDataActionsEnum.REMOVE_FILTER;
@@ -161,7 +161,7 @@ export type TableDataActionsType<T extends TableDataResourceType> =
       }
     | {
           type: TableDataActionsEnum.REPLACE_FILTER;
-          payload: TableDataFilterState<T>;
+          payload: TableDataFilterState;
       }
     | {
           type: TableDataActionsEnum.SET_PAGINATION_SIZE;
@@ -452,7 +452,7 @@ export interface TimePickerProps {
 }
 
 export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
-export type DateFilterCondition = "gte" | "lte";
+export type DateFilterCondition = Extract<FilterCondition, "gte" | "lte">;
 
 export interface FilterState<FilterType, FilterCondition> {
     filterValue: FilterType;
