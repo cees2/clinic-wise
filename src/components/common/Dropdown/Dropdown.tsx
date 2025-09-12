@@ -252,7 +252,7 @@ const DropdownItem = ({
 };
 
 Dropdown.Toggle = DropdownToggle;
-Dropdown.Toggle.Label = DropdownToggleLabel;
+Dropdown.ToggleLabel = DropdownToggleLabel;
 Dropdown.Menu = DropdownMenu;
 Dropdown.Item = DropdownItem;
 Dropdown.Items = DropdownItems;

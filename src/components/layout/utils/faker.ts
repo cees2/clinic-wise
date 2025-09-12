@@ -6,6 +6,7 @@ import {
     type PatientFormType,
     type Person,
     type RoomOccupationGenerateType,
+    type AppointmentMockType,
 } from "../../../utils/projectTypes";
 import { add, format, isWithinInterval, startOfHour } from "date-fns";
 import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
@@ -50,7 +51,7 @@ export const generateFakeAppointments = (patients: number[], employeesIds: numbe
         startDateObject.setHours(getRandomWorkingHour());
         const startDate = format(startDateObject, DB_DATE_FORMAT_WITH_TIME);
 
-        const newMockAppointment: AppointmentFormType = {
+        const newMockAppointment: AppointmentMockType = {
             start_date: startDate,
             patient_id: faker.helpers.arrayElement(patients),
             employee_id: faker.helpers.arrayElement(employeesIds),

@@ -1,6 +1,6 @@
 import { add, endOfDay, startOfDay, startOfYear } from "date-fns";
 import type { FieldErrors, FieldPath } from "react-hook-form";
-import type { CSSObjectWithLabel, GetOptionValue, OnChangeValue, SingleValue, StylesConfig } from "react-select";
+import type { CSSObjectWithLabel, GetOptionValue, SingleValue, StylesConfig } from "react-select";
 
 export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     errors: FieldErrors<FormType>,
@@ -22,7 +22,7 @@ export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     }
 };
 
-export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
+export const getFormSelectValue = <OptionsType>(
     option: SingleValue<OptionsType>,
     getOptionValue: GetOptionValue<OptionsType> | undefined,
 ) => {
@@ -35,7 +35,7 @@ export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
     }
 };
 
-export const selectInputsStyles = (): StylesConfig => ({
+export const selectInputsStyles = <OptionsType, isMulti extends boolean>(): StylesConfig<OptionsType, isMulti> => ({
     control: (baseStyles, { isFocused }) => {
         const additionalStyles: CSSObjectWithLabel = {
             border: "1px solid var(--color-gray-400)",

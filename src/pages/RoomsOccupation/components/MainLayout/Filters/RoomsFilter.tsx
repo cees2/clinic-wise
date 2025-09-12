@@ -40,7 +40,7 @@ const RoomsFilter = ({ rooms }: Props) => {
     return (
         <Dropdown autoClose={false}>
             <Dropdown.Toggle>
-                <Dropdown.Toggle.Label>{toggleString}</Dropdown.Toggle.Label>
+                <Dropdown.ToggleLabel>{toggleString}</Dropdown.ToggleLabel>
             </Dropdown.Toggle>
             <Dropdown.Menu>
                 {rooms.map((room) => {

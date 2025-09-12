@@ -234,6 +234,7 @@ interface EmployeeFormAdditionalData {
 
 // TODO: Change types
 export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "id" | "status">;
+export type AppointmentMockType = Omit<Tables<"appointments">, "created_at" | "id">;
 export type AppointmentFormPartialType = Partial<AppointmentFormType>;
 export type AppointmentUpdateType = Partial<Omit<Tables<"appointments">, "created_at">>;
 export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "id">>;
@@ -449,6 +450,7 @@ export interface TimePickerProps {
     value: Date | string;
     customHours?: number[];
     customMinutes?: number[];
+    onChange: (value: Date) => void;
 }
 
 export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
@@ -494,3 +496,14 @@ export type RoomsResponseType = {
     id: number;
     name: string;
 };
+
+export interface AppointmentForeignResourceType {
+    id: number;
+    name: string;
+    surname: string;
+}
+
+export interface AppointmentsResponseType extends Omit<Tables<"appointments">, "patient_id" | "employee_id"> {
+    patient_id: AppointmentForeignResourceType;
+    employee_id: AppointmentForeignResourceType;
+}

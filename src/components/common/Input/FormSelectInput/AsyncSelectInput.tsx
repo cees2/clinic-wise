@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { type FormSelectInputAsyncProps } from "../../../../utils/projectTypes";
 import { useController } from "react-hook-form";
-import type { OnChangeValue, SingleValue } from "react-select";
+import type { OnChangeValue } from "react-select";
 import { getFormSelectValue, selectInputsStyles } from "../../utils/inputs";
 import AsyncSelect from "react-select/async";
 

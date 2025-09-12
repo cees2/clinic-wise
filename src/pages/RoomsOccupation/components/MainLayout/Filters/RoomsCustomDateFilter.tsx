@@ -44,7 +44,7 @@ export const RoomsCustomDateFilter = () => {
     return (
         <Dropdown>
             <Dropdown.Toggle>
-                <Dropdown.Toggle.Label>{`Custom date${`${selectedDate ? `: ${format(new Date(selectedDate), DISPLAY_DATE_FORMAT)}` : ""}`}`}</Dropdown.Toggle.Label>
+                <Dropdown.ToggleLabel>{`Custom date${`${selectedDate ? `: ${format(new Date(selectedDate), DISPLAY_DATE_FORMAT)}` : ""}`}`}</Dropdown.ToggleLabel>
             </Dropdown.Toggle>
             <Dropdown.Menu onHideDropdown={hideDropdownHandler}>
                 <DatePickerInputSimple value={selectedDate} onChange={onCalendarDateChange} minDate={startOfToday()} />
