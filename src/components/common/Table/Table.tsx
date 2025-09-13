@@ -14,7 +14,7 @@ const StyledTable = styled.div.attrs({ role: "table" })`
     overflow: auto;
 `;
 
-const StyledTableRow = styled.div.attrs({ role: "row" })<Omit<TableProps, "children">>`
+const StyledTableRow = styled.div.attrs({ role: "row" })<TableRowProps>`
     padding: 0.8rem 1.6rem;
     display: grid;
     align-items: center;

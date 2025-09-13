@@ -29,19 +29,21 @@ export enum TableVariant {
     BARE,
 }
 
-export interface TableProps extends React.ComponentProps<"table"> {
+export interface TableBaseProps {
     gridTemplateColumns?: string;
     numberOfColumns?: number;
     className?: string;
     variant?: TableVariant;
 }
 
+export type TableProps = React.ComponentProps<"table"> & TableBaseProps;
+
 export interface TableHeaderCellProps extends React.ComponentProps<"th"> {
     columnIndex: number;
     className?: string;
 }
 
-export interface TableRowProps extends React.ComponentProps<"tr"> {
+export interface TableRowProps extends TableBaseProps, React.ComponentProps<"tr"> {
     className?: string;
 }
 export interface TableRowCellProps extends React.ComponentProps<"td"> {
@@ -101,9 +103,6 @@ export interface TableDataConfig<TableDataResource extends TableDataResourceType
 }
 
 export type TableDataResourceType = Record<string, any> & { id: number };
-
-// TODO: TableDataConfig with generic type which will allow fields like a TableDataColumn.id have proper type?
-// TODO: Create differenet files for types??
 
 export interface TableDataFilterState {
     id: string;
@@ -229,21 +228,19 @@ interface EmployeeFormAdditionalData {
     email?: string;
     password?: string;
     confirmPassword?: string;
-    role?: UserRole;
 }
 
-// TODO: Change types
-export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "id" | "status">;
-export type AppointmentMockType = Omit<Tables<"appointments">, "created_at" | "id">;
-export type AppointmentFormPartialType = Partial<AppointmentFormType>;
-export type AppointmentUpdateType = Partial<Omit<Tables<"appointments">, "created_at">>;
-export type PatientFormType = Partial<Omit<Tables<"patients">, "created_at" | "id">>;
-export type PatientUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
-export type EmployeeFormType = Partial<Omit<Tables<"employees">, "created_at" | "id">> & EmployeeFormAdditionalData;
-export type EmployeeUpdateType = Partial<Omit<Tables<"employees">, "created_at">>;
-export type RoomOccupationFormType = Partial<Omit<Tables<"rooms_occupancy">, "created_at" | "id">>;
-export type RoomOccupationGenerateType = Omit<Tables<"rooms_occupancy">, "created_at" | "id">;
-export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id">;
+interface OptionalID {
+    id?: number;
+}
+
+export type AppointmentGenerateType = Omit<Tables<"appointments">, "id" | "created_at" | "user_id">;
+export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "status" | "id"> & OptionalID;
+export type PatientFormType = Omit<Tables<"patients">, "created_at" | "id"> & OptionalID;
+export type EmployeeFormType = Omit<Tables<"employees">, "created_at" | "id"> & EmployeeFormAdditionalData & OptionalID;
+export type EmployeeGenerateType = Omit<Tables<"employees">, "created_at" | "id" | "user_id">;
+export type RoomOccupationFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
+export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id"> & OptionalID;
 
 export interface Person {
     name: string;
@@ -450,7 +447,7 @@ export interface TimePickerProps {
     value: Date | string;
     customHours?: number[];
     customMinutes?: number[];
-    onChange: (value: Date) => void;
+    onChangeTimePicker: (value: Date) => void;
 }
 
 export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
@@ -489,6 +486,7 @@ export interface RoomsOccupanciesResponseType {
     };
     rooms: {
         name: string;
+        id: number;
     };
 }
 
@@ -503,7 +501,12 @@ export interface AppointmentForeignResourceType {
     surname: string;
 }
 
-export interface AppointmentsResponseType extends Omit<Tables<"appointments">, "patient_id" | "employee_id"> {
+export interface AppointmentsListResponseType extends Omit<Tables<"appointments">, "patient_id" | "employee_id"> {
     patient_id: AppointmentForeignResourceType;
     employee_id: AppointmentForeignResourceType;
+}
+
+export interface SingleAppointmentResponseType extends Tables<"appointments"> {
+    patient: AppointmentForeignResourceType | null;
+    employee: AppointmentForeignResourceType | null;
 }

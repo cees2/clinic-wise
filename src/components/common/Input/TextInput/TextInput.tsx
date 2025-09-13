@@ -2,7 +2,6 @@ import {
     useFormState,
     type Control,
     type FieldPath,
-    type FieldValues,
     type RegisterOptions,
     type UseFormRegister,
 } from "react-hook-form";
@@ -15,7 +14,7 @@ interface Props<FormType extends Record<string, any>> extends React.ComponentPro
     register: UseFormRegister<FormType>;
     registerName: FieldPath<FormType>;
     label: string;
-    rules?: RegisterOptions<FieldValues, string>;
+    rules?: Omit<RegisterOptions<FormType>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
     control: Control<FormType, any, FormType>;
     helpText?: string;
 }

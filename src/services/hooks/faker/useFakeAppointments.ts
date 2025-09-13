@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { uploadFakeAppointments } from "../../api";
-import type { Tables } from "../../database.types.ts";
+import type { AppointmentGenerateType } from "../../../utils/projectTypes.ts";
 
 export const useFakeAppointments = () => {
     const queryClient = useQueryClient();
 
     const mutationConfig = useMutation({
-        mutationFn: (appointments: Tables<"appointments">[]) => uploadFakeAppointments(appointments),
+        mutationFn: (appointments: AppointmentGenerateType[]) => uploadFakeAppointments(appointments),
         onSuccess: async () => {
             toast.success("Appointments have been uploaded successfully");
             const invalidateQueries = [

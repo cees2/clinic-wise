@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPatient, removePatient, updatePatient } from "../../api";
-import type { PatientFormType, PatientUpdateType } from "../../../utils/projectTypes";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import type { PatientFormType } from "../../../utils/projectTypes.ts";
 
 export const useMutatePatient = () => {
     const queryClient = useQueryClient();
@@ -21,7 +21,7 @@ export const useMutatePatient = () => {
     });
 
     const mutationUpdate = useMutation({
-        mutationFn: (patient: PatientUpdateType) => updatePatient(patient),
+        mutationFn: (patient: PatientFormType) => updatePatient(patient),
         onSuccess: async (data) => {
             toast.success("The patient updated successfully");
             await queryClient.invalidateQueries({ queryKey: ["patients"] });

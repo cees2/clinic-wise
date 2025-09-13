@@ -4,7 +4,7 @@ import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { ContentLayout } from "../../components/layout/ContentLayout";
 import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
 import {
-    type AppointmentsResponseType,
+    type AppointmentsListResponseType,
     FilterType,
     type HeaderButton,
     type TableDataConfig,
@@ -19,7 +19,7 @@ const Appointments = () => {
     const { mutationRemove: removeAppointment } = useMutateAppointment();
     const { confirmation } = useConfirmation();
 
-    const config: TableDataConfig<AppointmentsResponseType> = {
+    const config: TableDataConfig<AppointmentsListResponseType> = {
         columns: [
             {
                 id: "duration",

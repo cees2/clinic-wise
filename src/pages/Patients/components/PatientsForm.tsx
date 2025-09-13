@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import type { PatientFormType, PatientUpdateType } from "../../../utils/projectTypes";
 import { getPatientFormDefaultValues } from "../utils/utils";
 import type { Tables } from "../../../services/database.types";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +10,7 @@ import { FormSelectInput } from "../../../components/common/Input/FormSelectInpu
 import { genderFormOptions, nationalityOptions } from "../../../utils/constants";
 import { add, sub } from "date-fns";
 import { useMutatePatient } from "../../../services/hooks/patients/useMutatePatient";
+import type { PatientFormType } from "../../../utils/projectTypes.ts";
 
 export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> }) => {
     const isEdit = Boolean(patientData);
@@ -22,8 +22,7 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
 
     const submitSuccess = (data: PatientFormType) => {
         if (isEdit && patientData?.id) {
-            const updateData: PatientUpdateType = { ...data, id: patientData.id };
-            mutationUpdate.mutate(updateData);
+            mutationUpdate.mutate(data);
         } else {
             mutationCreate.mutate(data);
         }

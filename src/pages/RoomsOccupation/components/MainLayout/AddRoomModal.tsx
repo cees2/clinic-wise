@@ -3,21 +3,18 @@ import { FormSubmit } from "../../../../components/common/Form/FormSubmit.tsx";
 import { TextInput } from "../../../../components/common/Input/TextInput/TextInput.tsx";
 import { useForm } from "react-hook-form";
 import { useMutateRooms } from "../../../../services/hooks/rooms/useMutateRooms.ts";
+import type { RoomFormType } from "../../../../utils/projectTypes.ts";
 
 interface Props {
     showModal: boolean;
     onHide: () => void;
 }
 
-interface FormType {
-    name: string;
-}
-
 export const AddRoomModal = (props: Props) => {
-    const { register, control, handleSubmit, formState } = useForm<FormType>();
+    const { register, control, handleSubmit, formState } = useForm<RoomFormType>();
     const mutation = useMutateRooms(props.onHide);
 
-    const submitSuccess = (data: FormType) => {
+    const submitSuccess = (data: RoomFormType) => {
         mutation.mutate(data);
     };
 

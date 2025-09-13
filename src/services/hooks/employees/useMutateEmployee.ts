@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
-import type { EmployeeFormType, EmployeeUpdateType } from "../../../utils/projectTypes";
 import { createEmployee, removeEmployee, updateEmployee } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import type { EmployeeFormType } from "../../../utils/projectTypes.ts";
 
 export const useMutateEmployee = () => {
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const useMutateEmployee = () => {
     });
 
     const mutationUpdate = useMutation({
-        mutationFn: (employee: EmployeeUpdateType) => updateEmployee(employee),
+        mutationFn: (employee: EmployeeFormType) => updateEmployee(employee),
         onSuccess: () => {
             toast.success("The employee updated successfully");
         },

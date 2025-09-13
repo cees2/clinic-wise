@@ -1,11 +1,15 @@
 import { add, compareAsc, format } from "date-fns";
 import type {
     AppointmentFormType,
+    AppointmentGenerateType,
     EmployeeFormType,
     LoginApi,
+    PatientFormType,
     RoomFormType,
+    RoomOccupationFormType,
     RoomsFilterType,
     RoomsOccupanciesResponseType,
+    SingleAppointmentResponseType,
     UpdateUserCompleteInfo,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
@@ -20,7 +24,7 @@ import type { Tables } from "./database.types.ts";
 // TODO: possible refactor
 
 // APPOINTMENT
-export const uploadFakeAppointments = async (appointments: AppointmentFormType[]) => {
+export const uploadFakeAppointments = async (appointments: AppointmentGenerateType[]) => {
     await supabase.from("appointments").delete().gte("id", 0);
 
     const { data, error } = await supabase.functions.invoke("create-fake-appointments", { body: appointments });
@@ -52,7 +56,7 @@ export const createAppointment = async (appointment: AppointmentFormType) => {
     return data;
 };
 
-export const getAppointment = async (appointmentId: string) => {
+export const getAppointment = async (appointmentId: string): Promise<SingleAppointmentResponseType> => {
     const { data, error } = await supabase
         .from("appointments")
         .select("*,patient:patient_id(id, name, surname),employee:employee_id(id, name, surname)")
@@ -66,7 +70,11 @@ export const getAppointment = async (appointmentId: string) => {
     return data;
 };
 
-export const updateAppointment = async (appointment: Tables<"appointments">) => {
+export const updateAppointment = async (appointment: AppointmentFormType) => {
+    if (!appointment.id) {
+        throw new Error("Could not update the appointment");
+    }
+
     const { data, error } = await supabase
         .from("appointments")
         .update(appointment)
@@ -146,7 +154,7 @@ export const removeEmployee = async (employeeId: number) => {
     return data;
 };
 
-export const uploadFakeEmployees = async (employees: Tables<"employees">[]) => {
+export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
     await supabase.from("employees").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("employees").insert(employees);
@@ -183,7 +191,7 @@ export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSe
     return data;
 };
 
-export const updateEmployee = async (employee: Tables<"employees">) => {
+export const updateEmployee = async (employee: EmployeeFormType) => {
     const userData = {
         role: employee.role,
         fullName: `${employee.name} ${employee.surname}`,
@@ -198,6 +206,10 @@ export const updateEmployee = async (employee: Tables<"employees">) => {
         throw new Error(updateUserError.message);
     }
 
+    if (!employee.id) {
+        throw new Error("Could not update the employee");
+    }
+
     const { data, error } = await supabase.from("employees").update(employee).eq("id", employee.id).select().single();
 
     if (error) {
@@ -209,7 +221,7 @@ export const updateEmployee = async (employee: Tables<"employees">) => {
 
 // PATIENT
 
-export const createPatient = async (patient: Tables<"patients">) => {
+export const createPatient = async (patient: PatientFormType) => {
     const { data, error } = await supabase.from("patients").insert(patient).select().single();
 
     if (error) {
@@ -219,7 +231,11 @@ export const createPatient = async (patient: Tables<"patients">) => {
     return data;
 };
 
-export const updatePatient = async (patient: Tables<"patients">) => {
+export const updatePatient = async (patient: PatientFormType) => {
+    if (!patient.id) {
+        throw new Error("Could not update the patient");
+    }
+
     const { data, error } = await supabase.from("patients").update(patient).eq("id", patient.id).select().single();
 
     if (error) {
@@ -249,7 +265,7 @@ export const getPatientsSelect = async (inputValue: string) => {
     return data;
 };
 
-export const uploadFakePatients = async (patients: Tables<"patients">[]) => {
+export const uploadFakePatients = async (patients: PatientFormType[]) => {
     await supabase.from("patients").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("patients").insert(patients);
@@ -491,7 +507,7 @@ export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> 
 
 // ROOMS OCCUPANCIES
 
-export const uploadFakeRoomsOccupation = async (rooms: Tables<"rooms_occupancy">[]) => {
+export const uploadFakeRoomsOccupation = async (rooms: RoomOccupationFormType[]) => {
     await supabase.from("rooms_occupancy").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("rooms_occupancy").insert(rooms);
@@ -509,7 +525,7 @@ export const getRoomsOccupancies = async (
 ): Promise<RoomsOccupanciesResponseType[]> => {
     let query = supabase
         .from("rooms_occupancy")
-        .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name)");
+        .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name,id)");
 
     if (dateFilter) {
         const endDate = add(new Date(dateFilter.value), { days: 1 });
@@ -533,7 +549,7 @@ export const getRoomsOccupancies = async (
     return data;
 };
 
-export const createRoomOccupancy = async (roomOccupancy: Tables<"rooms_occupancy">) => {
+export const createRoomOccupancy = async (roomOccupancy: RoomOccupationFormType) => {
     const { data, error } = await supabase.from("rooms_occupancy").insert(roomOccupancy).select().single();
 
     const contextMessage =
@@ -559,10 +575,10 @@ export const createRoomOccupancy = async (roomOccupancy: Tables<"rooms_occupancy
     return data;
 };
 
-export const getRoomOccupancy = async (roomOccupancyId: number) => {
+export const getRoomOccupancy = async (roomOccupancyId: number): Promise<RoomsOccupanciesResponseType> => {
     const { data, error } = await supabase
         .from("rooms_occupancy")
-        .select("id,start,end,employee:employee_id(id, name, surname),room:room_id(name)")
+        .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name,id)")
         .eq("id", roomOccupancyId)
         .single();
 

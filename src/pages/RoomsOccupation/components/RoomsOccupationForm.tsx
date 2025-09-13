@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form";
-import type { RoomOccupationFormType } from "../../../utils/projectTypes";
+import type { RoomOccupationFormType, RoomsOccupanciesResponseType } from "../../../utils/projectTypes";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesSelect, getRoomsSelect } from "../../../services/api";
 import type { EmployeeSelect, RoomSelect } from "../../../services/apiTypes";
-import type { Tables } from "../../../services/database.types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getRoomsOccupancyFormDefaultValues } from "../utils/utils.ts";
@@ -15,7 +14,7 @@ import { useMutateRoomsOccupancy } from "../../../services/hooks/rooms/useMutate
 import { ROOM_OCCUPATION_HOURS, ROOM_OCCUPATION_MINUTES } from "../utils/constants.ts";
 
 interface Props {
-    roomOccupation?: Tables<"rooms_occupancy">;
+    roomOccupation?: RoomsOccupanciesResponseType;
 }
 
 export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
@@ -66,7 +65,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
-                defaultValue={roomOccupation?.employee}
+                defaultValue={roomOccupation?.employees}
             />
             <FormSelectInput<RoomSelect, false, RoomOccupationFormType>
                 loadOptions={loadRooms}
@@ -76,7 +75,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 control={control}
                 label="Room"
                 rules={{ required: true }}
-                defaultValue={roomOccupation?.room}
+                defaultValue={roomOccupation?.rooms}
             />
             <DatePickerInput
                 control={control}

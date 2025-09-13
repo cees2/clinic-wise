@@ -5,9 +5,9 @@ import {
     type RoomOccupationFormType,
     type RoomsFilterType,
     type RoomsResponseType,
+    type RoomsOccupanciesResponseType,
 } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
-import type { Tables } from "../../../services/database.types";
 
 export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilters) => {
     let date: Date | null = null;
@@ -106,12 +106,13 @@ export const updateRoomFilterValue = (id: string, roomsFilter?: RoomsFilterType)
 };
 
 export const getRoomsOccupancyFormDefaultValues = (
-    roomsOccupancyData?: Tables<"rooms_occupancy">,
+    roomsOccupancyData?: RoomsOccupanciesResponseType,
 ): Partial<RoomOccupationFormType> => {
     return {
-        room_id: roomsOccupancyData?.room_id,
+        id: roomsOccupancyData?.id,
+        room_id: roomsOccupancyData?.rooms.id,
+        employee_id: roomsOccupancyData?.employees.id,
         start: roomsOccupancyData?.start ?? format(startOfToday(), DB_DATE_FORMAT_WITH_TIME),
         end: roomsOccupancyData?.end ?? format(endOfToday(), DB_DATE_FORMAT_WITH_TIME),
-        employee_id: roomsOccupancyData?.employee_id,
     };
 };

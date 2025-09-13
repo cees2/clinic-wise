@@ -1,14 +1,7 @@
 import { format } from "date-fns";
 import { Calendar } from "react-date-range";
 import { Dropdown } from "../../Dropdown/Dropdown";
-import {
-    useController,
-    useFormState,
-    type Control,
-    type FieldPath,
-    type Path,
-    type RegisterOptions,
-} from "react-hook-form";
+import { useController, useFormState, type Control, type FieldPath, type RegisterOptions } from "react-hook-form";
 import TimePicker from "./TimePicker";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
@@ -17,17 +10,14 @@ import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../../utils/cons
 import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
 import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
 
-interface Props<FormType extends Record<string, any>> extends TimePickerProps {
+interface Props<FormType extends Record<string, any>> extends Partial<TimePickerProps> {
     minDate?: Date | "current";
     maxDate?: Date | "current";
     control: Control<FormType>;
     registerName: FieldPath<FormType>;
     withTimePicker?: true;
     label: string;
-    rules?: Omit<
-        RegisterOptions<FormType, Path<FormType>>,
-        "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate"
-    >;
+    rules?: Omit<RegisterOptions<FormType>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 }
 
 export const DatePickerInput = <FormType extends Record<string, any>>({
@@ -86,7 +76,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
                         {withTimePicker && (
                             <TimePicker
                                 value={value}
-                                onChange={onChange}
+                                onChangeTimePicker={onChange}
                                 customHours={customHours}
                                 customMinutes={customMinutes}
                             />

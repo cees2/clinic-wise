@@ -1,4 +1,4 @@
-import type { FieldPath, FieldValues, RegisterOptions, UseFormRegister } from "react-hook-form";
+import type { FieldPath, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { InputLabel, StyledInput } from "./common/InputCommon";
 import type { TextareaHTMLAttributes } from "react";
 
@@ -6,7 +6,7 @@ interface Props<FormType extends Record<string, any>> extends TextareaHTMLAttrib
     register: UseFormRegister<FormType>;
     registerName: FieldPath<FormType>;
     label: string;
-    rules?: RegisterOptions<FieldValues, string>;
+    rules?: Omit<RegisterOptions<FormType>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 }
 
 export const TextAreaInput = <FormType extends Record<string, any>>({

@@ -31,7 +31,7 @@ const AsyncSelectInput = <
             const newValues = newValue.map((value) => getFormSelectValue(value, getOptionValue));
             onChange(newValues);
         } else {
-            const newUpdatedValue = getFormSelectValue<OptionsType, false>(newValue, getOptionValue);
+            const newUpdatedValue = getFormSelectValue(newValue, getOptionValue);
             onChange(newUpdatedValue);
         }
     };
@@ -59,7 +59,7 @@ const AsyncSelectInput = <
             defaultOptions
             name={registerName}
             isClearable
-            styles={selectInputsStyles()}
+            styles={selectInputsStyles<OptionsType, isMulti>()}
         />
     );
 };

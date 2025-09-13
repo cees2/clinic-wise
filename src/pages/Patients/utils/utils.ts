@@ -3,6 +3,7 @@ import type { PatientFormType } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT } from "../../../utils/constants";
 
 export const getPatientFormDefaultValues = (patient?: PatientFormType): PatientFormType => ({
+    id: patient?.id,
     name: patient?.name ?? "",
     surname: patient?.surname ?? "",
     gender: patient?.gender ?? "",

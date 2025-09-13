@@ -2,9 +2,8 @@ import { Calendar, type CalendarProps } from "react-date-range";
 import TimePicker from "./TimePicker.tsx";
 import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
 import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
-import * as React from "react";
 
-interface Props extends React.Component<CalendarProps>, TimePickerProps {
+interface Props extends CalendarProps, Partial<TimePickerProps> {
     withTimePicker?: boolean;
 }
 
@@ -13,8 +12,8 @@ export const DatePickerInputSimple = (props: Props) => {
 
     return (
         <StyledDatePickerInput>
-            <Calendar date={value} {...props} />
-            {props.withTimePicker && <TimePicker value={value} onChange={onChange} />}
+            <Calendar date={new Date(value || Date.now())} {...props} />
+            {props.withTimePicker && value && onChange && <TimePicker value={value} onChangeTimePicker={onChange} />}
         </StyledDatePickerInput>
     );
 };

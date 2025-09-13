@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import type { EmployeeFormType, EmployeeUpdateType } from "../../../utils/projectTypes";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { useNavigate } from "react-router-dom";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
@@ -11,6 +10,7 @@ import { add, sub } from "date-fns";
 import { getEmployeeFormDefaultValues } from "../utils/utils";
 import { toast } from "react-toastify";
 import type { Tables } from "../../../services/database.types.ts";
+import type { EmployeeFormType } from "../../../utils/projectTypes.ts";
 
 export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employees"> }) => {
     const isEdit = Boolean(employeeData);
@@ -23,8 +23,7 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
     const submitSuccess = (data: EmployeeFormType) => {
         // TODO: update user to previos state on employee update request fail
         if (isEdit && employeeData?.id) {
-            const updateData: EmployeeUpdateType = { ...data, id: employeeData.id };
-            mutationUpdate.mutate(updateData);
+            mutationUpdate.mutate(data);
         } else {
             mutationCreate.mutate(data);
         }

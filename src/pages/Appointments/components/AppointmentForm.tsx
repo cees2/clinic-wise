@@ -6,23 +6,18 @@ import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesSelect, getPatientsSelect } from "../../../services/api";
 import { TextAreaInput } from "../../../components/common/Input/TextAreaInput";
 import { GridForm } from "../../../components/common/Form/GridForm";
-import type {
-    AppointmentFormPartialType,
-    AppointmentFormType,
-    AppointmentUpdateType,
-} from "../../../utils/projectTypes";
 import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
 import { useNavigate } from "react-router-dom";
-import type { Tables } from "../../../services/database.types";
 import { getAppointmentFormDefaultValues } from "../utils/utils";
 import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 import { toast } from "react-toastify";
+import type { AppointmentFormType, SingleAppointmentResponseType } from "../../../utils/projectTypes.ts";
 
-export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<"appointments"> }) => {
+export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleAppointmentResponseType }) => {
     const isEdit = Boolean(appointmentData);
     const queryClient = useQueryClient();
     const { mutationCreate, mutationUpdate } = useMutateAppointment();
-    const { control, register, handleSubmit, formState } = useForm<AppointmentFormPartialType>({
+    const { control, register, handleSubmit, formState } = useForm<AppointmentFormType>({
         defaultValues: getAppointmentFormDefaultValues(appointmentData),
     });
     const navigate = useNavigate();
@@ -41,10 +36,9 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Tables<
         });
     };
 
-    const submitSuccess = (data: AppointmentFormPartialType) => {
+    const submitSuccess = (data: AppointmentFormType) => {
         if (isEdit && appointmentData?.id) {
-            const updateData: AppointmentUpdateType = { ...data, id: appointmentData.id };
-            mutationUpdate.mutate(updateData);
+            mutationUpdate.mutate(data);
         } else {
             mutationCreate.mutate(data);
         }

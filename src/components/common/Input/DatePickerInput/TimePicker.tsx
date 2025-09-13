@@ -38,7 +38,7 @@ const ColumnItem = styled.li<{ isSelected: boolean }>`
     }
 `;
 
-const TimePickerColumn = ({ mode, value, onChange, customHours, customMinutes }: Props) => {
+const TimePickerColumn = ({ mode, value, onChangeTimePicker, customHours, customMinutes }: Props) => {
     const customTime = mode === TimePickerMode.HOURS ? customHours : customMinutes;
     const itemsToMap = getTimePickerItemsToMap(mode, customTime);
     const selectedValue =
@@ -46,7 +46,7 @@ const TimePickerColumn = ({ mode, value, onChange, customHours, customMinutes }:
 
     const onColumnValueSelect = (newSelectedValue: number) => {
         const updatedValue = getUpdatedTimeValue(value, newSelectedValue, mode);
-        onChange(updatedValue);
+        onChangeTimePicker(updatedValue);
     };
 
     return (

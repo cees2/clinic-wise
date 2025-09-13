@@ -7,7 +7,6 @@ import { Header } from "../../../../components/common/Header/Header.tsx";
 
 export const EditRoomOccupancy = () => {
     const { roomOccupancyId } = useParams<{ roomOccupancyId: string }>();
-
     const { isLoading, data } = useGetRoomOccupancy(Number(roomOccupancyId));
 
     if (isLoading) return <LoadingSpinner />;
