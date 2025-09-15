@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, FormHTMLAttributes, RefObject, SetStateAction } from "react";
+import type { ActionDispatch, ButtonHTMLAttributes, FormHTMLAttributes, RefObject, SetStateAction } from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, RegisterOptions } from "react-hook-form";
@@ -126,7 +126,7 @@ export interface TableDataState<TableDataResource extends TableDataResourceType>
 export interface TableDataContextType<TableDataResource extends TableDataResourceType> {
     config: TableDataConfig<TableDataResource>;
     tableDataState: TableDataState<TableDataResource>;
-    dispatch: React.ActionDispatch<React.AnyActionArg>;
+    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResource>]>;
     resources: TableDataResource[];
     itemsCount?: number | null;
 }
@@ -146,7 +146,7 @@ export type TableDataActionsType<TableDataResource extends TableDataResourceType
     | {
           type: TableDataActionsEnum.SET_SORT;
           payload: {
-              id: keyof TableDataResource;
+              id: Extract<keyof TableDataResource, string>;
               isAscending: boolean;
           } | null;
       }

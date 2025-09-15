@@ -1,7 +1,6 @@
 import { fakerEN, faker } from "@faker-js/faker";
 import {
     UserRole,
-    type EmployeeFormType,
     type PatientFormType,
     type Person,
     type RoomOccupationFormType,

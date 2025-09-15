@@ -25,9 +25,9 @@ export const TableDataNumberFilter = ({ filterId }: Props) => {
         }
 
         const { filterValue, filterCondition } = numberFilterState;
-        const selectedFilter = { id: filterId, filterValue, filterCondition };
+        const selectedFilter = { id: filterId, filterValue, filterCondition, filterType: FilterType.NUMBER };
 
-        dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter, filterType: FilterType.NUMBER });
+        dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };
 
     return (

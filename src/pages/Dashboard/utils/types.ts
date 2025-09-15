@@ -33,7 +33,7 @@ export enum DashboardStateActions {
 export type DashboardStateAction =
     | { type: DashboardStateActions.SET_DATA; payload: DashboardState }
     | { type: DashboardStateActions.ADD_FILTER; payload: DashboardFilter }
-    | { type: DashboardStateActions.REMOVE_FILTER; payload: string }
+    | { type: DashboardStateActions.REMOVE_FILTER; payload: DashboardFilterId }
     | { type: DashboardStateActions.UPDATE_FILTER; payload: DashboardFilter }
     | { type: DashboardStateActions.SET_FILTERS; payload: DashboardFilter[] };
 
