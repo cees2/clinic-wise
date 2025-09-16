@@ -17,7 +17,7 @@ const TableDataTable = () => {
         resources,
     } = useTableDataContext();
 
-    if (resources.length === 0) return <EmptyPage caption="Could not find any data matching your criteria." />;
+    if (resources?.length === 0) return <EmptyPage caption="Could not find any data matching your criteria." />;
 
     const gridTemplateColumnsWithActions = gridTemplateColumns
         ? `${gridTemplateColumns} 70px`
@@ -58,7 +58,7 @@ const TableDataItemsRows = () => {
 
     return (
         <>
-            {resources.map((resource) => {
+            {resources?.map((resource) => {
                 return (
                     <Table.TableRow key={resource.id}>
                         {columns.map((column) => {

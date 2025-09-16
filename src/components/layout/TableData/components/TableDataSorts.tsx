@@ -1,9 +1,14 @@
 import { useTableDataContext } from "../utils/TableDataContext";
 import { LiaLongArrowAltDownSolid, LiaLongArrowAltUpSolid } from "react-icons/lia";
-import { SortTableEnum, TableDataActionsEnum, type TableDataColumn } from "../../../../utils/projectTypes";
+import {
+    SortTableEnum,
+    TableDataActionsEnum,
+    type TableDataColumn,
+    type TableDataResourceType,
+} from "../../../../utils/projectTypes";
 import { LuArrowDownUp } from "react-icons/lu";
 
-const TableDataSorts = <TableDataResource extends Record<string, any>>({
+const TableDataSorts = <TableDataResource extends TableDataResourceType>({
     column,
 }: {
     column: TableDataColumn<TableDataResource>;

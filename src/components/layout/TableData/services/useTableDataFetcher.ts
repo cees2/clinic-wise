@@ -11,7 +11,7 @@ import { supabase } from "../../../../services/services";
 export const useTableDataFetcher = <TableDataResource extends TableDataResourceType>(
     config: TableDataConfig<TableDataResource>,
     tableDataState: TableDataState<TableDataResource>,
-): UseQueryResult<{ data: TableDataResource[] }> => {
+): UseQueryResult<TableDataResource[]> & { count?: number | null } => {
     const { resourceName } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
 

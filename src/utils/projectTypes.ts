@@ -1,4 +1,11 @@
-import type { ActionDispatch, ButtonHTMLAttributes, FormHTMLAttributes, RefObject, SetStateAction } from "react";
+import type {
+    ActionDispatch,
+    ButtonHTMLAttributes,
+    FormHTMLAttributes,
+    ReactNode,
+    RefObject,
+    SetStateAction,
+} from "react";
 import type React from "react";
 import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, RegisterOptions } from "react-hook-form";
@@ -53,7 +60,7 @@ export interface TableRowCellProps extends React.ComponentProps<"td"> {
     className?: string;
 }
 
-export interface TableDataColumn<TableDataResource extends Record<string, any>> {
+export interface TableDataColumn<TableDataResource extends TableDataResourceType> {
     id: Extract<keyof TableDataResource, string>;
     name: string;
     render?: (dataItem: TableDataResource) => React.ReactNode | number | string;
@@ -104,12 +111,33 @@ export interface TableDataConfig<TableDataResource extends TableDataResourceType
 
 export type TableDataResourceType = Record<string, any> & { id: number };
 
-export interface TableDataFilterState {
-    id: string;
+export type TableDataNumberFilterState = {
+    filterValue: number;
+    filterType: FilterType.NUMBER;
+    filterCondition: Exclude<FilterCondition, "c">;
+};
+
+export type TableDataTextFilterState = {
     filterValue: string;
-    filterCondition: FilterCondition;
-    filterType: FilterType;
-}
+    filterType: FilterType.TEXT;
+    filterCondition: Extract<FilterCondition, "c" | "e">;
+};
+
+export type TableDataEnumFilterState = {
+    filterValue: string;
+    filterType: FilterType.ENUM;
+    filterCondition: Extract<FilterCondition, "e">;
+};
+
+export type TableDataDateFilterState = {
+    filterValue: string;
+    filterType: FilterType.DATE;
+    filterCondition: Extract<FilterCondition, "gte" | "lte">;
+};
+
+export type TableDataFilterState = {
+    id: string;
+} & (TableDataNumberFilterState | TableDataTextFilterState | TableDataEnumFilterState | TableDataDateFilterState);
 
 export interface TableDataSortState<TableDataResource> {
     id: Extract<keyof TableDataResource, string>;
@@ -126,8 +154,8 @@ export interface TableDataState<TableDataResource extends TableDataResourceType>
 export interface TableDataContextType<TableDataResource extends TableDataResourceType> {
     config: TableDataConfig<TableDataResource>;
     tableDataState: TableDataState<TableDataResource>;
-    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResource>]>;
-    resources: TableDataResource[];
+    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
+    resources?: TableDataResource[];
     itemsCount?: number | null;
 }
 
@@ -509,4 +537,17 @@ export interface AppointmentsListResponseType extends Omit<Tables<"appointments"
 export interface SingleAppointmentResponseType extends Tables<"appointments"> {
     patient: AppointmentForeignResourceType | null;
     employee: AppointmentForeignResourceType | null;
+}
+
+export interface TableDataRendererProps<TableDataResource extends TableDataResourceType> {
+    config: TableDataConfig<TableDataResource>;
+}
+
+export interface TableDataProps<TableDataResource extends TableDataResourceType> {
+    children: ReactNode;
+    config: TableDataConfig<TableDataResource>;
+    resources?: TableDataResource[];
+    tableDataState: TableDataState<TableDataResource>;
+    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
+    itemsCount?: number | null;
 }

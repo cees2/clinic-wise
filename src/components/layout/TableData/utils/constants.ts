@@ -1,6 +1,6 @@
-import type { TableDataState } from "../../../../utils/projectTypes";
+import type { TableDataResourceType, TableDataState } from "../../../../utils/projectTypes";
 
-export const tableDataConfigInitialValue: TableDataState<{id: number}> = {
+export const tableDataConfigInitialValue: TableDataState<TableDataResourceType> = {
     selectedFilters: [],
     selectedPage: 1,
     selectedSort: null,

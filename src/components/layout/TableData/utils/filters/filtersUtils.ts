@@ -3,6 +3,8 @@ import {
     type TableDataFilterState,
     type DateFilterCondition,
     type TextFilterCondition,
+    FilterType,
+    type TableDataEnumFilterState,
 } from "../../../../../utils/projectTypes";
 
 const getAlreadySelectedFilter = (
@@ -84,7 +86,7 @@ export const getDateFilterDefaultType = (
 };
 
 export const getEnumFilterInitialState = (filters: TableDataFilterState[], filterId: string) => {
-    const selectedFilter = filters.find((filter) => filter.id === filterId);
+    const selectedFilter = filters.find((filter) => filter.id === filterId && filter.filterType === FilterType.ENUM);
 
     return selectedFilter ? selectedFilter.filterValue.split(",") : [];
 };

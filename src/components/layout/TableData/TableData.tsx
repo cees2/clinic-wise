@@ -1,10 +1,5 @@
-import { type ActionDispatch, type ReactNode, useReducer } from "react";
-import type {
-    TableDataActionsType,
-    TableDataConfig,
-    TableDataResourceType,
-    TableDataState,
-} from "../../../utils/projectTypes";
+import { useReducer } from "react";
+import type { TableDataProps, TableDataRendererProps, TableDataResourceType } from "../../../utils/projectTypes";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import TableDataFilters from "./components/TableDataFilters.tsx";
 import TableDataPagination from "./components/TableDataPagination";
@@ -17,16 +12,14 @@ import { useTableDataFetcher } from "./services/useTableDataFetcher";
 
 const TableDataRenderer = <TableDataResource extends TableDataResourceType>({
     config,
-}: {
-    config: TableDataConfig<TableDataResource>;
-}) => {
+}: TableDataRendererProps<TableDataResource>) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
     const { isLoading, data: resources, count } = useTableDataFetcher(config, tableDataState);
 
     if (isLoading) return <LoadingSpinner />;
 
     return (
-        <TableData
+        <TableData<TableDataResource>
             config={config}
             resources={resources}
             tableDataState={tableDataState}
@@ -47,14 +40,7 @@ export const TableData = <TableDataResource extends TableDataResourceType>({
     tableDataState,
     dispatch,
     itemsCount,
-}: {
-    children: ReactNode;
-    config: TableDataConfig<TableDataResource>;
-    resources?: TableDataResource[];
-    tableDataState: TableDataState<TableDataResource>;
-    dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResource>]>;
-    itemsCount?: number | null;
-}) => {
+}: TableDataProps<TableDataResource>) => {
     return (
         <TableDataContextProvider
             config={config}
