@@ -3,6 +3,7 @@ import {
     type FilterState,
     FilterType,
     TableDataActionsEnum,
+    type TableDataFilterState,
 } from "../../../../../utils/projectTypes.ts";
 import EnumFilter from "../../../../common/Filters/EnumFilter.tsx";
 import { useTableDataContext } from "../../utils/TableDataContext.tsx";
@@ -27,7 +28,7 @@ export const TableDataEnumFilter = ({ options, filterId }: Props) => {
             return;
         }
 
-        const selectedFilter = {
+        const selectedFilter: TableDataFilterState = {
             id: filterId,
             filterValue: filterValue.join(","),
             filterCondition,

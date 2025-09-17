@@ -41,7 +41,7 @@ const AsyncSelectInput = <
             return selectedValueFullObject.current;
         }
 
-        const inputValueFromDefaultValue = getFormSelectValue(defaultValue, getOptionValue);
+        const inputValueFromDefaultValue = getFormSelectValue(defaultValue as OptionsType, getOptionValue);
 
         if (inputValueFromDefaultValue?.toString() === value?.toString()) {
             return defaultValue;

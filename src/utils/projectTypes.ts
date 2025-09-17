@@ -114,25 +114,25 @@ export type TableDataResourceType = Record<string, any> & { id: number };
 export type TableDataNumberFilterState = {
     filterValue: number;
     filterType: FilterType.NUMBER;
-    filterCondition: Exclude<FilterCondition, "c">;
+    filterCondition: NumberFilterConditionType;
 };
 
 export type TableDataTextFilterState = {
     filterValue: string;
     filterType: FilterType.TEXT;
-    filterCondition: Extract<FilterCondition, "c" | "e">;
+    filterCondition: TextFilterCondition;
 };
 
 export type TableDataEnumFilterState = {
     filterValue: string;
     filterType: FilterType.ENUM;
-    filterCondition: Extract<FilterCondition, "e">;
+    filterCondition: EnumFilterCondition;
 };
 
 export type TableDataDateFilterState = {
     filterValue: string;
     filterType: FilterType.DATE;
-    filterCondition: Extract<FilterCondition, "gte" | "lte">;
+    filterCondition: DateFilterCondition;
 };
 
 export type TableDataFilterState = {
@@ -237,10 +237,8 @@ export interface DropdownToggleProps extends Children {
 }
 
 export type NumberFilterForm = {
-    [K in Exclude<FilterCondition, "c">]: number | undefined | "";
+    [K in NumberFilterConditionType]: number | undefined | "";
 };
-
-export type TextFilterCondition = Extract<FilterCondition, "e" | "c">;
 
 export type TextFilterForm = {
     [K in TextFilterCondition]: string;
@@ -480,6 +478,8 @@ export interface TimePickerProps {
 
 export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
 export type DateFilterCondition = Extract<FilterCondition, "gte" | "lte">;
+export type TextFilterCondition = Extract<FilterCondition, "c" | "e">;
+export type EnumFilterCondition = Extract<FilterCondition, "e">;
 
 export interface FilterState<FilterType, FilterCondition> {
     filterValue: FilterType;

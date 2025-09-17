@@ -27,7 +27,7 @@ export const getFormSelectValue = <OptionsType, isMulti extends boolean>(
     getOptionValue: GetOptionValue<OptionsType> | undefined,
 ) => {
     if (getOptionValue) {
-        return getOptionValue(option);
+        return getOptionValue(option as OptionsType);
     } else if (typeof option === "object" && option && "value" in option) {
         return option.value;
     } else {

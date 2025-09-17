@@ -19,6 +19,7 @@ export const useTableDataFetcher = <TableDataResource extends TableDataResourceT
         queryFn: () => getResource(config, tableDataState),
         queryKey: [resourceName, selectedFilters, selectedSort, selectedPage, selectedPaginationSize],
     });
+
     const { data, count } = resourceRequestSetup.data ?? {};
 
     return { ...resourceRequestSetup, data, count };
@@ -48,7 +49,7 @@ const getSelectString = <TableDataResource extends TableDataResourceType>(
 export const getResource = async <TableDataResource extends TableDataResourceType>(
     config: TableDataConfig<TableDataResource>,
     tableDataState: TableDataState<TableDataResource>,
-) => {
+): Promise<{ data: TableDataResource[]; count: number | null }> => {
     const { resourceName, columns } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
     const rangeStart = (selectedPage - 1) * selectedPaginationSize;

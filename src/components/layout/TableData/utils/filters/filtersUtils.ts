@@ -5,51 +5,9 @@ import {
     type TextFilterCondition,
     FilterType,
     type TableDataEnumFilterState,
+    type TableDataNumberFilterState,
+    type TableDataTextFilterState,
 } from "../../../../../utils/projectTypes";
-
-const getAlreadySelectedFilter = (
-    filterId: string,
-    selectedFilters: TableDataFilterState[],
-): TableDataFilterState | null => {
-    const selectedFilter = selectedFilters.find((selectedFilter) => selectedFilter.id === filterId);
-    const filterAlreadySelected = selectedFilter === undefined;
-
-    if (filterAlreadySelected) {
-        return null;
-    }
-
-    return selectedFilter;
-};
-
-export const getEnumFilterDefaultValue = (
-    filterId: string,
-    selectedFilters: TableDataFilterState[],
-    options: Record<string, string>,
-) => {
-    const optionsKeys = Object.keys(options);
-    const defaultValues = optionsKeys.reduce<Record<string, boolean>>((defaultValuesObject, optionKey) => {
-        const newDefaultValuesObject = { ...defaultValuesObject };
-
-        newDefaultValuesObject[optionKey] = false;
-
-        return newDefaultValuesObject;
-    }, {});
-
-    const selectedFilter = getAlreadySelectedFilter(filterId, selectedFilters);
-
-    if (!selectedFilter) {
-        return defaultValues;
-    }
-
-    const { filterValue } = selectedFilter;
-    const selectedValuesArray = filterValue.split(",");
-
-    selectedValuesArray.forEach((selectedValue) => {
-        defaultValues[selectedValue] = true;
-    });
-
-    return defaultValues;
-};
 
 export const dateFilterTypesArray: DateFilterCondition[] = ["gte", "lte"];
 
@@ -86,13 +44,35 @@ export const getDateFilterDefaultType = (
 };
 
 export const getEnumFilterInitialState = (filters: TableDataFilterState[], filterId: string) => {
-    const selectedFilter = filters.find((filter) => filter.id === filterId && filter.filterType === FilterType.ENUM);
+    const enumFilters = filters.filter(
+        (filter): filter is { id: string } & TableDataEnumFilterState => filter.filterType === FilterType.ENUM,
+    );
+
+    const selectedFilter = enumFilters.find((filter) => filter.id === filterId);
 
     return selectedFilter ? selectedFilter.filterValue.split(",") : [];
 };
 
-export const getFilterDefaultValue = (filters: TableDataFilterState[], filterId: string) => {
-    const selectedFilter = filters.find((filter) => filter.id === filterId);
+export const getNumberFilterInitialState = (filters: TableDataFilterState[], filterId: string) => {
+    const numberFilters = filters.filter(
+        (filter): filter is { id: string } & TableDataNumberFilterState => filter.filterType === FilterType.NUMBER,
+    );
+
+    const selectedFilter = numberFilters.find((filter) => filter.id === filterId);
+
+    if (!selectedFilter) return selectedFilter;
+
+    const { filterValue, filterCondition } = selectedFilter;
+
+    return { filterValue, filterCondition };
+};
+
+export const getTextFilterInitialState = (filters: TableDataFilterState[], filterId: string) => {
+    const textFilters = filters.filter(
+        (filter): filter is { id: string } & TableDataTextFilterState => filter.filterType === FilterType.TEXT,
+    );
+
+    const selectedFilter = textFilters.find((filter) => filter.id === filterId);
 
     if (!selectedFilter) return selectedFilter;
 

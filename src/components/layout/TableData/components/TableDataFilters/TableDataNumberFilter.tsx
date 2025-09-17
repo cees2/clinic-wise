@@ -5,8 +5,9 @@ import {
     type FilterState,
     TableDataActionsEnum,
     type NumberFilterConditionType,
+    type TableDataFilterState,
 } from "../../../../../utils/projectTypes.ts";
-import { getFilterDefaultValue } from "../../utils/filters/filtersUtils.ts";
+import { getNumberFilterInitialState } from "../../utils/filters/filtersUtils.ts";
 
 interface Props {
     filterId: string;
@@ -25,7 +26,12 @@ export const TableDataNumberFilter = ({ filterId }: Props) => {
         }
 
         const { filterValue, filterCondition } = numberFilterState;
-        const selectedFilter = { id: filterId, filterValue, filterCondition, filterType: FilterType.NUMBER };
+        const selectedFilter: TableDataFilterState = {
+            id: filterId,
+            filterValue,
+            filterCondition,
+            filterType: FilterType.NUMBER,
+        };
 
         dispatch({ type: TableDataActionsEnum.REPLACE_FILTER, payload: selectedFilter });
     };
@@ -35,7 +41,7 @@ export const TableDataNumberFilter = ({ filterId }: Props) => {
             filterId={filterId}
             onHideDropdown={hideDropdownHandler}
             decimalScale={0}
-            filterDefaultValue={getFilterDefaultValue(selectedFilters, filterId)}
+            filterDefaultValue={getNumberFilterInitialState(selectedFilters, filterId)}
         />
     );
 };
