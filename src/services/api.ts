@@ -89,6 +89,26 @@ export const updateAppointment = async (appointment: AppointmentFormType) => {
     return data;
 };
 
+export const cancelAppointment = async (appointmentId: number) => {
+    const { error, data } = await supabase.from("appointments").update({ status: "CANCELLED" }).eq("id", appointmentId);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
+export const scheduleAppointment = async (appointmentId: number) => {
+    const { error, data } = await supabase.from("appointments").update({ status: "SCHEDULED" }).eq("id", appointmentId);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    return data;
+};
+
 // EMPLOYEE
 
 export const createEmployee = async (employee: EmployeeFormType) => {

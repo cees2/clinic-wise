@@ -209,7 +209,7 @@ const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps
     );
 };
 
-const DropdownItems = <T,>({ render, items, onClick }: DropdownItemsProps<T>) => {
+const DropdownItems = <Resource,>({ render, items, onClick }: DropdownItemsProps<Resource>) => {
     const { autoClose, setOpen } = use(DropdownContext);
 
     const onClickInternal = (event: React.MouseEvent<HTMLLIElement>) => {

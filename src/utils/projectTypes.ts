@@ -224,9 +224,9 @@ export interface StyledDropdownMenuProps {
 
 export type DropdownPlacementType = "top" | "bottom" | "left" | "right";
 
-export interface DropdownItemsProps<T> {
-    render: (item: T) => React.ReactNode;
-    items: T[];
+export interface DropdownItemsProps<Resource> {
+    render: (item: Resource) => React.ReactNode;
+    items: Resource[];
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }
 

@@ -16,7 +16,7 @@ import { DISPLAY_DATE_FORMAT_MINUTES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 
 const Appointments = () => {
-    const { mutationRemove: removeAppointment } = useMutateAppointment();
+    const { mutationRemove: removeAppointment, mutationCancel, mutationSchedule } = useMutateAppointment();
     const { confirmation } = useConfirmation();
 
     const config: TableDataConfig<AppointmentsListResponseType> = {
@@ -102,6 +102,30 @@ const Appointments = () => {
                         },
                     });
                 },
+            },
+            {
+                id: "cancel",
+                name: "Cancel",
+                action: (item) => {
+                    confirmation({
+                        onConfirm: () => {
+                            mutationCancel.mutate(item.id);
+                        },
+                    });
+                },
+                visible: (item: AppointmentsListResponseType) => item.status === "SCHEDULED",
+            },
+            {
+                id: "schedule",
+                name: "Schedule",
+                action: (item) => {
+                    confirmation({
+                        onConfirm: () => {
+                            mutationSchedule.mutate(item.id);
+                        },
+                    });
+                },
+                visible: (item) => item.status === "CANCELLED",
             },
             {
                 id: "edit",

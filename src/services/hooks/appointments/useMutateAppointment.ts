@@ -1,5 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createAppointment, removeAppointment, updateAppointment } from "../../api";
+import {
+    cancelAppointment,
+    createAppointment,
+    removeAppointment,
+    scheduleAppointment,
+    updateAppointment,
+} from "../../api";
 import { toast } from "react-toastify";
 import type { AppointmentFormType } from "../../../utils/projectTypes";
 import { useNavigate } from "react-router-dom";
@@ -43,5 +49,27 @@ export const useMutateAppointment = () => {
         },
     });
 
-    return { mutationRemove, mutationCreate, mutationUpdate };
+    const mutationCancel = useMutation({
+        mutationFn: (appointmentId: number) => cancelAppointment(appointmentId),
+        onError: () => {
+            toast.error("Could not cancel the appointment");
+        },
+        onSuccess: async () => {
+            toast.success("The appointment canceled successfully");
+            await queryClient.invalidateQueries({ queryKey: ["appointments"] });
+        },
+    });
+
+    const mutationSchedule = useMutation({
+        mutationFn: (appointmentId: number) => scheduleAppointment(appointmentId),
+        onError: () => {
+            toast.error("Could not schedule the appointment");
+        },
+        onSuccess: async () => {
+            toast.success("The appointment scheduled successfully");
+            await queryClient.invalidateQueries({ queryKey: ["appointments"] });
+        },
+    });
+
+    return { mutationRemove, mutationCreate, mutationUpdate, mutationCancel, mutationSchedule };
 };
