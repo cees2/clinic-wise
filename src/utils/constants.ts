@@ -41,3 +41,12 @@ export const nationalityOptions = Object.values(SUPPORTED_NATIONALITIES).map((na
 }));
 
 export const emailPattern = /^\S+@\S+\.\S+$/;
+
+const CLINIC_START_HOUR = 6;
+const CLINIC_END_HOUR = 20;
+export const CLINIC_WORKING_HOURS = Array.from(
+    { length: CLINIC_END_HOUR - CLINIC_START_HOUR },
+    (_, index) => index + CLINIC_START_HOUR,
+);
+export const EVERY_15_MINUTES = [0, 15, 30, 45];
+export const EVERY_30_MINUTES = [0, 30];

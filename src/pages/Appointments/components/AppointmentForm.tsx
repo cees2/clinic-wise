@@ -12,6 +12,7 @@ import { getAppointmentFormDefaultValues } from "../utils/utils";
 import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 import { toast } from "react-toastify";
 import type { AppointmentFormType, SingleAppointmentResponseType } from "../../../utils/projectTypes.ts";
+import { CLINIC_WORKING_HOURS, EVERY_15_MINUTES } from "../../../utils/constants.ts";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleAppointmentResponseType }) => {
     const isEdit = Boolean(appointmentData);
@@ -79,6 +80,8 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleA
                 label="Start date"
                 rules={{ required: true }}
                 minDate="current"
+                customHours={CLINIC_WORKING_HOURS}
+                customMinutes={EVERY_15_MINUTES}
             />
             <FormSelectInput<EmployeeSelect, false, AppointmentFormType>
                 loadOptions={loadEmployees}
