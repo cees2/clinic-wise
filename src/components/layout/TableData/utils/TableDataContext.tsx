@@ -4,7 +4,7 @@ import type { TableDataResourceType, TableDataContextType, Children } from "../.
 const TableDataContext = createContext<TableDataContextType<TableDataResourceType>>({
     config: { columns: [], resourceName: "appointments" },
     tableDataState: {
-        selectedSort: { id: "1", isAscending: true },
+        selectedSort: null,
         selectedFilters: [],
         selectedPage: 1,
         selectedPaginationSize: 10,
@@ -32,7 +32,11 @@ const TableDataContextProvider = <TableDataResource extends TableDataResourceTyp
         [tableDataState, resources, config, dispatch, itemsCount],
     );
 
-    return <TableDataContext value={memoizedContextValue}>{children}</TableDataContext>;
+    return (
+        <TableDataContext value={memoizedContextValue as TableDataContextType<TableDataResourceType>}>
+            {children}
+        </TableDataContext>
+    );
 };
 
 export const useTableDataContext = () => {

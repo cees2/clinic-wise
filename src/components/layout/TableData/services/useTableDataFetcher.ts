@@ -11,18 +11,14 @@ import { supabase } from "../../../../services/services";
 export const useTableDataFetcher = <TableDataResource extends TableDataResourceType>(
     config: TableDataConfig<TableDataResource>,
     tableDataState: TableDataState<TableDataResource>,
-): UseQueryResult<TableDataResource[]> & { count?: number | null } => {
+): UseQueryResult<{ resources: TableDataResource[]; count?: number | null }> => {
     const { resourceName } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
 
-    const resourceRequestSetup = useQuery({
+    return useQuery({
         queryFn: () => getResource(config, tableDataState),
         queryKey: [resourceName, selectedFilters, selectedSort, selectedPage, selectedPaginationSize],
     });
-
-    const { data, count } = resourceRequestSetup.data ?? {};
-
-    return { ...resourceRequestSetup, data, count };
 };
 
 const getSelectString = <TableDataResource extends TableDataResourceType>(
@@ -49,7 +45,7 @@ const getSelectString = <TableDataResource extends TableDataResourceType>(
 export const getResource = async <TableDataResource extends TableDataResourceType>(
     config: TableDataConfig<TableDataResource>,
     tableDataState: TableDataState<TableDataResource>,
-): Promise<{ data: TableDataResource[]; count: number | null }> => {
+): Promise<{ resources: TableDataResource[]; count: number | null }> => {
     const { resourceName, columns } = config;
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
     const rangeStart = (selectedPage - 1) * selectedPaginationSize;
@@ -93,11 +89,11 @@ export const getResource = async <TableDataResource extends TableDataResourceTyp
 
     query = query.range(rangeStart, rangeEnd);
 
-    const { data, error, count } = await query;
+    const { data, error, count } = await query.returns<TableDataResource[]>();
 
     if (error) {
         throw new Error(error.message);
     }
 
-    return { data, count };
+    return { resources: data ?? [], count };
 };

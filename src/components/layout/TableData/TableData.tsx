@@ -14,7 +14,8 @@ const TableDataRenderer = <TableDataResource extends TableDataResourceType>({
     config,
 }: TableDataRendererProps<TableDataResource>) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
-    const { isLoading, data: resources, count } = useTableDataFetcher(config, tableDataState);
+    const { isLoading, data } = useTableDataFetcher(config, tableDataState);
+    const { resources, count } = data ?? {};
 
     if (isLoading) return <LoadingSpinner />;
 
