@@ -56,15 +56,7 @@ const UpdateAccount = () => {
             gap="2.4rem"
             customButtons={customButtons}
         >
-            <TextInput
-                type="email"
-                register={register}
-                control={control}
-                registerName="email"
-                label="Email"
-                rules={{ required: true }}
-                disabled
-            />
+            <TextInput type="email" register={register} control={control} registerName="email" label="Email" disabled />
             <TextInput
                 register={register}
                 control={control}

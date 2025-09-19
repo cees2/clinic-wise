@@ -19,7 +19,7 @@ export const StyledInput = styled.div<{ disabled?: boolean }>`
             return (
                 disabled &&
                 css`
-                    background-color: var(--color-gray-200);
+                    background-color: var(--background-tertiary);
 
                     &:hover {
                         cursor: not-allowed;
