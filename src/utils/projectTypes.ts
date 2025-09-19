@@ -259,7 +259,7 @@ export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "s
 export type PatientFormType = Omit<Tables<"patients">, "created_at" | "id"> & OptionalID;
 export type EmployeeFormType = Omit<Tables<"employees">, "created_at" | "id"> & EmployeeFormAdditionalData & OptionalID;
 export type EmployeeGenerateType = Omit<Tables<"employees">, "created_at" | "id" | "user_id">;
-export type RoomOccupationFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
+export type RoomOccupancyFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
 export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id"> & OptionalID;
 
 export interface Person {

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Appointments from "./Appointments";
 import Patients from "./Patients";
-import Rooms from "./RoomsOccupation/pages/Index";
+import Rooms from "./RoomsOccupancy/pages/Index";
 import Settings from "./Settings";
 import Page404 from "../components/layout/Page404.tsx";
 import Login from "./Authentication/Login/Login.tsx";
@@ -14,8 +14,8 @@ import EditPatient from "./Patients/Edit";
 import NewEmployee from "./Employees/New";
 import EditEmployee from "./Employees/Edit";
 import AppLayout from "../components/layout/AppLayout.tsx";
-import { NewRoomOccupancy } from "./RoomsOccupation/pages/New/NewRoomOccupancy.tsx";
-import { EditRoomOccupancy } from "./RoomsOccupation/pages/Edit/EditRoomOccupancy.tsx";
+import { NewRoomOccupancy } from "./RoomsOccupancy/pages/New/NewRoomOccupancy.tsx";
+import { EditRoomOccupancy } from "./RoomsOccupancy/pages/Edit/EditRoomOccupancy.tsx";
 
 const MainLayout = () => {
     return (

@@ -68,16 +68,9 @@ const Patients = () => {
             },
         ],
         filters: [
-            {
-                id: "name",
-                name: "Name",
-                type: FilterType.TEXT,
-            },
-            {
-                id: "date_of_birth",
-                name: "Date of birth",
-                type: FilterType.DATE,
-            },
+            { id: "name", name: "Name", type: FilterType.TEXT },
+            { id: "surname", name: "Surname", type: FilterType.TEXT },
+            { id: "date_of_birth", name: "Date of birth", type: FilterType.DATE },
             {
                 id: "gender",
                 name: "Gender",

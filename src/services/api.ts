@@ -6,7 +6,7 @@ import type {
     LoginApi,
     PatientFormType,
     RoomFormType,
-    RoomOccupationFormType,
+    RoomOccupancyFormType,
     RoomsFilterType,
     RoomsOccupanciesResponseType,
     SingleAppointmentResponseType,
@@ -527,7 +527,7 @@ export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> 
 
 // ROOMS OCCUPANCIES
 
-export const uploadFakeRoomsOccupation = async (rooms: RoomOccupationFormType[]) => {
+export const uploadFakeRoomsOccupancy = async (rooms: RoomOccupancyFormType[]) => {
     await supabase.from("rooms_occupancy").delete().gte("id", 0);
 
     const { data, error } = await supabase.from("rooms_occupancy").insert(rooms);
@@ -569,7 +569,7 @@ export const getRoomsOccupancies = async (
     return data;
 };
 
-export const createRoomOccupancy = async (roomOccupancy: RoomOccupationFormType) => {
+export const createRoomOccupancy = async (roomOccupancy: RoomOccupancyFormType) => {
     const { data, error } = await supabase.from("rooms_occupancy").insert(roomOccupancy).select().single();
 
     const contextMessage =

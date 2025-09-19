@@ -64,6 +64,7 @@ const Employees = () => {
         ],
         filters: [
             { id: "name", name: "Name", type: FilterType.TEXT },
+            { id: "surname", name: "Surname", type: FilterType.TEXT },
             {
                 id: "gender",
                 name: "Gender",

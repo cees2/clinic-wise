@@ -4,7 +4,7 @@ import { RoomsFilterIds, type RoomsFilterType } from "../../../utils/projectType
 import {
     getDateFilterFromRoomsFilters,
     getRoomFilterFromRoomsFilters,
-} from "../../../pages/RoomsOccupation/utils/utils.ts";
+} from "../../../pages/RoomsOccupancy/utils/utils.ts";
 import { add, format } from "date-fns";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants.ts";
 

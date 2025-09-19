@@ -3,7 +3,7 @@ import {
     UserRole,
     type PatientFormType,
     type Person,
-    type RoomOccupationFormType,
+    type RoomOccupancyFormType,
     type AppointmentGenerateType,
     type EmployeeGenerateType,
 } from "../../../utils/projectTypes";
@@ -99,20 +99,20 @@ export const generateFakeEmployees = () => {
     return mockEmployees;
 };
 
-const getDatesFromRoomOccupation = (roomOccupation: RoomOccupationFormType): [Date, Date] => {
-    const { start, end } = roomOccupation;
+const getDatesFromRoomOccupancy = (roomOccupancy: RoomOccupancyFormType): [Date, Date] => {
+    const { start, end } = roomOccupancy;
 
     return [new Date(start), new Date(end)];
 };
 
-const checkRoomOccupationConflict = (
-    roomsOccupations: RoomOccupationFormType[],
-    currentRoomOccupation: RoomOccupationFormType,
+const checkRoomOccupancyConflict = (
+    roomsOccupancys: RoomOccupancyFormType[],
+    currentRoomOccupancy: RoomOccupancyFormType,
 ) => {
-    return roomsOccupations.some((roomOccupation) => {
-        const [start, end] = getDatesFromRoomOccupation(roomOccupation);
-        const { room_id } = roomOccupation;
-        const { end: currentEnd, start: currentStart, room_id: currentRoomId } = currentRoomOccupation;
+    return roomsOccupancys.some((roomOccupancy) => {
+        const [start, end] = getDatesFromRoomOccupancy(roomOccupancy);
+        const { room_id } = roomOccupancy;
+        const { end: currentEnd, start: currentStart, room_id: currentRoomId } = currentRoomOccupancy;
 
         return (
             room_id === currentRoomId &&
@@ -122,22 +122,22 @@ const checkRoomOccupationConflict = (
     });
 };
 
-const checkRoomOccupationFitsTimetable = (roomOccupation: RoomOccupationFormType) => {
-    const [start, end] = getDatesFromRoomOccupation(roomOccupation);
+const checkRoomOccupancyFitsTimetable = (roomOccupancy: RoomOccupancyFormType) => {
+    const [start, end] = getDatesFromRoomOccupancy(roomOccupancy);
     const startHours = start.getHours();
     const endHours = end.getHours();
 
     return startHours < 6 || endHours > 20;
 };
 
-export const generateFakeRoomsOccupation = (roomsIds: number[], employeesIds: number[]) => {
-    const mockRooms: RoomOccupationFormType[] = [];
-    const ROOM_OCCUPATION_START_MIN = 6;
-    const ROOM_OCCUPATION_START_MAX = 19;
-    const SUPPORTED_NUMBER_OF_HOURS = ROOM_OCCUPATION_START_MAX - ROOM_OCCUPATION_START_MIN + 1;
+export const generateFakeRoomsOccupancy = (roomsIds: number[], employeesIds: number[]) => {
+    const mockRooms: RoomOccupancyFormType[] = [];
+    const ROOM_OCCUPANCY_START_MIN = 6;
+    const ROOM_OCCUPANCY_START_MAX = 19;
+    const SUPPORTED_NUMBER_OF_HOURS = ROOM_OCCUPANCY_START_MAX - ROOM_OCCUPANCY_START_MIN + 1;
     const supportedHours = Array.from(
         { length: SUPPORTED_NUMBER_OF_HOURS },
-        (_, index) => index + ROOM_OCCUPATION_START_MIN,
+        (_, index) => index + ROOM_OCCUPANCY_START_MIN,
     );
     const supportedDurations = Array.from({ length: 10 }, (_, index) => index * 30);
 
@@ -152,14 +152,14 @@ export const generateFakeRoomsOccupation = (roomsIds: number[], employeesIds: nu
             const occupancyPossibleDurations = supportedDurations;
             const occupancyRandomDuration = faker.helpers.arrayElement(occupancyPossibleDurations);
             const endDate = add(startDate, { minutes: occupancyRandomDuration }).toISOString();
-            const newRoom: RoomOccupationFormType = {
+            const newRoom: RoomOccupancyFormType = {
                 start: startDate.toISOString(),
                 end: endDate,
                 room_id: faker.helpers.arrayElement(roomsIds),
                 employee_id: faker.helpers.arrayElement(employeesIds),
             };
 
-            if (checkRoomOccupationConflict(mockRooms, newRoom) || checkRoomOccupationFitsTimetable(newRoom)) {
+            if (checkRoomOccupancyConflict(mockRooms, newRoom) || checkRoomOccupancyFitsTimetable(newRoom)) {
                 continue;
             }
 

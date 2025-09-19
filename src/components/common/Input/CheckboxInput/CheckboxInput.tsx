@@ -1,7 +1,7 @@
 import type { FieldPath, UseFormRegister } from "react-hook-form";
 import styled from "styled-components";
 
-interface Props<FormType extends Record<string, any>> {
+interface Props<FormType extends Record<string, any>> extends React.ComponentProps<"input"> {
     label: string;
     name: FieldPath<FormType>;
     register: UseFormRegister<FormType>;

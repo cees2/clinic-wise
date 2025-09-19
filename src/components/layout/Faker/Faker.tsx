@@ -4,10 +4,10 @@ import { StyledHeader } from "../../common/Header/Header";
 import { LoadingSpinner } from "../../common/LoadingSpinner";
 import { useFakeAppointments } from "../../../services/hooks/faker/useFakeAppointments";
 import { useFakePatients } from "../../../services/hooks/faker/useFakePatients";
-import { generateFakeAppointments, generateFakePatients, generateFakeRoomsOccupation } from "../utils/faker";
+import { generateFakeAppointments, generateFakePatients, generateFakeRoomsOccupancy } from "../utils/faker";
 import { useQueryClient } from "@tanstack/react-query";
 import { getEmployeesIds, getPatientsIds, getRoomsIds } from "../../../services/api";
-import { useFakeRoomsOccupation } from "../../../services/hooks/faker/useFakeRoomsOccupation";
+import { useFakeRoomsOccupancy } from "../../../services/hooks/faker/useFakeRoomsOccupancy";
 
 const StyledFaker = styled.div`
     margin: auto 1.6rem 1.6rem;
@@ -37,8 +37,8 @@ const FakerComponent = () => {
     const queryClient = useQueryClient();
     const { isPending: pendingAppointments, mutate: mutateAppointments } = useFakeAppointments();
     const { isPending: pendingPatients, mutate: mutatePatients } = useFakePatients();
-    const { isPending: pendingRoomsOccupation, mutate: mutateRoomsOccupation } = useFakeRoomsOccupation();
-    const isPending = pendingAppointments || pendingPatients || pendingRoomsOccupation;
+    const { isPending: pendingRoomsOccupancy, mutate: mutateRoomsOccupancy } = useFakeRoomsOccupancy();
+    const isPending = pendingAppointments || pendingPatients || pendingRoomsOccupancy;
 
     const uploadAppointments = async () => {
         const [patientsIds, employeesIds] = await Promise.all([
@@ -55,13 +55,13 @@ const FakerComponent = () => {
         mutatePatients(mockPatients);
     };
 
-    const uploadRoomsOccupation = async () => {
+    const uploadRoomsOccupancy = async () => {
         const [roomsIds, employeesIds] = await Promise.all([
             queryClient.fetchQuery({ queryKey: ["roomsIds", 20], queryFn: () => getRoomsIds(20) }),
             queryClient.fetchQuery({ queryKey: ["employeesIds", 20], queryFn: () => getEmployeesIds(20) }),
         ]);
-        const mockRoomsOccupation = generateFakeRoomsOccupation(roomsIds, employeesIds);
-        mutateRoomsOccupation(mockRoomsOccupation);
+        const mockRoomsOccupancy = generateFakeRoomsOccupancy(roomsIds, employeesIds);
+        mutateRoomsOccupancy(mockRoomsOccupancy);
     };
 
     return (
@@ -73,7 +73,7 @@ const FakerComponent = () => {
                 <FakerButtons>
                     <Button onClick={() => void uploadAppointments()}>Upload appointments</Button>
                     <Button onClick={uploadPatients}>Upload patients</Button>
-                    <Button onClick={() => void uploadRoomsOccupation()}>Upload rooms occupation</Button>
+                    <Button onClick={() => void uploadRoomsOccupancy()}>Upload rooms occupancy</Button>
                 </FakerButtons>
             )}
         </StyledFaker>

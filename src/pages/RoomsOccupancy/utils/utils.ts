@@ -2,7 +2,7 @@ import { add, differenceInDays, format, isToday, isTomorrow, startOfDay, startOf
 import {
     RoomDateFilters,
     RoomsFilterIds,
-    type RoomOccupationFormType,
+    type RoomOccupancyFormType,
     type RoomsFilterType,
     type RoomsResponseType,
     type RoomsOccupanciesResponseType,
@@ -107,7 +107,7 @@ export const updateRoomFilterValue = (id: string, roomsFilter?: RoomsFilterType)
 
 export const getRoomsOccupancyFormDefaultValues = (
     roomsOccupancyData?: RoomsOccupanciesResponseType,
-): Partial<RoomOccupationFormType> => {
+): Partial<RoomOccupancyFormType> => {
     return {
         id: roomsOccupancyData?.id,
         room_id: roomsOccupancyData?.rooms.id,

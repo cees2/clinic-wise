@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import type { RoomOccupationFormType, RoomsOccupanciesResponseType } from "../../../utils/projectTypes";
+import type { RoomOccupancyFormType, RoomsOccupanciesResponseType } from "../../../utils/projectTypes";
 import { GridForm } from "../../../components/common/Form/GridForm";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
@@ -14,12 +14,12 @@ import { useMutateRoomsOccupancy } from "../../../services/hooks/rooms/useMutate
 import { CLINIC_WORKING_HOURS, DISPLAY_DATE_FORMAT_MINUTES, EVERY_30_MINUTES } from "../../../utils/constants.ts";
 
 interface Props {
-    roomOccupation?: RoomsOccupanciesResponseType;
+    roomOccupancy?: RoomsOccupanciesResponseType;
 }
 
-export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
-    const { control, handleSubmit, formState } = useForm<RoomOccupationFormType>({
-        defaultValues: getRoomsOccupancyFormDefaultValues(roomOccupation),
+export const RoomsOccupancyForm = ({ roomOccupancy }: Props) => {
+    const { control, handleSubmit, formState } = useForm<RoomOccupancyFormType>({
+        defaultValues: getRoomsOccupancyFormDefaultValues(roomOccupancy),
     });
     const queryClient = useQueryClient();
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
         });
     };
 
-    const submitSuccess = (data: RoomOccupationFormType) => {
+    const submitSuccess = (data: RoomOccupancyFormType) => {
         mutateRoomOccupancy.mutate(data);
     };
 
@@ -57,7 +57,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
             gap="2.4rem"
             onCancel={() => void navigate("/room-occupancies")}
         >
-            <FormSelectInput<EmployeeSelect, false, RoomOccupationFormType>
+            <FormSelectInput<EmployeeSelect, false, RoomOccupancyFormType>
                 loadOptions={loadEmployees}
                 getOptionLabel={(option) => `${option.name} ${option.surname}`}
                 getOptionValue={(option) => option?.id?.toString()}
@@ -65,9 +65,9 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
-                defaultValue={roomOccupation?.employees}
+                defaultValue={roomOccupancy?.employees}
             />
-            <FormSelectInput<RoomSelect, false, RoomOccupationFormType>
+            <FormSelectInput<RoomSelect, false, RoomOccupancyFormType>
                 loadOptions={loadRooms}
                 getOptionLabel={(option) => option.name}
                 getOptionValue={(option) => option?.id?.toString()}
@@ -75,7 +75,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 control={control}
                 label="Room"
                 rules={{ required: true }}
-                defaultValue={roomOccupation?.rooms}
+                defaultValue={roomOccupancy?.rooms}
             />
             <DatePickerInput
                 control={control}
@@ -84,7 +84,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 withTimePicker
                 rules={{
                     required: true,
-                    validate: (value: string | number | undefined, formValues: RoomOccupationFormType) => {
+                    validate: (value: string | number | undefined, formValues: RoomOccupancyFormType) => {
                         const startDate = new Date(value ?? Date.now());
                         const endDate = new Date(formValues.end ?? Date.now());
                         const comparationResult = compareDesc(startDate, endDate);
