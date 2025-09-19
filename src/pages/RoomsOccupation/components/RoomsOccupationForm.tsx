@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 import { getRoomsOccupancyFormDefaultValues } from "../utils/utils.ts";
 import { compareDesc, startOfToday } from "date-fns";
 import { useMutateRoomsOccupancy } from "../../../services/hooks/rooms/useMutateRoomsOccupancy.ts";
-import { CLINIC_WORKING_HOURS, EVERY_30_MINUTES } from "../../../utils/constants.ts";
+import { CLINIC_WORKING_HOURS, DISPLAY_DATE_FORMAT_MINUTES, EVERY_30_MINUTES } from "../../../utils/constants.ts";
 
 interface Props {
     roomOccupation?: RoomsOccupanciesResponseType;
@@ -97,6 +97,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 minDate={startOfToday()}
                 customHours={CLINIC_WORKING_HOURS}
                 customMinutes={EVERY_30_MINUTES}
+                dateFormat={DISPLAY_DATE_FORMAT_MINUTES}
             />
             <DatePickerInput
                 control={control}
@@ -107,6 +108,7 @@ export const RoomsOccupationForm = ({ roomOccupation }: Props) => {
                 minDate={startOfToday()}
                 customHours={CLINIC_WORKING_HOURS}
                 customMinutes={EVERY_30_MINUTES}
+                dateFormat={DISPLAY_DATE_FORMAT_MINUTES}
             />
         </GridForm>
     );

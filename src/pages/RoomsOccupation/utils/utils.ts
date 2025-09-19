@@ -1,4 +1,4 @@
-import { add, differenceInDays, endOfToday, format, isToday, isTomorrow, startOfDay, startOfToday } from "date-fns";
+import { add, differenceInDays, format, isToday, isTomorrow, startOfDay, startOfToday } from "date-fns";
 import {
     RoomDateFilters,
     RoomsFilterIds,
@@ -113,6 +113,6 @@ export const getRoomsOccupancyFormDefaultValues = (
         room_id: roomsOccupancyData?.rooms.id,
         employee_id: roomsOccupancyData?.employees.id,
         start: roomsOccupancyData?.start ?? format(startOfToday(), DB_DATE_FORMAT_WITH_TIME),
-        end: roomsOccupancyData?.end ?? format(endOfToday(), DB_DATE_FORMAT_WITH_TIME),
+        end: roomsOccupancyData?.end ?? format(startOfToday(), DB_DATE_FORMAT_WITH_TIME),
     };
 };

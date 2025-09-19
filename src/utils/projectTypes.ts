@@ -31,16 +31,10 @@ export interface HeaderActions {
     path?: string;
 }
 
-export enum TableVariant {
-    PRIMARY,
-    BARE,
-}
-
 export interface TableBaseProps {
     gridTemplateColumns?: string;
     numberOfColumns?: number;
     className?: string;
-    variant?: TableVariant;
 }
 
 export type TableProps = React.ComponentProps<"table"> & TableBaseProps;

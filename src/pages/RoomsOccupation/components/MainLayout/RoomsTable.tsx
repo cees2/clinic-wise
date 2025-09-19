@@ -1,10 +1,6 @@
 import { addMinutes, isWithinInterval, minutesToHours } from "date-fns";
 import Table from "../../../../components/common/Table/Table.tsx";
-import {
-    type RoomsOccupanciesResponseType,
-    type RoomsResponseType,
-    TableVariant,
-} from "../../../../utils/projectTypes.ts";
+import { type RoomsOccupanciesResponseType, type RoomsResponseType } from "../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../../utils/utils.ts";
 import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
@@ -54,11 +50,11 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
 
     return (
-        <Table numberOfColumns={(filteredRooms?.length ?? 0) + 1} variant={TableVariant.BARE}>
+        <Table gridTemplateColumns={`7rem repeat(${filteredRooms?.length ?? 0}, 1fr)`}>
             <Table.TableRow>
                 <Table.TableHeaderCell columnIndex={0} />
                 {filteredRooms?.map(({ name }, index) => (
-                    <Table.TableHeaderCell key={name} columnIndex={index + 1}>
+                    <Table.TableHeaderCell key={name} columnIndex={index + 1} className="text-center">
                         {name}
                     </Table.TableHeaderCell>
                 ))}

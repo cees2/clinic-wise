@@ -5,8 +5,13 @@ import { useController, useFormState, type Control, type FieldPath, type Registe
 import TimePicker from "./TimePicker";
 import { InputLabel } from "../common/InputCommon";
 import { ErrorMessage } from "../common/ErrorMessage";
-import { getDefaultMaxDate, getDefaultMinDate, getInputFieldErrorName } from "../../utils/inputs";
-import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../../utils/constants";
+import {
+    getDatePickerFormatDate,
+    getDefaultMaxDate,
+    getDefaultMinDate,
+    getInputFieldErrorName,
+} from "../../utils/inputs";
+import { DB_DATE_FORMAT } from "../../../../utils/constants";
 import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
 import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
 
@@ -18,6 +23,7 @@ interface Props<FormType extends Record<string, any>> extends Partial<TimePicker
     withTimePicker?: true;
     label: string;
     rules?: Omit<RegisterOptions<FormType>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
+    dateFormat?: string;
 }
 
 export const DatePickerInput = <FormType extends Record<string, any>>({
@@ -30,6 +36,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     rules,
     customHours,
     customMinutes,
+    dateFormat,
 }: Props<FormType>) => {
     const calendarMinDate = getDefaultMinDate(minDate, withTimePicker);
     const calendarMaxDate = getDefaultMaxDate(maxDate, withTimePicker);
@@ -41,10 +48,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
         name: registerName,
         rules,
     });
-    const formattedDate = format(
-        new Date(value || Date.now()),
-        withTimePicker ? DB_DATE_FORMAT_WITH_TIME : DB_DATE_FORMAT,
-    );
+    const formattedDate = format(new Date(value || Date.now()), getDatePickerFormatDate(dateFormat, withTimePicker));
     const { errors } = useFormState<FormType>({ control });
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 

@@ -1,6 +1,7 @@
 import { add, endOfDay, startOfDay, startOfYear } from "date-fns";
 import type { FieldErrors, FieldPath } from "react-hook-form";
 import type { CSSObjectWithLabel, GetOptionValue, OnChangeValue, StylesConfig } from "react-select";
+import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants.ts";
 
 export const getInputFieldErrorName = <FormType extends Record<string, any>>(
     errors: FieldErrors<FormType>,
@@ -100,4 +101,10 @@ export const getDefaultMaxDate = (maxDate?: Date | "current", withTimePicker?: t
     if (maxDate) return maxDate;
 
     return add(new Date(), { years: 1 });
+};
+
+export const getDatePickerFormatDate = (dateFormat?: string, withTimePicker?: true) => {
+    if (dateFormat) return dateFormat;
+
+    return withTimePicker ? DB_DATE_FORMAT_WITH_TIME : DB_DATE_FORMAT;
 };
