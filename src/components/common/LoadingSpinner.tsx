@@ -19,12 +19,12 @@ const Spinner = styled.div`
     animation: rotateSpinner 2s linear infinite;
 `;
 
-const StyledSpinnerText = styled.span<{ forceDarkText?: true }>`
+const StyledSpinnerText = styled.span<{ $forceDarkText?: true }>`
     text-align: center;
     font-size: 2rem;
     font-weight: var(--font-weight-medium);
-    ${({ forceDarkText }) => {
-        return forceDarkText
+    ${({ $forceDarkText }) => {
+        return $forceDarkText
             ? css`
                   color: var(--color-gray-800);
               `
@@ -65,7 +65,7 @@ export const LoadingSpinner = ({ forceDarkText }: { forceDarkText?: true }) => {
     return (
         <StyledLoadingSpinner>
             <Spinner />
-            <StyledSpinnerText forceDarkText={forceDarkText}>{loadingCaption}</StyledSpinnerText>
+            <StyledSpinnerText $forceDarkText={forceDarkText}>{loadingCaption}</StyledSpinnerText>
         </StyledLoadingSpinner>
     );
 };

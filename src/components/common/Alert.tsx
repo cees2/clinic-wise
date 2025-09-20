@@ -2,15 +2,11 @@ import { FiInfo } from "react-icons/fi";
 import { MdWarningAmber } from "react-icons/md";
 import styled, { css } from "styled-components";
 import { VscError } from "react-icons/vsc";
+import type { AlertProps, AlertWarning } from "../../utils/projectTypes.ts";
 
-interface Props {
-    variant?: "warning" | "error" | "info";
-    className?: string;
-    title?: string;
-    message?: string;
-}
-
-const StyledAlert = styled.div.attrs({ role: "status", "aria-live": "polite" })<Props>`
+const StyledAlert = styled.div.attrs({ role: "status", "aria-live": "polite" })<{
+    $variant?: AlertWarning;
+}>`
     padding: 2rem;
     display: flex;
     align-items: flex-start;
@@ -20,8 +16,8 @@ const StyledAlert = styled.div.attrs({ role: "status", "aria-live": "polite" })<
         width: 3.2rem;
         height: 3.2rem;
 
-        ${({ variant }) => {
-            switch (variant) {
+        ${({ $variant }) => {
+            switch ($variant) {
                 case "error":
                     return css`
                         fill: var(--color-red-500);
@@ -39,8 +35,8 @@ const StyledAlert = styled.div.attrs({ role: "status", "aria-live": "polite" })<
         }}
     }
 
-    ${({ variant }) => {
-        switch (variant) {
+    ${({ $variant }) => {
+        switch ($variant) {
             case "error":
                 return css`
                     background-color: var(--color-red-100);
@@ -57,12 +53,11 @@ const StyledAlert = styled.div.attrs({ role: "status", "aria-live": "polite" })<
                     background-color: var(--color-teal-100);
                     border-top: 4px solid var(--color-teal-500);
                 `;
-                return;
         }
     }}
 `;
 
-export const Alert = ({ variant, className, title, message }: Props) => {
+export const Alert = ({ variant, className, title, message }: AlertProps) => {
     const getSVG = () => {
         switch (variant) {
             case "error":
@@ -76,7 +71,7 @@ export const Alert = ({ variant, className, title, message }: Props) => {
     };
 
     return (
-        <StyledAlert className={className} variant={variant}>
+        <StyledAlert className={className} $variant={variant}>
             {getSVG()}
             <div>
                 {title && <h4 className="font-bold">{title}</h4>}

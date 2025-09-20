@@ -53,8 +53,8 @@ export const RoomsOccupancyForm = ({ roomOccupancy }: Props) => {
         <GridForm
             formState={formState}
             onSubmit={onSubmit}
-            columns={2}
-            gap="2.4rem"
+            $columns={2}
+            $gap="2.4rem"
             onCancel={() => void navigate("/room-occupancies")}
         >
             <FormSelectInput<EmployeeSelect, false, RoomOccupancyFormType>

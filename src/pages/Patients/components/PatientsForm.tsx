@@ -38,8 +38,8 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
         <GridForm
             formState={formState}
             onSubmit={onSubmit}
-            columns={2}
-            gap="2.4rem"
+            $columns={2}
+            $gap="2.4rem"
             onCancel={() => void navigate("/patients")}
         >
             <TextInput

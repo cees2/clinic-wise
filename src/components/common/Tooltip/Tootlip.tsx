@@ -6,14 +6,14 @@ const StyledTooltipOverlay = styled.div`
     position: relative;
 `;
 
-const StyledTooltip = styled.div.attrs({ role: "tooltip" })<{ placement?: tooltipPlacement }>`
+const StyledTooltip = styled.div.attrs({ role: "tooltip" })<{ $placement?: tooltipPlacement }>`
     position: absolute;
     padding: 1.2rem;
     background-color: var(--color-background-tertiary);
     border-radius: var(--radius-lg);
 
-    ${({ placement }) => {
-        switch (placement) {
+    ${({ $placement }) => {
+        switch ($placement) {
             case "left":
                 return css`
                     left: -0.8rem;
@@ -48,8 +48,8 @@ const StyledTooltip = styled.div.attrs({ role: "tooltip" })<{ placement?: toolti
         height: 0;
         width: 0;
         
-        ${({ placement }) => {
-            switch (placement) {
+        ${({ $placement }) => {
+            switch ($placement) {
                 case "left":
                     return css`
                         border-top: 0.8rem solid transparent;
@@ -116,7 +116,7 @@ export const TooltipOverlay = ({ children, Tooltip, className, show, showOnHover
 
 export const Tooltip = ({ placement, children, className }: TooltipProps) => {
     return (
-        <StyledTooltip placement={placement} className={className}>
+        <StyledTooltip $placement={placement} className={className}>
             {children}
         </StyledTooltip>
     );

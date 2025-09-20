@@ -52,8 +52,8 @@ const UpdateAccount = () => {
             headerTitle="Update your account"
             onSubmit={onSubmit}
             formState={formState}
-            columns={2}
-            gap="2.4rem"
+            $columns={2}
+            $gap="2.4rem"
             customButtons={customButtons}
         >
             <TextInput type="email" register={register} control={control} registerName="email" label="Email" disabled />

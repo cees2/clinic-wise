@@ -52,9 +52,9 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     return (
         <Table gridTemplateColumns={`7rem repeat(${filteredRooms?.length ?? 0}, 1fr)`}>
             <Table.TableRow>
-                <Table.TableHeaderCell columnIndex={0} />
-                {filteredRooms?.map(({ name }, index) => (
-                    <Table.TableHeaderCell key={name} columnIndex={index + 1} className="text-center">
+                <Table.TableHeaderCell />
+                {filteredRooms?.map(({ name }) => (
+                    <Table.TableHeaderCell key={name} className="text-center">
                         {name}
                     </Table.TableHeaderCell>
                 ))}

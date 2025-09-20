@@ -1,8 +1,7 @@
 import styled, { css } from "styled-components";
-import { AppColorMode, type ButtonProps } from "../../utils/projectTypes";
-import { useDarkMode } from "../../utils/hooks/useDarkMode.ts";
+import { type ButtonProps, type ButtonVariant } from "../../utils/projectTypes";
 
-const StyledButton = styled.button<ButtonProps & { appMode: AppColorMode }>`
+const StyledButton = styled.button<{ $variant?: ButtonVariant }>`
     padding: 0.8rem 1.6rem;
     color: var(--color-gray-200);
     font-size: 1.4rem;
@@ -13,8 +12,8 @@ const StyledButton = styled.button<ButtonProps & { appMode: AppColorMode }>`
 
     &:hover {
         cursor: pointer;
-        ${({ variant }) => {
-            switch (variant) {
+        ${({ $variant }) => {
+            switch ($variant) {
                 case "danger":
                     return css`
                         background-color: var(--color-red-800);
@@ -32,8 +31,8 @@ const StyledButton = styled.button<ButtonProps & { appMode: AppColorMode }>`
         }}
     }
 
-    ${({ variant }) => {
-        switch (variant) {
+    ${({ $variant }) => {
+        switch ($variant) {
             case "danger":
                 return css`
                     background-color: var(--color-red-700);
@@ -53,10 +52,8 @@ const StyledButton = styled.button<ButtonProps & { appMode: AppColorMode }>`
 `;
 
 export const Button = ({ children, onClick, variant, disabled, ...restProps }: ButtonProps) => {
-    const { appMode } = useDarkMode();
-
     return (
-        <StyledButton onClick={onClick} variant={variant} disabled={disabled} appMode={appMode} {...restProps}>
+        <StyledButton onClick={onClick} $variant={variant} {...restProps}>
             {children}
         </StyledButton>
     );

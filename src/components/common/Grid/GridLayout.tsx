@@ -4,58 +4,58 @@ import type { GridLayoutProps } from "../../../utils/projectTypes";
 export const GridLayout = styled.div<GridLayoutProps>`
     display: grid;
     align-items: end;
-    ${({ templateColumns, columnMinWidth, columnMaxWidth, columns }) => {
-        if (templateColumns)
+    ${({ $templateColumns, $columnMinWidth, $columnMaxWidth, $columns }) => {
+        if ($templateColumns)
             return css`
-                grid-template-columns: ${templateColumns};
+                grid-template-columns: ${$templateColumns};
             `;
 
-        if (columnMinWidth && columnMaxWidth) {
-            const gridTemplateColumns = `minmax(${columnMinWidth},${columnMaxWidth})`;
+        if ($columnMinWidth && $columnMaxWidth) {
+            const gridTemplateColumns = `minmax(${$columnMinWidth},${$columnMaxWidth})`;
             return css`
                 grid-template-columns: repeat(${gridTemplateColumns});
             `;
         }
 
-        if (columns) {
-            const gridTemplateColumns = `repeat(${columns}, 1fr)`;
+        if ($columns) {
+            const gridTemplateColumns = `repeat(${$columns}, 1fr)`;
             return css`
                 grid-template-columns: ${gridTemplateColumns};
             `;
         }
     }}
 
-    ${({ templateRows, rows }) => {
-        if (templateRows) {
+    ${({ $templateRows, $rows }) => {
+        if ($templateRows) {
             return css`
-                grid-template-rows: ${templateRows};
+                grid-template-rows: ${$templateRows};
             `;
         }
 
-        if (rows) {
-            const gridTemplateRows = `repeat(${rows}, 1fr)`;
+        if ($rows) {
+            const gridTemplateRows = `repeat(${$rows}, 1fr)`;
             return css`
                 grid-template-rows: ${gridTemplateRows};
             `;
         }
     }}
 
-    ${({ columnGap, rowGap, gap }) => {
-        if (columnGap && rowGap) {
+    ${({ $columnGap, $rowGap, $gap }) => {
+        if ($columnGap && $rowGap) {
             return css`
-                gap: ${columnGap} ${rowGap};
+                gap: ${$columnGap} ${$rowGap};
             `;
-        } else if (columnGap) {
+        } else if ($columnGap) {
             return css`
-                column-gap: ${columnGap};
+                column-gap: ${$columnGap};
             `;
-        } else if (rowGap) {
+        } else if ($rowGap) {
             return css`
-                row-gap: ${rowGap};
+                row-gap: ${$rowGap};
             `;
-        } else if (gap) {
+        } else if ($gap) {
             return css`
-                gap: ${gap};
+                gap: ${$gap};
             `;
         }
     }}

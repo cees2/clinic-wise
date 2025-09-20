@@ -35,7 +35,7 @@ export const TextInput = <FormType extends Record<string, any>>({
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     return (
-        <StyledInput className={className} disabled={disabled}>
+        <StyledInput className={className} $disabled={disabled}>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             {helpText && <InputHelp>{helpText}</InputHelp>}
             <input

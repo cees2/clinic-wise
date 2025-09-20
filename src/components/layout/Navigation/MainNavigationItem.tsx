@@ -1,13 +1,12 @@
 import styled from "styled-components";
-import { AppColorMode, type MainNavigationConfigItem } from "../../../utils/projectTypes";
+import { type MainNavigationConfigItem } from "../../../utils/projectTypes";
 import { NavLink } from "react-router-dom";
-import { useDarkMode } from "../../../utils/hooks/useDarkMode.ts";
 
 interface Props {
     navigationItem: MainNavigationConfigItem;
 }
 
-const StyledMainNavigationItem = styled.a<{ appMode: AppColorMode }>`
+const StyledMainNavigationItem = styled.a`
     &:visited,
     &:link {
         display: flex;
@@ -37,12 +36,11 @@ const StyledMainNavigationItem = styled.a<{ appMode: AppColorMode }>`
 
 const MainNavigationItem = ({ navigationItem }: Props) => {
     const { title, icon, to, visible } = navigationItem;
-    const { appMode } = useDarkMode();
 
     if (visible === false) return null;
 
     return (
-        <StyledMainNavigationItem as={NavLink} to={to} appMode={appMode}>
+        <StyledMainNavigationItem as={NavLink} to={to}>
             {icon}
             {title}
         </StyledMainNavigationItem>

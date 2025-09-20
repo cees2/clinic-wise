@@ -40,7 +40,6 @@ export interface TableBaseProps {
 export type TableProps = React.ComponentProps<"table"> & TableBaseProps;
 
 export interface TableHeaderCellProps extends React.ComponentProps<"th"> {
-    columnIndex: number;
     className?: string;
 }
 
@@ -211,9 +210,9 @@ export interface DropdownContextType {
 }
 
 export interface StyledDropdownMenuProps {
-    toggleHeight: number;
-    toggleWidth: number;
-    placement: DropdownPlacementType;
+    $toggleHeight: number;
+    $toggleWidth: number;
+    $placement: DropdownPlacementType;
 }
 
 export type DropdownPlacementType = "top" | "bottom" | "left" | "right";
@@ -300,16 +299,16 @@ export interface FormSelectOption {
 }
 
 export interface GridLayoutProps {
-    templateColumns?: string;
-    templateRows?: string;
-    columns?: number;
-    rows?: number;
-    columnMinWidth?: string;
-    columnMaxWidth?: string;
-    columnGap?: string;
-    rowGap?: string;
-    gap?: string;
-    className?: string;
+    $templateColumns?: string;
+    $templateRows?: string;
+    $columns?: number;
+    $rows?: number;
+    $columnMinWidth?: string;
+    $columnMaxWidth?: string;
+    $columnGap?: string;
+    $rowGap?: string;
+    $gap?: string;
+    $className?: string;
 }
 
 export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement> {
@@ -544,4 +543,13 @@ export interface TableDataProps<TableDataResource extends TableDataResourceType>
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
     itemsCount?: number | null;
+}
+
+export type AlertWarning = "warning" | "error" | "info";
+
+export interface AlertProps {
+    variant?: AlertWarning;
+    className?: string;
+    title?: string;
+    message?: string;
 }

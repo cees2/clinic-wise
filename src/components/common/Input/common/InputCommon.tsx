@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-export const StyledInput = styled.div<{ disabled?: boolean }>`
+export const StyledInput = styled.div<{ $disabled?: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -15,9 +15,9 @@ export const StyledInput = styled.div<{ disabled?: boolean }>`
         padding: 0.5rem 1.2rem;
         color: var(--color-font-primary);
 
-        ${({ disabled }) => {
+        ${({ $disabled }) => {
             return (
-                disabled &&
+                $disabled &&
                 css`
                     background-color: var(--background-tertiary);
 

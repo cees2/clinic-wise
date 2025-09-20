@@ -39,8 +39,8 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
         <GridForm
             formState={formState}
             onSubmit={onSubmit}
-            columns={2}
-            gap="2.4rem"
+            $columns={2}
+            $gap="2.4rem"
             onCancel={() => void navigate("/employees")}
         >
             <TextInput

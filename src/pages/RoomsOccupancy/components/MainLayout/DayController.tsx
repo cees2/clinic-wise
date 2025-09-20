@@ -13,9 +13,9 @@ const StyledDayController = styled.div`
     margin-bottom: 4.8rem;
 `;
 
-const Arrow = styled.div<{ disabled?: boolean }>`
-    ${({ disabled }) => {
-        if (disabled)
+const Arrow = styled.div<{ $disabled?: boolean }>`
+    ${({ $disabled }) => {
+        if ($disabled)
             return css`
                 color: var(--color-gray-400);
             `;
@@ -23,8 +23,8 @@ const Arrow = styled.div<{ disabled?: boolean }>`
     
     
     &:hover {
-        ${({ disabled }) => {
-            if (!disabled) {
+        ${({ $disabled }) => {
+            if (!$disabled) {
                 return css`
                     cursor: pointer;
                     transform: scale(120%);
@@ -77,7 +77,7 @@ const DayController = () => {
                 <small>{formattedDate}</small>
             </div>
             <div className="flex gap-x-6">
-                <Arrow onClick={previousDayClickHandler} as={FaChevronLeft} disabled={disablePrevDay} />
+                <Arrow onClick={previousDayClickHandler} as={FaChevronLeft} $disabled={disablePrevDay} />
                 <Arrow onClick={nextDayClickHandler} as={FaChevronRight} />
             </div>
         </StyledDayController>

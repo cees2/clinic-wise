@@ -22,7 +22,7 @@ const DropdownContext = createContext<DropdownContextType>({
     autoClose: true,
 });
 
-const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: boolean }>`
+const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ $isForm?: boolean }>`
     background-color: var(--color-background-tertiary);
     cursor: pointer;
     display: flex;
@@ -32,8 +32,8 @@ const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ isForm?: 
     border-radius: var(--radius-lg);
     border: none;
 
-    ${({ isForm }) =>
-        isForm &&
+    ${({ $isForm }) =>
+        $isForm &&
         css`
             width: 100%;
             padding: 0.5rem 1.2rem;
@@ -60,10 +60,10 @@ const StyledDropdownMenu = styled.ul.attrs({
     background-color: var(--color-background-tertiary);
     z-index: 1;
 
-    ${({ toggleHeight, toggleWidth, placement }) => {
-        switch (placement) {
+    ${({ $toggleHeight, $toggleWidth, $placement }) => {
+        switch ($placement) {
             case "top": {
-                const translateValue = `-100% - ${toggleHeight}px`;
+                const translateValue = `-100% - ${$toggleHeight}px`;
                 return `transform: translateY(calc(${translateValue}));`;
             }
             case "left": {
@@ -74,13 +74,13 @@ const StyledDropdownMenu = styled.ul.attrs({
             }
             case "right":
                 return css`
-                    left: ${`${toggleWidth}px`};
+                    left: ${`${$toggleWidth}px`};
                     top: 0;
                 `;
             case "bottom":
             default:
                 return css`
-                    top: ${`${toggleHeight}px`};
+                    top: ${`${$toggleHeight}px`};
                 `;
         }
     }}
@@ -154,7 +154,7 @@ const DropdownToggle = ({ children, hideDefaultIcon, className, isForm }: Dropdo
             onClick={toggleDropdown}
             ref={originalDropdownToggleRef}
             className={className}
-            isForm={isForm}
+            $isForm={isForm}
         >
             {children}
             {!hideDefaultIcon && <IoMdArrowDropdown />}
@@ -198,10 +198,10 @@ const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps
 
     return (
         <StyledDropdownMenu
-            toggleHeight={toggleHeight ?? 0}
-            toggleWidth={toggleWidth ?? 0}
+            $toggleHeight={toggleHeight ?? 0}
+            $toggleWidth={toggleWidth ?? 0}
             ref={dropdownMenuRef}
-            placement={placement}
+            $placement={placement}
             className={className}
         >
             {children}

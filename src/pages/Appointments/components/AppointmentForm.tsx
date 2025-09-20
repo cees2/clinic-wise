@@ -56,8 +56,8 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleA
             onSubmit={onSubmit}
             formState={formState}
             onCancel={() => void navigate("/appointments")}
-            columns={2}
-            gap="2.4rem"
+            $columns={2}
+            $gap="2.4rem"
         >
             <NumberInput
                 control={control}

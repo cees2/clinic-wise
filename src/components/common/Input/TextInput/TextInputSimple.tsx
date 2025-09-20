@@ -9,7 +9,7 @@ interface Props extends React.ComponentProps<"input"> {
 
 export const TextInputSimple = ({ label, helpText, className, disabled, id, ...restProps }: Props) => {
     return (
-        <StyledInput className={className} disabled={disabled}>
+        <StyledInput className={className} $disabled={disabled}>
             <InputLabel htmlFor={id}>{label}</InputLabel>
             {helpText && <InputHelp>{helpText}</InputHelp>}
             <input type="text" id={id} disabled={disabled} {...restProps} />

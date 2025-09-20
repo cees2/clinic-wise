@@ -11,13 +11,13 @@ interface Props {
 }
 
 const StyledDashboardStatisticsBox = styled.li<{
-    boxOrder: number;
-    backgroundColor: StatisticsBoxColorConfig;
-    appMode: AppColorMode;
+    $boxOrder: number;
+    $backgroundColor: StatisticsBoxColorConfig;
+    $appMode: AppColorMode;
 }>`
-    ${({ boxOrder }) => {
+    ${({ $boxOrder }) => {
         return css`
-            grid-column: ${boxOrder + 1} / span 1;
+            grid-column: ${$boxOrder + 1} / span 1;
         `;
     }}
 
@@ -36,8 +36,8 @@ const StyledDashboardStatisticsBox = styled.li<{
         justify-self: center;
         padding: 1.2rem;
         border-radius: 50%;
-        ${({ backgroundColor: { light, dark }, appMode }) => {
-            return appMode === AppColorMode.DARK
+        ${({ $backgroundColor: { light, dark }, $appMode }) => {
+            return $appMode === AppColorMode.DARK
                 ? css`
                       background-color: color-mix(in srgb, var(${dark}) 80%, transparent);
                   `
@@ -49,9 +49,9 @@ const StyledDashboardStatisticsBox = styled.li<{
         & > svg {
             width: 3.2rem;
             height: 3.2rem;
-            ${({ appMode }) => {
+            ${({ $appMode }) => {
                 return (
-                    appMode === AppColorMode.DARK &&
+                    $appMode === AppColorMode.DARK &&
                     css`
                         stroke: var(--color-gray-200);
                         fill: var(--color-gray-200);
@@ -87,7 +87,7 @@ export const DashboardStatisticsBox = ({ name, boxOrder }: Props) => {
     const [Icon, value, backgroundColor] = statisticsBoxData;
 
     return (
-        <StyledDashboardStatisticsBox boxOrder={boxOrder} backgroundColor={backgroundColor} appMode={appMode}>
+        <StyledDashboardStatisticsBox $boxOrder={boxOrder} $backgroundColor={backgroundColor} $appMode={appMode}>
             <div className="icon-background">{Icon}</div>
             <h6 className="statistics-name">{name}</h6>
             <span className="statistics-value">{value || "-"}</span>

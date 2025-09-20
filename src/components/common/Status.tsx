@@ -9,15 +9,15 @@ interface Props extends Children {
     status: status;
 }
 
-const StyledStatus = styled.span<{ variant: variant; appMode: AppColorMode }>`
+const StyledStatus = styled.span<{ $variant: variant; $appMode: AppColorMode }>`
     padding: 0.4rem 0.8rem;
     font-size: 1.2rem;
     border-radius: var(--radius-lg);
     font-weight: var(--font-weight-semibold);
 
-    ${({ variant, appMode }) => {
-        if (variant === "success") {
-            return appMode === AppColorMode.DARK
+    ${({ $variant, $appMode }) => {
+        if ($variant === "success") {
+            return $appMode === AppColorMode.DARK
                 ? css`
                       background-color: var(--color-green-600);
                   `
@@ -26,8 +26,8 @@ const StyledStatus = styled.span<{ variant: variant; appMode: AppColorMode }>`
                   `;
         }
 
-        if (variant === "info") {
-            return appMode === AppColorMode.DARK
+        if ($variant === "info") {
+            return $appMode === AppColorMode.DARK
                 ? css`
                       background-color: var(--color-blue-600);
                   `
@@ -36,8 +36,8 @@ const StyledStatus = styled.span<{ variant: variant; appMode: AppColorMode }>`
                   `;
         }
 
-        if (variant === "warning") {
-            return appMode === AppColorMode.DARK
+        if ($variant === "warning") {
+            return $appMode === AppColorMode.DARK
                 ? css`
                       background-color: var(--color-yellow-600);
                   `
@@ -46,8 +46,8 @@ const StyledStatus = styled.span<{ variant: variant; appMode: AppColorMode }>`
                   `;
         }
 
-        if (variant === "error") {
-            return appMode === AppColorMode.DARK
+        if ($variant === "error") {
+            return $appMode === AppColorMode.DARK
                 ? css`
                       background-color: var(--color-red-600);
                   `
@@ -75,7 +75,7 @@ export const Status = ({ children, status }: Props) => {
     const { appMode } = useDarkMode();
 
     return (
-        <StyledStatus variant={variant} appMode={appMode}>
+        <StyledStatus $variant={variant} $appMode={appMode}>
             {children}
         </StyledStatus>
     );

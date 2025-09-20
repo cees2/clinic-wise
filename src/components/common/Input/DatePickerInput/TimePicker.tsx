@@ -22,12 +22,12 @@ const StyledTimePickerColumn = styled.ul`
     overflow-y: scroll;
 `;
 
-const ColumnItem = styled.li<{ isSelected: boolean }>`
+const ColumnItem = styled.li<{ $isSelected: boolean }>`
     text-align: center;
     padding: 0.8rem;
 
-    ${({ isSelected }) =>
-        isSelected &&
+    ${({ $isSelected }) =>
+        $isSelected &&
         css`
             background-color: var(--color-gray-300);
         `}
@@ -54,7 +54,7 @@ const TimePickerColumn = ({ mode, value, onChangeTimePicker, customHours, custom
             {itemsToMap.map((item) => (
                 <ColumnItem
                     key={item}
-                    isSelected={selectedValue === item}
+                    $isSelected={selectedValue === item}
                     onClick={() => {
                         onColumnValueSelect(item);
                     }}
