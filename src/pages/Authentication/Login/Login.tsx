@@ -21,8 +21,8 @@ const StyledLogin = styled.div`
 const LoginBox = styled.div`
     background-color: var(--color-background-tertiary);
     border-radius: 1.6rem;
-    padding: 3.2rem 6.4rem;
     box-shadow: 0 0 1.6rem 0 rgba(0, 0, 0, 0.1);
+    flex: 1;
 
     & button {
         width: 100%;
@@ -64,11 +64,11 @@ const Login = () => {
     if (isAuthenticated) return <LoadingSpinner />;
 
     return (
-        <StyledLogin className="w-full h-full flex items-center justify-center">
-            <LoginBox>
+        <StyledLogin className="flex items-center justify-center">
+            <LoginBox className="mx-12 p-16 max-w-3xl sm:mx-0 sm:py-16 sm:px-32 sm:max-w-2xl md:max-w-[fit-content] flex">
                 <FormSubmit
                     formState={formState}
-                    className="flex flex-col items-center w-lg gap-y-8 ml-auto mr-auto"
+                    className="flex flex-col items-center w-lg gap-y-8 grow-1"
                     onSubmit={onSubmit}
                     customButtons={<Button>Login</Button>}
                 >
@@ -88,6 +88,7 @@ const Login = () => {
                         label="Password"
                         type="password"
                         className="w-full"
+                        autoComplete="on"
                         rules={{
                             required: true,
                             minLength: { value: 6, message: "Password has to be at lest 6 characters long" },

@@ -50,3 +50,9 @@ export const CLINIC_WORKING_HOURS = Array.from(
 );
 export const EVERY_15_MINUTES = [0, 15, 30, 45];
 export const EVERY_30_MINUTES = [0, 30];
+
+export const SM_BREAKPOINT = "40rem";
+export const MD_BREAKPOINT = "48rem";
+export const LG_BREAKPOINT = "64rem";
+export const XL_BREAKPOINT = "80rem";
+export const xXL_BREAKPOINT = "96rem";

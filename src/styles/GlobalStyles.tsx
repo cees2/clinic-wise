@@ -3,6 +3,14 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyles = createGlobalStyle`
     :root{
         font-size: 62.5%;
+        
+        @media (max-width: 768px) {
+            font-size: 56.25%;
+        }
+
+        @media (max-width: 640px) {
+            font-size: 50%;
+        }
     }
     
     body{
@@ -19,11 +27,7 @@ const GlobalStyles = createGlobalStyle`
         --duration-default: 300ms;
         --duration-slow: 400ms;
     }
-
-    html.dark {
-
-    }
-
+    
     input:not([id*="react-select"]):focus,
     textarea:focus{
         box-shadow: 0px 0px 3px 0px var(--color-primary);

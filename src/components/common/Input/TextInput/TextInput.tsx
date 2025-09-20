@@ -28,6 +28,7 @@ export const TextInput = <FormType extends Record<string, any>>({
     helpText,
     className,
     disabled,
+    autoComplete,
     ...restProps
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
@@ -41,6 +42,7 @@ export const TextInput = <FormType extends Record<string, any>>({
             <input
                 type="text"
                 id={registerName}
+                autoComplete={autoComplete ?? "off"}
                 {...register(registerName, rules)}
                 disabled={disabled}
                 {...restProps}
