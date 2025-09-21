@@ -24,6 +24,11 @@ export interface MainNavigationConfigItem {
     visible?: boolean;
 }
 
+export enum MainNavigationState {
+    OPEN,
+    CLOSED,
+}
+
 export interface HeaderActions {
     title: string;
     isInDropdown?: boolean;

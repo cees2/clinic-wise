@@ -1,12 +1,13 @@
-import styled from "styled-components";
-import { type MainNavigationConfigItem } from "../../../utils/projectTypes";
+import styled, { css } from "styled-components";
+import { type MainNavigationConfigItem, MainNavigationState } from "../../../utils/projectTypes";
 import { NavLink } from "react-router-dom";
 
 interface Props {
     navigationItem: MainNavigationConfigItem;
+    navigationState: MainNavigationState;
 }
 
-const StyledMainNavigationItem = styled.a`
+const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationState }>`
     &:visited,
     &:link {
         display: flex;
@@ -32,17 +33,21 @@ const StyledMainNavigationItem = styled.a`
     &.active > svg {
         color: var(--color-primary);
     }
+
+    ${({ $navigationState }) => {
+        return $navigationState === MainNavigationState.OPEN && css``;
+    }}
 `;
 
-const MainNavigationItem = ({ navigationItem }: Props) => {
+const MainNavigationItem = ({ navigationItem, navigationState }: Props) => {
     const { title, icon, to, visible } = navigationItem;
 
     if (visible === false) return null;
 
     return (
-        <StyledMainNavigationItem as={NavLink} to={to}>
+        <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState}>
             {icon}
-            {title}
+            {navigationState === MainNavigationState.OPEN && title}
         </StyledMainNavigationItem>
     );
 };

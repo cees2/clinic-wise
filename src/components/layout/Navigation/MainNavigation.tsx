@@ -1,6 +1,6 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import MainNavigationItem from "./MainNavigationItem";
-import { UserRole, type MainNavigationConfigItem } from "../../../utils/projectTypes";
+import { type MainNavigationConfigItem, MainNavigationState, UserRole } from "../../../utils/projectTypes";
 import { MdOutlineCalendarMonth, MdOutlineRoomPreferences } from "react-icons/md";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
@@ -8,10 +8,11 @@ import { HiOutlineUsers } from "react-icons/hi";
 import FakerComponent from "../Faker/Faker";
 import { GrUserWorker } from "react-icons/gr";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { FaAngleDoubleLeft } from "react-icons/fa";
 
-const StyledNavigation = styled.aside`
-    flex: 0 1 20rem;
+const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>`
+    width: 20rem;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -24,6 +25,33 @@ const StyledNavigation = styled.aside`
     grid-column: 1 / 2;
     grid-row: 1 / -1;
     background-color: var(--background-primary);
+    transition: var(--duration-fast) ease-in;
+
+    ${({ $navigationState }) => {
+        return (
+            $navigationState === MainNavigationState.CLOSED &&
+            css`
+                width: max-content;
+            `
+        );
+    }}
+
+    svg.toggle-icon {
+        height: 1.6rem;
+        width: 1.6rem;
+        cursor: pointer;
+        margin: 2.4rem 2.4rem 0 0;
+        transition: var(--duration-fast) ease-in;
+
+        ${({ $navigationState }) => {
+            if ($navigationState === MainNavigationState.OPEN) return "transform: rotate(180deg);";
+
+            if ($navigationState === MainNavigationState.CLOSED)
+                return css`
+                    margin: 3.6rem auto 0;
+                `;
+        }}
+    }
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
@@ -35,11 +63,12 @@ const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
 const NavigationList = styled.ul`
     display: flex;
     flex-direction: column;
-    row-gap: 0.8rem;
+    row-gap: 1.2rem;
     padding: 0 0.8rem;
 `;
 
 const MainNavigation = () => {
+    const [navigationState, setNavigationState] = useState<MainNavigationState>(MainNavigationState.OPEN);
     const { user } = useAuthContext();
 
     const mainNavigationConfig: MainNavigationConfigItem[] = useMemo(
@@ -82,17 +111,29 @@ const MainNavigation = () => {
         [user?.user_metadata.role],
     );
 
+    const toggleNavigationState = () =>
+        setNavigationState((prevState) =>
+            prevState === MainNavigationState.OPEN ? MainNavigationState.CLOSED : MainNavigationState.OPEN,
+        );
+
     return (
-        <StyledNavigation>
-            <Image />
+        <StyledNavigation $navigationState={navigationState}>
+            <div className="flex flex-col items-end">
+                <FaAngleDoubleLeft className="toggle-icon" onClick={toggleNavigationState} />
+                {navigationState === MainNavigationState.OPEN && <Image />}
+            </div>
             <nav>
                 <NavigationList>
                     {mainNavigationConfig.map((navigationItem) => (
-                        <MainNavigationItem key={navigationItem.title} navigationItem={navigationItem} />
+                        <MainNavigationItem
+                            key={navigationItem.title}
+                            navigationItem={navigationItem}
+                            navigationState={navigationState}
+                        />
                     ))}
                 </NavigationList>
             </nav>
-            <FakerComponent />
+            {navigationState === MainNavigationState.OPEN && <FakerComponent />}
         </StyledNavigation>
     );
 };
