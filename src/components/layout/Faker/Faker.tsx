@@ -11,12 +11,13 @@ import { useFakeRoomsOccupancy } from "../../../services/hooks/faker/useFakeRoom
 
 const StyledFaker = styled.div`
     margin: auto 1.6rem 1.6rem;
-    padding-top: 1.2rem;
+    padding: 1.2rem 3.6rem;
     background-color: var(--background-tertiary);
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: 3.2rem;
+    width: max-content;
 `;
 
 const FakerHeader = styled(StyledHeader)`

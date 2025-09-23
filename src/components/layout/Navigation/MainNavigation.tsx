@@ -8,14 +8,14 @@ import { HiOutlineUsers } from "react-icons/hi";
 import FakerComponent from "../Faker/Faker";
 import { GrUserWorker } from "react-icons/gr";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
-import { useMemo, useState } from "react";
 import { FaAngleDoubleLeft } from "react-icons/fa";
+import { useMemo, useState } from "react";
 
 const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>`
-    width: 20rem;
+    width: 4rem;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: center;
     row-gap: 8rem;
     height: 100vh;
     position: sticky;
@@ -27,27 +27,44 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     background-color: var(--background-primary);
     transition: var(--duration-fast) ease-in;
 
+    ${() => {
+        return css`
+            @media (min-width: 640px) {
+                width: 20rem;
+            }
+        `;
+    }}
+
     ${({ $navigationState }) => {
-        return (
-            $navigationState === MainNavigationState.CLOSED &&
-            css`
-                width: max-content;
-            `
-        );
+        if ($navigationState === MainNavigationState.OPEN) {
+            return css`
+                position: fixed;
+                width: 100%;
+                height: 100%;
+            `;
+        }
+
+        return css`
+            width: max-content;
+        `;
     }}
 
     svg.toggle-icon {
-        height: 1.6rem;
-        width: 1.6rem;
+        height: 2.4rem;
+        width: 2.4rem;
         cursor: pointer;
-        margin: 2.4rem 2.4rem 0 0;
         transition: var(--duration-fast) ease-in;
+        margin: 2.4rem auto 0;
 
         ${({ $navigationState }) => {
-            if ($navigationState === MainNavigationState.OPEN) return "transform: rotate(180deg);";
+            if ($navigationState === MainNavigationState.OPEN)
+                return css`
+                    margin: 2.4rem 2.4rem 0 0;
+                `;
 
             if ($navigationState === MainNavigationState.CLOSED)
                 return css`
+                    transform: rotate(180deg);
                     margin: 3.6rem auto 0;
                 `;
         }}
@@ -56,19 +73,21 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
     margin-top: 3.2rem;
-    width: 50%;
+    width: 20%;
     align-self: center;
 `;
 
 const NavigationList = styled.ul`
     display: flex;
+    align-items: start;
+    width: min-content;
     flex-direction: column;
-    row-gap: 1.2rem;
+    row-gap: 1.6rem;
     padding: 0 0.8rem;
 `;
 
 const MainNavigation = () => {
-    const [navigationState, setNavigationState] = useState<MainNavigationState>(MainNavigationState.OPEN);
+    const [navigationState, setNavigationState] = useState<MainNavigationState>(MainNavigationState.CLOSED);
     const { user } = useAuthContext();
 
     const mainNavigationConfig: MainNavigationConfigItem[] = useMemo(
@@ -122,7 +141,7 @@ const MainNavigation = () => {
                 <FaAngleDoubleLeft className="toggle-icon" onClick={toggleNavigationState} />
                 {navigationState === MainNavigationState.OPEN && <Image />}
             </div>
-            <nav>
+            <nav className="flex items-center justify-center">
                 <NavigationList>
                     {mainNavigationConfig.map((navigationItem) => (
                         <MainNavigationItem

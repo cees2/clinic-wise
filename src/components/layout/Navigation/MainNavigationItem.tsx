@@ -1,12 +1,5 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { type MainNavigationConfigItem, MainNavigationState } from "../../../utils/projectTypes";
-import { NavLink } from "react-router-dom";
-
-interface Props {
-    navigationItem: MainNavigationConfigItem;
-    navigationState: MainNavigationState;
-}
-
 const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationState }>`
     &:visited,
     &:link {
@@ -34,20 +27,30 @@ const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationStat
         color: var(--color-primary);
     }
 
-    ${({ $navigationState }) => {
-        return $navigationState === MainNavigationState.OPEN && css``;
-    }}
+    & > .nav-item {
+        ${({ $navigationState }) => {
+            return `display: ${$navigationState === MainNavigationState.OPEN ? "inline" : "none"};`;
+        }}
+    }
 `;
+
+import { NavLink } from "react-router-dom";
+
+interface Props {
+    navigationItem: MainNavigationConfigItem;
+    navigationState: MainNavigationState;
+}
 
 const MainNavigationItem = ({ navigationItem, navigationState }: Props) => {
     const { title, icon, to, visible } = navigationItem;
 
     if (visible === false) return null;
 
+    console.log(navigationState === MainNavigationState.OPEN);
     return (
         <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState}>
             {icon}
-            {navigationState === MainNavigationState.OPEN && title}
+            <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}</span>
         </StyledMainNavigationItem>
     );
 };
