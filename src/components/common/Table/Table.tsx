@@ -10,7 +10,7 @@ import { createContext, use, useMemo } from "react";
 const StyledTable = styled.div.attrs({ role: "table" })`
     display: flex;
     flex-direction: column;
-    overflow: auto;
+    overflow-x: auto;
 `;
 
 const StyledTableRow = styled.div.attrs({ role: "row" })<{ $gridTemplateColumns?: string; $numberOfColumns?: number }>`
@@ -25,6 +25,10 @@ const StyledTableRow = styled.div.attrs({ role: "row" })<{ $gridTemplateColumns?
     ${({ $gridTemplateColumns, $numberOfColumns }) => css`
         grid-template-columns: ${$gridTemplateColumns ?? `repeat(${$numberOfColumns}, 1fr)`};
     `}
+
+    &:hover:not(:first-child) {
+        background-color: var(--color-background-primary);
+    }
 `;
 
 export const StyledHeaderCell = styled.div`

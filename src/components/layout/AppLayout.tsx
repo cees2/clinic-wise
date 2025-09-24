@@ -12,9 +12,11 @@ const StyledAppLayout = styled.div`
 `;
 
 const Main = styled.main`
-    flex: 1;
+    flex: 1 1;
     grid-column: 2 / -1;
     grid-row: 2 / -1;
+    max-width: 120rem;
+    justify-self: center;
 `;
 
 const AppLayout = () => {
