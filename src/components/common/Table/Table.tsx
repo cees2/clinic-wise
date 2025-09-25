@@ -10,7 +10,8 @@ import { createContext, use, useMemo } from "react";
 const StyledTable = styled.div.attrs({ role: "table" })`
     display: flex;
     flex-direction: column;
-    overflow-x: auto;
+    overflow-x: scroll;
+    max-width: 40rem;
 `;
 
 const StyledTableRow = styled.div.attrs({ role: "row" })<{ $gridTemplateColumns?: string; $numberOfColumns?: number }>`
