@@ -19,7 +19,6 @@ const UpdateAccount = () => {
     const { mutateUpdate } = useMutateUser();
 
     const submitSuccess = (data: UpdateUserFormType) => {
-        // TODO: DO sth on no user presence
         if (!user) return;
 
         const {

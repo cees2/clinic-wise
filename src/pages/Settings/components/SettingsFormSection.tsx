@@ -10,7 +10,7 @@ export const SettingsFormSection = <FormType extends Record<string, any>>({
     return (
         <div className="mt-12 not-last:mb-6 rounded-3xl bg-background-tertiary w-full p-8">
             <Header as="h4" title={headerTitle} />
-            <GridForm className="mt-10 ml-12" {...restProps}>
+            <GridForm className="mt-10 sm:ml-12" {...restProps}>
                 {children}
             </GridForm>
         </div>
