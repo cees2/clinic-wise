@@ -10,7 +10,8 @@ import { TableDataTextFilter } from "./TableDataFilters/TableDataTextFilter.tsx"
 const StyledTableDataFilters = styled.div`
     display: flex;
     align-items: center;
-    column-gap: 1.2rem;
+    gap: 2rem 1.2rem;
+    flex-wrap: wrap;
 `;
 
 interface Props {

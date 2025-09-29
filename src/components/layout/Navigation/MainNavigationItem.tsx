@@ -46,7 +46,6 @@ const MainNavigationItem = ({ navigationItem, navigationState }: Props) => {
 
     if (visible === false) return null;
 
-    console.log(navigationState === MainNavigationState.OPEN);
     return (
         <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState}>
             {icon}

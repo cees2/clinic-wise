@@ -1,30 +1,16 @@
-import styled from "styled-components";
 import { EmptyPage } from "../../../common/EmptyPage";
-import Table, { StyledHeaderCell } from "../../../common/Table/Table";
+import Table from "../../../common/Table/Table";
 import { TableData } from "../TableData";
 import { useTableDataContext } from "../utils/TableDataContext";
 import TableDataActionCell from "./TableDataActionCell";
 
-const StyledTableDataHeaderCell = styled(StyledHeaderCell)`
-    display: flex;
-    align-items: center;
-    column-gap: 0.6rem;
-`;
-
 const TableDataTable = () => {
-    const {
-        config: { columns, actions, gridTemplateColumns },
-        resources,
-    } = useTableDataContext();
+    const { resources } = useTableDataContext();
 
     if (resources?.length === 0) return <EmptyPage caption="Could not find any data matching your criteria." />;
 
-    const gridTemplateColumnsWithActions = gridTemplateColumns
-        ? `${gridTemplateColumns} 70px`
-        : `repeat(${columns.length}, 1fr)${actions ? "70px" : ""}`;
-
     return (
-        <Table gridTemplateColumns={gridTemplateColumnsWithActions}>
+        <Table>
             <TableDataHeaderRow />
             <TableDataItemsRows />
         </Table>
@@ -33,20 +19,26 @@ const TableDataTable = () => {
 
 const TableDataHeaderRow = () => {
     const {
-        config: { columns },
+        config: { columns, actions },
     } = useTableDataContext();
+    const hasActions = actions && actions.length > 0;
 
     return (
-        <Table.TableRow>
-            {columns.map((column) => {
-                return (
-                    <StyledTableDataHeaderCell key={column.name}>
-                        {column.name}
-                        <TableData.Sorts column={column} />
-                    </StyledTableDataHeaderCell>
-                );
-            })}
-        </Table.TableRow>
+        <Table.TableHead>
+            <Table.TableRow>
+                {columns.map((column) => {
+                    return (
+                        <Table.TableHeaderCell key={column.name}>
+                            <div className="flex gap-x-3 items-center whitespace-nowrap">
+                                <span>{column.name}</span>
+                                <TableData.Sorts column={column} />
+                            </div>
+                        </Table.TableHeaderCell>
+                    );
+                })}
+                {hasActions && <Table.TableHeaderCell />}
+            </Table.TableRow>
+        </Table.TableHead>
     );
 };
 
@@ -57,7 +49,7 @@ const TableDataItemsRows = () => {
     } = useTableDataContext();
 
     return (
-        <>
+        <Table.TableBody>
             {resources?.map((resource) => {
                 return (
                     <Table.TableRow key={resource.id}>
@@ -72,7 +64,7 @@ const TableDataItemsRows = () => {
                     </Table.TableRow>
                 );
             })}
-        </>
+        </Table.TableBody>
     );
 };
 

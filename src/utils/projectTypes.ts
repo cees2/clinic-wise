@@ -37,8 +37,6 @@ export interface HeaderActions {
 }
 
 export interface TableBaseProps {
-    gridTemplateColumns?: string;
-    numberOfColumns?: number;
     className?: string;
 }
 
@@ -101,7 +99,6 @@ export interface TableDataAction<TableDataResource extends TableDataResourceType
 
 export interface TableDataConfig<TableDataResource extends TableDataResourceType> {
     columns: TableDataColumn<TableDataResource>[];
-    gridTemplateColumns?: string;
     resourceName: keyof Database["public"]["Tables"];
     filters?: TableDataFilterConfig[];
     actions?: TableDataAction<TableDataResource>[];

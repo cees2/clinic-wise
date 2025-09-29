@@ -18,7 +18,8 @@ const TableDataSorts = <TableDataResource extends TableDataResourceType>({
         dispatch,
     } = useTableDataContext();
     const { id: columnId, disableSorting } = column;
-    const sortingSVGClassnames = "cursor-pointer hover:scale-110 transition-all duration-100";
+    const sortingSVGClassnames =
+        "cursor-pointer hover:scale-110 transition-all duration-100 w-[1.6rem] h-[1.6rem] flex-shrink-0";
 
     const sortColumnHandler = (sortType: SortTableEnum) => {
         switch (sortType) {

@@ -15,8 +15,7 @@ const Main = styled.main`
     flex: 1 1;
     grid-column: 2 / -1;
     grid-row: 2 / -1;
-    max-width: 120rem;
-    justify-self: center;
+    overflow-x: hidden;
 `;
 
 const AppLayout = () => {

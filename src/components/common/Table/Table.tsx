@@ -1,87 +1,48 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import {
     type TableHeaderCellProps,
     type TableProps,
     type TableRowCellProps,
     type TableRowProps,
 } from "../../../utils/projectTypes";
-import { createContext, use, useMemo } from "react";
 
-const StyledTable = styled.div.attrs({ role: "table" })`
-    display: flex;
-    flex-direction: column;
-    overflow-x: scroll;
-    max-width: 40rem;
-`;
-
-const StyledTableRow = styled.div.attrs({ role: "row" })<{ $gridTemplateColumns?: string; $numberOfColumns?: number }>`
+const StyledTableRow = styled.tr`
     padding: 0.8rem 1.6rem;
-    display: grid;
-    align-items: center;
 
     &:not(:last-child) {
         border-bottom: 1px solid var(--color-gray-300);
     }
 
-    ${({ $gridTemplateColumns, $numberOfColumns }) => css`
-        grid-template-columns: ${$gridTemplateColumns ?? `repeat(${$numberOfColumns}, 1fr)`};
-    `}
-
-    &:hover:not(:first-child) {
+    &:hover {
         background-color: var(--color-background-primary);
     }
 `;
 
-export const StyledHeaderCell = styled.div`
+export const StyledHeaderCell = styled.th`
     font-weight: var(--font-weight-semibold);
     font-size: 1.8rem;
     padding: 1.2rem;
 `;
 
-const StyledTableCell = styled.div.attrs({
-    role: "cell",
-})`
+const StyledTableCell = styled.td`
     padding: 0.6rem 1.2rem;
-    word-break: break-all;
 `;
 
-const TableContext = createContext<Omit<TableProps, "children">>({});
-
-const useTableContext = () => {
-    const tableContext = use(TableContext);
-
-    if (!tableContext) throw new Error("Table context used outside its scope");
-
-    return tableContext;
-};
-
 const Table = (props: TableProps) => {
-    const { children, gridTemplateColumns, numberOfColumns, className } = props;
-    const contextValue = useMemo(
-        () => ({ gridTemplateColumns, numberOfColumns }),
-        [gridTemplateColumns, numberOfColumns],
-    );
+    const { children, className } = props;
 
     return (
-        <TableContext value={contextValue}>
-            <StyledTable role="table" className={className}>
-                {children}
-            </StyledTable>
-        </TableContext>
+        <div className="overflow-x-scroll">
+            <table className={className ?? ""}>{children}</table>
+        </div>
     );
 };
 
 const TableRow = (props: TableRowProps) => {
     const { children, className } = props;
-    const { gridTemplateColumns, numberOfColumns } = useTableContext();
 
     return (
-        <StyledTableRow
-            $gridTemplateColumns={gridTemplateColumns}
-            $numberOfColumns={numberOfColumns}
-            className={className}
-            {...props}
-        >
+        <StyledTableRow className={className} {...props}>
             {children}
         </StyledTableRow>
     );
@@ -107,6 +68,16 @@ const TableRowCell = (props: TableRowCellProps) => {
     );
 };
 
+const TableHead = styled.thead`
+    border-bottom: 1px solid var(--color-gray-300);
+
+    & > tr:hover {
+        background-color: var(--color-background-secondary);
+    }
+`;
+
+Table.TableHead = TableHead;
+Table.TableBody = styled.tbody``;
 Table.TableRow = TableRow;
 Table.TableHeaderCell = TableHeaderCell;
 Table.TableRowCell = TableRowCell;

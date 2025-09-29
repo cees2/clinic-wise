@@ -22,7 +22,7 @@ const RoomsFilters = ({ rooms }: Props) => {
     const { filters, setFilters } = useRoomsContext();
 
     return (
-        <div role="group" className="flex gap-x-4 mb-6">
+        <div role="group" className="flex gap-4 mb-6 flex-wrap">
             {RoomsTimeFilterOptionsArray.map((timeFilter) => {
                 const isSelected = getIsPredefinedTimeFilterSelected(filters, timeFilter);
                 const variant = isSelected ? "primary" : "inactive";

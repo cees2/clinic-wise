@@ -50,73 +50,78 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
 
     return (
-        <Table gridTemplateColumns={`7rem repeat(${filteredRooms?.length ?? 0}, 1fr)`}>
-            <Table.TableRow>
+        <Table>
+            <Table.TableHead>
                 <Table.TableHeaderCell />
                 {filteredRooms?.map(({ name }) => (
                     <Table.TableHeaderCell key={name} className="text-center">
                         {name}
                     </Table.TableHeaderCell>
                 ))}
-            </Table.TableRow>
-            {MINUTES_OF_DAYS.map((minute) => {
-                const hour = minutesToHours(minute);
-                const hourMinute = minute % 60 === 30 ? "30" : "00";
-                const currentTimeString = `${hour}:${hourMinute}`;
+            </Table.TableHead>
+            <Table.TableBody>
+                {MINUTES_OF_DAYS.map((minute) => {
+                    const hour = minutesToHours(minute);
+                    const hourMinute = minute % 60 === 30 ? "30" : "00";
+                    const currentTimeString = `${hour}:${hourMinute}`;
 
-                return (
-                    <Table.TableRow key={minute}>
-                        <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
-                        {filteredRooms.map((room) => {
-                            const roomOccupancyMatchingCurrentMinute = getRoomOccupancyMatchesCurrentData(minute, room);
-
-                            const currentCellClickHandler = async () => {
-                                if (!roomOccupancyMatchingCurrentMinute) return;
-
-                                const { id } = roomOccupancyMatchingCurrentMinute;
-
-                                await navigate(`/room-occupancies/${id}/edit`);
-                            };
-
-                            if (roomOccupancyMatchingCurrentMinute) {
-                                const tableCellClassName =
-                                    "bg-red-500 h-full hover:cursor-pointer hover:bg-red-400 hover:transition-all hover:duration-100";
-                                const tooltip = (
-                                    <Tooltip>
-                                        <span className="text-xl text-nowrap">
-                                            Employee
-                                            <span className="text-green-700">
-                                                {`: ${roomOccupancyMatchingCurrentMinute.employees.name} ${roomOccupancyMatchingCurrentMinute.employees.surname}`}
-                                            </span>
-                                        </span>
-                                    </Tooltip>
+                    return (
+                        <Table.TableRow key={minute}>
+                            <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
+                            {filteredRooms.map((room) => {
+                                const roomOccupancyMatchingCurrentMinute = getRoomOccupancyMatchesCurrentData(
+                                    minute,
+                                    room,
                                 );
+
+                                const currentCellClickHandler = async () => {
+                                    if (!roomOccupancyMatchingCurrentMinute) return;
+
+                                    const { id } = roomOccupancyMatchingCurrentMinute;
+
+                                    await navigate(`/room-occupancies/${id}/edit`);
+                                };
+
+                                if (roomOccupancyMatchingCurrentMinute) {
+                                    const tableCellClassName =
+                                        "bg-red-500 h-full hover:cursor-pointer hover:bg-red-400 hover:transition-all hover:duration-100";
+                                    const tooltip = (
+                                        <Tooltip>
+                                            <span className="text-xl text-nowrap">
+                                                Employee
+                                                <span className="text-green-700">
+                                                    {`: ${roomOccupancyMatchingCurrentMinute.employees.name} ${roomOccupancyMatchingCurrentMinute.employees.surname}`}
+                                                </span>
+                                            </span>
+                                        </Tooltip>
+                                    );
+
+                                    return (
+                                        <TooltipOverlay
+                                            Tooltip={tooltip}
+                                            key={`${room.name}_${room.id}_${minute}`}
+                                            showOnHover
+                                        >
+                                            <Table.TableRowCell
+                                                className={tableCellClassName}
+                                                onClick={() => void currentCellClickHandler()}
+                                            >
+                                                &nbsp;
+                                            </Table.TableRowCell>
+                                        </TooltipOverlay>
+                                    );
+                                }
 
                                 return (
-                                    <TooltipOverlay
-                                        Tooltip={tooltip}
-                                        key={`${room.name}_${room.id}_${minute}`}
-                                        showOnHover
-                                    >
-                                        <Table.TableRowCell
-                                            className={tableCellClassName}
-                                            onClick={() => void currentCellClickHandler()}
-                                        >
-                                            &nbsp;
-                                        </Table.TableRowCell>
-                                    </TooltipOverlay>
+                                    <Table.TableRowCell key={`${room.name}_${room.id}_${minute}`}>
+                                        <div />
+                                    </Table.TableRowCell>
                                 );
-                            }
-
-                            return (
-                                <Table.TableRowCell key={`${room.name}_${room.id}_${minute}`}>
-                                    <div />
-                                </Table.TableRowCell>
-                            );
-                        })}
-                    </Table.TableRow>
-                );
-            })}
+                            })}
+                        </Table.TableRow>
+                    );
+                })}
+            </Table.TableBody>
         </Table>
     );
 };

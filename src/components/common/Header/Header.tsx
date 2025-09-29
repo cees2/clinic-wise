@@ -5,7 +5,24 @@ import { Button } from "../../layout/Button";
 import { useNavigate } from "react-router-dom";
 import { ButtonGroup } from "../ButtonGroup.tsx";
 
-export const StyledHeader = styled.h1<{ as: KnownTarget }>`
+export const StyledHeader = styled.header`
+    color: var(--color-font-2);
+    & > h1,
+    & > h2,
+    & > h3,
+    & > h4,
+    & > h5,
+    & > h6 {
+        letter-spacing: 1px;
+    }
+
+    color: var(--font-primary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const HeaderElement = styled.h1<{ as: KnownTarget }>`
     ${(props) => {
         switch (props.as) {
             case "h1":
@@ -41,29 +58,14 @@ export const StyledHeader = styled.h1<{ as: KnownTarget }>`
                 `;
         }
     }}
-
-    color: var(--color-font-2);
-    & > h1,
-    & > h2,
-    & > h3,
-    & > h4,
-    & > h5,
-    & > h6 {
-        letter-spacing: 1px;
-    }
-
-    color: var(--font-primary);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 `;
 
 export const Header = ({ as, title, buttons, className }: HeaderProps) => {
     const navigate = useNavigate();
 
     return (
-        <StyledHeader as={as} className={className}>
-            {title}
+        <StyledHeader className={className}>
+            <HeaderElement as={as}>{title}</HeaderElement>
             {buttons && (
                 <ButtonGroup>
                     {buttons.map((button) => {

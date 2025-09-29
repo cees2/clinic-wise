@@ -6,7 +6,7 @@ interface Props extends Children {
 
 export const ButtonGroup = ({ children, className }: Props) => {
     return (
-        <div role="group" className={`flex flex-wrap gap-x-3 ${className}`}>
+        <div role="group" className={`flex gap-x-3 ${className ?? ""}`}>
             {children}
         </div>
     );
