@@ -97,18 +97,16 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                                     );
 
                                     return (
-                                        <TooltipOverlay
-                                            Tooltip={tooltip}
-                                            key={`${room.name}_${room.id}_${minute}`}
-                                            showOnHover
-                                        >
-                                            <Table.TableRowCell
+                                        <Table.TableRowCell onClick={() => void currentCellClickHandler()}>
+                                            <TooltipOverlay
+                                                Tooltip={tooltip}
+                                                key={`${room.name}_${room.id}_${minute}`}
+                                                showOnHover
                                                 className={tableCellClassName}
-                                                onClick={() => void currentCellClickHandler()}
                                             >
                                                 &nbsp;
-                                            </Table.TableRowCell>
-                                        </TooltipOverlay>
+                                            </TooltipOverlay>
+                                        </Table.TableRowCell>
                                     );
                                 }
 

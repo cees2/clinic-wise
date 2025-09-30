@@ -16,7 +16,7 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 8rem;
+    row-gap: 6.4rem;
     height: 100vh;
     position: sticky;
     top: 0;
@@ -40,7 +40,7 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
             return css`
                 position: fixed;
                 width: 100%;
-                height: 100%;
+                height: 100vh;
             `;
         }
 
