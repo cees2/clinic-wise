@@ -18,8 +18,15 @@ export const StyledHeader = styled.header`
 
     color: var(--font-primary);
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    row-gap: 1.2rem;
+
+    @media (min-width: 40em) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 `;
 
 const HeaderElement = styled.h1<{ as: KnownTarget }>`
@@ -67,7 +74,7 @@ export const Header = ({ as, title, buttons, className }: HeaderProps) => {
         <StyledHeader className={className}>
             <HeaderElement as={as}>{title}</HeaderElement>
             {buttons && (
-                <ButtonGroup>
+                <ButtonGroup className="flex-col gap-y-6 sm:flex-row sm:gap-3">
                     {buttons.map((button) => {
                         const { title, path, onClick, visible, variant } = button;
 

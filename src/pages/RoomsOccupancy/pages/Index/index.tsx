@@ -36,22 +36,15 @@ const Rooms = () => {
 
     return (
         <RoomsOccupancy>
-            <Header
-                title="Rooms"
-                as="h3"
-                buttons={HEADER_BUTTONS}
-                className="flex-col gap-y-3 items-start sm:items-center sm:flex-row"
+            <Header title="Rooms" as="h3" buttons={HEADER_BUTTONS} />
+            <RoomsFilters rooms={rooms} />
+            <DayController />
+            <RoomsTable
+                roomOccupancies={roomOccupancies}
+                rooms={rooms}
+                roomOccupanciesLoading={roomOccupanciesLoading}
+                roomsLoading={roomsLoading}
             />
-            <div className="flex flex-col">
-                <RoomsFilters rooms={rooms} />
-                <DayController />
-                <RoomsTable
-                    roomOccupancies={roomOccupancies}
-                    rooms={rooms}
-                    roomOccupanciesLoading={roomOccupanciesLoading}
-                    roomsLoading={roomsLoading}
-                />
-            </div>
             <AddRoomModal showModal={showModal} onHide={() => setShowModal(false)} />
         </RoomsOccupancy>
     );
