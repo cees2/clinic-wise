@@ -51,8 +51,9 @@ const UpdateAccount = () => {
             headerTitle="Update your account"
             onSubmit={onSubmit}
             formState={formState}
-            $columns={2}
             $gap="2.4rem"
+            $columnMinWidth="20rem"
+            $columnMaxWidth="1fr"
             customButtons={customButtons}
         >
             <TextInput type="email" register={register} control={control} registerName="email" label="Email" disabled />
@@ -70,6 +71,7 @@ const UpdateAccount = () => {
                 label="Avatar"
                 withClearButton
                 setValue={setValue}
+                className="col-start-1 col-span-1"
             />
         </SettingsFormSection>
     );

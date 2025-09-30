@@ -70,6 +70,7 @@ export const FileInput = <FormType extends Record<string, any>>({
     control,
     withClearButton,
     setValue,
+    className,
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const {
@@ -91,7 +92,7 @@ export const FileInput = <FormType extends Record<string, any>>({
     };
 
     return (
-        <StyledFileInput>
+        <StyledFileInput className={className ?? ""}>
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
             <input type="file" id={registerName} ref={inputRef} onChange={onChangeInternal} onBlur={onBlur} />
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}

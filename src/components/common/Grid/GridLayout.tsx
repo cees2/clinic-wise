@@ -13,7 +13,7 @@ export const GridLayout = styled.div<GridLayoutProps>`
         if ($columnMinWidth && $columnMaxWidth) {
             const gridTemplateColumns = `minmax(${$columnMinWidth},${$columnMaxWidth})`;
             return css`
-                grid-template-columns: repeat(${gridTemplateColumns});
+                grid-template-columns: repeat(auto-fit, ${gridTemplateColumns});
             `;
         }
 

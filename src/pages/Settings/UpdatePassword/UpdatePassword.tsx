@@ -31,8 +31,9 @@ const UpdatePassword = () => {
             headerTitle="Update password"
             onSubmit={onSubmit}
             formState={formState}
-            $columns={2}
             $gap="2.4rem"
+            $columnMinWidth="20rem"
+            $columnMaxWidth="1fr"
             customButtons={customButtons}
         >
             {isAdmin && (
