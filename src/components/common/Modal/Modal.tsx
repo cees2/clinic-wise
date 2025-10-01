@@ -21,7 +21,7 @@ const StyledModal = styled.div`
     @keyframes display-modal {
         from {
             opacity: 50%;
-            transform: scale(60%) translate(-50%, -50%);
+            transform: scale(60%) translate(0, 0);
         }
         to {
             transform: scale(100%) translate(-50%, -50%);
@@ -32,7 +32,7 @@ const StyledModal = styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
-    width: 50vw;
+    width: 90vw;
     transform: translate(-50%, -50%);
     background-color: var(--background-secondary);
     padding: 2.4rem;
@@ -52,6 +52,10 @@ const StyledModal = styled.div`
             transform: translate(-40%, 40%) scale(110%);
             cursor: pointer;
         }
+    }
+
+    @media (min-width: 40em) {
+        width: 50vw;
     }
 `;
 
