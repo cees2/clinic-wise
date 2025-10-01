@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { type MainNavigationConfigItem, MainNavigationState } from "../../../utils/projectTypes";
+
 const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationState }>`
     &:visited,
     &:link {

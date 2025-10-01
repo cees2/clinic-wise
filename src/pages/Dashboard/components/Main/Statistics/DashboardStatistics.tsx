@@ -6,9 +6,9 @@ const StyledDashboardStatistics = styled.ul`
     grid-column: 1 / -1;
     display: grid;
     gap: 2.4rem;
-    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
 
-    @media (min-width: 40em) {
+    @media (min-width: 48em) {
         grid-template-columns: 1fr 1fr;
     }
 

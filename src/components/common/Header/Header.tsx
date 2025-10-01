@@ -20,12 +20,17 @@ export const StyledHeader = styled.header`
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    column-gap: 4.8rem;
     row-gap: 1.2rem;
 
     @media (min-width: 40em) {
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+    }
+
+    & div[role="group"] > button {
+        flex: 1 1 auto;
     }
 `;
 
@@ -74,7 +79,7 @@ export const Header = ({ as, title, buttons, className }: HeaderProps) => {
         <StyledHeader className={className}>
             <HeaderElement as={as}>{title}</HeaderElement>
             {buttons && (
-                <ButtonGroup className="flex-col gap-y-6 sm:flex-row sm:gap-3">
+                <ButtonGroup className="flex-col flex-wrap gap-y-6 sm:flex-row sm:gap-3">
                     {buttons.map((button) => {
                         const { title, path, onClick, visible, variant } = button;
 

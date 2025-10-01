@@ -16,11 +16,17 @@ const StyledAppointmentsChart = styled.div`
     padding: 2.4rem;
     background-color: var(--background-tertiary);
     color: var(--font-primary);
-    overflow-x: scroll;
+    overflow-x: hidden;
 
     @media (min-width: 40em) {
-        grid-row: 2 / span 1;
-        grid-column: 3 / -1;
+        grid-column: 1 / span 1;
+    }
+    @media (min-width: 48em) {
+        grid-column: 1 / span 2;
+    }
+
+    @media (min-width: 80em) {
+        grid-column: 3 / span 2;
     }
 `;
 

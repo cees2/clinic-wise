@@ -10,17 +10,6 @@ import { useGetRooms } from "../../../../services/hooks/rooms/useGetRooms.ts";
 import { useGetRoomsOccupancies } from "../../../../services/hooks/roomsOccupancy/useGetRoomOccupancies.ts";
 import { useState } from "react";
 import { AddRoomModal } from "../../components/MainLayout/AddRoomModal.tsx";
-import styled from "styled-components";
-
-const RoomsOccupancy = styled(ContentLayout)`
-    & div[role="group"] {
-        width: 100%;
-
-        > button {
-            flex: 1 0 auto;
-        }
-    }
-`;
 
 const Rooms = () => {
     const [showModal, setShowModal] = useState(false);
@@ -35,7 +24,7 @@ const Rooms = () => {
     if (!rooms || rooms.length === 0) return <EmptyPage caption="No rooms found" />;
 
     return (
-        <RoomsOccupancy>
+        <ContentLayout>
             <Header title="Rooms" as="h3" buttons={HEADER_BUTTONS} />
             <RoomsFilters rooms={rooms} />
             <DayController />
@@ -46,7 +35,7 @@ const Rooms = () => {
                 roomsLoading={roomsLoading}
             />
             <AddRoomModal showModal={showModal} onHide={() => setShowModal(false)} />
-        </RoomsOccupancy>
+        </ContentLayout>
     );
 };
 

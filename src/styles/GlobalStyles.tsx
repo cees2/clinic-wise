@@ -4,11 +4,11 @@ const GlobalStyles = createGlobalStyle`
     :root{
         font-size: 62.5%;
         
-        @media (max-width: 768px) {
+        @media (max-width: 48em) {
             font-size: 56.25%;
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 40em) {
             font-size: 50%;
         }
     }

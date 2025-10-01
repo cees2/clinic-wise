@@ -8,7 +8,6 @@ const StyledAppointmentsBox = styled.div`
     padding: 2.4rem;
     background-color: var(--background-tertiary);
     overflow-x: hidden;
-    width: 100%;
 
     & > .appointments-box__title {
         font-weight: var(--font-weight-bold);
@@ -16,7 +15,7 @@ const StyledAppointmentsBox = styled.div`
         text-align: center;
     }
 
-    @media (min-width: 40em) {
+    @media (min-width: 48em) {
         grid-column: 1 / span 2;
     }
 `;

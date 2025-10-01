@@ -29,7 +29,7 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
 
     ${() => {
         return css`
-            @media (min-width: 640px) {
+            @media (min-width: 48em) {
                 width: 20rem;
             }
         `;
