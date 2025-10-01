@@ -7,10 +7,14 @@ import { AppointmentsBox } from "./AppointmentsBox/AppointmentsBox.tsx";
 
 const StyledDashboardMain = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
     column-gap: 2.4rem;
     row-gap: 6.4rem;
-    margin-top: 3.2rem;
+    margin-top: 6.4rem;
+
+    @media (min-width: 40em) {
+        grid-template-columns: repeat(4, 1fr);
+    }
 `;
 
 export const DashboardMain = () => {

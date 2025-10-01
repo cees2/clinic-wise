@@ -16,6 +16,7 @@ const StyledAppointmentsBoxItem = styled.li`
     justify-content: space-between;
     align-items: center;
     background-color: var(--background-tertiary);
+    column-gap: 2.4rem;
 
     & > .see-more-link {
         transition: all var(--duration-fast);

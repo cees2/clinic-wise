@@ -7,20 +7,12 @@ import { AppColorMode } from "../../../../../utils/projectTypes.ts";
 
 interface Props {
     name: DashboardStatisticsType;
-    boxOrder: number;
 }
 
 const StyledDashboardStatisticsBox = styled.li<{
-    $boxOrder: number;
     $backgroundColor: StatisticsBoxColorConfig;
     $appMode: AppColorMode;
 }>`
-    ${({ $boxOrder }) => {
-        return css`
-            grid-column: ${$boxOrder + 1} / span 1;
-        `;
-    }}
-
     display: grid;
     grid-template-columns: 6.4rem 1fr;
     grid-template-rows: 1fr 1fr;
@@ -77,7 +69,7 @@ const StyledDashboardStatisticsBox = styled.li<{
     }
 `;
 
-export const DashboardStatisticsBox = ({ name, boxOrder }: Props) => {
+export const DashboardStatisticsBox = ({ name }: Props) => {
     const { data } = useDashboardQuery();
     const statisticsBoxData = getStatisticsBoxData(name, data);
     const { appMode } = useDarkMode();
@@ -87,7 +79,7 @@ export const DashboardStatisticsBox = ({ name, boxOrder }: Props) => {
     const [Icon, value, backgroundColor] = statisticsBoxData;
 
     return (
-        <StyledDashboardStatisticsBox $boxOrder={boxOrder} $backgroundColor={backgroundColor} $appMode={appMode}>
+        <StyledDashboardStatisticsBox $backgroundColor={backgroundColor} $appMode={appMode}>
             <div className="icon-background">{Icon}</div>
             <h6 className="statistics-name">{name}</h6>
             <span className="statistics-value">{value || "-"}</span>

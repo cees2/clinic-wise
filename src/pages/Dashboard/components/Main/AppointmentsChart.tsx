@@ -11,12 +11,17 @@ import { AppColorMode } from "../../../../utils/projectTypes.ts";
 Chart.register(CategoryScale);
 
 const StyledAppointmentsChart = styled.div`
-    grid-column: 3 / -1;
-    grid-row: 2 / span 1;
+    grid-column: 1 / span 1;
     border-radius: var(--radius-2xl);
     padding: 2.4rem;
     background-color: var(--background-tertiary);
     color: var(--font-primary);
+    overflow-x: scroll;
+
+    @media (min-width: 40em) {
+        grid-row: 2 / span 1;
+        grid-column: 3 / -1;
+    }
 `;
 
 export const AppointmentsChart = () => {
