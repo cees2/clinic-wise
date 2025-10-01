@@ -311,6 +311,7 @@ export interface GridLayoutProps {
     $rowGap?: string;
     $gap?: string;
     $className?: string;
+    $smBreakpointTemplateColumns?: string;
 }
 
 export interface FormSubmitProps<FormType extends Record<string, any>> extends FormHTMLAttributes<HTMLFormElement> {

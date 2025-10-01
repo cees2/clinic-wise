@@ -59,4 +59,12 @@ export const GridLayout = styled.div<GridLayoutProps>`
             `;
         }
     }}
+    
+    ${({ $smBreakpointTemplateColumns }) => {
+        return css`
+            @media (min-width: 40em) {
+                grid-template-columns: ${$smBreakpointTemplateColumns};
+            }
+        `;
+    }}
 `;

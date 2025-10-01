@@ -38,7 +38,8 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
         <GridForm
             formState={formState}
             onSubmit={onSubmit}
-            $columns={2}
+            $columns={1}
+            $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
             onCancel={() => void navigate("/patients")}
         >

@@ -56,7 +56,8 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleA
             onSubmit={onSubmit}
             formState={formState}
             onCancel={() => void navigate("/appointments")}
-            $columns={2}
+            $columns={1}
+            $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
         >
             <NumberInput

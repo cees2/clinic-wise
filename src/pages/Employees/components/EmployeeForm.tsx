@@ -21,7 +21,6 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
     const { mutationCreate, mutationUpdate } = useMutateEmployee();
 
     const submitSuccess = (data: EmployeeFormType) => {
-        // TODO: update user to previos state on employee update request fail
         if (isEdit && employeeData?.id) {
             mutationUpdate.mutate(data);
         } else {
@@ -39,7 +38,8 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
         <GridForm
             formState={formState}
             onSubmit={onSubmit}
-            $columns={2}
+            $columns={1}
+            $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
             onCancel={() => void navigate("/employees")}
         >
