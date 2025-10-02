@@ -18,6 +18,11 @@ const StyledFaker = styled.div`
     align-items: center;
     row-gap: 3.2rem;
     width: max-content;
+
+    @media (min-width: 48em) {
+        padding: 1.2rem 1.8rem;
+        margin: auto 0.6rem 0;
+    }
 `;
 
 const FakerHeader = styled(StyledHeader)`

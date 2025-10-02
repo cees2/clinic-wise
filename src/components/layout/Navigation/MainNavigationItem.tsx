@@ -29,6 +29,7 @@ const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationStat
     }
 
     & > .nav-item {
+        transition: display var(--duration-fast) ease-in;
         ${({ $navigationState }) => {
             return `display: ${$navigationState === MainNavigationState.OPEN ? "inline" : "none"};`;
         }}

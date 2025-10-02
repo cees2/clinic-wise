@@ -12,7 +12,7 @@ import { FaAngleDoubleLeft } from "react-icons/fa";
 import { useMemo, useState } from "react";
 
 const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>`
-    width: 4rem;
+    width: 6rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -25,28 +25,19 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     grid-column: 1 / 2;
     grid-row: 1 / -1;
     background-color: var(--background-primary);
-    transition: var(--duration-fast) ease-in;
-
-    ${() => {
-        return css`
-            @media (min-width: 48em) {
-                width: 20rem;
-            }
-        `;
-    }}
+    transition: all var(--duration-fast) ease-in;
 
     ${({ $navigationState }) => {
         if ($navigationState === MainNavigationState.OPEN) {
             return css`
-                position: fixed;
                 width: 100%;
                 height: 100vh;
+
+                @media (min-width: 48em) {
+                    width: 24rem;
+                }
             `;
         }
-
-        return css`
-            width: max-content;
-        `;
     }}
 
     svg.toggle-icon {
@@ -68,6 +59,27 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
                     margin: 3.6rem auto 0;
                 `;
         }}
+
+        @media(min-width: 48rem) {
+            width: 2rem;
+            height: 2rem;
+        }
+    }
+
+    & > nav {
+        @keyframes moveFromTop {
+            0% {
+                transform: translateY(-100%);
+            }
+            70% {
+                transform: translateY(50%);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        animation: moveFromTop var(--duration-slow) ease-in-out;
     }
 `;
 
