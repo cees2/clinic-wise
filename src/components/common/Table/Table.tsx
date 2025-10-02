@@ -32,7 +32,7 @@ const Table = (props: TableProps) => {
     const { children, className } = props;
 
     return (
-        <div className="overflow-x-scroll">
+        <div className="overflow-x-auto">
             <table className={className ?? ""}>{children}</table>
         </div>
     );

@@ -50,7 +50,7 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
 
     return (
-        <Table>
+        <Table className="min-w-[100%]">
             <Table.TableHead>
                 <Table.TableHeaderCell />
                 {filteredRooms?.map(({ name }) => (

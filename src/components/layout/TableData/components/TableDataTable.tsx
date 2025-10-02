@@ -10,7 +10,7 @@ const TableDataTable = () => {
     if (resources?.length === 0) return <EmptyPage caption="Could not find any data matching your criteria." />;
 
     return (
-        <Table>
+        <Table className="min-w-[100%]">
             <TableDataHeaderRow />
             <TableDataItemsRows />
         </Table>

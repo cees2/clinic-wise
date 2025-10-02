@@ -18,7 +18,6 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     align-items: center;
     row-gap: 6.4rem;
     height: 100vh;
-    position: sticky;
     top: 0;
     left: 0;
     z-index: 20;
@@ -26,15 +25,18 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     grid-row: 1 / -1;
     background-color: var(--background-primary);
     transition: all var(--duration-fast) ease-in;
+    position: sticky;
 
     ${({ $navigationState }) => {
         if ($navigationState === MainNavigationState.OPEN) {
             return css`
+                position: fixed;
                 width: 100%;
                 height: 100vh;
 
                 @media (min-width: 48em) {
                     width: 24rem;
+                    position: sticky;
                 }
             `;
         }
