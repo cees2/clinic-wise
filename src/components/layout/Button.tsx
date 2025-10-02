@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { type ButtonProps, type ButtonVariant } from "../../utils/projectTypes";
 
-const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled: boolean }>`
+const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boolean }>`
     padding: 0.8rem 1.6rem;
     color: var(--color-gray-200);
     font-size: 1.4rem;
