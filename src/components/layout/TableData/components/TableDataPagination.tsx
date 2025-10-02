@@ -16,6 +16,7 @@ const TableDataPagination = () => {
     const { tableDataState, dispatch, itemsCount } = useTableDataContext();
     const { selectedPage, selectedPaginationSize } = tableDataState;
     const maxAllowedPage = Math.ceil((itemsCount ?? 0) / selectedPaginationSize);
+    const shouldDisablePreviousPageButton = selectedPage === 1;
     const shouldDisableNextPageButton = maxAllowedPage === selectedPage;
 
     const setPreviousPageHander = () => {
@@ -47,7 +48,9 @@ const TableDataPagination = () => {
                 </Dropdown.Menu>
             </Dropdown>
             <PaginationNavigation>
-                <Button onClick={setPreviousPageHander}>Previous</Button>
+                <Button onClick={setPreviousPageHander} disabled={shouldDisablePreviousPageButton}>
+                    Previous
+                </Button>
                 <span>{selectedPage}</span>
                 <Button disabled={shouldDisableNextPageButton} onClick={setNextPageHander}>
                     Next

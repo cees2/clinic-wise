@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { type ButtonProps, type ButtonVariant } from "../../utils/projectTypes";
 
-const StyledButton = styled.button<{ $variant?: ButtonVariant }>`
+const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled: boolean }>`
     padding: 0.8rem 1.6rem;
     color: var(--color-gray-200);
     font-size: 1.4rem;
@@ -49,11 +49,24 @@ const StyledButton = styled.button<{ $variant?: ButtonVariant }>`
                 `;
         }
     }}
+
+    ${({ $disabled }) => {
+        return (
+            $disabled &&
+            css`
+                opacity: 0.7;
+
+                &:hover {
+                    cursor: not-allowed;
+                }
+            `
+        );
+    }}
 `;
 
 export const Button = ({ children, onClick, variant, disabled, ...restProps }: ButtonProps) => {
     return (
-        <StyledButton onClick={onClick} $variant={variant} {...restProps}>
+        <StyledButton onClick={onClick} $variant={variant} $disabled={disabled} {...restProps}>
             {children}
         </StyledButton>
     );

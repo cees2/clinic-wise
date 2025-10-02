@@ -69,6 +69,8 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     }
 
     & > nav {
+        width: 100%;
+
         @keyframes moveFromTop {
             0% {
                 transform: translateY(-100%);
@@ -91,13 +93,19 @@ const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
     align-self: center;
 `;
 
-const NavigationList = styled.ul`
+const NavigationList = styled.ul<{ $navigationState: MainNavigationState }>`
     display: flex;
     align-items: start;
-    width: min-content;
     flex-direction: column;
     row-gap: 1.6rem;
-    padding: 0 0.8rem;
+
+    ${({ $navigationState }) => {
+        if ($navigationState === MainNavigationState.CLOSED) {
+            return css`
+                width: 100%;
+            `;
+        }
+    }}
 `;
 
 const MainNavigation = () => {
@@ -156,7 +164,7 @@ const MainNavigation = () => {
                 {navigationState === MainNavigationState.OPEN && <Image />}
             </div>
             <nav className="flex items-center justify-center">
-                <NavigationList>
+                <NavigationList $navigationState={navigationState}>
                     {mainNavigationConfig.map((navigationItem) => (
                         <MainNavigationItem
                             key={navigationItem.title}

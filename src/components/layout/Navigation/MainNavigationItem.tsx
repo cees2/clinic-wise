@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { type MainNavigationConfigItem, MainNavigationState } from "../../../utils/projectTypes";
 
 const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationState }>`
@@ -29,10 +29,14 @@ const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationStat
     }
 
     & > .nav-item {
-        transition: display var(--duration-fast) ease-in;
+        transition: all var(--duration-fast) 100ms;
+
         ${({ $navigationState }) => {
-            return `display: ${$navigationState === MainNavigationState.OPEN ? "inline" : "none"};`;
-        }}
+            return css`
+                opacity: ${$navigationState === MainNavigationState.OPEN ? "1" : "0"};
+                visibility: ${$navigationState === MainNavigationState.OPEN ? "visible" : "hidden"};
+            `;
+        }};
     }
 `;
 
