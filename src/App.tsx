@@ -9,24 +9,28 @@ import "react-date-range/dist/theme/default.css";
 import { AuthContextProvider } from "./utils/contexts/AuthContext";
 import { ConfirmationProvider } from "./utils/contexts/ConfirmationContext.tsx";
 import { DarkModeProvider } from "./utils/contexts/DarkModeContext.tsx";
+import { ErrorBoundary } from "react-error-boundary";
+import ClinicWiseErrorBoundary from "./components/layout/ErrorBoundary.tsx";
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { staleTime: 0 } } });
 
 function App() {
     return (
         <BrowserRouter>
-            <QueryClientProvider client={queryClient}>
-                <DarkModeProvider>
-                    <ConfirmationProvider>
-                        <GlobalStyles />
-                        <AuthContextProvider>
-                            <ToastContainer />
-                            <ReactQueryDevtools initialIsOpen={false} />
-                            <MainLayout />
-                        </AuthContextProvider>
-                    </ConfirmationProvider>
-                </DarkModeProvider>
-            </QueryClientProvider>
+            <ErrorBoundary fallback={<ClinicWiseErrorBoundary />}>
+                <QueryClientProvider client={queryClient}>
+                    <DarkModeProvider>
+                        <ConfirmationProvider>
+                            <GlobalStyles />
+                            <AuthContextProvider>
+                                <ToastContainer />
+                                <ReactQueryDevtools initialIsOpen={false} />
+                                <MainLayout />
+                            </AuthContextProvider>
+                        </ConfirmationProvider>
+                    </DarkModeProvider>
+                </QueryClientProvider>
+            </ErrorBoundary>
         </BrowserRouter>
     );
 }
