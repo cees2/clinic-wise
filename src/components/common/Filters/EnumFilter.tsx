@@ -38,7 +38,7 @@ const EnumFilter = ({ filterId, options, onHideDropdown, defaultValue, ...restPr
                 const checked = selectedFilterState.filterValue.includes(value);
 
                 return (
-                    <Dropdown.Item key={name}>
+                    <Dropdown.Item key={name} onClick={() => onChange(value)}>
                         <CheckboxInputSimple
                             label={name}
                             id={name}

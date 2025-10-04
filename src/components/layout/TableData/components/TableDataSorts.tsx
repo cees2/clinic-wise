@@ -31,7 +31,6 @@ const TableDataSorts = <TableDataResource extends TableDataResourceType>({
                 break;
             case SortTableEnum.NONE:
             default:
-                // TODO here and in the above code change type. For now I can pass "" as a payload and there is no TS error
                 dispatch({ type: TableDataActionsEnum.SET_SORT, payload: null });
         }
     };

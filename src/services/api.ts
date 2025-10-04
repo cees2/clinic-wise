@@ -21,8 +21,6 @@ import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 import type { Tables } from "./database.types.ts";
 
-// TODO: possible refactor
-
 // APPOINTMENT
 export const uploadFakeAppointments = async (appointments: AppointmentGenerateType[]) => {
     await supabase.from("appointments").delete().gte("id", 0);
