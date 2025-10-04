@@ -116,20 +116,6 @@ export const createEmployee = async (employee: EmployeeFormType) => {
         password,
         user_metadata: { role, fullName: `${name} ${surname}` },
     };
-    const newEmployeeData: Omit<Tables<"employees">, "id" | "created_at"> = {
-        start_date: employee.start_date ?? "",
-        date_of_birth: employee.date_of_birth ?? "",
-        address: employee.address ?? "",
-        document_id: employee.document_id ?? "",
-        email: employee.email ?? "",
-        gender: employee.gender ?? "",
-        user_id: employee.user_id ?? null,
-        role: employee.role ?? null,
-        name: employee.name ?? "",
-        nationality: employee.nationality ?? "",
-        phone_number: employee.phone_number ?? "",
-        surname: employee.surname ?? "",
-    };
 
     const { data: uploadedUserData, error: uploadUserError } = await supabase.functions.invoke("create-employee-user", {
         body: userData,
@@ -139,12 +125,26 @@ export const createEmployee = async (employee: EmployeeFormType) => {
         throw new Error(uploadUserError.message);
     }
 
+    const newEmployeeData: Omit<Tables<"employees">, "id" | "created_at"> = {
+        start_date: employee.start_date ?? "",
+        date_of_birth: employee.date_of_birth ?? "",
+        address: employee.address ?? "",
+        document_id: employee.document_id ?? "",
+        email: employee.email ?? "",
+        gender: employee.gender ?? "",
+        user_id: uploadedUserData.user.id ?? null,
+        role: employee.role ?? null,
+        name: employee.name ?? "",
+        nationality: employee.nationality ?? "",
+        phone_number: employee.phone_number ?? "",
+        surname: employee.surname ?? "",
+    };
+
     const { data: uploadedEmployeeData, error: uploadEmployeeError } = await supabase
         .from("employees")
         .insert(newEmployeeData)
         .select()
         .single();
-
     if (uploadEmployeeError) {
         await supabase.functions.invoke("remove-user", {
             body: { id: uploadedUserData.user.id },
