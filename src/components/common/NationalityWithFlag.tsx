@@ -5,7 +5,7 @@ export const NationalityWithFlag = ({ nationality }: { nationality?: string | nu
 
     return (
         <div className="flex items-center gap-x-4">
-            <span>{nationality}</span>
+            <span className="shrink-0">{nationality}</span>
             <img
                 src={`https://flagcdn.com/w20/${getCountryShortName(nationality)}.png`}
                 alt={`${nationality ?? ""} flag`}

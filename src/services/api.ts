@@ -146,6 +146,9 @@ export const createEmployee = async (employee: EmployeeFormType) => {
         .single();
 
     if (uploadEmployeeError) {
+        await supabase.functions.invoke("remove-user", {
+            body: { id: uploadedUserData.user.id },
+        });
         throw new Error(uploadEmployeeError.message);
     }
 
