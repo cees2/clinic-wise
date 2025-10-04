@@ -225,7 +225,7 @@ export interface DropdownItemsProps<Resource> {
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-export interface DropdownToggleProps extends Children {
+export interface DropdownToggleProps extends React.ComponentProps<"button"> {
     hideDefaultIcon?: true;
     className?: string;
     isForm?: true;
@@ -380,6 +380,7 @@ export type SupportedCountriesShortNames = "us" | "ca" | "mx" | "de" | "pl" | "f
 export interface DropdownMenuProps extends Children {
     onHideDropdown?: () => void;
     className?: string;
+    forceOpen?: boolean;
 }
 
 export interface LoginApi {

@@ -136,8 +136,8 @@ export const Dropdown = ({
     );
 };
 
-const DropdownToggle = ({ children, hideDefaultIcon, className, isForm }: DropdownToggleProps) => {
-    const { setOpen, setDropdownToggleRef, setIsOpening } = use(DropdownContext);
+const DropdownToggle = ({ children, hideDefaultIcon, className, isForm, ...toggleProps }: DropdownToggleProps) => {
+    const { setOpen, setDropdownToggleRef, setIsOpening, open } = use(DropdownContext);
     const originalDropdownToggleRef = useRef<HTMLButtonElement>(null);
 
     const toggleDropdown = () => {
@@ -155,6 +155,8 @@ const DropdownToggle = ({ children, hideDefaultIcon, className, isForm }: Dropdo
             ref={originalDropdownToggleRef}
             className={className}
             $isForm={isForm}
+            aria-expanded={open}
+            {...toggleProps}
         >
             {children}
             {!hideDefaultIcon && <IoMdArrowDropdown />}
@@ -166,7 +168,7 @@ const DropdownToggleLabel = ({ children }: Children) => {
     return <StyledDropdownToggleLabel>{children}</StyledDropdownToggleLabel>;
 };
 
-const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps) => {
+const DropdownMenu = ({ children, onHideDropdown, className, forceOpen }: DropdownMenuProps) => {
     const dropdownMenuRef = useRef<HTMLUListElement>(null);
     const { open, setOpen, isOpening, setIsOpening, dropdownToggleRef, placement } = use(DropdownContext);
 
@@ -192,7 +194,7 @@ const DropdownMenu = ({ children, onHideDropdown, className }: DropdownMenuProps
         };
     }, [clickOutsideHandler]);
 
-    if (!open || !dropdownToggleRef) return null;
+    if ((!open && !forceOpen) || !dropdownToggleRef) return null;
 
     const { height: toggleHeight, width: toggleWidth } = dropdownToggleRef.current?.getBoundingClientRect() ?? {};
 

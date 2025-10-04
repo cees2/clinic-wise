@@ -5,6 +5,7 @@ import SimpleSelectInput from "./SimpleSelectInput";
 import AsyncSelectInput from "./AsyncSelectInput";
 import type { FormSelectInputProps } from "../../../../utils/projectTypes";
 import { useFormState } from "react-hook-form";
+import { useClickLabel } from "../../../../utils/hooks/useClickLabel.ts";
 
 export const FormSelectInput = <
     OptionsType extends Record<string, any>,
@@ -13,6 +14,7 @@ export const FormSelectInput = <
 >(
     props: FormSelectInputProps<OptionsType, isMulti, FormType>,
 ) => {
+    const { forceOpenDropdown, onClickLabel, onDropdownHide } = useClickLabel();
     const { registerName, label, control } = props;
     const isRequired = props.rules?.required;
     const { errors } = useFormState<FormType>({ control, name: registerName });
@@ -20,11 +22,21 @@ export const FormSelectInput = <
 
     return (
         <div>
-            <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
+            <InputLabel htmlFor={registerName} onClick={onClickLabel}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             {props.loadOptions ? (
-                <AsyncSelectInput {...props} loadOptions={props.loadOptions} />
+                <AsyncSelectInput
+                    {...props}
+                    loadOptions={props.loadOptions}
+                    forceOpenDropdown={forceOpenDropdown}
+                    onDropdownHide={onDropdownHide}
+                />
             ) : (
-                <SimpleSelectInput {...props} options={props.options ?? []} />
+                <SimpleSelectInput
+                    {...props}
+                    options={props.options ?? []}
+                    forceOpenDropdown={forceOpenDropdown}
+                    onDropdownHide={onDropdownHide}
+                />
             )}
             {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
         </div>

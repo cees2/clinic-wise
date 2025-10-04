@@ -14,6 +14,7 @@ import {
 import { DB_DATE_FORMAT } from "../../../../utils/constants";
 import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
 import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
+import { useClickLabel } from "../../../../utils/hooks/useClickLabel.ts";
 
 interface Props<FormType extends Record<string, any>> extends Partial<TimePickerProps> {
     minDate?: Date | "current";
@@ -38,6 +39,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     customMinutes,
     dateFormat,
 }: Props<FormType>) => {
+    const { forceOpenDropdown, onClickLabel, onDropdownHide } = useClickLabel();
     const calendarMinDate = getDefaultMinDate(minDate, withTimePicker);
     const calendarMaxDate = getDefaultMaxDate(maxDate, withTimePicker);
     const isRequired = rules?.required;
@@ -62,12 +64,12 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
 
     return (
         <div>
-            <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
+            <InputLabel htmlFor={registerName} onClick={onClickLabel}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             <Dropdown>
-                <Dropdown.Toggle hideDefaultIcon isForm>
+                <Dropdown.Toggle hideDefaultIcon isForm id={registerName}>
                     {formattedDate}
                 </Dropdown.Toggle>
-                <Dropdown.Menu>
+                <Dropdown.Menu forceOpen={forceOpenDropdown} onHideDropdown={onDropdownHide}>
                     <StyledDatePickerInput>
                         <Calendar
                             date={value}
