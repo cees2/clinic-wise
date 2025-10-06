@@ -170,6 +170,7 @@ const MainNavigation = () => {
                             key={navigationItem.title}
                             navigationItem={navigationItem}
                             navigationState={navigationState}
+                            setNavigationState={setNavigationState}
                         />
                     ))}
                 </NavigationList>

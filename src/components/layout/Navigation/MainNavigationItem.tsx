@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 import { type MainNavigationConfigItem, MainNavigationState } from "../../../utils/projectTypes";
+import { NavLink } from "react-router-dom";
+import type { Dispatch, SetStateAction } from "react";
 
 const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationState }>`
     &:visited,
@@ -40,20 +42,27 @@ const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationStat
     }
 `;
 
-import { NavLink } from "react-router-dom";
-
 interface Props {
     navigationItem: MainNavigationConfigItem;
     navigationState: MainNavigationState;
+    setNavigationState: Dispatch<SetStateAction<MainNavigationState>>;
 }
 
-const MainNavigationItem = ({ navigationItem, navigationState }: Props) => {
+const MainNavigationItem = ({ navigationItem, navigationState, setNavigationState }: Props) => {
     const { title, icon, to, visible } = navigationItem;
+
+    const clickHandler = () => {
+        const shouldHide = window.innerWidth < 768;
+
+        if (shouldHide) {
+            setNavigationState(MainNavigationState.CLOSED);
+        }
+    };
 
     if (visible === false) return null;
 
     return (
-        <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState}>
+        <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState} onClick={clickHandler}>
             {icon}
             <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}</span>
         </StyledMainNavigationItem>
