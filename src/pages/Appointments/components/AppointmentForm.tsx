@@ -59,6 +59,7 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleA
             $columns={1}
             $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
+            isPending={mutationCreate.isPending || mutationUpdate.isPending}
         >
             <NumberInput
                 control={control}

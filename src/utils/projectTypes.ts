@@ -320,6 +320,7 @@ export interface FormSubmitProps<FormType extends Record<string, any>> extends F
     formState: FormState<FormType>;
     onCancel?: () => void;
     customButtons?: React.ReactNode;
+    isPending?: boolean;
 }
 
 export interface FormSelectInputProps<
@@ -373,6 +374,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     variant?: ButtonVariant;
     disabled?: boolean;
+    isLoading?: boolean;
 }
 
 export type SupportedCountriesShortNames = "us" | "ca" | "mx" | "de" | "pl" | "fr" | "no" | "it";

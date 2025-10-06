@@ -8,10 +8,17 @@ export const GridForm = <FormType extends Record<string, any>>({
     onCancel,
     children,
     customButtons,
+    isPending,
     ...gridProps
 }: GridLayoutProps & FormSubmitProps<FormType>) => {
     return (
-        <FormSubmit onSubmit={onSubmit} formState={formState} onCancel={onCancel} customButtons={customButtons}>
+        <FormSubmit
+            onSubmit={onSubmit}
+            formState={formState}
+            onCancel={onCancel}
+            customButtons={customButtons}
+            isPending={isPending}
+        >
             <GridLayout {...(gridProps as GridLayoutProps)}>{children}</GridLayout>
         </FormSubmit>
     );

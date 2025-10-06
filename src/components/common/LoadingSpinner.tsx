@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import styled, { css } from "styled-components";
 
-const Spinner = styled.div`
+export const Spinner = styled.div.attrs({ className: "spinner" })`
     @keyframes rotateSpinner {
         from {
             transform: rotate(0);

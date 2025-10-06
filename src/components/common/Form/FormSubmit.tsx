@@ -7,6 +7,13 @@ const FormButtons = styled.div.attrs({ role: "group" })`
     margin-top: 3.2rem;
     display: flex;
     column-gap: 1.2rem;
+
+    & .spinner {
+        width: 1.8rem;
+        height: 1.8rem;
+        border: 0.3rem solid var(--color-gray-300);
+        border-top: 0.4rem solid var(--color-primary);
+    }
 `;
 
 export const FormSubmit = <FormType extends Record<string, any>>({
@@ -15,6 +22,7 @@ export const FormSubmit = <FormType extends Record<string, any>>({
     onCancel,
     children,
     customButtons,
+    isPending,
     ...restProps
 }: FormSubmitProps<FormType>) => {
     const { isDirty } = formState;
@@ -35,7 +43,9 @@ export const FormSubmit = <FormType extends Record<string, any>>({
                     Cancel
                 </Button>
             )}
-            <Button type="submit">Save</Button>
+            <Button isLoading={isPending} type="submit">
+                Save
+            </Button>
         </FormButtons>
     );
 

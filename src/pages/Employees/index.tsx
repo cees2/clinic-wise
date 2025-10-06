@@ -8,11 +8,15 @@ import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
 import { useAuthContext } from "../../utils/contexts/AuthContext";
+import { useMutateEmployee } from "../../services/hooks/employees/useMutateEmployee.ts";
+import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 
 const Employees = () => {
     const { user } = useAuthContext();
     const HasPermissionsToPerformActions =
         user?.user_metadata.role === UserRole.ADMIN || user?.user_metadata.role === UserRole.REGISTRATION;
+    const { mutationRemove } = useMutateEmployee();
+    const { confirmation } = useConfirmation();
 
     const config: TableDataConfig<Tables<"employees">> = {
         columns: [
@@ -60,6 +64,7 @@ const Employees = () => {
                 id: "role",
                 name: "Role",
                 render: (employee) => capitalizeFirstLetter(employee.role ?? ""),
+                customInclude: "role,user_id",
             },
         ],
         filters: [
@@ -89,6 +94,20 @@ const Employees = () => {
                 name: "Edit",
                 path: (item) => `/employees/${item.id}/edit`,
                 visible: () => HasPermissionsToPerformActions,
+            },
+            {
+                id: "remove",
+                name: "Remove",
+                action: (item) => {
+                    confirmation({
+                        title: "Remove employee",
+                        caption: "Are you sure you want to remove this employee? This action cannot be undone.",
+                        onConfirm: () => {
+                            mutationRemove.mutate({ employeeId: item.id, userId: item.user_id ?? "" });
+                        },
+                    });
+                },
+                visible: (item) => item.role !== UserRole.ADMIN,
             },
         ],
         resourceName: "employees",

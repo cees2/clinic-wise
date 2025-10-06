@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { type ButtonProps, type ButtonVariant } from "../../utils/projectTypes";
+import { Spinner } from "../common/LoadingSpinner.tsx";
 
 const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boolean }>`
     padding: 0.8rem 1.6rem;
@@ -9,6 +10,10 @@ const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boole
     border-radius: 6px;
     font-weight: var(--font-weight-semibold);
     transition: var(--duration-fastest) linear;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 0.6rem;
 
     &:hover {
         cursor: pointer;
@@ -64,9 +69,10 @@ const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boole
     }}
 `;
 
-export const Button = ({ children, onClick, variant, disabled, ...restProps }: ButtonProps) => {
+export const Button = ({ children, onClick, variant, disabled, isLoading, ...restProps }: ButtonProps) => {
     return (
         <StyledButton onClick={onClick} $variant={variant} $disabled={disabled} {...restProps}>
+            {isLoading && <Spinner />}
             {children}
         </StyledButton>
     );

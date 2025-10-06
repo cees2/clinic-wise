@@ -42,6 +42,7 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
             $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
             onCancel={() => void navigate("/employees")}
+            isPending={mutationCreate.isPending || mutationUpdate.isPending}
         >
             <TextInput
                 register={register}

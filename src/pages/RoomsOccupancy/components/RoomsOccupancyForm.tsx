@@ -57,6 +57,7 @@ export const RoomsOccupancyForm = ({ roomOccupancy }: Props) => {
             $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
             onCancel={() => void navigate("/room-occupancies")}
+            isPending={mutateRoomOccupancy.isPending}
         >
             <FormSelectInput<EmployeeSelect, false, RoomOccupancyFormType>
                 loadOptions={loadEmployees}

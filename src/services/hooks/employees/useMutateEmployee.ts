@@ -29,7 +29,8 @@ export const useMutateEmployee = () => {
     });
 
     const mutationRemove = useMutation({
-        mutationFn: (employeeId: number) => removeEmployee(employeeId),
+        mutationFn: ({ employeeId, userId }: { employeeId: number; userId: string }) =>
+            removeEmployee(employeeId, userId),
         onSuccess: () => {
             toast.success("The employee removed successfully");
         },

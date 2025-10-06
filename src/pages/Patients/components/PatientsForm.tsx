@@ -42,6 +42,7 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
             $smBreakpointTemplateColumns="1fr 1fr"
             $gap="2.4rem"
             onCancel={() => void navigate("/patients")}
+            isPending={mutationCreate.isPending || mutationUpdate.isPending}
         >
             <TextInput
                 register={register}

@@ -165,11 +165,14 @@ export const getEmployee = async (employeeId: string) => {
     return data;
 };
 
-export const removeEmployee = async (employeeId: number) => {
+export const removeEmployee = async (employeeId: number, userId: string) => {
     const { data, error } = await supabase.from("employees").delete().eq("id", Number(employeeId));
+    const { error: removeUserError } = await supabase.functions.invoke("remove-user", {
+        body: { id: userId },
+    });
 
-    if (error) {
-        throw new Error(error.message);
+    if (error || removeUserError) {
+        throw new Error(error?.message ?? removeUserError.message);
     }
 
     return data;
