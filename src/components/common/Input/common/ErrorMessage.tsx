@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { IoIosInformationCircleOutline } from "react-icons/io";
-import type { Children } from "../../../../utils/projectTypes.ts";
 
 const StyledErrorMessage = styled.span.attrs({ role: "alert" })`
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     color: var(--color-red-700);
     margin-top: 0.8rem;
     margin-left: 0.6rem;
     display: flex;
     align-items: center;
     column-gap: 0.2rem;
+    height: 1.9rem;
 
     & > svg {
         width: 1.8rem;
@@ -17,11 +17,15 @@ const StyledErrorMessage = styled.span.attrs({ role: "alert" })`
     }
 `;
 
-export const ErrorMessage = ({ children }: Children) => {
+export const ErrorMessage = ({ error }: { error: string | null }) => {
     return (
         <StyledErrorMessage>
-            <IoIosInformationCircleOutline />
-            <span> {children}</span>
+            {error && (
+                <>
+                    <IoIosInformationCircleOutline />
+                    <span>{error}</span>
+                </>
+            )}
         </StyledErrorMessage>
     );
 };

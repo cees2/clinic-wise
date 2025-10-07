@@ -43,7 +43,7 @@ export const GridLayout = styled.div<GridLayoutProps>`
     ${({ $columnGap, $rowGap, $gap }) => {
         if ($columnGap && $rowGap) {
             return css`
-                gap: ${$columnGap} ${$rowGap};
+                gap: ${$rowGap} ${$columnGap};
             `;
         } else if ($columnGap) {
             return css`

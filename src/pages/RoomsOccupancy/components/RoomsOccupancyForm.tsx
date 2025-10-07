@@ -55,7 +55,8 @@ export const RoomsOccupancyForm = ({ roomOccupancy }: Props) => {
             onSubmit={onSubmit}
             $columns={1}
             $smBreakpointTemplateColumns="1fr 1fr"
-            $gap="2.4rem"
+            $columnGap="2.4rem"
+            $rowGap="1.2rem"
             onCancel={() => void navigate("/room-occupancies")}
             isPending={mutateRoomOccupancy.isPending}
         >

@@ -90,7 +90,7 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
                     </StyledDatePickerInput>
                 </Dropdown.Menu>
             </Dropdown>
-            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+            <ErrorMessage error={inputErrorName} />
         </div>
     );
 };

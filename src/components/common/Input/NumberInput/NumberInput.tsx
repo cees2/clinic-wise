@@ -39,7 +39,7 @@ export const NumberInput = <FormType extends Record<string, any>>({
         <StyledInput>
             <InputLabel htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</InputLabel>
             <NumericFormat id={registerName} onChange={onChange} value={value} onBlur={onBlur} {...restProps} />
-            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+            <ErrorMessage error={inputErrorName} />
         </StyledInput>
     );
 };

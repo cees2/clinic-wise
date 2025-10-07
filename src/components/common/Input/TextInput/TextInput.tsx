@@ -48,7 +48,7 @@ export const TextInput = <FormType extends Record<string, any>>({
                 {...restProps}
                 className="dark:text-gray-800"
             />
-            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+            <ErrorMessage error={inputErrorName} />
         </StyledInput>
     );
 };

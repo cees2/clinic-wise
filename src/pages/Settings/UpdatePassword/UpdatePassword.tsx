@@ -31,7 +31,8 @@ const UpdatePassword = () => {
             headerTitle="Update password"
             onSubmit={onSubmit}
             formState={formState}
-            $gap="2.4rem"
+            $columnGap="2.4rem"
+            $rowGap="1.2rem"
             $columnMinWidth="20rem"
             $columnMaxWidth="1fr"
             customButtons={customButtons}

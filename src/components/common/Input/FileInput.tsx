@@ -95,7 +95,7 @@ export const FileInput = <FormType extends Record<string, any>>({
         <StyledFileInput className={className ?? ""}>
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
             <input type="file" id={registerName} ref={inputRef} onChange={onChangeInternal} onBlur={onBlur} />
-            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+            <ErrorMessage error={inputErrorName} />
             {withClearButton && setValue && (
                 <ClearButton type="button" onClick={clearFileInputHandler}>
                     <CiCircleRemove />

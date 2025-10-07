@@ -26,7 +26,7 @@ export const FormSelectInput = <
             ) : (
                 <SimpleSelectInput {...props} options={props.options ?? []} />
             )}
-            {inputErrorName && <ErrorMessage>{inputErrorName}</ErrorMessage>}
+            <ErrorMessage error={inputErrorName} />
         </div>
     );
 };
