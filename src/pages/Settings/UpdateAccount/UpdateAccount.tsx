@@ -51,7 +51,7 @@ const UpdateAccount = () => {
             headerTitle="Update your account"
             onSubmit={onSubmit}
             formState={formState}
-            $columnGap="2.4rem"
+            $columnGap="6.4rem"
             $rowGap="1.2rem"
             $columnMinWidth="20rem"
             $columnMaxWidth="1fr"

@@ -19,10 +19,12 @@ const TableDataPagination = () => {
     const shouldDisablePreviousPageButton = selectedPage === 1;
     const shouldDisableNextPageButton = maxAllowedPage === selectedPage;
 
-    const setPreviousPageHander = () => {
+    const setPreviousPageHandler = () => {
         dispatch({ type: TableDataActionsEnum.SET_PREVIOUS_PAGE });
     };
-    const setNextPageHander = () => {
+    const setNextPageHandler = () => {
+        if (shouldDisableNextPageButton) return;
+
         dispatch({ type: TableDataActionsEnum.SET_NEXT_PAGE });
     };
 
@@ -48,11 +50,11 @@ const TableDataPagination = () => {
                 </Dropdown.Menu>
             </Dropdown>
             <PaginationNavigation>
-                <Button onClick={setPreviousPageHander} disabled={shouldDisablePreviousPageButton}>
+                <Button onClick={setPreviousPageHandler} disabled={shouldDisablePreviousPageButton}>
                     Previous
                 </Button>
                 <span>{selectedPage}</span>
-                <Button disabled={shouldDisableNextPageButton} onClick={setNextPageHander}>
+                <Button disabled={shouldDisableNextPageButton} onClick={setNextPageHandler}>
                     Next
                 </Button>
             </PaginationNavigation>

@@ -17,17 +17,21 @@ export const ConfirmationProvider = ({ children }: Children) => {
     const [confirmationState, setConfirmationState] = useState<ConfirmationType | undefined>(undefined);
     const shouldDisplayModal = Boolean(confirmationState);
     const { onConfirm, onReject, title, caption } = confirmationState ?? {};
+
     const onHideModal = useCallback(() => {
         setConfirmationState(undefined);
     }, []);
+
     const onConfirmConfirmation = () => {
         onConfirm?.();
         onHideModal();
     };
+
     const onRejectConfirmation = () => {
         onReject?.();
         onHideModal();
     };
+
     const memoizedContextValue = useMemo(
         () => ({
             confirmation: (newConfirmationState: ConfirmationType) => {

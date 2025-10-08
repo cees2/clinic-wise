@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { type ButtonProps, type ButtonVariant } from "../../utils/projectTypes";
 import { Spinner } from "../common/LoadingSpinner.tsx";
 
-const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boolean }>`
+const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boolean; $isLoading?: boolean }>`
     padding: 0.8rem 1.6rem;
     color: var(--color-gray-200);
     font-size: 1.4rem;
@@ -12,8 +12,18 @@ const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boole
     transition: var(--duration-fastest) linear;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     column-gap: 0.6rem;
+
+    ${({ $isLoading }) => {
+        return (
+            typeof $isLoading === "boolean" &&
+            $isLoading &&
+            css`
+                justify-content: space-between;
+            `
+        );
+    }}
 
     &:hover {
         cursor: pointer;
@@ -71,7 +81,7 @@ const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boole
 
 export const Button = ({ children, onClick, variant, disabled, isLoading, ...restProps }: ButtonProps) => {
     return (
-        <StyledButton onClick={onClick} $variant={variant} $disabled={disabled} {...restProps}>
+        <StyledButton onClick={onClick} $variant={variant} $disabled={disabled} $isLoading={isLoading} {...restProps}>
             {isLoading && <Spinner />}
             {children}
         </StyledButton>

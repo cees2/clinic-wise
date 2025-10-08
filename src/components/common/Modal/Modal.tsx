@@ -1,13 +1,8 @@
-import React, { createContext, useEffect, useMemo, type MouseEvent } from "react";
-import type { Children, ModalContextType } from "../../../utils/projectTypes";
+import React, { useEffect, type MouseEvent, useRef, useState } from "react";
+import type { Children } from "../../../utils/projectTypes";
 import styled from "styled-components";
 import { createPortal } from "react-dom";
 import { IoMdClose } from "react-icons/io";
-
-const ModalContext = createContext<ModalContextType>({
-    showModal: false,
-    onHide: () => {},
-});
 
 const ModalBackdrop = styled.div`
     position: fixed;
@@ -19,25 +14,51 @@ const ModalBackdrop = styled.div`
 
 const StyledModal = styled.div`
     @keyframes display-modal {
-        from {
-            opacity: 50%;
-            transform: scale(60%) translate(0, 0);
+        0% {
+            opacity: 10%;
+            transform: translate(-50%, -100%);
+            top: 0;
         }
-        to {
-            transform: scale(100%) translate(-50%, -50%);
+        80% {
+            top: 70%;
+        }
+        100% {
+            transform: translate(-50%, -50%);
             opacity: 100%;
+            top: 50%;
         }
     }
 
-    position: fixed;
-    top: 50%;
+    @keyframes hide-modal {
+        0% {
+            opacity: 100%;
+            transform: translate(-50%, -50%);
+            top: 50%;
+        }
+        20% {
+            transform: translate(-50%, -100%);
+            top: 70%;
+        }
+        100% {
+            opacity: 0;
+            transform: translate(-50%, -100%);
+            top: 0;
+        }
+    }
+
     left: 50%;
+    top: 50%;
+    position: fixed;
     width: 90vw;
     transform: translate(-50%, -50%);
     background-color: var(--background-secondary);
     padding: 2.4rem;
     border-radius: var(--radius-2xl);
-    animation: display-modal var(--duration-fast) ease-out;
+    animation: display-modal var(--duration-default) ease-out;
+
+    &.hide-modal {
+        animation: hide-modal var(--duration-default) ease-out;
+    }
 
     & > .close-button {
         position: absolute;
@@ -87,30 +108,60 @@ export const Modal = ({
     closeable?: boolean;
     onHide: () => void;
 }) => {
-    const memoizedContextValue = useMemo(() => ({ showModal, onHide }), [showModal, onHide]);
+    const [showModalInternal, setShowModalInternal] = useState(showModal);
+    const [isHiding, setIsHiding] = useState(false);
+    const closeModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const modalIndexElement = document.querySelector("#modal");
+
+    const hideModal = () => {
+        setIsHiding(true);
+        closeModalTimeoutRef.current = setTimeout(() => {
+            setIsHiding(false);
+            onHide();
+            setShowModalInternal(false);
+        }, 300);
+    };
+
+    const keyDownEventHandler = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+            hideModal();
+        }
+    };
 
     useEffect(() => {
         if (!showModal) {
-            onHide();
+            hideModal();
+        } else {
+            window.addEventListener("keydown", keyDownEventHandler);
+            setShowModalInternal(true);
         }
-    }, [showModal, onHide]);
+
+        return () => {
+            if (closeModalTimeoutRef.current) {
+                clearTimeout(closeModalTimeoutRef.current);
+            }
+            window.addEventListener("keydown", keyDownEventHandler);
+        };
+    }, [showModal]);
 
     const onBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
-        if (event.target === event.currentTarget) onHide();
+        if (event.target === event.currentTarget) hideModal();
     };
 
-    if (!modalIndexElement || !showModal) return null;
+    if (!modalIndexElement || !showModalInternal) return null;
 
     return createPortal(
-        <ModalContext value={memoizedContextValue}>
-            <ModalBackdrop onClick={onBackdropClick}>
-                <StyledModal aria-modal="true" role="dialog">
-                    {children}
-                    {closeable && <IoMdClose className="close-button" onClick={onHide} />}
-                </StyledModal>
-            </ModalBackdrop>
-        </ModalContext>,
+        <ModalBackdrop onClick={onBackdropClick}>
+            <StyledModal
+                aria-modal="true"
+                role="dialog"
+                className={isHiding ? "hide-modal" : ""}
+                aria-hidden={!showModal}
+            >
+                {closeable && <IoMdClose className="close-button" onClick={hideModal} />}
+                {children}
+            </StyledModal>
+        </ModalBackdrop>,
         modalIndexElement,
     );
 };
