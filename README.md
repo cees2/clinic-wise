@@ -1,16 +1,22 @@
 ## Live demo: https://clinic-wise.netlify.app/
 
 ## Purpose
-Web app to manage a given clinic
+Web app for managing a clinic.
 
 ## Important rules
-- Employee, user and appointment can be created only by authorized personel(registration, doctor, admin)
-- Given role can see specific app parts. The only exception is the admin role
-- There is a possibility to upload mock data
 
+Employees, users, and appointments can be created only by authorized personnel (registrar, doctor, or admin).
+
+Each role has access to specific parts of the app, with the admin role being the only exception.
+
+It’s possible to upload mock data.
 
 ## Tech stack:
-- React
-- Styled components
-- Tanstack Query
-- Tailwind
+
+React
+
+Styled Components
+
+TanStack Query
+
+Tailwind CSS
