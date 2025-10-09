@@ -64,7 +64,7 @@ const MainNavigationItem = ({ navigationItem, navigationState, setNavigationStat
     return (
         <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState} onClick={clickHandler}>
             {icon}
-            <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}1</span>
+            <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}</span>
         </StyledMainNavigationItem>
     );
 };
