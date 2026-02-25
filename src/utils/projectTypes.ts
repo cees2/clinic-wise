@@ -7,11 +7,9 @@ import type {
     SetStateAction,
 } from "react";
 import type React from "react";
-import type { Database, Tables } from "../services/database.types";
 import type { Control, FieldPath, FormState, RegisterOptions } from "react-hook-form";
 import type { Props as SelectProps } from "react-select";
 import type { KnownTarget } from "styled-components/dist/types";
-import type { User } from "@supabase/supabase-js";
 
 export interface Children {
     children: React.ReactNode;

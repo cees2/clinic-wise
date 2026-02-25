@@ -11,98 +11,61 @@ import type {
     RoomsOccupanciesResponseType,
     SingleAppointmentResponseType,
     UpdateUserCompleteInfo,
-    UpdateUserRequestType,
+    UpdateUserRequestType
 } from "../utils/projectTypes";
-import type { EmployeeSelect, RoomSelect } from "./apiTypes";
-import { supabase, supabaseURL } from "./services";
 import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
-import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
-import type { Tables } from "./database.types.ts";
+import axios from "axios";
 
+// TODO: Change based on the environment
+const restApi = axios.create({
+    baseURL: "http://localhost:8080/api"
+});
+
+
+// TODO: Change return types in API functions
+// TODO: Generating fake data should be done in the backend
 // APPOINTMENT
 export const uploadFakeAppointments = async (appointments: AppointmentGenerateType[]) => {
-    await supabase.from("appointments").delete().gte("id", 0);
-
-    const { data, error } = await supabase.functions.invoke("create-fake-appointments", { body: appointments });
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/appointments/generate", appointments);
 
     return data;
 };
 
 export const removeAppointment = async (appointmentId: number) => {
-    const { data, error } = await supabase.from("appointments").delete().eq("id", appointmentId);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.delete(`/appointments/${appointmentId}`);
 
     return data;
 };
 
 export const createAppointment = async (appointment: AppointmentFormType) => {
-    const { data, error } = await supabase.from("appointments").insert(appointment).select().single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post(`/appointments`, appointment);
 
     return data;
 };
 
 export const getAppointment = async (appointmentId: string): Promise<SingleAppointmentResponseType> => {
-    const { data, error } = await supabase
-        .from("appointments")
-        .select("*,patient:patient_id(id, name, surname),employee:employee_id(id, name, surname)")
-        .eq("id", Number(appointmentId))
-        .single();
-
-    if (error) {
-        throw new Error(error.details);
-    }
+    const { data } = await restApi.get(`/appointments/${appointmentId}`);
 
     return data;
 };
 
+// TODO: fix
 export const updateAppointment = async (appointment: AppointmentFormType) => {
-    if (!appointment.id) {
-        throw new Error("Could not update the appointment");
-    }
-
-    const { data, error } = await supabase
-        .from("appointments")
-        .update(appointment)
-        .eq("id", appointment.id)
-        .select()
-        .single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch(`/appointments/${appointment.id}`, appointment);
 
     return data;
 };
 
 export const cancelAppointment = async (appointmentId: number) => {
-    const { error, data } = await supabase.from("appointments").update({ status: "CANCELLED" }).eq("id", appointmentId);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch(`/appointments/${appointmentId}/cancel`);
 
     return data;
 };
 
 export const scheduleAppointment = async (appointmentId: number) => {
-    const { error, data } = await supabase.from("appointments").update({ status: "SCHEDULED" }).eq("id", appointmentId);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch(`/appointments/${appointmentId}/schedule`);
 
     return data;
 };
@@ -110,135 +73,38 @@ export const scheduleAppointment = async (appointmentId: number) => {
 // EMPLOYEE
 
 export const createEmployee = async (employee: EmployeeFormType) => {
-    const { email, password, role, name, surname } = employee;
-    const userData = {
-        email,
-        password,
-        user_metadata: { role, fullName: `${name} ${surname}` },
-    };
-
-    const { data: uploadedUserData, error: uploadUserError } = await supabase.functions.invoke("create-employee-user", {
-        body: userData,
-    });
-
-    if (uploadUserError) {
-        throw new Error(uploadUserError.message);
-    }
-
-    const newEmployeeData: Omit<Tables<"employees">, "id" | "created_at"> = {
-        start_date: employee.start_date ?? "",
-        date_of_birth: employee.date_of_birth ?? "",
-        address: employee.address ?? "",
-        document_id: employee.document_id ?? "",
-        email: employee.email ?? "",
-        gender: employee.gender ?? "",
-        user_id: uploadedUserData.user.id ?? null,
-        role: employee.role ?? null,
-        name: employee.name ?? "",
-        nationality: employee.nationality ?? "",
-        phone_number: employee.phone_number ?? "",
-        surname: employee.surname ?? "",
-    };
-
-    const { data: uploadedEmployeeData, error: uploadEmployeeError } = await supabase
-        .from("employees")
-        .insert(newEmployeeData)
-        .select()
-        .single();
-    if (uploadEmployeeError) {
-        await supabase.functions.invoke("remove-user", {
-            body: { id: uploadedUserData.user.id },
-        });
-        throw new Error(uploadEmployeeError.message);
-    }
-
-    return { uploadedUserData, uploadedEmployeeData };
-};
-
-export const getEmployee = async (employeeId: string) => {
-    const { data, error } = await supabase.from("employees").select("*").eq("id", Number(employeeId)).single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/employees", employee);
 
     return data;
 };
 
-export const removeEmployee = async (employeeId: number, userId: string) => {
-    const { data, error } = await supabase.from("employees").delete().eq("id", Number(employeeId));
-    const { error: removeUserError } = await supabase.functions.invoke("remove-user", {
-        body: { id: userId },
-    });
+export const getEmployee = async (employeeId: string) => {
+    const { data } = await restApi.get(`/employees/${employeeId}`);
 
-    if (error || removeUserError) {
-        throw new Error(error?.message ?? removeUserError.message);
-    }
+    return data;
+};
+
+export const removeEmployee = async (employeeId: number) => {
+    const { data } = await restApi.delete(`/employees/${employeeId}`);
 
     return data;
 };
 
 export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
-    await supabase.from("employees").delete().gte("id", 0);
-
-    const { data, error } = await supabase.from("employees").insert(employees);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/employees/generate", employees);
 
     return data;
 };
 
-export const getEmployeesIds = async (size: number) => {
-    const { data, error } = await supabase
-        .from("employees")
-        .select("id")
-        .range(0, size - 1);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
-    const employeesIds = data.map((data) => data.id);
-
-    return employeesIds;
-};
-
+// TODO: fix
 export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSelect[]> => {
-    const { data, error } = await supabase.from("employees").select("id,name,surname").ilike("name", `${inputValue}%`);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.get(`/employees/search_select?input=${inputValue}`);
 
     return data;
 };
 
 export const updateEmployee = async (employee: EmployeeFormType) => {
-    const userData = {
-        role: employee.role,
-        fullName: `${employee.name} ${employee.surname}`,
-        user_id: employee.user_id,
-    };
-
-    const { error: updateUserError } = await supabase.functions.invoke("update-employee-user", {
-        body: userData,
-    });
-
-    if (updateUserError) {
-        throw new Error(updateUserError.message);
-    }
-
-    if (!employee.id) {
-        throw new Error("Could not update the employee");
-    }
-
-    const { data, error } = await supabase.from("employees").update(employee).eq("id", employee.id).select().single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch(`/employees/${employee.id}`, employee);
 
     return data;
 };
@@ -246,285 +112,92 @@ export const updateEmployee = async (employee: EmployeeFormType) => {
 // PATIENT
 
 export const createPatient = async (patient: PatientFormType) => {
-    const { data, error } = await supabase.from("patients").insert(patient).select().single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/patients", patient);
 
     return data;
 };
 
 export const updatePatient = async (patient: PatientFormType) => {
-    if (!patient.id) {
-        throw new Error("Could not update the patient");
-    }
-
-    const { data, error } = await supabase.from("patients").update(patient).eq("id", patient.id).select().single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch(`/patients/${patient.id}`, patient);
 
     return data;
 };
 
 export const removePatient = async (patientId: number) => {
-    const { data, error } = await supabase.from("patients").delete().eq("id", Number(patientId));
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.delete(`/patients/${patientId}`);
 
     return data;
 };
 
 export const getPatientsSelect = async (inputValue: string) => {
-    const { data, error } = await supabase.from("patients").select("id,name,surname").ilike("name", `${inputValue}%`);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data, error } = await restApi.get(`/patients/search_select?input=${inputValue}`);
 
     return data;
 };
 
 export const uploadFakePatients = async (patients: PatientFormType[]) => {
-    await supabase.from("patients").delete().gte("id", 0);
-
-    const { data, error } = await supabase.from("patients").insert(patients);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/patients/generate", patients);
 
     return data;
 };
 
-export const getPatientsIds = async (size: number) => {
-    const { data, error } = await supabase
-        .from("patients")
-        .select("id")
-        .range(0, size - 1);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
-    const patientsIds = data.map((patient) => patient.id);
-
-    return patientsIds;
-};
-
 export const getPatient = async (patientId: string) => {
-    const { data, error } = await supabase.from("patients").select("*").eq("id", Number(patientId)).single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.get(`/patients/${patientId}`);
 
     return data;
 };
 
 // AUTHENTICATION
 
-export const loginUser = async (loginData: LoginApi) => {
-    const { data, error } = await supabase.auth.signInWithPassword(loginData);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+export const loginUser = async (loginData: LoginApi): Promise<{ token: string }> => {
+    const { data } = await restApi.post("/login", loginData);
 
     return data;
 };
 
 export const registerUser = async (registerData: SignUpWithPasswordCredentials) => {
-    const { data, error } = await supabase.auth.signUp(registerData);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/register", registerData);
 
     return data;
 };
 
 export const logoutUser = async () => {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-        throw new Error(error.message);
-    }
-};
-
-export const getUser = async () => {
-    const { data, error } = await supabase.auth.getUser();
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
-    return data;
-};
-
-export const getSession = async () => {
-    const { data, error } = await supabase.auth.getSession();
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
-    return data;
+    await restApi.post("/logout");
 };
 
 // USER
 
-const updateUserData = async (
+export const updateUser = async (
     userCompleteData: UpdateUserRequestType,
-    userId: string,
-    uploadedAvatarFullPath?: string,
-    previousAvatarName?: string,
+    userId: string
 ) => {
-    const [name, surname] = userCompleteData.data.fullName.split(" ");
-    const { error: updateEmployeeError } = await supabase
-        .from("employees")
-        .update({ name, surname })
-        .eq("user_id", userId);
-
-    if (updateEmployeeError) {
-        throw new Error(updateEmployeeError.message);
-    }
-
-    const { data, error } = await supabase.auth.updateUser(userCompleteData);
-    const userClearedAvatarInput = !userCompleteData.data.avatarURL;
-    const userChangedAvatar = Boolean(uploadedAvatarFullPath);
-
-    if ((userChangedAvatar || userClearedAvatarInput) && previousAvatarName) {
-        await supabase.storage.from("user-avatars").remove([previousAvatarName]);
-    }
-
-    if (error && uploadedAvatarFullPath) {
-        await supabase.storage.from("user-avatars").remove([uploadedAvatarFullPath]);
-    }
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch(`/users/${userId}`, userCompleteData);
 
     return data;
 };
 
-export const updateUser = async (updatedUser: UpdateUserCompleteInfo) => {
-    const { avatar, userId, previousAvatarName } = updatedUser;
-    const userDidNotChangeAvatar = typeof avatar === "string";
-    const userClearedAvatar = !avatar;
-
-    if (userDidNotChangeAvatar) {
-        const userCompleteData = {
-            email: updatedUser.email,
-            data: {
-                fullName: updatedUser.fullName,
-                avatarURL: avatar,
-                role: updatedUser.role,
-            },
-        };
-
-        return updateUserData(userCompleteData, updatedUser.userId);
-    } else if (userClearedAvatar) {
-        const userCompleteData = {
-            email: updatedUser.email,
-            data: {
-                fullName: updatedUser.fullName,
-                avatarURL: null,
-                role: updatedUser.role,
-            },
-        };
-
-        return updateUserData(userCompleteData, updatedUser.userId, undefined, previousAvatarName);
-    } else {
-        const newAvatarName = `user-${userId}-avatar-${Date.now()}`;
-        const avatarURL = `${supabaseURL}/storage/v1/object/public/user-avatars/${newAvatarName}`;
-        const avatarItem = avatar.item(0);
-        let updateUserAvatarsBucketData;
-
-        if (avatarItem) {
-            const { error, data } = await supabase.storage.from("user-avatars").upload(newAvatarName, avatarItem);
-
-            if (error) {
-                throw new Error(error.message);
-            }
-
-            updateUserAvatarsBucketData = data;
-        }
-
-        const { fullPath } = updateUserAvatarsBucketData ?? {};
-        const userCompleteData = {
-            email: updatedUser.email,
-            data: {
-                fullName: updatedUser.fullName,
-                avatarURL,
-                role: updatedUser.role,
-            },
-        };
-
-        return updateUserData(userCompleteData, updatedUser.userId, fullPath, previousAvatarName);
-    }
-};
-
 export const updatePassword = async (newPassword: string) => {
-    const { data, error } = await supabase.auth.updateUser({
-        password: newPassword,
-    });
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.patch("/auth/update-password", { newPassword });
 
     return data;
 };
 
 // ROOMS
 
-export const getRoomsIds = async (size: number) => {
-    const { data, error } = await supabase
-        .from("rooms")
-        .select("id")
-        .range(0, size - 1);
-
-    if (error) {
-        throw new Error(error.message);
-    }
-
-    const roomsIds = data.map((room) => room.id);
-
-    return roomsIds;
-};
-
 export const getRooms = async () => {
-    const { data, error } = await supabase.from("rooms").select("name,id");
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.get("/rooms");
 
     return data;
 };
 
 export const createRoom = async (room: RoomFormType) => {
-    const { data, error } = await supabase.from("rooms").insert(room);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/rooms", room);
 
     return data;
 };
 
 export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> => {
-    const { data, error } = await supabase.from("rooms").select("id,name").ilike("name", `${inputValue}%`);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.get(`/rooms/search_select?input=${inputValue}`);
 
     return data;
 };
@@ -532,83 +205,41 @@ export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> 
 // ROOMS OCCUPANCIES
 
 export const uploadFakeRoomsOccupancy = async (rooms: RoomOccupancyFormType[]) => {
-    await supabase.from("rooms_occupancy").delete().gte("id", 0);
-
-    const { data, error } = await supabase.from("rooms_occupancy").insert(rooms);
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.post("/rooms_occupancy/generate", rooms);
 
     return data;
 };
 
 export const getRoomsOccupancies = async (
     dateFilter?: RoomsFilterType,
-    roomFilter?: RoomsFilterType,
+    roomFilter?: RoomsFilterType
 ): Promise<RoomsOccupanciesResponseType[]> => {
-    let query = supabase
-        .from("rooms_occupancy")
-        .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name,id)");
+    // if (dateFilter) {
+    //     const endDate = add(new Date(dateFilter.value), { days: 1 });
+    //     const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
+    //
+    //     query = query.gte("start", dateFilter.value).lte("end", formattedEndDate);
+    // }
+    //
+    // if (roomFilter) {
+    //     const queryFilter = roomFilter.value.split(",").map((filterValue) => Number(filterValue));
+    //
+    //     query = query.in("room_id", queryFilter);
+    // }
 
-    if (dateFilter) {
-        const endDate = add(new Date(dateFilter.value), { days: 1 });
-        const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
-
-        query = query.gte("start", dateFilter.value).lte("end", formattedEndDate);
-    }
-
-    if (roomFilter) {
-        const queryFilter = roomFilter.value.split(",").map((filterValue) => Number(filterValue));
-
-        query = query.in("room_id", queryFilter);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.get("/rooms_occupancy");
 
     return data;
 };
 
 export const createRoomOccupancy = async (roomOccupancy: RoomOccupancyFormType) => {
-    const { data, error } = await supabase.from("rooms_occupancy").insert(roomOccupancy).select().single();
-
-    const contextMessage =
-        (error as any)?.context && typeof (error as any).context === "object"
-            ? (error as any).context.error?.message || (error as any).context.message
-            : undefined;
-
-    const detailedMessage = (data as any)?.error?.message ?? contextMessage;
-
-    if (error) {
-        throw new Error(
-            detailedMessage ||
-                error.message ||
-                "Could not create the room occupancy due to the conflicts with the existing data",
-        );
-    }
-
-    // In case the function responded with 200 but included an error payload
-    if (detailedMessage) {
-        throw new Error(detailedMessage);
-    }
+    const { data } = await restApi.post("/rooms_occupancy", roomOccupancy);
 
     return data;
 };
 
 export const getRoomOccupancy = async (roomOccupancyId: number): Promise<RoomsOccupanciesResponseType> => {
-    const { data, error } = await supabase
-        .from("rooms_occupancy")
-        .select("id,start,end,employees:employee_id(id, name, surname),rooms:room_id(name,id)")
-        .eq("id", roomOccupancyId)
-        .single();
-
-    if (error) {
-        throw new Error(error.message);
-    }
+    const { data } = await restApi.get(`/rooms_occupancy/${roomOccupancyId}`);
 
     return data;
 };
@@ -622,80 +253,80 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         throw new Error("Invalid date filter");
     }
 
-    const numberOfAppointmentsRequest = supabase
-        .from("appointments")
-        .select("id.count()", { count: "exact" })
-        .gte("start_date", startDate)
-        .lte("start_date", endDate);
-    const workedMinutesRequest = supabase
-        .from("appointments")
-        .select("duration.sum()")
-        .gte("start_date", startDate)
-        .lte("start_date", endDate);
-    const completedAppointmentsRequest = supabase
-        .from("appointments")
-        .select("id.count()", { count: "exact" })
-        .eq("status", "COMPLETED")
-        .gte("start_date", startDate)
-        .lte("start_date", endDate);
-    const cancelledAppointmentsRequest = supabase
-        .from("appointments")
-        .select("id.count()", { count: "exact" })
-        .eq("status", "CANCELLED")
-        .gte("start_date", startDate)
-        .lte("start_date", endDate);
-    const appointmentsChartDataRequest = supabase
-        .from("appointments")
-        .select("label:start_date::date,count()", { count: "exact" })
-        .gte("start_date", startDate)
-        .lte("start_date", endDate);
-    const nextAppointmentsRequest = supabase
-        .from("appointments")
-        .select("id,start_date,duration,status", { count: "exact" })
-        .gte("start_date", format(new Date(), DB_DATE_FORMAT_WITH_TIME))
-        .order("start_date", { ascending: true })
-        .limit(7);
-
-    const [
-        numberOfAppointments,
-        workedMinutes,
-        completedAppointments,
-        cancelledAppointments,
-        appointmentsChartData,
-        nextAppointments,
-    ] = await Promise.all([
-        numberOfAppointmentsRequest,
-        workedMinutesRequest,
-        completedAppointmentsRequest,
-        cancelledAppointmentsRequest,
-        appointmentsChartDataRequest,
-        nextAppointmentsRequest,
-    ]);
-
-    if (
-        numberOfAppointments.error ||
-        workedMinutes.error ||
-        completedAppointments.error ||
-        cancelledAppointments.error ||
-        appointmentsChartData.error ||
-        nextAppointments.error
-    ) {
-        throw new Error("Could not fetch the dashboard data");
-    }
-
-    const sortedAppointmentsChartData = appointmentsChartData.data.sort((prevDate, nextDate) => {
-        const { label: prevDateDay } = prevDate;
-        const { label: nextDateDay } = nextDate;
-
-        return compareAsc(new Date(prevDateDay), new Date(nextDateDay));
-    });
+    // const numberOfAppointmentsRequest = supabase
+    //     .from("appointments")
+    //     .select("id.count()", { count: "exact" })
+    //     .gte("start_date", startDate)
+    //     .lte("start_date", endDate);
+    // const workedMinutesRequest = supabase
+    //     .from("appointments")
+    //     .select("duration.sum()")
+    //     .gte("start_date", startDate)
+    //     .lte("start_date", endDate);
+    // const completedAppointmentsRequest = supabase
+    //     .from("appointments")
+    //     .select("id.count()", { count: "exact" })
+    //     .eq("status", "COMPLETED")
+    //     .gte("start_date", startDate)
+    //     .lte("start_date", endDate);
+    // const cancelledAppointmentsRequest = supabase
+    //     .from("appointments")
+    //     .select("id.count()", { count: "exact" })
+    //     .eq("status", "CANCELLED")
+    //     .gte("start_date", startDate)
+    //     .lte("start_date", endDate);
+    // const appointmentsChartDataRequest = supabase
+    //     .from("appointments")
+    //     .select("label:start_date::date,count()", { count: "exact" })
+    //     .gte("start_date", startDate)
+    //     .lte("start_date", endDate);
+    // const nextAppointmentsRequest = supabase
+    //     .from("appointments")
+    //     .select("id,start_date,duration,status", { count: "exact" })
+    //     .gte("start_date", format(new Date(), DB_DATE_FORMAT_WITH_TIME))
+    //     .order("start_date", { ascending: true })
+    //     .limit(7);
+    //
+    // const [
+    //     numberOfAppointments,
+    //     workedMinutes,
+    //     completedAppointments,
+    //     cancelledAppointments,
+    //     appointmentsChartData,
+    //     nextAppointments
+    // ] = await Promise.all([
+    //     numberOfAppointmentsRequest,
+    //     workedMinutesRequest,
+    //     completedAppointmentsRequest,
+    //     cancelledAppointmentsRequest,
+    //     appointmentsChartDataRequest,
+    //     nextAppointmentsRequest
+    // ]);
+    //
+    // if (
+    //     numberOfAppointments.error ||
+    //     workedMinutes.error ||
+    //     completedAppointments.error ||
+    //     cancelledAppointments.error ||
+    //     appointmentsChartData.error ||
+    //     nextAppointments.error
+    // ) {
+    //     throw new Error("Could not fetch the dashboard data");
+    // }
+    //
+    // const sortedAppointmentsChartData = appointmentsChartData.data.sort((prevDate, nextDate) => {
+    //     const { label: prevDateDay } = prevDate;
+    //     const { label: nextDateDay } = nextDate;
+    //
+    //     return compareAsc(new Date(prevDateDay), new Date(nextDateDay));
+    // });
 
     return {
-        numberOfAppointments: numberOfAppointments.count,
-        workedMinutes: workedMinutes.data?.[0].sum,
-        completedAppointments: completedAppointments.count,
-        cancelledAppointments: cancelledAppointments.count,
-        appointmentsChartData: sortedAppointmentsChartData,
-        nextAppointments: nextAppointments.data,
+        numberOfAppointments: 0,
+        workedMinutes: 0,
+        completedAppointments: 0,
+        cancelledAppointments: 0,
+        appointmentsChartData: [],
+        nextAppointments: []
     };
 };

@@ -8,15 +8,14 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "test": "npx vitest",
-        "update-supabase-types": "npx supabase gen types typescript --project-id \"rtresowzimchttmgrjrr\" --schema public > src/services/database.types.ts --debug"
+        "test": "npx vitest"
     },
     "dependencies": {
-        "@supabase/supabase-js": "^2.53.0",
         "@tailwindcss/vite": "^4.1.10",
         "@tanstack/react-query": "^5.76.2",
         "@tanstack/react-query-devtools": "^5.76.2",
         "@types/react-date-range": "^1.4.10",
+        "axios": "^1.13.5",
         "chart.js": "^4.5.0",
         "date-fns": "^4.1.0",
         "react": "^19.1.0",

@@ -4,7 +4,6 @@ import { getSession, getUser, loginUser, logoutUser, registerUser } from "../../
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
-import type { SignUpWithPasswordCredentials } from "@supabase/supabase-js";
 
 export const useAuthentication = () => {
     const { setIsAuthenticated, setUser } = useAuthContext();
@@ -45,15 +44,16 @@ export const useAuthentication = () => {
         try {
             let isAuthenticated = false;
 
-            const { session: sessionData } = await getSession();
+            // const { session: sessionData } = await getSession();
 
-            if (sessionData?.user.role === "authenticated") isAuthenticated = true;
+            // if (sessionData?.user.role === "authenticated") isAuthenticated = true;
 
-            const { user } = await getUser();
+            // const { user } = await getUser();
 
-            if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
+            // if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
 
-            return { isAuthenticated, user };
+            // todo: poprwic
+            return { isAuthenticated };
         } catch (err) {
             await navigate("/login");
         }
