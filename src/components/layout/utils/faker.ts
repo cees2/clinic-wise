@@ -1,6 +1,5 @@
 import { fakerEN, faker } from "@faker-js/faker";
 import {
-    UserRole,
     type PatientFormType,
     type Person,
     type RoomOccupancyFormType,
@@ -9,7 +8,9 @@ import {
 } from "../../../utils/projectTypes";
 import { add, format, isWithinInterval, startOfHour } from "date-fns";
 import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
+import { UserAuthority } from "../../../services/apiTypes.ts";
 
+// TODO: Should be done on backend
 const createMockPerson = (): Person => {
     const gender = faker.person.sexType();
 
@@ -89,7 +90,7 @@ export const generateFakeEmployees = () => {
         const newEmployee: EmployeeGenerateType = {
             ...createMockPerson(),
             start_date: format(faker.date.past({ years: 4 }), DB_DATE_FORMAT),
-            role: faker.helpers.arrayElement([UserRole.REGISTRATION, UserRole.DOCTOR]),
+            role: faker.helpers.arrayElement([UserAuthority.REGISTRATION, UserAuthority.DOCTOR]),
             email: faker.internet.email(),
         };
 

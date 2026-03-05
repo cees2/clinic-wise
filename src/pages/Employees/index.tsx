@@ -2,39 +2,38 @@ import { format } from "date-fns";
 import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { ContentLayout } from "../../components/layout/ContentLayout";
-import type { Tables } from "../../services/database.types";
-import { FilterType, UserRole, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
+import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
-import { useAuthContext } from "../../utils/contexts/AuthContext";
 import { useMutateEmployee } from "../../services/hooks/employees/useMutateEmployee.ts";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
+import { type EmployeeApi, EmployeeRole, UserAuthority } from "../../services/apiTypes.ts";
+import { useAuthentication } from "../../services/hooks/authentication/useAuthentication.ts";
 
 const Employees = () => {
-    const { user } = useAuthContext();
-    const HasPermissionsToPerformActions =
-        user?.user_metadata.role === UserRole.ADMIN || user?.user_metadata.role === UserRole.REGISTRATION;
+    const { hasAuthority } = useAuthentication();
+    const HasPermissionsToPerformActions = hasAuthority([ UserAuthority.REGISTRATION]);
     const { mutationRemove } = useMutateEmployee();
     const { confirmation } = useConfirmation();
 
-    const config: TableDataConfig<Tables<"employees">> = {
+    const config: TableDataConfig<EmployeeApi> = {
         columns: [
             {
                 id: "name",
                 name: "Name",
-                customInclude: "name,surname",
-                render: (employee) => `${employee.name} ${employee.surname}`,
+                render: (employee) => `${employee.user.firstname} ${employee.user.lastname}`,
             },
             {
                 id: "gender",
                 name: "Gender",
-                render: (employee) => capitalizeFirstLetter(employee.gender),
+                render: (employee) => capitalizeFirstLetter(employee.user.gender),
             },
             {
                 id: "email",
                 name: "Email",
                 disableSorting: true,
+                render: (employee) => employee.user.email,
             },
             {
                 id: "start_date",
@@ -44,27 +43,28 @@ const Employees = () => {
             {
                 id: "date_of_birth",
                 name: "Date of birth",
-                render: (employee) => format(new Date(employee.date_of_birth), "dd.MM.yyyy"),
+                render: (employee) => format(new Date(employee.user.date_of_birth), "dd.MM.yyyy"),
             },
             {
                 id: "phone_number",
                 name: "Phone number",
                 disableSorting: true,
+                render: (employee) => capitalizeFirstLetter(employee.user.phone_number),
             },
             {
                 id: "nationality",
                 name: "Nationality",
-                render: (employee) => <NationalityWithFlag nationality={employee.nationality} />,
+                render: (employee) => <NationalityWithFlag nationality={employee.user.nationality} />,
             },
             {
                 id: "document_id",
                 name: "Document ID",
+                render: (employee) => employee.user.document_id,
             },
             {
                 id: "role",
                 name: "Role",
-                render: (employee) => capitalizeFirstLetter(employee.role ?? ""),
-                customInclude: "role,user_id",
+                render: (employee) => capitalizeFirstLetter(employee.role),
             },
         ],
         filters: [
@@ -107,7 +107,7 @@ const Employees = () => {
                         },
                     });
                 },
-                visible: (item) => item.role !== UserRole.ADMIN,
+                visible: (item) => item.role !== EmployeeRole.ADMIN,
             },
         ],
         resourceName: "employees",

@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import { getPatientFormDefaultValues } from "../utils/utils";
-import type { Tables } from "../../../services/database.types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GridForm } from "../../../components/common/Form/GridForm";
@@ -10,9 +9,9 @@ import { FormSelectInput } from "../../../components/common/Input/FormSelectInpu
 import { genderFormOptions, nationalityOptions } from "../../../utils/constants";
 import { add, sub } from "date-fns";
 import { useMutatePatient } from "../../../services/hooks/patients/useMutatePatient";
-import type { PatientFormType } from "../../../utils/projectTypes.ts";
+import type { PatientApi, PatientFormType } from "../../../utils/projectTypes.ts";
 
-export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> }) => {
+export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
     const isEdit = Boolean(patientData);
     const { register, control, handleSubmit, formState } = useForm<PatientFormType>({
         defaultValues: getPatientFormDefaultValues(patientData),
@@ -48,14 +47,14 @@ export const PatientForm = ({ patientData }: { patientData?: Tables<"patients"> 
             <TextInput
                 register={register}
                 control={control}
-                registerName="name"
+                registerName="firstname"
                 label="Name"
                 rules={{ required: true }}
             />
             <TextInput
                 register={register}
                 control={control}
-                registerName="surname"
+                registerName="lastname"
                 label="Surname"
                 rules={{ required: true }}
             />

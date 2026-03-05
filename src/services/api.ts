@@ -1,34 +1,40 @@
-import { add, compareAsc, format } from "date-fns";
 import type {
     AppointmentFormType,
-    AppointmentGenerateType,
     EmployeeFormType,
-    LoginApi,
+    LoginFormType,
     PatientFormType,
     RoomFormType,
     RoomOccupancyFormType,
     RoomsFilterType,
     RoomsOccupanciesResponseType,
     SingleAppointmentResponseType,
-    UpdateUserCompleteInfo,
-    UpdateUserRequestType
+    UpdateUserRequestType,
 } from "../utils/projectTypes";
-import { DB_DATE_FORMAT_WITH_TIME } from "../utils/constants";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import axios from "axios";
+import type { LoginApi, UserApi } from "./apiTypes.ts";
 
 // TODO: Change based on the environment
 const restApi = axios.create({
-    baseURL: "http://localhost:8080/api"
+    baseURL: "http://localhost:8080/api",
 });
 
+restApi.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+
+    if(token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config;
+});
 
 // TODO: Change return types in API functions
 // TODO: Generating fake data should be done in the backend
 // APPOINTMENT
-export const uploadFakeAppointments = async (appointments: AppointmentGenerateType[]) => {
-    const { data } = await restApi.post("/appointments/generate", appointments);
+export const generateFakeAppointments = async () => {
+    const { data } = await restApi.post("/appointments/generate");
 
     return data;
 };
@@ -96,8 +102,8 @@ export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
     return data;
 };
 
-// TODO: fix
-export const getEmployeesSelect = async (inputValue: string): Promise<EmployeeSelect[]> => {
+// TODO: fix type
+export const getEmployeesSelect = async (inputValue: string): Promise<Record<string, any>[]> => {
     const { data } = await restApi.get(`/employees/search_select?input=${inputValue}`);
 
     return data;
@@ -130,12 +136,12 @@ export const removePatient = async (patientId: number) => {
 };
 
 export const getPatientsSelect = async (inputValue: string) => {
-    const { data, error } = await restApi.get(`/patients/search_select?input=${inputValue}`);
+    const { data } = await restApi.get(`/patients/search_select?input=${inputValue}`);
 
     return data;
 };
 
-export const uploadFakePatients = async (patients: PatientFormType[]) => {
+export const generateFakePatients = async (patients: PatientFormType[]) => {
     const { data } = await restApi.post("/patients/generate", patients);
 
     return data;
@@ -149,14 +155,8 @@ export const getPatient = async (patientId: string) => {
 
 // AUTHENTICATION
 
-export const loginUser = async (loginData: LoginApi): Promise<{ token: string }> => {
-    const { data } = await restApi.post("/login", loginData);
-
-    return data;
-};
-
-export const registerUser = async (registerData: SignUpWithPasswordCredentials) => {
-    const { data } = await restApi.post("/register", registerData);
+export const loginUser = async (loginData: LoginFormType): Promise<LoginApi> => {
+    const { data } = await restApi.post("/security/login", loginData);
 
     return data;
 };
@@ -165,12 +165,15 @@ export const logoutUser = async () => {
     await restApi.post("/logout");
 };
 
+export const getUser = async (token: string): Promise<UserApi> => {
+    const { data } = await restApi.get("/security/me", { headers: { Authorization: `Bearer ${token}` } });
+
+    return data;
+};
+
 // USER
 
-export const updateUser = async (
-    userCompleteData: UpdateUserRequestType,
-    userId: string
-) => {
+export const updateUser = async (userCompleteData: UpdateUserRequestType, userId: string) => {
     const { data } = await restApi.patch(`/users/${userId}`, userCompleteData);
 
     return data;
@@ -196,7 +199,8 @@ export const createRoom = async (room: RoomFormType) => {
     return data;
 };
 
-export const getRoomsSelect = async (inputValue: string): Promise<RoomSelect[]> => {
+// TODO: fix type
+export const getRoomsSelect = async (inputValue: string): Promise<Record<string, any>[]> => {
     const { data } = await restApi.get(`/rooms/search_select?input=${inputValue}`);
 
     return data;
@@ -212,20 +216,20 @@ export const uploadFakeRoomsOccupancy = async (rooms: RoomOccupancyFormType[]) =
 
 export const getRoomsOccupancies = async (
     dateFilter?: RoomsFilterType,
-    roomFilter?: RoomsFilterType
+    roomFilter?: RoomsFilterType,
 ): Promise<RoomsOccupanciesResponseType[]> => {
-    // if (dateFilter) {
-    //     const endDate = add(new Date(dateFilter.value), { days: 1 });
-    //     const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
+    if (dateFilter) {
+        //     const endDate = add(new Date(dateFilter.value), { days: 1 });
+        //     const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
+        //
+        //     query = query.gte("start", dateFilter.value).lte("end", formattedEndDate);
+    }
     //
-    //     query = query.gte("start", dateFilter.value).lte("end", formattedEndDate);
-    // }
-    //
-    // if (roomFilter) {
-    //     const queryFilter = roomFilter.value.split(",").map((filterValue) => Number(filterValue));
-    //
-    //     query = query.in("room_id", queryFilter);
-    // }
+    if (roomFilter) {
+        //     const queryFilter = roomFilter.value.split(",").map((filterValue) => Number(filterValue));
+        //
+        //     query = query.in("room_id", queryFilter);
+    }
 
     const { data } = await restApi.get("/rooms_occupancy");
 
@@ -327,6 +331,14 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         completedAppointments: 0,
         cancelledAppointments: 0,
         appointmentsChartData: [],
-        nextAppointments: []
+        nextAppointments: [],
     };
+};
+
+// LIST RESOURCE
+// TODO: resourceType type
+export const getResourceListData = async (resourceData: string) => {
+    const { data } = await restApi.get(`/${resourceData}`);
+
+    return data;
 };

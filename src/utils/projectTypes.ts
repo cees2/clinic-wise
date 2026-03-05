@@ -10,6 +10,7 @@ import type React from "react";
 import type { Control, FieldPath, FormState, RegisterOptions } from "react-hook-form";
 import type { Props as SelectProps } from "react-select";
 import type { KnownTarget } from "styled-components/dist/types";
+import { type UserApi, UserAuthority } from "../services/apiTypes.ts";
 
 export interface Children {
     children: React.ReactNode;
@@ -55,11 +56,10 @@ export interface TableRowCellProps extends React.ComponentProps<"td"> {
 }
 
 export interface TableDataColumn<TableDataResource extends TableDataResourceType> {
-    id: Extract<keyof TableDataResource, string>;
+    id: string;
     name: string;
     render?: (dataItem: TableDataResource) => React.ReactNode | number | string;
     foreignTableColumnsName?: string[];
-    customInclude?: string;
     disableSorting?: true;
 }
 
@@ -149,7 +149,7 @@ export interface TableDataContextType<TableDataResource extends TableDataResourc
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
     resources?: TableDataResource[];
-    itemsCount?: number | null;
+    size?: number | null;
 }
 
 export enum TableDataActionsEnum {
@@ -229,6 +229,11 @@ export interface DropdownToggleProps extends React.ComponentProps<"button"> {
     isForm?: true;
 }
 
+export enum Gender {
+    MALE = "MALE",
+    FEMALE = "FEMALE",
+}
+
 export type NumberFilterForm = {
     [K in NumberFilterConditionType]: number | undefined | "";
 };
@@ -253,9 +258,28 @@ interface OptionalID {
     id?: number;
 }
 
+export enum PatientSubscriptionPlan {
+    BASIC = "BASIC",
+    PREMIUM = "PREMIUM",
+    PLATINUM = "PLATINUM",
+}
+
 export type AppointmentGenerateType = Omit<Tables<"appointments">, "id" | "created_at" | "user_id">;
 export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "status" | "id"> & OptionalID;
-export type PatientFormType = Omit<Tables<"patients">, "created_at" | "id"> & OptionalID;
+
+export type PatientFormType = {
+    firstname: string;
+    lastname: string;
+    gender: Gender;
+    address: string;
+    date_of_birth: string;
+    document_id: string;
+    email: string;
+    enabled: boolean;
+    nationality: string;
+    phone_number: string;
+} & OptionalID;
+
 export type EmployeeFormType = Omit<Tables<"employees">, "created_at" | "id"> & EmployeeFormAdditionalData & OptionalID;
 export type EmployeeGenerateType = Omit<Tables<"employees">, "created_at" | "id" | "user_id">;
 export type RoomOccupancyFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
@@ -383,22 +407,12 @@ export interface DropdownMenuProps extends Children {
     forceOpen?: boolean;
 }
 
-export interface LoginApi {
-    email: string;
-    password: string;
-}
-
 export interface AuthContextType {
     isAuthenticated: boolean;
-    setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
-    user?: User | null;
-    setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
-}
-
-export enum UserRole {
-    ADMIN = "ADMIN",
-    DOCTOR = "DOCTOR",
-    REGISTRATION = "REGISTRATION",
+    token: string | undefined;
+    setToken: React.Dispatch<React.SetStateAction<undefined | string>>;
+    user?: UserApi | null;
+    setUser: React.Dispatch<React.SetStateAction<UserApi | undefined>>;
 }
 
 export interface UpdateUserFormType {
@@ -407,15 +421,20 @@ export interface UpdateUserFormType {
     avatar: FileList | string | null;
 }
 
+export interface LoginFormType {
+    email: string;
+    password: string;
+}
+
 export interface UpdateUserCompleteInfo extends UpdateUserFormType {
     userId: string;
     previousAvatarName?: string;
-    role: UserRole;
+    role: UserAuthority;
 }
 
 export interface UpdateUserRequestType {
     email: string;
-    data: { fullName: string; avatarURL: string | null; role: UserRole };
+    data: { fullName: string; avatarURL: string | null; role: UserAuthority };
 }
 
 export interface UpdatePasswordType {
@@ -546,7 +565,7 @@ export interface TableDataProps<TableDataResource extends TableDataResourceType>
     resources?: TableDataResource[];
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
-    itemsCount?: number | null;
+    size?: number | null;
 }
 
 export type AlertWarning = "warning" | "error" | "info";
@@ -556,4 +575,9 @@ export interface AlertProps {
     className?: string;
     title?: string;
     message?: string;
+}
+
+export interface AuthenticationResult {
+    user?: UserApi;
+    token?: string;
 }

@@ -6,7 +6,6 @@ import { useFakeAppointments } from "../../../services/hooks/faker/useFakeAppoin
 import { useFakePatients } from "../../../services/hooks/faker/useFakePatients";
 import { generateFakeAppointments, generateFakePatients, generateFakeRoomsOccupancy } from "../utils/faker";
 import { useQueryClient } from "@tanstack/react-query";
-import { getEmployeesIds, getPatientsIds, getRoomsIds } from "../../../services/api";
 import { useFakeRoomsOccupancy } from "../../../services/hooks/faker/useFakeRoomsOccupancy";
 
 const StyledFaker = styled.div`
@@ -47,10 +46,6 @@ const FakerComponent = () => {
     const isPending = pendingAppointments || pendingPatients || pendingRoomsOccupancy;
 
     const uploadAppointments = async () => {
-        const [patientsIds, employeesIds] = await Promise.all([
-            queryClient.fetchQuery({ queryKey: ["patientsIds", 20], queryFn: () => getPatientsIds(20) }),
-            queryClient.fetchQuery({ queryKey: ["employeesIds", 20], queryFn: () => getEmployeesIds(20) }),
-        ]);
 
         const mockAppointments = generateFakeAppointments(patientsIds, employeesIds);
         mutateAppointments(mockAppointments);

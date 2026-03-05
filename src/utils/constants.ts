@@ -1,5 +1,5 @@
-import { UserRole } from "./projectTypes";
 import { capitalizeFirstLetter } from "./utils";
+import { UserAuthority } from "../services/apiTypes.ts";
 
 export const DB_DATE_FORMAT = "yyyy-MM-dd";
 export const DB_DATE_FORMAT_WITH_TIME = "yyyy-MM-dd HH:mm:ss";
@@ -23,16 +23,16 @@ export const SUPPORTED_NATIONALITIES_ENTRIES = Object.entries(SUPPORTED_NATIONAL
 export const genderFormOptions = [
     {
         label: "Male",
-        value: "male",
+        value: "MALE",
     },
     {
         label: "Female",
-        value: "female",
+        value: "FEMALE",
     },
 ];
 
-export const rolesFormOptions = Object.values(UserRole)
-    .filter((role) => role !== UserRole.ADMIN)
+export const rolesFormOptions = Object.values(UserAuthority)
+    .filter((role) => role !== UserAuthority.ADMIN)
     .map((role) => ({ value: role, label: capitalizeFirstLetter(role) }));
 
 export const nationalityOptions = Object.values(SUPPORTED_NATIONALITIES).map((nationality) => ({

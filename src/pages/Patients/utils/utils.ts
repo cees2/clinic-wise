@@ -1,16 +1,16 @@
 import { format, startOfToday } from "date-fns";
-import type { PatientFormType } from "../../../utils/projectTypes";
+import type { PatientApi, PatientFormType } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT } from "../../../utils/constants";
 
-export const getPatientFormDefaultValues = (patient?: PatientFormType): PatientFormType => ({
+export const getPatientFormDefaultValues = (patient?: PatientApi): PatientFormType => ({
     id: patient?.id,
-    name: patient?.name ?? "",
-    surname: patient?.surname ?? "",
-    gender: patient?.gender ?? "",
-    date_of_birth: patient?.date_of_birth ?? format(startOfToday(), DB_DATE_FORMAT),
-    address: patient?.address ?? "",
-    phone_number: patient?.phone_number ?? "",
-    nationality: patient?.nationality ?? "",
-    start_date: patient?.start_date ?? format(startOfToday(), DB_DATE_FORMAT),
-    document_id: patient?.document_id ?? "",
+    firstname: patient?.user.firstname ?? "",
+    lastname: patient?.user.lastname ?? "",
+    gender: patient?.user.gender ?? "",
+    date_of_birth: patient?.user.date_of_birth ?? format(startOfToday(), DB_DATE_FORMAT),
+    address: patient?.user.address ?? "",
+    phone_number: patient?.user.phone_number ?? "",
+    nationality: patient?.user.nationality ?? "",
+    start_date: patient?.user.start_date ?? format(startOfToday(), DB_DATE_FORMAT),
+    document_id: patient?.user.document_id ?? "",
 });

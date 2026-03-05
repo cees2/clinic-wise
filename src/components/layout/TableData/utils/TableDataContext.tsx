@@ -19,7 +19,7 @@ const TableDataContextProvider = <TableDataResource extends TableDataResourceTyp
     resources,
     tableDataState,
     dispatch,
-    itemsCount,
+    size,
 }: TableDataContextType<TableDataResource> & Children) => {
     const memoizedContextValue = useMemo<TableDataContextType<TableDataResource>>(
         () => ({
@@ -27,9 +27,9 @@ const TableDataContextProvider = <TableDataResource extends TableDataResourceTyp
             tableDataState,
             dispatch,
             resources,
-            itemsCount,
+            size,
         }),
-        [tableDataState, resources, config, dispatch, itemsCount],
+        [tableDataState, resources, config, dispatch, size],
     );
 
     return (

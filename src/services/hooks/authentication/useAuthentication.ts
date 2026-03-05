@@ -1,32 +1,27 @@
 import { useMutation } from "@tanstack/react-query";
-import type { LoginApi } from "../../../utils/projectTypes";
-import { getSession, getUser, loginUser, logoutUser, registerUser } from "../../api";
+import { getUser, loginUser, logoutUser } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
+import type { AuthenticationResult, LoginFormType } from "../../../utils/projectTypes.ts";
+import { UserAuthority } from "../../apiTypes.ts";
+import { AxiosError } from "axios";
 
 export const useAuthentication = () => {
-    const { setIsAuthenticated, setUser } = useAuthContext();
+    const { setToken, setUser, user } = useAuthContext();
     const navigate = useNavigate();
 
     const login = useMutation({
-        mutationFn: (loginData: LoginApi) => loginUser(loginData),
+        mutationFn: (loginData: LoginFormType) => loginUser(loginData),
         onError: () => {
             toast.error("Wrong credentials provided");
         },
-        onSuccess: (data) => {
-            setIsAuthenticated(true);
-            setUser(data.user);
+        onSuccess: ({ token, user }) => {
+            setToken(token);
+            setUser(user);
+            localStorage.setItem("token", token);
             void navigate("/dashboard", { replace: true });
         },
-    });
-
-    const register = useMutation({
-        mutationFn: (registerData: SignUpWithPasswordCredentials) => registerUser(registerData),
-        onError: () => {
-            toast.error("Wrong credentials provided");
-        },
-        onSuccess: () => void navigate("/dashboard"),
     });
 
     const logout = useMutation({
@@ -35,29 +30,34 @@ export const useAuthentication = () => {
             toast.error("Could not log out");
         },
         onSuccess: () => {
-            setIsAuthenticated(false);
+            setUser(undefined);
+            setToken(undefined);
+            localStorage.removeItem("token");
             void navigate("/login");
         },
     });
 
-    const checkIfUserIsLoggedIn = async () => {
+    const checkIfUserIsLoggedIn = async (): Promise<AuthenticationResult | null> => {
+        const savedToken = localStorage.getItem("token");
+
+        if (!savedToken) return null;
+
         try {
-            let isAuthenticated = false;
+            const user = await getUser(savedToken);
 
-            // const { session: sessionData } = await getSession();
-
-            // if (sessionData?.user.role === "authenticated") isAuthenticated = true;
-
-            // const { user } = await getUser();
-
-            // if (!isAuthenticated && user.role === "authenticated") isAuthenticated = true;
-
-            // todo: poprwic
-            return { isAuthenticated };
+            return { user, token: savedToken };
         } catch (err) {
-            await navigate("/login");
+            if (err instanceof AxiosError && err.status === 401) {
+                return null;
+            }
+
+            throw err;
         }
     };
 
-    return { login, register, logout, checkIfUserIsLoggedIn };
+    const hasAuthority = (authorities: UserAuthority[]) =>
+        user?.authorities?.includes(UserAuthority.ADMIN) ||
+        authorities.some((authority) => user?.authorities.includes(authority));
+
+    return { login, logout, checkIfUserIsLoggedIn, hasAuthority };
 };

@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import { SettingsFormSection } from "../components/SettingsFormSection";
-import type { UpdateUserCompleteInfo, UpdateUserFormType, UserRole } from "../../../utils/projectTypes";
+import type { UpdateUserCompleteInfo, UpdateUserFormType } from "../../../utils/projectTypes";
 import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { FileInput } from "../../../components/common/Input/FileInput";
 import { Button } from "../../../components/layout/Button";
 import { useMutateUser } from "../../../services/hooks/user/useMutateUser";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
+import type { UserAuthority } from "../../../services/apiTypes.ts";
 
 const UpdateAccount = () => {
     const { user } = useAuthContext();
@@ -21,14 +22,11 @@ const UpdateAccount = () => {
     const submitSuccess = (data: UpdateUserFormType) => {
         if (!user) return;
 
-        const {
-            id,
-            user_metadata: { role, avatarURL },
-        } = user;
+        const { id, authorities, avatarURL } = user;
         const userCompleteInfo: UpdateUserCompleteInfo = {
             ...data,
             userId: id,
-            role: role as UserRole,
+            role: authorities as UserAuthority,
         };
 
         if (avatarURL) {

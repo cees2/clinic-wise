@@ -13,12 +13,13 @@ const Image = styled.img.attrs({ alt: "User avatar" })`
 
 const MainBarUser = () => {
     const { user } = useAuthContext();
-    const userName = user?.user_metadata.fullName as string;
-    const avatarURL = (user?.user_metadata.avatarURL as string | undefined) ?? "./logo.png";
+    const userName = `${user?.firstname} ${user?.lastname}`;
+    // TODO: AVATAR
+    // const avatarURL = (user?.avatarURL as string | undefined) ?? "./logo.png";
 
     return (
         <div className="flex items-center gap-x-3">
-            <Image src={avatarURL} alt={userName ? `Avatar of ${userName}` : "User avatar"} />
+            {/*<Image src={avatarURL} alt={userName ? `Avatar of ${userName}` : "User avatar"} />*/}
             <span>{userName}</span>
         </div>
     );

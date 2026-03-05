@@ -2,33 +2,40 @@ import { createContext, use, useEffect, useMemo, useState } from "react";
 import type { AuthContextType, Children } from "../projectTypes";
 import { LoadingSpinner } from "../../components/common/LoadingSpinner";
 import { useGetUser } from "../../services/hooks/user/useGetUser";
-import type { User } from "@supabase/supabase-js";
+import type { UserApi } from "../../services/apiTypes.ts";
+import { useLocation } from "react-router-dom";
 
 const AuthContext = createContext<AuthContextType>({
     isAuthenticated: false,
-    setIsAuthenticated: () => {},
+    token: undefined,
+    setToken: () => {},
     user: undefined,
     setUser: () => {},
 });
 
 export const AuthContextProvider = ({ children }: Children) => {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [user, setUser] = useState<undefined | User>(undefined);
-    const { isLoading, data } = useGetUser();
+    const [token, setToken] = useState<string | undefined>();
+    const [user, setUser] = useState<undefined | UserApi>(undefined);
+    const isAuthenticated = Boolean(token && user);
+    const {pathname} = useLocation();
+    const { isLoading, data } = useGetUser(pathname);
 
     useEffect(() => {
-        setIsAuthenticated(data?.isAuthenticated ?? false);
-        setUser(data?.user);
-    }, [data?.isAuthenticated, data?.user]);
+        if(data){
+            setUser(data.user);
+            setToken(data.token)
+        }
+    }, [data?.token, data?.user]);
 
     const memoizedAuthContext = useMemo(
         () => ({
             isAuthenticated,
-            setIsAuthenticated,
             user,
             setUser,
+            token,
+            setToken,
         }),
-        [isAuthenticated, setIsAuthenticated, user, setUser],
+        [isAuthenticated, user, setUser, token, setToken],
     );
 
     if (isLoading) return <LoadingSpinner forceDarkText />;

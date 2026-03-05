@@ -3,7 +3,6 @@ import { TextInput } from "../../../components/common/Input/TextInput/TextInput.
 import { Button } from "../../../components/layout/Button";
 import { toast } from "react-toastify";
 import { useAuthentication } from "../../../services/hooks/authentication/useAuthentication";
-import type { LoginApi } from "../../../utils/projectTypes";
 import styled from "styled-components";
 import { FormSubmit } from "../../../components/common/Form/FormSubmit";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
@@ -11,6 +10,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../../components/common/LoadingSpinner";
 import { emailPattern } from "../../../utils/constants";
+import type { LoginFormType } from "../../../utils/projectTypes.ts";
 
 const StyledLogin = styled.div`
     background-color: var(--color-background-primary);
@@ -31,7 +31,7 @@ const LoginBox = styled.div`
 `;
 
 const Login = () => {
-    const { register, control, handleSubmit, formState } = useForm<LoginApi>({
+    const { register, control, handleSubmit, formState } = useForm<LoginFormType>({
         defaultValues: {
             email: "admin@admin.com",
             password: "pass1234",
@@ -51,7 +51,7 @@ const Login = () => {
         }
     }, [isAuthenticated, navigate, location.state]);
 
-    const submitSuccess = (loginData: LoginApi) => {
+    const submitSuccess = (loginData: LoginFormType) => {
         login.mutate(loginData);
     };
 
