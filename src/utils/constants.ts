@@ -31,8 +31,8 @@ export const genderFormOptions = [
     },
 ];
 
-export const rolesFormOptions = Object.values(UserAuthority)
-    .filter((role) => role !== UserAuthority.ADMIN)
+export const rolesFormOptions = Object.keys(UserAuthority)
+    .filter((role) => role !== "ADMIN")
     .map((role) => ({ value: role, label: capitalizeFirstLetter(role) }));
 
 export const nationalityOptions = Object.values(SUPPORTED_NATIONALITIES).map((nationality) => ({

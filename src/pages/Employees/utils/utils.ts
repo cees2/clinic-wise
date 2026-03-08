@@ -1,22 +1,21 @@
 import { format, startOfToday } from "date-fns";
-import type { Database, Tables } from "../../../services/database.types";
-import type { EmployeeFormType } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT } from "../../../utils/constants";
+import { type EmployeeApi, type EmployeeFormType } from "../../../services/apiTypes.ts";
 
-export const getEmployeeFormDefaultValues = (appointmentData?: Tables<"employees">): EmployeeFormType => {
+export const getEmployeeFormDefaultValues = (employeeData?: EmployeeApi): EmployeeFormType => {
     return {
-        id: appointmentData?.id,
-        start_date: appointmentData?.start_date ?? format(startOfToday(), DB_DATE_FORMAT),
-        name: appointmentData?.name ?? "",
-        surname: appointmentData?.surname ?? "",
-        gender: appointmentData?.gender ?? "",
-        date_of_birth: appointmentData?.date_of_birth ?? format(startOfToday(), DB_DATE_FORMAT),
-        nationality: appointmentData?.nationality ?? "",
-        document_id: appointmentData?.document_id ?? "",
-        address: appointmentData?.address ?? "",
-        phone_number: appointmentData?.phone_number ?? "",
-        email: appointmentData?.email ?? "",
-        user_id: appointmentData?.user_id ?? "",
-        role: appointmentData?.role as Database["public"]["Enums"]["UserRole"],
+        id: employeeData?.id,
+        username: employeeData?.user.username ?? "",
+        firstname: employeeData?.user.firstname ?? "",
+        lastname: employeeData?.user.lastname ?? "",
+        start_date: employeeData?.start_date ?? format(startOfToday(), DB_DATE_FORMAT),
+        gender: employeeData?.user.gender,
+        date_of_birth: employeeData?.user.date_of_birth ?? format(startOfToday(), DB_DATE_FORMAT),
+        nationality: employeeData?.user.nationality ?? "",
+        document_id: employeeData?.user.document_id ?? "",
+        address: employeeData?.user.address ?? "",
+        phone_number: employeeData?.user.phone_number ?? "",
+        role: employeeData?.role,
+        authorities: employeeData?.user.authorities
     };
 };

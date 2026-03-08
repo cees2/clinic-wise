@@ -1,0 +1,1 @@
+export const parseApiData = <T>  (data: {data: T}): T => data.data;

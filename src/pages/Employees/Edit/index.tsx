@@ -24,13 +24,13 @@ const EditEmployee = () => {
         return null;
     }
 
-    if (isLoading) {
+    if (isLoading || !data) {
         return <LoadingSpinner />;
     }
 
     return (
         <FormLayout>
-            <Header as="h3" title={`Edit employee "${data?.name} ${data?.surname}"`} />
+            <Header as="h3" title={`Edit employee "${data.user.firstname} ${data.user.lastname}"`} />
             <EmployeeForm employeeData={data} />
         </FormLayout>
     );

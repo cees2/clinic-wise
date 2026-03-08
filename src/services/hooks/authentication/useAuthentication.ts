@@ -48,6 +48,7 @@ export const useAuthentication = () => {
             return { user, token: savedToken };
         } catch (err) {
             if (err instanceof AxiosError && err.status === 401) {
+                localStorage.removeItem("token");
                 return null;
             }
 

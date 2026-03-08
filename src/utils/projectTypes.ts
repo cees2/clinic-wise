@@ -248,16 +248,6 @@ export enum SortTableEnum {
     NONE,
 }
 
-interface EmployeeFormAdditionalData {
-    email?: string;
-    password?: string;
-    confirmPassword?: string;
-}
-
-interface OptionalID {
-    id?: number;
-}
-
 export enum PatientSubscriptionPlan {
     BASIC = "BASIC",
     PREMIUM = "PREMIUM",
@@ -266,21 +256,6 @@ export enum PatientSubscriptionPlan {
 
 export type AppointmentGenerateType = Omit<Tables<"appointments">, "id" | "created_at" | "user_id">;
 export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "status" | "id"> & OptionalID;
-
-export type PatientFormType = {
-    firstname: string;
-    lastname: string;
-    gender: Gender;
-    address: string;
-    date_of_birth: string;
-    document_id: string;
-    email: string;
-    enabled: boolean;
-    nationality: string;
-    phone_number: string;
-} & OptionalID;
-
-export type EmployeeFormType = Omit<Tables<"employees">, "created_at" | "id"> & EmployeeFormAdditionalData & OptionalID;
 export type EmployeeGenerateType = Omit<Tables<"employees">, "created_at" | "id" | "user_id">;
 export type RoomOccupancyFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
 export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id"> & OptionalID;
@@ -543,11 +518,6 @@ export interface AppointmentForeignResourceType {
     id: number;
     name: string;
     surname: string;
-}
-
-export interface AppointmentsListResponseType extends Omit<Tables<"appointments">, "patient_id" | "employee_id"> {
-    patient_id: AppointmentForeignResourceType;
-    employee_id: AppointmentForeignResourceType;
 }
 
 export interface SingleAppointmentResponseType extends Tables<"appointments"> {

@@ -1,6 +1,7 @@
 import { format, startOfToday } from "date-fns";
-import type { PatientApi, PatientFormType } from "../../../utils/projectTypes";
+import type { PatientFormType } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT } from "../../../utils/constants";
+import type { PatientApi } from "../../../services/apiTypes.ts";
 
 export const getPatientFormDefaultValues = (patient?: PatientApi): PatientFormType => ({
     id: patient?.id,

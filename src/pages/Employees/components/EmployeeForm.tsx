@@ -9,10 +9,9 @@ import { useMutateEmployee } from "../../../services/hooks/employees/useMutateEm
 import { add, sub } from "date-fns";
 import { getEmployeeFormDefaultValues } from "../utils/utils";
 import { toast } from "react-toastify";
-import type { Tables } from "../../../services/database.types.ts";
-import type { EmployeeFormType } from "../../../utils/projectTypes.ts";
+import  { type EmployeeApi, type EmployeeFormType } from "../../../services/apiTypes.ts";
 
-export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employees"> }) => {
+export const EmployeeForm = ({ employeeData }: { employeeData?: EmployeeApi }) => {
     const isEdit = Boolean(employeeData);
     const { register, control, handleSubmit, formState } = useForm<EmployeeFormType>({
         defaultValues: getEmployeeFormDefaultValues(employeeData),
@@ -50,7 +49,7 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
                 control={control}
                 label="Email"
                 rules={{ required: true, pattern: { value: emailPattern, message: "Invalid email pattern" } }}
-                registerName="email"
+                registerName="username"
                 disabled={isEdit}
             />
             {!isEdit && (
@@ -76,10 +75,24 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
                             validate: (confirmPassword, { password }) =>
                                 password === confirmPassword ? true : "Provided passwords do not match",
                         }}
-                        registerName="confirmPassword"
+                        registerName="confirm_password"
                     />
                 </>
             )}
+            <TextInput
+                register={register}
+                control={control}
+                registerName="firstname"
+                label="Name"
+                rules={{ required: true }}
+            />
+            <TextInput
+                register={register}
+                control={control}
+                registerName="lastname"
+                label="Surname"
+                rules={{ required: true }}
+            />
             <FormSelectInput
                 registerName="role"
                 label="Role"
@@ -94,20 +107,6 @@ export const EmployeeForm = ({ employeeData }: { employeeData?: Tables<"employee
                 rules={{ required: true }}
                 minDate={sub(new Date(), { days: 14 })}
                 maxDate={add(new Date(), { days: 14 })}
-            />
-            <TextInput
-                register={register}
-                control={control}
-                registerName="name"
-                label="Name"
-                rules={{ required: true }}
-            />
-            <TextInput
-                register={register}
-                control={control}
-                registerName="surname"
-                label="Surname"
-                rules={{ required: true }}
             />
             <FormSelectInput
                 control={control}

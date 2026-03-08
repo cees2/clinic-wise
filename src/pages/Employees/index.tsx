@@ -30,10 +30,10 @@ const Employees = () => {
                 render: (employee) => capitalizeFirstLetter(employee.user.gender),
             },
             {
-                id: "email",
+                id: "username",
                 name: "Email",
                 disableSorting: true,
-                render: (employee) => employee.user.email,
+                render: (employee) => employee.user.username,
             },
             {
                 id: "start_date",

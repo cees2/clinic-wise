@@ -3,23 +3,19 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { ContentLayout } from "../../components/layout/ContentLayout";
 import { useMutateAppointment } from "../../services/hooks/appointments/useMutateAppointment";
-import {
-    type AppointmentsListResponseType,
-    FilterType,
-    type HeaderButton,
-    type TableDataConfig,
-} from "../../utils/projectTypes";
+import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 import { Status } from "../../components/common/Status";
 import { format } from "date-fns";
 import { DISPLAY_DATE_FORMAT_MINUTES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
+import { type AppointmentApi, AppointmentStatus } from "../../services/apiTypes.ts";
 
 const Appointments = () => {
     const { mutationRemove: removeAppointment, mutationCancel, mutationSchedule } = useMutateAppointment();
     const { confirmation } = useConfirmation();
 
-    const config: TableDataConfig<AppointmentsListResponseType> = {
+    const config: TableDataConfig<AppointmentApi> = {
         columns: [
             {
                 id: "duration",
@@ -46,8 +42,8 @@ const Appointments = () => {
                 name: "Patient",
                 foreignTableColumnsName: ["name", "surname", "id"],
                 render: (item) => (
-                    <Link to={`/patients/${item.patient_id.id}/edit`} className="text-green-600 font-bold">
-                        {`${item.patient_id.name} ${item.patient_id.surname}`}
+                    <Link to={`/patients/${item.patient.id}/edit`} className="text-green-600 font-bold">
+                        {`${item.patient.user.firstname} ${item.patient.user.lastname}`}
                     </Link>
                 ),
             },
@@ -57,9 +53,9 @@ const Appointments = () => {
                 foreignTableColumnsName: ["name", "surname", "id"],
                 render: (item) => (
                     <Link
-                        to={`/employees/${item.employee_id.id}/edit`}
+                        to={`/employees/${item.employee.id}/edit`}
                         className="text-green-600 font-bold"
-                    >{`${item.employee_id.name} ${item.employee_id.surname}`}</Link>
+                    >{`${item.employee.user.firstname} ${item.employee.user.lastname}`}</Link>
                 ),
             },
         ],
@@ -113,7 +109,7 @@ const Appointments = () => {
                         },
                     });
                 },
-                visible: (item: AppointmentsListResponseType) => item.status === "SCHEDULED",
+                visible: (item) => item.status === AppointmentStatus.SCHEDULED,
             },
             {
                 id: "schedule",
@@ -125,7 +121,7 @@ const Appointments = () => {
                         },
                     });
                 },
-                visible: (item) => item.status === "CANCELLED",
+                visible: (item) => item.status === AppointmentStatus.CANCELLED,
             },
             {
                 id: "edit",

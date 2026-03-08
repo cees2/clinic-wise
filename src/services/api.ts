@@ -1,8 +1,6 @@
 import type {
     AppointmentFormType,
-    EmployeeFormType,
     LoginFormType,
-    PatientFormType,
     RoomFormType,
     RoomOccupancyFormType,
     RoomsFilterType,
@@ -13,7 +11,8 @@ import type {
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import axios from "axios";
-import type { LoginApi, UserApi } from "./apiTypes.ts";
+import type { EmployeeApi, EmployeeFormType, LoginApi, ResponseApi, UserApi } from "./apiTypes.ts";
+import { parseApiData } from "./services.ts";
 
 // TODO: Change based on the environment
 const restApi = axios.create({
@@ -23,7 +22,7 @@ const restApi = axios.create({
 restApi.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
 
-    if(token) {
+    if(token && !config.url?.includes("/security")) {
         config.headers.Authorization = `Bearer ${token}`
     }
 
@@ -79,21 +78,19 @@ export const scheduleAppointment = async (appointmentId: number) => {
 // EMPLOYEE
 
 export const createEmployee = async (employee: EmployeeFormType) => {
-    const { data } = await restApi.post("/employees", employee);
+    const { data } = await restApi.post<ResponseApi<EmployeeApi>>("/employees", employee);
 
-    return data;
+    return parseApiData(data);
 };
 
-export const getEmployee = async (employeeId: string) => {
-    const { data } = await restApi.get(`/employees/${employeeId}`);
+export const getEmployee = async (employeeId: string):Promise<EmployeeApi> => {
+    const { data } = await restApi.get<ResponseApi<EmployeeApi>>(`/employees/${employeeId}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const removeEmployee = async (employeeId: number) => {
-    const { data } = await restApi.delete(`/employees/${employeeId}`);
-
-    return data;
+    await restApi.delete(`/employees/${employeeId}`);
 };
 
 export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
