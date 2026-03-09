@@ -44,23 +44,15 @@ export interface LoginApi {
 
 export interface PatientApi {
     id: number;
-    startDate: string;
-    patientSubscriptionPlan: PatientSubscriptionPlan;
+    start_date: string;
+    patient_subscription_plan: PatientSubscriptionPlan;
     user: UserApi;
 }
 
-export type PatientFormType = {
-    firstname: string;
-    lastname: string;
-    gender: Gender;
-    address: string;
-    date_of_birth: string;
-    document_id: string;
-    email: string;
-    enabled: boolean;
-    nationality: string;
-    phone_number: string;
-} & OptionalID;
+export interface PatientFormType extends Omit<UserApi, "enabled">, OptionalID {
+    start_date: string;
+    patient_subscription_plan: PatientSubscriptionPlan;
+};
 
 export enum EmployeeRole {
     ADMIN = "ADMIN",

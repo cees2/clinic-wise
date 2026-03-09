@@ -11,7 +11,15 @@ import type {
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import axios from "axios";
-import type { EmployeeApi, EmployeeFormType, LoginApi, ResponseApi, UserApi } from "./apiTypes.ts";
+import type {
+    EmployeeApi,
+    EmployeeFormType,
+    LoginApi,
+    PatientApi,
+    PatientFormType,
+    ResponseApi,
+    UserApi,
+} from "./apiTypes.ts";
 import { parseApiData } from "./services.ts";
 
 // TODO: Change based on the environment
@@ -115,21 +123,19 @@ export const updateEmployee = async (employee: EmployeeFormType) => {
 // PATIENT
 
 export const createPatient = async (patient: PatientFormType) => {
-    const { data } = await restApi.post("/patients", patient);
+    const { data } = await restApi.post<ResponseApi<PatientApi>>("/patients", patient);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const updatePatient = async (patient: PatientFormType) => {
-    const { data } = await restApi.patch(`/patients/${patient.id}`, patient);
+    const { data } = await restApi.patch<ResponseApi<PatientApi>>(`/patients/${patient.id}`, patient);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const removePatient = async (patientId: number) => {
-    const { data } = await restApi.delete(`/patients/${patientId}`);
-
-    return data;
+    await restApi.delete(`/patients/${patientId}`);
 };
 
 export const getPatientsSelect = async (inputValue: string) => {
@@ -141,13 +147,13 @@ export const getPatientsSelect = async (inputValue: string) => {
 export const generateFakePatients = async (patients: PatientFormType[]) => {
     const { data } = await restApi.post("/patients/generate", patients);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const getPatient = async (patientId: string) => {
-    const { data } = await restApi.get(`/patients/${patientId}`);
+    const { data } = await restApi.get<ResponseApi<PatientApi>>(`/patients/${patientId}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 // AUTHENTICATION

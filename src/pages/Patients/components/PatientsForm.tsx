@@ -6,10 +6,15 @@ import { GridForm } from "../../../components/common/Form/GridForm";
 import { DatePickerInput } from "../../../components/common/Input/DatePickerInput/DatePickerInput";
 import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { FormSelectInput } from "../../../components/common/Input/FormSelectInput/FormSelectInput";
-import { genderFormOptions, nationalityOptions } from "../../../utils/constants";
+import {
+    emailPattern,
+    genderFormOptions,
+    nationalityOptions,
+    patientSubscriptionPlans,
+} from "../../../utils/constants";
 import { add, sub } from "date-fns";
 import { useMutatePatient } from "../../../services/hooks/patients/useMutatePatient";
-import type { PatientApi, PatientFormType } from "../../../utils/projectTypes.ts";
+import { type PatientApi, type PatientFormType } from "../../../services/apiTypes.ts";
 
 export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
     const isEdit = Boolean(patientData);
@@ -47,6 +52,40 @@ export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
             <TextInput
                 register={register}
                 control={control}
+                registerName="username"
+                label="Email"
+                rules={{ required: true, pattern: { value: emailPattern, message: "Invalid email pattern" } }}
+            />
+            {!isEdit && (
+                <>
+                    <TextInput
+                        register={register}
+                        control={control}
+                        label="Password"
+                        type="password"
+                        rules={{
+                            required: true,
+                            minLength: { value: 6, message: "Password needs to be at least 6 characters long" },
+                        }}
+                        registerName="password"
+                    />
+                    <TextInput
+                        register={register}
+                        control={control}
+                        label="Confirm password"
+                        type="password"
+                        rules={{
+                            required: true,
+                            validate: (confirmPassword, { password }) =>
+                                password === confirmPassword ? true : "Provided passwords do not match",
+                        }}
+                        registerName="confirm_password"
+                    />
+                </>
+            )}
+            <TextInput
+                register={register}
+                control={control}
                 registerName="firstname"
                 label="Name"
                 rules={{ required: true }}
@@ -58,11 +97,19 @@ export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
                 label="Surname"
                 rules={{ required: true }}
             />
+            <FormSelectInput control={control} registerName="patient_subscription_plan" label="Subscription plan" options={patientSubscriptionPlans} rules={{required: true}}/>
             <FormSelectInput
                 control={control}
                 registerName="gender"
                 label="Gender"
                 options={genderFormOptions}
+                rules={{ required: true }}
+            />
+            <TextInput
+                register={register}
+                control={control}
+                registerName="address"
+                label="Adress"
                 rules={{ required: true }}
             />
             <DatePickerInput
@@ -75,8 +122,16 @@ export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
             <TextInput
                 register={register}
                 control={control}
-                registerName="address"
-                label="Adress"
+                registerName="document_id"
+                label="Document ID"
+                rules={{ pattern: /^\S{3} \d{2}$/, required: true }}
+                helpText="Format: ABC 01"
+            />
+            <FormSelectInput
+                control={control}
+                registerName="nationality"
+                label="Nationality"
+                options={nationalityOptions}
                 rules={{ required: true }}
             />
             <TextInput
@@ -87,13 +142,6 @@ export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
                 rules={{ pattern: /^\d{3}-\d{3}-\d{3}$/, required: true }}
                 helpText="Format: 123-123-123"
             />
-            <FormSelectInput
-                control={control}
-                registerName="nationality"
-                label="Nationality"
-                options={nationalityOptions}
-                rules={{ required: true }}
-            />
             <DatePickerInput
                 control={control}
                 registerName="start_date"
@@ -101,14 +149,6 @@ export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
                 rules={{ required: true }}
                 minDate={sub(new Date(), { days: 14 })}
                 maxDate={add(new Date(), { days: 14 })}
-            />
-            <TextInput
-                register={register}
-                control={control}
-                registerName="document_id"
-                label="Document ID"
-                rules={{ pattern: /^\S{3} \d{2}$/, required: true }}
-                helpText="Format: ABC 01"
             />
         </GridForm>
     );

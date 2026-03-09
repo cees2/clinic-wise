@@ -103,7 +103,7 @@ const Employees = () => {
                         title: "Remove employee",
                         caption: "Are you sure you want to remove this employee? This action cannot be undone.",
                         onConfirm: () => {
-                            mutationRemove.mutate({ employeeId: item.id, userId: item.user_id ?? "" });
+                            mutationRemove.mutate({ employeeId: item.id });
                         },
                     });
                 },

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPatient, removePatient, updatePatient } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import type { PatientFormType } from "../../../utils/projectTypes.ts";
+import type { PatientFormType } from "../../apiTypes.ts";
 
 export const useMutatePatient = () => {
     const queryClient = useQueryClient();
@@ -28,7 +28,7 @@ export const useMutatePatient = () => {
             await navigate(`/patients/${data.id}/edit`);
         },
         onError: () => {
-            toast.error("Could not create the patient");
+            toast.error("Could not update the patient");
         },
     });
 

@@ -20,7 +20,7 @@ const EditPatient = () => {
         }
     }, [navigate, fetchingWentWrong]);
 
-    if (fetchingWentWrong) {
+    if (fetchingWentWrong || !data) {
         return null;
     }
 
@@ -30,7 +30,7 @@ const EditPatient = () => {
 
     return (
         <FormLayout>
-            <Header title={`Edit patient "${data?.name} ${data?.surname}"`} as="h3" />
+            <Header title={`Edit patient "${data.user.firstname} ${data.user.lastname}"`} as="h3" />
             <PatientForm patientData={data} />
         </FormLayout>
     );

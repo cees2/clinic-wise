@@ -1,5 +1,7 @@
 import { capitalizeFirstLetter } from "./utils";
 import { UserAuthority } from "../services/apiTypes.ts";
+import type { Options } from "react-select";
+import { PatientSubscriptionPlan } from "./projectTypes.ts";
 
 export const DB_DATE_FORMAT = "yyyy-MM-dd";
 export const DB_DATE_FORMAT_WITH_TIME = "yyyy-MM-dd HH:mm:ss";
@@ -21,14 +23,14 @@ export const SUPPORTED_NATIONALITIES = {
 export const SUPPORTED_NATIONALITIES_ENTRIES = Object.entries(SUPPORTED_NATIONALITIES);
 
 export const genderFormOptions = [
-    {
-        label: "Male",
-        value: "MALE",
-    },
-    {
-        label: "Female",
-        value: "FEMALE",
-    },
+    { label: "Male", value: "MALE", },
+    { label: "Female", value: "FEMALE", },
+];
+
+export const patientSubscriptionPlans: Options<{ label: string; value: PatientSubscriptionPlan }> = [
+    { label: "Basic", value: PatientSubscriptionPlan.BASIC },
+    { label: "Premium", value: PatientSubscriptionPlan.PREMIUM },
+    { label: "Platinum", value: PatientSubscriptionPlan.PLATINUM },
 ];
 
 export const rolesFormOptions = Object.keys(UserAuthority)
