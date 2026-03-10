@@ -1,23 +1,26 @@
 import type {
-    AppointmentFormType,
     LoginFormType,
     RoomFormType,
     RoomOccupancyFormType,
     RoomsFilterType,
     RoomsOccupanciesResponseType,
-    SingleAppointmentResponseType,
+     TableDataResourceType,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import axios from "axios";
 import type {
+    AppointmentApi,
+    AppointmentFormType,
     EmployeeApi,
     EmployeeFormType,
+    ListResponseApi,
     LoginApi,
     PatientApi,
     PatientFormType,
     ResponseApi,
+    SearchSelectApi,
     UserApi,
 } from "./apiTypes.ts";
 import { parseApiData } from "./services.ts";
@@ -30,8 +33,8 @@ const restApi = axios.create({
 restApi.interceptors.request.use((config) => {
     const token = localStorage.getItem("token");
 
-    if(token && !config.url?.includes("/security")) {
-        config.headers.Authorization = `Bearer ${token}`
+    if (token && !config.url?.includes("/security")) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
@@ -41,46 +44,44 @@ restApi.interceptors.request.use((config) => {
 // TODO: Generating fake data should be done in the backend
 // APPOINTMENT
 export const generateFakeAppointments = async () => {
-    const { data } = await restApi.post("/appointments/generate");
+    const { data } = await restApi.post<ResponseApi<AppointmentApi[]>>("/appointments/generate");
 
     return data;
 };
 
 export const removeAppointment = async (appointmentId: number) => {
-    const { data } = await restApi.delete(`/appointments/${appointmentId}`);
-
-    return data;
+    await restApi.delete(`/appointments/${appointmentId}`);
 };
 
 export const createAppointment = async (appointment: AppointmentFormType) => {
-    const { data } = await restApi.post(`/appointments`, appointment);
+    const { data } = await restApi.post<ResponseApi<AppointmentApi>>(`/appointments`, appointment);
 
-    return data;
+    return parseApiData(data);
 };
 
-export const getAppointment = async (appointmentId: string): Promise<SingleAppointmentResponseType> => {
-    const { data } = await restApi.get(`/appointments/${appointmentId}`);
+export const getAppointment = async (appointmentId: string) => {
+    const { data } = await restApi.get<ResponseApi<AppointmentApi>>(`/appointments/${appointmentId}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 // TODO: fix
 export const updateAppointment = async (appointment: AppointmentFormType) => {
-    const { data } = await restApi.patch(`/appointments/${appointment.id}`, appointment);
+    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(`/appointments/${appointment.id}`, appointment);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const cancelAppointment = async (appointmentId: number) => {
-    const { data } = await restApi.patch(`/appointments/${appointmentId}/cancel`);
+    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(`/appointments/${appointmentId}/cancel`);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const scheduleAppointment = async (appointmentId: number) => {
-    const { data } = await restApi.patch(`/appointments/${appointmentId}/schedule`);
+    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(`/appointments/${appointmentId}/schedule`);
 
-    return data;
+    return parseApiData(data);
 };
 
 // EMPLOYEE
@@ -91,7 +92,7 @@ export const createEmployee = async (employee: EmployeeFormType) => {
     return parseApiData(data);
 };
 
-export const getEmployee = async (employeeId: string):Promise<EmployeeApi> => {
+export const getEmployee = async (employeeId: string) => {
     const { data } = await restApi.get<ResponseApi<EmployeeApi>>(`/employees/${employeeId}`);
 
     return parseApiData(data);
@@ -108,16 +109,16 @@ export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
 };
 
 // TODO: fix type
-export const getEmployeesSelect = async (inputValue: string): Promise<Record<string, any>[]> => {
-    const { data } = await restApi.get(`/employees/search_select?input=${inputValue}`);
+export const getEmployeesSelect = async (inputValue: string) => {
+    const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/employees/search_select?input=${inputValue}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const updateEmployee = async (employee: EmployeeFormType) => {
-    const { data } = await restApi.patch(`/employees/${employee.id}`, employee);
+    const { data } = await restApi.patch<ResponseApi<EmployeeApi>>(`/employees/${employee.id}`, employee);
 
-    return data;
+    return parseApiData(data);
 };
 
 // PATIENT
@@ -139,13 +140,13 @@ export const removePatient = async (patientId: number) => {
 };
 
 export const getPatientsSelect = async (inputValue: string) => {
-    const { data } = await restApi.get(`/patients/search_select?input=${inputValue}`);
+    const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/patients/search_select?input=${inputValue}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const generateFakePatients = async (patients: PatientFormType[]) => {
-    const { data } = await restApi.post("/patients/generate", patients);
+    const { data } = await restApi.post<ResponseApi<PatientApi>>("/patients/generate", patients);
 
     return parseApiData(data);
 };
@@ -158,8 +159,8 @@ export const getPatient = async (patientId: string) => {
 
 // AUTHENTICATION
 
-export const loginUser = async (loginData: LoginFormType): Promise<LoginApi> => {
-    const { data } = await restApi.post("/security/login", loginData);
+export const loginUser = async (loginData: LoginFormType) => {
+    const { data } = await restApi.post<LoginApi>("/security/login", loginData);
 
     return data;
 };
@@ -168,8 +169,8 @@ export const logoutUser = async () => {
     await restApi.post("/logout");
 };
 
-export const getUser = async (token: string): Promise<UserApi> => {
-    const { data } = await restApi.get("/security/me", { headers: { Authorization: `Bearer ${token}` } });
+export const getUser = async (token: string) => {
+    const { data } = await restApi.get<UserApi>("/security/me", { headers: { Authorization: `Bearer ${token}` } });
 
     return data;
 };
@@ -203,8 +204,8 @@ export const createRoom = async (room: RoomFormType) => {
 };
 
 // TODO: fix type
-export const getRoomsSelect = async (inputValue: string): Promise<Record<string, any>[]> => {
-    const { data } = await restApi.get(`/rooms/search_select?input=${inputValue}`);
+export const getRoomsSelect = async (inputValue: string) => {
+    const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/rooms/search_select?input=${inputValue}`);
 
     return data;
 };
@@ -340,8 +341,8 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
 
 // LIST RESOURCE
 // TODO: resourceType type
-export const getResourceListData = async (resourceData: string) => {
-    const { data } = await restApi.get(`/${resourceData}`);
+export const getResourceListData  = async <TableDataResource extends TableDataResourceType> (resourceData: string) => {
+    const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`);
 
     return data;
 };

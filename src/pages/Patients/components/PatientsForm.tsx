@@ -97,7 +97,13 @@ export const PatientForm = ({ patientData }: { patientData?: PatientApi }) => {
                 label="Surname"
                 rules={{ required: true }}
             />
-            <FormSelectInput control={control} registerName="patient_subscription_plan" label="Subscription plan" options={patientSubscriptionPlans} rules={{required: true}}/>
+            <FormSelectInput
+                control={control}
+                registerName="patient_subscription_plan"
+                label="Subscription plan"
+                options={patientSubscriptionPlans}
+                rules={{ required: true }}
+            />
             <FormSelectInput
                 control={control}
                 registerName="gender"

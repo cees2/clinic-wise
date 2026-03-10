@@ -88,3 +88,27 @@ export interface AppointmentApi{
     start_date: string;
     status: AppointmentStatus;
 }
+
+export interface SearchSelectApi {
+    value: number;
+    label: string;
+}
+
+export interface AppointmentApi {
+    id: number;
+    duration: number;
+    start_date: string;
+    status: AppointmentStatus;
+    additional_note: string;
+    patient: PatientApi;
+    employee: EmployeeApi;
+}
+
+export interface AppointmentFormType extends OptionalID {
+    duration: number;
+    start_date: string;
+    status: AppointmentStatus;
+    additional_note: string;
+    patient_id: number;
+    employee_id: number;
+}

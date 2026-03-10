@@ -9,12 +9,11 @@ import { GridForm } from "../../../components/common/Form/GridForm";
 import { useMutateAppointment } from "../../../services/hooks/appointments/useMutateAppointment";
 import { useNavigate } from "react-router-dom";
 import { getAppointmentFormDefaultValues } from "../utils/utils";
-import type { EmployeeSelect, PatientSelect } from "../../../services/apiTypes";
 import { toast } from "react-toastify";
-import type { AppointmentFormType, SingleAppointmentResponseType } from "../../../utils/projectTypes.ts";
 import { CLINIC_WORKING_HOURS, DISPLAY_DATE_FORMAT_MINUTES, EVERY_15_MINUTES } from "../../../utils/constants.ts";
+import type { AppointmentApi, AppointmentFormType, SearchSelectApi } from "../../../services/apiTypes.ts";
 
-export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleAppointmentResponseType }) => {
+export const AppointmentForm = ({ appointmentData }: { appointmentData?: AppointmentApi }) => {
     const isEdit = Boolean(appointmentData);
     const queryClient = useQueryClient();
     const { mutationCreate, mutationUpdate } = useMutateAppointment();
@@ -87,25 +86,27 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: SingleA
                 customMinutes={EVERY_15_MINUTES}
                 dateFormat={DISPLAY_DATE_FORMAT_MINUTES}
             />
-            <FormSelectInput<EmployeeSelect, false, AppointmentFormType>
+            <FormSelectInput<SearchSelectApi, false, AppointmentFormType>
                 loadOptions={loadEmployees}
-                getOptionLabel={(option) => `${option.name} ${option.surname}`}
-                getOptionValue={(option) => option?.id.toString()}
                 registerName="employee_id"
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
-                defaultValue={appointmentData?.employee}
+                defaultValue={{
+                    value: appointmentData?.employee.id,
+                    label: `${appointmentData?.employee.user.firstname} ${appointmentData?.employee.user.lastname}`,
+                }}
             />
-            <FormSelectInput<PatientSelect, false, AppointmentFormType>
+            <FormSelectInput<SearchSelectApi, false, AppointmentFormType>
                 loadOptions={loadPatients}
-                getOptionLabel={(option) => `${option?.name} ${option?.surname}`}
-                getOptionValue={(option) => option?.id.toString()}
                 registerName="patient_id"
                 control={control}
                 label="Patient"
                 rules={{ required: true }}
-                defaultValue={appointmentData?.patient}
+                defaultValue={{
+                    value: appointmentData?.patient.id,
+                    label: `${appointmentData?.patient.user.firstname} ${appointmentData?.patient.user.lastname}`,
+                }}
             />
             <TextAreaInput register={register} registerName="additional_note" label="Additional note" rows={3} />
         </GridForm>

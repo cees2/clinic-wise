@@ -255,7 +255,6 @@ export enum PatientSubscriptionPlan {
 }
 
 export type AppointmentGenerateType = Omit<Tables<"appointments">, "id" | "created_at" | "user_id">;
-export type AppointmentFormType = Omit<Tables<"appointments">, "created_at" | "status" | "id"> & OptionalID;
 export type EmployeeGenerateType = Omit<Tables<"employees">, "created_at" | "id" | "user_id">;
 export type RoomOccupancyFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
 export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id"> & OptionalID;
@@ -518,11 +517,6 @@ export interface AppointmentForeignResourceType {
     id: number;
     name: string;
     surname: string;
-}
-
-export interface SingleAppointmentResponseType extends Tables<"appointments"> {
-    patient: AppointmentForeignResourceType | null;
-    employee: AppointmentForeignResourceType | null;
 }
 
 export interface TableDataRendererProps<TableDataResource extends TableDataResourceType> {

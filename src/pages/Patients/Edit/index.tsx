@@ -20,12 +20,13 @@ const EditPatient = () => {
         }
     }, [navigate, fetchingWentWrong]);
 
-    if (fetchingWentWrong || !data) {
-        return null;
-    }
-
     if (isLoading) {
         return <LoadingSpinner />;
+    }
+
+    if (fetchingWentWrong || !data) {
+        return null;
+
     }
 
     return (
