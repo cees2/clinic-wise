@@ -1,15 +1,15 @@
 import { addMinutes, isWithinInterval, minutesToHours } from "date-fns";
 import Table from "../../../../components/common/Table/Table.tsx";
-import { type RoomsOccupanciesResponseType, type RoomsResponseType } from "../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../utils/RoomsContext.tsx";
 import { getDateFilterFromRoomsFilters, getFilteredRooms } from "../../utils/utils.ts";
 import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
 import { Tooltip, TooltipOverlay } from "../../../../components/common/Tooltip/Tootlip.tsx";
 import { useNavigate } from "react-router-dom";
+import type { RoomApi, RoomOccupancyApi } from "../../../../services/apiTypes.ts";
 
 interface Props {
-    roomOccupancies?: RoomsOccupanciesResponseType[];
-    rooms?: RoomsResponseType[];
+    roomOccupancies?: RoomOccupancyApi[];
+    rooms?: RoomApi[];
     roomOccupanciesLoading: boolean;
     roomsLoading: boolean;
 }
@@ -27,16 +27,16 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     const filteredRooms = getFilteredRooms(filters, rooms);
     const navigate = useNavigate();
 
-    const getRoomOccupancyMatchesCurrentData = (minute: number, room: RoomsResponseType) => {
+    const getRoomOccupancyMatchesCurrentData = (minute: number, room: RoomApi) => {
         if (!dateFilter?.value) return;
 
         const dateFilterWithMinutes = addMinutes(new Date(dateFilter.value), minute);
 
         return roomOccupancies?.find((roomOccupancy) => {
             const {
-                start: startDateAsString,
-                end: endDateAsString,
-                rooms: { name: roomName },
+                start_time: startDateAsString,
+                end_time: endDateAsString,
+                room: { name: roomName },
             } = roomOccupancy;
             const start = new Date(startDateAsString);
             const end = new Date(endDateAsString);
@@ -53,7 +53,7 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
         <Table className="min-w-[100%]">
             <Table.TableHead>
                 <Table.TableHeaderCell />
-                {filteredRooms?.map(({ name }) => (
+                {filteredRooms.map(({ name }) => (
                     <Table.TableHeaderCell key={name} className="text-center">
                         {name}
                     </Table.TableHeaderCell>
@@ -77,7 +77,9 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                                 const currentCellClickHandler = async () => {
                                     if (!roomOccupancyMatchingCurrentMinute) return;
 
-                                    const { id } = roomOccupancyMatchingCurrentMinute;
+                                    const {
+                                        room: { id },
+                                    } = roomOccupancyMatchingCurrentMinute;
 
                                     await navigate(`/room-occupancies/${id}/edit`);
                                 };
@@ -90,17 +92,16 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                                             <span className="text-xl text-nowrap">
                                                 Employee
                                                 <span className="text-green-700">
-                                                    {`: ${roomOccupancyMatchingCurrentMinute.employees.name} ${roomOccupancyMatchingCurrentMinute.employees.surname}`}
+                                                    {`: ${roomOccupancyMatchingCurrentMinute?.employee.user.firstname} ${roomOccupancyMatchingCurrentMinute?.employee.user.lastname}`}
                                                 </span>
                                             </span>
                                         </Tooltip>
                                     );
 
                                     return (
-                                        <Table.TableRowCell onClick={() => void currentCellClickHandler()}>
+                                        <Table.TableRowCell onClick={() => void currentCellClickHandler()} key={room.name}>
                                             <TooltipOverlay
                                                 Tooltip={tooltip}
-                                                key={`${room.name}_${room.id}_${minute}`}
                                                 showOnHover
                                                 className={tableCellClassName}
                                             >

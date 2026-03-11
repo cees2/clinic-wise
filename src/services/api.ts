@@ -20,8 +20,9 @@ import type {
     PatientApi,
     PatientFormType,
     ResponseApi,
+    RoomApi, RoomOccupancyApi,
     SearchSelectApi,
-    UserApi,
+    UserApi
 } from "./apiTypes.ts";
 import { parseApiData } from "./services.ts";
 
@@ -192,28 +193,28 @@ export const updatePassword = async (newPassword: string) => {
 // ROOMS
 
 export const getRooms = async () => {
-    const { data } = await restApi.get("/rooms");
+    const { data } = await restApi.get<ListResponseApi<RoomApi>>("/rooms");
 
-    return data;
+    return parseApiData(data);
 };
 
 export const createRoom = async (room: RoomFormType) => {
-    const { data } = await restApi.post("/rooms", room);
+    const { data } = await restApi.post<ResponseApi<RoomApi>>("/rooms", room);
 
-    return data;
+    return parseApiData(data);
 };
 
 // TODO: fix type
 export const getRoomsSelect = async (inputValue: string) => {
     const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/rooms/search_select?input=${inputValue}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 // ROOMS OCCUPANCIES
 
 export const uploadFakeRoomsOccupancy = async (rooms: RoomOccupancyFormType[]) => {
-    const { data } = await restApi.post("/rooms_occupancy/generate", rooms);
+    const { data } = await restApi.post("/room_occupancies/generate", rooms);
 
     return data;
 };
@@ -221,7 +222,7 @@ export const uploadFakeRoomsOccupancy = async (rooms: RoomOccupancyFormType[]) =
 export const getRoomsOccupancies = async (
     dateFilter?: RoomsFilterType,
     roomFilter?: RoomsFilterType,
-): Promise<RoomsOccupanciesResponseType[]> => {
+) => {
     if (dateFilter) {
         //     const endDate = add(new Date(dateFilter.value), { days: 1 });
         //     const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
@@ -235,21 +236,21 @@ export const getRoomsOccupancies = async (
         //     query = query.in("room_id", queryFilter);
     }
 
-    const { data } = await restApi.get("/rooms_occupancy");
+    const { data } = await restApi.get<ListResponseApi<RoomOccupancyApi>>("/room_occupancies");
 
-    return data;
+    return parseApiData(data)
 };
 
 export const createRoomOccupancy = async (roomOccupancy: RoomOccupancyFormType) => {
-    const { data } = await restApi.post("/rooms_occupancy", roomOccupancy);
+    const { data } = await restApi.post<ResponseApi<RoomOccupancyApi>>("/room_occupancies", roomOccupancy);
 
-    return data;
+    return parseApiData(data);
 };
 
 export const getRoomOccupancy = async (roomOccupancyId: number): Promise<RoomsOccupanciesResponseType> => {
-    const { data } = await restApi.get(`/rooms_occupancy/${roomOccupancyId}`);
+    const { data } = await restApi.get<ResponseApi<RoomOccupancyApi>>(`/room_occupancies/${roomOccupancyId}`);
 
-    return data;
+    return parseApiData(data);
 };
 
 // DASHBOARD

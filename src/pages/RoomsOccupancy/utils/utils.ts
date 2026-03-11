@@ -8,6 +8,7 @@ import {
     type RoomsOccupanciesResponseType,
 } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
+import type { RoomApi } from "../../../services/apiTypes.ts";
 
 export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilters) => {
     let date: Date | null = null;
@@ -79,7 +80,7 @@ export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilterType[], ti
     }
 };
 
-export const getFilteredRooms = (filters: RoomsFilterType[], rooms?: RoomsResponseType[]): RoomsResponseType[] => {
+export const getFilteredRooms = (filters: RoomsFilterType[], rooms?: RoomApi[]): RoomApi[] => {
     const roomsFilter = getRoomFilterFromRoomsFilters(filters);
 
     if (!roomsFilter) return rooms ?? [];

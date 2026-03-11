@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Dropdown } from "../../../../../components/common/Dropdown/Dropdown.tsx";
-import type { Tables } from "../../../../../services/database.types.ts";
 import { RoomsFilterIds, type RoomsFilterType } from "../../../../../utils/projectTypes.ts";
 import { useRoomsContext } from "../../../utils/RoomsContext.tsx";
 import { getRoomFilterFromRoomsFilters, updateRoomFilterValue, updateRoomsFilters } from "../../../utils/utils.ts";
+import type {  RoomApi } from "../../../../../services/apiTypes.ts";
 
 interface Props {
-    rooms: Omit<Tables<"rooms">, "created_at">[];
+    rooms: RoomApi[]
 }
 
 const RoomsFilter = ({ rooms }: Props) => {
     const [selectedRoomNames, setSelectedRoomName] = useState<string[] | undefined>(undefined);
     const { setFilters } = useRoomsContext();
 
-    const onRoomClick = ({ id, name }: Omit<Tables<"rooms">, "created_at">) => {
+    const onRoomClick = ({ id, name }: Omit<RoomApi, "created_at">) => {
         setSelectedRoomName((prevRoomNames) => {
             if (!prevRoomNames) return [name];
 

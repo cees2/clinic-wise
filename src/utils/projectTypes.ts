@@ -486,38 +486,6 @@ export interface DarkModeContextType {
     setAppMode: React.Dispatch<SetStateAction<AppColorMode>>;
 }
 
-export interface EmptyPageAction {
-    title: string;
-    variant?: ButtonVariant;
-    action?: () => void;
-    path?: string;
-}
-
-export interface RoomsOccupanciesResponseType {
-    id: number;
-    start: string;
-    end: string;
-    employees: {
-        id: number;
-        name: string;
-        surname: string;
-    };
-    rooms: {
-        name: string;
-        id: number;
-    };
-}
-
-export type RoomsResponseType = {
-    id: number;
-    name: string;
-};
-
-export interface AppointmentForeignResourceType {
-    id: number;
-    name: string;
-    surname: string;
-}
 
 export interface TableDataRendererProps<TableDataResource extends TableDataResourceType> {
     config: TableDataConfig<TableDataResource>;

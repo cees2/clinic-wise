@@ -13,8 +13,8 @@ interface OptionalID {
 }
 
 enum Gender {
-    MALE="Male",
-    FEMALE="Female",
+    MALE = "Male",
+    FEMALE = "Female",
 }
 
 export enum UserAuthority {
@@ -52,7 +52,7 @@ export interface PatientApi {
 export interface PatientFormType extends Omit<UserApi, "enabled">, OptionalID {
     start_date: string;
     patient_subscription_plan: PatientSubscriptionPlan;
-};
+}
 
 export enum EmployeeRole {
     ADMIN = "ADMIN",
@@ -64,10 +64,10 @@ export interface EmployeeApi {
     id: number;
     role: EmployeeRole;
     start_date: string;
-    user: UserApi
+    user: UserApi;
 }
 
-export interface EmployeeFormType extends Omit<UserApi, "enabled">, OptionalID{
+export interface EmployeeFormType extends Omit<UserApi, "enabled">, OptionalID {
     start_date: string;
     role: EmployeeRole;
 }
@@ -78,13 +78,13 @@ export enum AppointmentStatus {
     COMPLETED = "COMPLETED",
 }
 
-export interface AppointmentApi{
+export interface AppointmentApi {
     id: number;
-    additional_note:string;
+    additional_note: string;
     created_at: string;
     duration: number;
     employee: EmployeeApi;
-    patient:PatientApi;
+    patient: PatientApi;
     start_date: string;
     status: AppointmentStatus;
 }
@@ -111,4 +111,17 @@ export interface AppointmentFormType extends OptionalID {
     additional_note: string;
     patient_id: number;
     employee_id: number;
+}
+
+export interface RoomApi {
+    id: number;
+    name: string;
+}
+
+export interface RoomOccupancyApi {
+    id: number;
+    room: RoomApi;
+    employee: EmployeeApi;
+    start_time: string;
+    end_time: string;
 }
