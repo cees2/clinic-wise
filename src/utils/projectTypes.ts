@@ -28,13 +28,6 @@ export enum MainNavigationState {
     CLOSED,
 }
 
-export interface HeaderActions {
-    title: string;
-    isInDropdown?: boolean;
-    onClick?: () => void;
-    path?: string;
-}
-
 export interface TableBaseProps {
     className?: string;
 }
@@ -97,7 +90,7 @@ export interface TableDataAction<TableDataResource extends TableDataResourceType
 
 export interface TableDataConfig<TableDataResource extends TableDataResourceType> {
     columns: TableDataColumn<TableDataResource>[];
-    resourceName: keyof Database["public"]["Tables"];
+    resourceName: string;
     filters?: TableDataFilterConfig[];
     actions?: TableDataAction<TableDataResource>[];
 }
@@ -234,14 +227,6 @@ export enum Gender {
     FEMALE = "FEMALE",
 }
 
-export type NumberFilterForm = {
-    [K in NumberFilterConditionType]: number | undefined | "";
-};
-
-export type TextFilterForm = {
-    [K in TextFilterCondition]: string;
-};
-
 export enum SortTableEnum {
     ASCENDING,
     DESCENDING,
@@ -254,11 +239,6 @@ export enum PatientSubscriptionPlan {
     PLATINUM = "PLATINUM",
 }
 
-export type AppointmentGenerateType = Omit<Tables<"appointments">, "id" | "created_at" | "user_id">;
-export type EmployeeGenerateType = Omit<Tables<"employees">, "created_at" | "id" | "user_id">;
-export type RoomOccupancyFormType = Omit<Tables<"rooms_occupancy">, "created_at" | "id"> & OptionalID;
-export type RoomFormType = Omit<Tables<"rooms">, "created_at" | "id"> & OptionalID;
-
 export interface Person {
     name: string;
     surname: string;
@@ -268,11 +248,6 @@ export interface Person {
     gender: string;
     phone_number: string;
     document_id: string;
-}
-
-export interface ModalContextType {
-    showModal: boolean;
-    onHide: () => void;
 }
 
 export interface ConfirmationType {
@@ -289,11 +264,6 @@ export interface ConfirmationContextType {
 export enum TimePickerMode {
     HOURS,
     MINUTES,
-}
-
-export interface FormSelectOption {
-    value: string;
-    label: string;
 }
 
 export interface GridLayoutProps {
@@ -390,8 +360,9 @@ export interface AuthContextType {
 }
 
 export interface UpdateUserFormType {
-    email: string;
-    fullName: string;
+    username: string;
+    firstname: string;
+    lastname: string;
     avatar: FileList | string | null;
 }
 
@@ -433,7 +404,6 @@ export enum RoomDateFilters {
 }
 
 export const RoomsTimeFilterOptionsArray = [RoomDateFilters.TODAY, RoomDateFilters.TOMORROW];
-export const RoomsFilterIdsArray = [RoomsFilterIds.ROOM];
 
 export interface RoomsFilterType {
     id: RoomsFilterIds;

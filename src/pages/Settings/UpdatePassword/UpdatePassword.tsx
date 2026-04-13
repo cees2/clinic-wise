@@ -5,14 +5,15 @@ import { TextInput } from "../../../components/common/Input/TextInput/TextInput.
 import { Button } from "../../../components/layout/Button";
 import { useMutateUser } from "../../../services/hooks/user/useMutateUser";
 import { toast } from "react-toastify";
-import { useAuthContext } from "../../../utils/contexts/AuthContext";
 import { Alert } from "../../../components/common/Alert";
+import { useAuthentication } from "../../../services/hooks/authentication/useAuthentication.ts";
+import { UserAuthority } from "../../../services/apiTypes.ts";
 
 const UpdatePassword = () => {
-    const { user } = useAuthContext();
+    const { hasAuthority } = useAuthentication();
     const { handleSubmit, register, control, formState } = useForm<UpdatePasswordType>();
     const { mutatePassword } = useMutateUser();
-    const isAdmin = user?.user_metadata.isAdmin as boolean | undefined;
+    const isAdmin = hasAuthority([UserAuthority.ADMIN]);
 
     const submitSuccess = (data: UpdatePasswordType) => {
         mutatePassword.mutate(data.newPassword);

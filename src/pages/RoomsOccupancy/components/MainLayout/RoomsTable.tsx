@@ -52,12 +52,13 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     return (
         <Table className="min-w-[100%]">
             <Table.TableHead>
-                <Table.TableHeaderCell />
-                {filteredRooms.map(({ name }) => (
-                    <Table.TableHeaderCell key={name} className="text-center">
-                        {name}
-                    </Table.TableHeaderCell>
-                ))}
+                <Table.TableRow>
+                    {filteredRooms.map(({ name }) => (
+                        <Table.TableHeaderCell key={name} className="text-center">
+                            {name}
+                        </Table.TableHeaderCell>
+                    ))}
+                </Table.TableRow>
             </Table.TableHead>
             <Table.TableBody>
                 {MINUTES_OF_DAYS.map((minute) => {
@@ -99,7 +100,10 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
                                     );
 
                                     return (
-                                        <Table.TableRowCell onClick={() => void currentCellClickHandler()} key={room.name}>
+                                        <Table.TableRowCell
+                                            onClick={() => void currentCellClickHandler()}
+                                            key={room.name}
+                                        >
                                             <TooltipOverlay
                                                 Tooltip={tooltip}
                                                 showOnHover

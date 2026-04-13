@@ -12,9 +12,10 @@ const UpdateAccount = () => {
     const { user } = useAuthContext();
     const { handleSubmit, register, control, formState, setValue } = useForm<UpdateUserFormType>({
         defaultValues: {
-            email: user?.email ?? "",
-            fullName: (user?.user_metadata.fullName as string | undefined) ?? "",
-            avatar: user?.user_metadata.avatarURL as string | undefined | null,
+            username: user?.username ?? "",
+            firstname: user?.firstname?? "",
+            lastname: user?.lastname ?? ""
+            // avatar: user?.user_metadata?.avatarURL as string | undefined | null,
         },
     });
     const { mutateUpdate } = useMutateUser();
@@ -59,8 +60,15 @@ const UpdateAccount = () => {
             <TextInput
                 register={register}
                 control={control}
-                registerName="fullName"
-                label="Full name"
+                registerName="firstname"
+                label="Firstname"
+                rules={{ required: true }}
+            />
+            <TextInput
+                register={register}
+                control={control}
+                registerName="lastname"
+                label="Lastname"
                 rules={{ required: true }}
             />
             <FileInput

@@ -3,8 +3,7 @@ import type {
     RoomFormType,
     RoomOccupancyFormType,
     RoomsFilterType,
-    RoomsOccupanciesResponseType,
-     TableDataResourceType,
+    TableDataResourceType,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
@@ -20,9 +19,10 @@ import type {
     PatientApi,
     PatientFormType,
     ResponseApi,
-    RoomApi, RoomOccupancyApi,
+    RoomApi,
+    RoomOccupancyApi,
     SearchSelectApi,
-    UserApi
+    UserApi,
 } from "./apiTypes.ts";
 import { parseApiData } from "./services.ts";
 
@@ -103,8 +103,8 @@ export const removeEmployee = async (employeeId: number) => {
     await restApi.delete(`/employees/${employeeId}`);
 };
 
-export const uploadFakeEmployees = async (employees: EmployeeFormType[]) => {
-    const { data } = await restApi.post("/employees/generate", employees);
+export const uploadFakeEmployees = async () => {
+    const { data } = await restApi.post<EmployeeApi[]>("/employees/generate");
 
     return data;
 };
@@ -146,8 +146,8 @@ export const getPatientsSelect = async (inputValue: string) => {
     return parseApiData(data);
 };
 
-export const generateFakePatients = async (patients: PatientFormType[]) => {
-    const { data } = await restApi.post<ResponseApi<PatientApi>>("/patients/generate", patients);
+export const generateFakePatients = async () => {
+    const { data } = await restApi.post<ResponseApi<PatientApi>>("/patients/generate");
 
     return parseApiData(data);
 };
@@ -213,16 +213,13 @@ export const getRoomsSelect = async (inputValue: string) => {
 
 // ROOMS OCCUPANCIES
 
-export const uploadFakeRoomsOccupancy = async (rooms: RoomOccupancyFormType[]) => {
-    const { data } = await restApi.post("/room_occupancies/generate", rooms);
+export const uploadFakeRoomsOccupancy = async () => {
+    const { data } = await restApi.post<ResponseApi<RoomOccupancyApi>[]>("/room_occupancies/generate");
 
     return data;
 };
 
-export const getRoomsOccupancies = async (
-    dateFilter?: RoomsFilterType,
-    roomFilter?: RoomsFilterType,
-) => {
+export const getRoomsOccupancies = async (dateFilter?: RoomsFilterType, roomFilter?: RoomsFilterType) => {
     if (dateFilter) {
         //     const endDate = add(new Date(dateFilter.value), { days: 1 });
         //     const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
@@ -238,7 +235,7 @@ export const getRoomsOccupancies = async (
 
     const { data } = await restApi.get<ListResponseApi<RoomOccupancyApi>>("/room_occupancies");
 
-    return parseApiData(data)
+    return parseApiData(data);
 };
 
 export const createRoomOccupancy = async (roomOccupancy: RoomOccupancyFormType) => {
@@ -247,7 +244,7 @@ export const createRoomOccupancy = async (roomOccupancy: RoomOccupancyFormType) 
     return parseApiData(data);
 };
 
-export const getRoomOccupancy = async (roomOccupancyId: number): Promise<RoomsOccupanciesResponseType> => {
+export const getRoomOccupancy = async (roomOccupancyId: number) => {
     const { data } = await restApi.get<ResponseApi<RoomOccupancyApi>>(`/room_occupancies/${roomOccupancyId}`);
 
     return parseApiData(data);
@@ -342,7 +339,7 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
 
 // LIST RESOURCE
 // TODO: resourceType type
-export const getResourceListData  = async <TableDataResource extends TableDataResourceType> (resourceData: string) => {
+export const getResourceListData = async <TableDataResource extends TableDataResourceType>(resourceData: string) => {
     const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`);
 
     return data;
