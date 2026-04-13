@@ -5,7 +5,7 @@ import { uploadFakeRoomsOccupancy } from "../../api";
 export const useFakeRoomsOccupancy = () => {
     const queryClient = useQueryClient();
 
-    const mutationConfig = useMutation({
+   return useMutation({
         mutationFn: uploadFakeRoomsOccupancy,
         onSuccess: async () => {
             toast.success("Rooms have been successfully uploaded");
@@ -15,6 +15,4 @@ export const useFakeRoomsOccupancy = () => {
             toast.error("Could not upload rooms");
         },
     });
-
-    return mutationConfig;
 };

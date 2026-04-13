@@ -5,7 +5,7 @@ import { createRoom } from "../../api.ts";
 export const useMutateRooms = (onHide: () => void) => {
     const queryClient = useQueryClient();
 
-    const mutation = useMutation({
+    return useMutation({
         mutationFn: createRoom,
         onSuccess: async () => {
             toast.success("New room has been successfully added");
@@ -16,6 +16,4 @@ export const useMutateRooms = (onHide: () => void) => {
             toast.error("Could not create new room");
         },
     });
-
-    return mutation;
 };

@@ -5,16 +5,13 @@ export const useGetUser = (pathname: string) => {
     const { checkIfUserIsLoggedIn } = useAuthentication();
 
     const queryFn = () => {
-        if( pathname === "/login" || pathname === "/register")
-            return null;
+        if (pathname === "/login" || pathname === "/register") return null;
 
-        return checkIfUserIsLoggedIn()
-    }
+        return checkIfUserIsLoggedIn();
+    };
 
-    const query = useQuery({
+    return useQuery({
         queryFn,
         queryKey: ["me"],
     });
-
-    return query;
 };

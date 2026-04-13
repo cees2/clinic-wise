@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 export const useFakePatients = () => {
     const queryClient = useQueryClient();
 
-    const mutationConfig = useMutation({
+    return useMutation({
         mutationFn: generateFakePatients,
         onError: () => toast.error("Could not upload patients"),
         onSuccess: async () => {
@@ -13,6 +13,4 @@ export const useFakePatients = () => {
             await queryClient.invalidateQueries({ queryKey: ["patients"] });
         },
     });
-
-    return mutationConfig;
 };

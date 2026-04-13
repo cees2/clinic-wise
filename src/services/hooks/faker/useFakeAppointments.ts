@@ -5,7 +5,7 @@ import { generateFakeAppointments } from "../../api";
 export const useFakeAppointments = () => {
     const queryClient = useQueryClient();
 
-    const mutationConfig = useMutation({
+    return useMutation({
         mutationFn: generateFakeAppointments,
         onSuccess: async () => {
             toast.success("Appointments have been uploaded successfully");
@@ -19,6 +19,4 @@ export const useFakeAppointments = () => {
             toast.error("Appointments could not be uploaded");
         },
     });
-
-    return mutationConfig;
 };

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export const useMutateRoomsOccupancy = () => {
     const navigation = useNavigate();
 
-    const mutate = useMutation({
+    return useMutation({
         mutationFn: createRoomOccupancy,
         onSuccess: async () => {
             toast.success("The room occupancy created successfully");
@@ -16,6 +16,4 @@ export const useMutateRoomsOccupancy = () => {
             toast.error(error.message ?? "Could not create the room occupancy");
         },
     });
-
-    return mutate;
 };
