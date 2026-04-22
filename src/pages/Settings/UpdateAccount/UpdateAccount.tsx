@@ -72,7 +72,7 @@ const UpdateAccount = () => {
                 label="Avatar"
                 withClearButton
                 setValue={setValue}
-                className="col-start-1 col-span-1"
+                className="col-start-2 col-span-1"
             />
         </SettingsFormSection>
     );

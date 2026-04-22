@@ -12,6 +12,7 @@ import { ErrorMessage } from "./common/ErrorMessage";
 import { getInputFieldErrorName } from "../utils/inputs";
 import { CiCircleRemove } from "react-icons/ci";
 import { useRef, type ChangeEvent } from "react";
+import { IoCloudUploadOutline } from "react-icons/io5";
 
 interface Props<FormType extends Record<string, any>> extends React.ComponentProps<"input"> {
     register: UseFormRegister<FormType>;
@@ -27,28 +28,44 @@ const StyledFileInput = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
+    border: 2px dashed var(--color-primary);
+    align-items: center;
 
-    & > input {
-        padding: 0;
-        max-width: 24rem;
+    &:hover {
+        cursor: pointer;
     }
 
-    & > input[type="file"]::file-selector-button {
-        background-color: var(--color-primary);
-        padding: 0.4rem 0.8rem;
-        border-radius: 0.6rem;
-        color: var(--color-gray-200);
-        font-size: 1.4rem;
-        transition: var(--duration-fast) ease-out;
-        margin-right: 0.8rem;
+    & > svg {
+        width: 4.8rem;
+        height: 4.8rem;
+        color: var(--color-primary);
+    }
 
-        &:hover {
-            cursor: pointer;
-            transform: scale(105%);
+    & > input[type="file"] {
+        display: none;
+
+        &::file-selector-button {
+            text-align: center;
         }
     }
 
-    padding: 0;
+    //& > input[type="file"]::file-selector-button {
+    //    background-color: var(--color-primary);
+    //    padding: 0.4rem 0.8rem;
+    //    border-radius: 0.6rem;
+    //    color: var(--color-gray-200);
+    //    font-size: 1.4rem;
+    //    transition: var(--duration-fast) ease-out;
+    //    margin-right: 0.8rem;
+    //
+    //    &:hover {
+    //        cursor: pointer;
+    //        transform: scale(105%);
+    //    }
+    //
+    //    & > .dropzone {
+    //    }
+    //}
 `;
 
 const ClearButton = styled.button`
@@ -74,34 +91,32 @@ export const FileInput = <FormType extends Record<string, any>>({
 }: Props<FormType>) => {
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const {
-        field: { onChange, onBlur },
+        field: { onChange, onBlur, value },
     } = useController({ name: registerName, control, rules });
     const isRequired = rules?.required;
     const inputErrorName = getInputFieldErrorName(errors, registerName);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const clearFileInputHandler = () => {
-        onChange(null);
-        if (inputRef.current) {
-            inputRef.current.value = "";
-        }
-    };
+    const fileCaption: string = value instanceof FileList ? value[0].name : "Click or drop a file";
 
     const onChangeInternal = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.files);
     };
 
+    const inputWrapperClickHandler = () => inputRef.current?.click();
+
     return (
-        <StyledFileInput className={className ?? ""}>
+        <StyledFileInput className={className ?? ""} onClick={inputWrapperClickHandler}>
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
-            <input type="file" id={registerName} ref={inputRef} onChange={onChangeInternal} onBlur={onBlur} />
-            <ErrorMessage error={inputErrorName} />
-            {withClearButton && setValue && (
-                <ClearButton type="button" onClick={clearFileInputHandler}>
-                    <CiCircleRemove />
-                    Clear
-                </ClearButton>
-            )}
+            <IoCloudUploadOutline />
+            <input type="file" id={registerName} onChange={onChangeInternal} onBlur={onBlur} ref={inputRef} />
+            <span>{fileCaption}</span>
+            {inputErrorName && <ErrorMessage error={inputErrorName} />}
+            {/*{withClearButton && setValue && (*/}
+            {/*    <ClearButton type="button" onClick={clearFileInputHandler}>*/}
+            {/*        <CiCircleRemove />*/}
+            {/*        Clear*/}
+            {/*    </ClearButton>*/}
+            {/*)}*/}
         </StyledFileInput>
     );
 };
