@@ -35,6 +35,7 @@ export interface UserApi {
     nationality: string;
     phone_number: string;
     authorities: UserAuthority[];
+    avatar_id: number;
 }
 
 export interface LoginApi {
@@ -124,4 +125,10 @@ export interface RoomOccupancyApi {
     employee: EmployeeApi;
     start_time: string;
     end_time: string;
+}
+
+export type RoomOccupancyFormType = Omit<RoomOccupancyApi, "id"> & OptionalID;
+
+export interface RoomFormType {
+    name: string;
 }

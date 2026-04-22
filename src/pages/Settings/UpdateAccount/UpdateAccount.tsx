@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form";
 import { SettingsFormSection } from "../components/SettingsFormSection";
-import type { UpdateUserCompleteInfo, UpdateUserFormType } from "../../../utils/projectTypes";
+import type { UpdateUserFormType } from "../../../utils/projectTypes";
 import { TextInput } from "../../../components/common/Input/TextInput/TextInput.tsx";
 import { FileInput } from "../../../components/common/Input/FileInput";
 import { Button } from "../../../components/layout/Button";
 import { useMutateUser } from "../../../services/hooks/user/useMutateUser";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
-import type { UserAuthority } from "../../../services/apiTypes.ts";
 
 const UpdateAccount = () => {
     const { user } = useAuthContext();
@@ -14,29 +13,24 @@ const UpdateAccount = () => {
         defaultValues: {
             username: user?.username ?? "",
             firstname: user?.firstname?? "",
-            lastname: user?.lastname ?? ""
-            // avatar: user?.user_metadata?.avatarURL as string | undefined | null,
+            lastname: user?.lastname ?? "",
+            avatar: user?.avatar,
         },
     });
     const { mutateUpdate } = useMutateUser();
 
     const submitSuccess = (data: UpdateUserFormType) => {
-        if (!user) return;
-
-        const { id, authorities, avatarURL } = user;
-        const userCompleteInfo: UpdateUserCompleteInfo = {
-            ...data,
-            userId: id,
-            role: authorities as UserAuthority,
+        const formData = new FormData();
+        const userDetails = {
+            username: data.username,
+            firstname: data.firstname,
+            lastname: data.lastname,
         };
 
-        if (avatarURL) {
-            const previousAvatarNameStartIndex = (avatarURL as string).indexOf(`user-${id}`);
-            const previousAvatarName = (avatarURL as string).substring(previousAvatarNameStartIndex);
-            userCompleteInfo.previousAvatarName = previousAvatarName;
-        }
+        formData.append("avatar", data.avatar[0]);
+        formData.append("user", new Blob([JSON.stringify(userDetails)], { type: 'application/json' }));
 
-        mutateUpdate.mutate(userCompleteInfo);
+        mutateUpdate.mutate(formData);
     };
 
     const submitError = () => {};
@@ -56,7 +50,7 @@ const UpdateAccount = () => {
             $columnMaxWidth="1fr"
             customButtons={customButtons}
         >
-            <TextInput type="email" register={register} control={control} registerName="email" label="Email" disabled />
+            <TextInput type="username" register={register} control={control} registerName="username" label="Username" disabled />
             <TextInput
                 register={register}
                 control={control}

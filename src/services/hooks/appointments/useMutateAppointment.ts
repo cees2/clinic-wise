@@ -7,8 +7,8 @@ import {
     updateAppointment,
 } from "../../api";
 import { toast } from "react-toastify";
-import type { AppointmentFormType } from "../../../utils/projectTypes";
 import { useNavigate } from "react-router-dom";
+import type { AppointmentFormType } from "../../apiTypes.ts";
 
 export const useMutateAppointment = () => {
     const queryClient = useQueryClient();

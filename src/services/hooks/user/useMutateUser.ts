@@ -8,7 +8,7 @@ export const useMutateUser = () => {
 
     const mutateUpdate = useMutation({
         mutationFn: updateUser,
-        onSuccess: ({ user }) => {
+        onSuccess: (user) => {
             toast.success("The user updated successfully");
             setUser(user);
         },

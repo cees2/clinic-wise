@@ -110,7 +110,7 @@ export const Modal = ({
 }) => {
     const [showModalInternal, setShowModalInternal] = useState(showModal);
     const [isHiding, setIsHiding] = useState(false);
-    const closeModalTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const closeModalTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const modalIndexElement = document.querySelector("#modal");
 
     const hideModal = () => {

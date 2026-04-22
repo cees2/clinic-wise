@@ -363,7 +363,7 @@ export interface UpdateUserFormType {
     username: string;
     firstname: string;
     lastname: string;
-    avatar: FileList | string | null;
+    avatar: FileList | null;
 }
 
 export interface LoginFormType {
@@ -375,11 +375,6 @@ export interface UpdateUserCompleteInfo extends UpdateUserFormType {
     userId: string;
     previousAvatarName?: string;
     role: UserAuthority;
-}
-
-export interface UpdateUserRequestType {
-    email: string;
-    data: { fullName: string; avatarURL: string | null; role: UserAuthority };
 }
 
 export interface UpdatePasswordType {
@@ -456,7 +451,6 @@ export interface DarkModeContextType {
     setAppMode: React.Dispatch<SetStateAction<AppColorMode>>;
 }
 
-
 export interface TableDataRendererProps<TableDataResource extends TableDataResourceType> {
     config: TableDataConfig<TableDataResource>;
 }
@@ -482,4 +476,13 @@ export interface AlertProps {
 export interface AuthenticationResult {
     user?: UserApi;
     token?: string;
+}
+
+export interface EmptyPageAction {
+    caption?: string;
+    icon?: React.ReactNode;
+    className?: string;
+    path?: string;
+    action?: () => void;
+    title: string;
 }

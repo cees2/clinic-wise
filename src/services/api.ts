@@ -1,9 +1,8 @@
 import type {
     LoginFormType,
-    RoomFormType,
-    RoomOccupancyFormType,
     RoomsFilterType,
     TableDataResourceType,
+    UpdateUserFormType,
     UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
@@ -20,7 +19,9 @@ import type {
     PatientFormType,
     ResponseApi,
     RoomApi,
+    RoomFormType,
     RoomOccupancyApi,
+    RoomOccupancyFormType,
     SearchSelectApi,
     UserApi,
 } from "./apiTypes.ts";
@@ -51,7 +52,7 @@ export const generateFakeAppointments = async () => {
 };
 
 export const removeAppointment = async (appointmentId: number) => {
-    await restApi.delete(`/appointments/${appointmentId}`);
+    await restApi.delete(`/appointments/${appointmentId.toString()}`);
 };
 
 export const createAppointment = async (appointment: AppointmentFormType) => {
@@ -68,19 +69,26 @@ export const getAppointment = async (appointmentId: string) => {
 
 // TODO: fix
 export const updateAppointment = async (appointment: AppointmentFormType) => {
-    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(`/appointments/${appointment.id}`, appointment);
+    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(
+        `/appointments/${appointment.id.toString()}`,
+        appointment,
+    );
 
     return parseApiData(data);
 };
 
 export const cancelAppointment = async (appointmentId: number) => {
-    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(`/appointments/${appointmentId}/cancel`);
+    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(
+        `/appointments/${appointmentId.toString()}/cancel`,
+    );
 
     return parseApiData(data);
 };
 
 export const scheduleAppointment = async (appointmentId: number) => {
-    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(`/appointments/${appointmentId}/schedule`);
+    const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(
+        `/appointments/${appointmentId.toString()}/schedule`,
+    );
 
     return parseApiData(data);
 };
@@ -100,7 +108,7 @@ export const getEmployee = async (employeeId: string) => {
 };
 
 export const removeEmployee = async (employeeId: number) => {
-    await restApi.delete(`/employees/${employeeId}`);
+    await restApi.delete(`/employees/${employeeId.toString()}`);
 };
 
 export const uploadFakeEmployees = async () => {
@@ -117,7 +125,7 @@ export const getEmployeesSelect = async (inputValue: string) => {
 };
 
 export const updateEmployee = async (employee: EmployeeFormType) => {
-    const { data } = await restApi.patch<ResponseApi<EmployeeApi>>(`/employees/${employee.id}`, employee);
+    const { data } = await restApi.patch<ResponseApi<EmployeeApi>>(`/employees/${employee.id.toString()}`, employee);
 
     return parseApiData(data);
 };
@@ -131,7 +139,7 @@ export const createPatient = async (patient: PatientFormType) => {
 };
 
 export const updatePatient = async (patient: PatientFormType) => {
-    const { data } = await restApi.patch<ResponseApi<PatientApi>>(`/patients/${patient.id}`, patient);
+    const { data } = await restApi.patch<ResponseApi<PatientApi>>(`/patients/${patient.id.toString()}`, patient);
 
     return parseApiData(data);
 };
@@ -178,16 +186,14 @@ export const getUser = async (token: string) => {
 
 // USER
 
-export const updateUser = async (userCompleteData: UpdateUserRequestType, userId: string) => {
-    const { data } = await restApi.patch(`/users/${userId}`, userCompleteData);
+export const updateUser = async (userCompleteData: FormData) => {
+    const { data } = await restApi.patch<UserApi>("/me", userCompleteData);
 
     return data;
 };
 
-export const updatePassword = async (newPassword: string) => {
-    const { data } = await restApi.patch("/auth/update-password", { newPassword });
-
-    return data;
+export const updatePassword = async (newPassword: string): Promise<void> => {
+    await restApi.patch("/auth/update-password", { newPassword });
 };
 
 // ROOMS
@@ -245,7 +251,9 @@ export const createRoomOccupancy = async (roomOccupancy: RoomOccupancyFormType) 
 };
 
 export const getRoomOccupancy = async (roomOccupancyId: number) => {
-    const { data } = await restApi.get<ResponseApi<RoomOccupancyApi>>(`/room_occupancies/${roomOccupancyId}`);
+    const { data } = await restApi.get<ResponseApi<RoomOccupancyApi>>(
+        `/room_occupancies/${roomOccupancyId.toString()}`,
+    );
 
     return parseApiData(data);
 };

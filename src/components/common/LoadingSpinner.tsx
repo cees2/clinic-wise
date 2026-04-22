@@ -44,7 +44,7 @@ const StyledLoadingSpinner = styled.div`
 
 export const LoadingSpinner = ({ forceDarkText }: { forceDarkText?: true }) => {
     const [loadingCaption, setLoadingCaption] = useState("Loading");
-    const intervalID = useRef<NodeJS.Timeout | undefined>(undefined);
+    const intervalID = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
     useEffect(() => {
         let dotsCounter = 0;

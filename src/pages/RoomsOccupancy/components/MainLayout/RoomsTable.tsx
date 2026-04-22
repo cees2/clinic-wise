@@ -53,6 +53,7 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
         <Table className="min-w-[100%]">
             <Table.TableHead>
                 <Table.TableRow>
+                    <Table.TableHeaderCell className="text-left">Room</Table.TableHeaderCell>
                     {filteredRooms.map(({ name }) => (
                         <Table.TableHeaderCell key={name} className="text-center">
                             {name}
