@@ -30,6 +30,7 @@ const StyledFileInput = styled.div`
     row-gap: 1rem;
     border: 2px dashed var(--color-primary);
     align-items: center;
+    padding: 0.4rem 0;
 
     &:hover {
         cursor: pointer;

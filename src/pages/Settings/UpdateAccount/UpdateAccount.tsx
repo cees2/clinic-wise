@@ -27,7 +27,9 @@ const UpdateAccount = () => {
             lastname: data.lastname,
         };
 
-        formData.append("avatar", data.avatar[0]);
+        if(data.avatar && data.avatar[0] instanceof File){
+            formData.append("avatar", data.avatar[0]);
+        }
         formData.append("user", new Blob([JSON.stringify(userDetails)], { type: 'application/json' }));
 
         mutateUpdate.mutate(formData);
