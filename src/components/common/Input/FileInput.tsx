@@ -11,8 +11,9 @@ import styled from "styled-components";
 import { ErrorMessage } from "./common/ErrorMessage";
 import { getInputFieldErrorName } from "../utils/inputs";
 import { CiCircleRemove } from "react-icons/ci";
-import { useRef, type ChangeEvent } from "react";
+import { useRef, type ChangeEvent, useState } from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
+import { DragState } from "../../../utils/projectTypes.ts";
 
 interface Props<FormType extends Record<string, any>> extends React.ComponentProps<"input"> {
     register: UseFormRegister<FormType>;
@@ -90,6 +91,7 @@ export const FileInput = <FormType extends Record<string, any>>({
     setValue,
     className,
 }: Props<FormType>) => {
+    const [dragState, setDragState] = useState<DragState>(DragState.NOT_DRAGGING);
     const { errors } = useFormState<FormType>({ control, name: registerName });
     const {
         field: { onChange, onBlur, value },
@@ -97,7 +99,19 @@ export const FileInput = <FormType extends Record<string, any>>({
     const isRequired = rules?.required;
     const inputErrorName = getInputFieldErrorName(errors, registerName);
     const inputRef = useRef<HTMLInputElement>(null);
-    const fileCaption: string = value instanceof FileList ? value[0].name : "Click or drop a file";
+    const dragCounter = useRef<number>(0);
+
+    const getFileCaption = () => {
+        if(dragState === DragState.DRAG_ENTER) {
+            return "Drop file here";
+        }
+
+        if(value instanceof FileList) {
+            return value[0].name;
+        }
+
+        return "Click or drop a file";
+    }
 
     const onChangeInternal = (event: ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.files);
@@ -105,12 +119,44 @@ export const FileInput = <FormType extends Record<string, any>>({
 
     const inputWrapperClickHandler = () => inputRef.current?.click();
 
+    const onDrop = (event: React.DragEvent<HTMLInputElement>) => {
+        onChange(event.dataTransfer.files);
+        setDragState(DragState.NOT_DRAGGING);
+    };
+
+    const onDragOver = (event: React.DragEvent<HTMLInputElement>) => {
+        event.preventDefault();
+    };
+
+    const onDragEnter = () => {
+        dragCounter.current++;
+
+        if(dragCounter.current === 1) {
+            setDragState(DragState.DRAG_ENTER);
+        }
+    };
+
+    const onDragLeave = () => {
+        dragCounter.current--;
+
+        if(dragCounter.current === 0) {
+            setDragState(DragState.DRAG_LEAVE);
+        }
+    };
+
     return (
-        <StyledFileInput className={className ?? ""} onClick={inputWrapperClickHandler}>
+        <StyledFileInput
+            className={className ?? ""}
+            onClick={inputWrapperClickHandler}
+            onDragOver={onDragOver}
+            onDrop={onDrop}
+            onDragEnter={onDragEnter}
+            onDragLeave={onDragLeave}
+        >
             <label htmlFor={registerName}>{`${label}${isRequired ? " *" : ""}`}</label>
             <IoCloudUploadOutline />
             <input type="file" id={registerName} onChange={onChangeInternal} onBlur={onBlur} ref={inputRef} />
-            <span>{fileCaption}</span>
+            <span>{getFileCaption()}</span>
             {inputErrorName && <ErrorMessage error={inputErrorName} />}
             {/*{withClearButton && setValue && (*/}
             {/*    <ClearButton type="button" onClick={clearFileInputHandler}>*/}

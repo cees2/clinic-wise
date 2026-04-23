@@ -52,7 +52,14 @@ const UpdateAccount = () => {
             $columnMaxWidth="1fr"
             customButtons={customButtons}
         >
-            <TextInput type="username" register={register} control={control} registerName="username" label="Username" disabled />
+            <TextInput
+                type="username"
+                register={register}
+                control={control}
+                registerName="username"
+                label="Username"
+                disabled
+            />
             <TextInput
                 register={register}
                 control={control}

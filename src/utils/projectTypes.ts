@@ -486,3 +486,9 @@ export interface EmptyPageAction {
     action?: () => void;
     title: string;
 }
+
+export enum DragState {
+    NOT_DRAGGING,
+    DRAG_ENTER,
+    DRAG_LEAVE,
+}
