@@ -1,5 +1,4 @@
 import {
-    type DashboardChartData,
     type DashboardFilter,
     DashboardFilterId,
     type DashboardRemoteData,
@@ -7,65 +6,13 @@ import {
     DashboardTimeFilter,
     type StatisticsBoxColorConfig,
 } from "./types.ts";
-import {
-    add,
-    compareAsc,
-    endOfWeek,
-    format,
-    intervalToDuration,
-    startOfDay,
-    startOfToday,
-    startOfTomorrow,
-    startOfWeek,
-    startOfYesterday,
-    sub,
-} from "date-fns";
-import { DB_DATE_FORMAT_WITH_TIME, DISPLAY_DATE_FORMAT } from "../../../utils/constants.ts";
+import { intervalToDuration } from "date-fns";
 import { IoBriefcaseOutline, IoTimeOutline } from "react-icons/io5";
 import { VscError } from "react-icons/vsc";
 import { BsCheck2Circle } from "react-icons/bs";
-import type { ChartData } from "chart.js";
 
 export const getDashboardTimeFilter = (selectedFilters: DashboardFilter[]) => {
     return selectedFilters.find((selectedFilter) => selectedFilter.id === DashboardFilterId.TIME);
-};
-
-export const getTimeFilterDates = (selectedFilters: DashboardFilter[]): null | [string, string] => {
-    const timeFilter = getDashboardTimeFilter(selectedFilters);
-
-    if (!timeFilter) return null;
-
-    let startDate: Date | null = null;
-    let endDate: Date | null = null;
-
-    switch (timeFilter.value) {
-        case DashboardTimeFilter.LAST_30_DAYS: {
-            startDate = sub(startOfToday(), { days: 30 });
-            endDate = startOfTomorrow();
-            break;
-        }
-        case DashboardTimeFilter.LAST_7_DAYS: {
-            startDate = sub(startOfToday(), { days: 7 });
-            endDate = startOfTomorrow();
-            break;
-        }
-        case DashboardTimeFilter.THIS_WEEK: {
-            startDate = startOfWeek(new Date(), { weekStartsOn: 1 });
-            endDate = add(endOfWeek(new Date(), { weekStartsOn: 1 }), { days: 1 });
-            break;
-        }
-        case DashboardTimeFilter.YESTERDAY: {
-            startDate = startOfYesterday();
-            endDate = startOfToday();
-            break;
-        }
-        case DashboardTimeFilter.TODAY:
-        default:
-            startDate = startOfToday();
-            endDate = startOfTomorrow();
-    }
-
-    return [format(startDate, DB_DATE_FORMAT_WITH_TIME), format(endDate, DB_DATE_FORMAT_WITH_TIME)];
 };
 
 const getWorkedTime = (workedMinutes: number | undefined | null) => {
@@ -111,86 +58,17 @@ export const getStatisticsBoxData = (
     }
 };
 
-const getTimeFilterDaysArray = (filterValue: string) => {
+export const parseDashboardDateFilterToLayoutValue = (filterValue: DashboardTimeFilter) => {
     switch (filterValue) {
         case DashboardTimeFilter.LAST_30_DAYS:
-            return Array.from({ length: 30 }, (_, i) => sub(startOfToday(), { days: i })).reverse();
-        case DashboardTimeFilter.THIS_WEEK:
-            return Array.from({ length: 7 }, (_, i) => add(startOfWeek(new Date(), { weekStartsOn: 1 }), { days: i }));
+            return "Last 30 days";
         case DashboardTimeFilter.LAST_7_DAYS:
-            return Array.from({ length: 7 }, (_, i) => sub(startOfToday(), { days: i })).reverse();
-        case DashboardTimeFilter.YESTERDAY:
-            return [startOfYesterday()];
-        case DashboardTimeFilter.TODAY:
-        default:
-            return [startOfToday()];
-    }
-};
-
-const getAppointmentsChartData = (selectedFilters: DashboardFilter[], appointmentsChartData?: DashboardChartData[]) => {
-    const timeFilter = getDashboardTimeFilter(selectedFilters);
-
-    if (!timeFilter || !appointmentsChartData) return [];
-
-    const datesArrayForGivenTimeFilter = getTimeFilterDaysArray(timeFilter.value);
-    return datesArrayForGivenTimeFilter.map((date) => {
-        const matchingDateWithChartData = appointmentsChartData.find((chartDataItem) => {
-            const chartDateObject = startOfDay(new Date(chartDataItem.label));
-            return compareAsc(date, chartDateObject) === 0;
-        });
-
-        if (!matchingDateWithChartData) return 0;
-
-        return matchingDateWithChartData.count;
-    });
-};
-
-const getBarPercentage = (selectedFilters: DashboardFilter[]): number => {
-    const timeFilter = getDashboardTimeFilter(selectedFilters);
-
-    if (!timeFilter) return 0.5;
-
-    switch (timeFilter.value) {
-        case DashboardTimeFilter.LAST_30_DAYS:
-            return 0.8;
-        case DashboardTimeFilter.LAST_7_DAYS:
+            return "Last 7 days";
         case DashboardTimeFilter.THIS_WEEK:
-            return 0.5;
+            return "This week";
         case DashboardTimeFilter.YESTERDAY:
+            return "Yesterday";
         case DashboardTimeFilter.TODAY:
-        default:
-            return 0.2;
+            return "Today";
     }
-};
-
-const getAppointmentsChartDatasets = (
-    selectedFilters: DashboardFilter[],
-    appointmentsChartData?: DashboardChartData[],
-) => {
-    if (selectedFilters.length === 0 || !appointmentsChartData) return [];
-
-    return [
-        {
-            data: getAppointmentsChartData(selectedFilters, appointmentsChartData),
-            barPercentage: getBarPercentage(selectedFilters),
-        },
-    ];
-};
-
-const getAppointmentsChartLabels = (selectedFilters: DashboardFilter[]) => {
-    const timeFilter = getDashboardTimeFilter(selectedFilters);
-
-    if (!timeFilter) return [];
-
-    return getTimeFilterDaysArray(timeFilter.value).map((date) => format(new Date(date), DISPLAY_DATE_FORMAT));
-};
-
-export const getAppointmentsChartDataset = (
-    selectedFilters: DashboardFilter[],
-    appointmentsChartData?: DashboardChartData[],
-): ChartData<"bar", number[]> => {
-    return {
-        labels: getAppointmentsChartLabels(selectedFilters),
-        datasets: getAppointmentsChartDatasets(selectedFilters, appointmentsChartData),
-    };
 };

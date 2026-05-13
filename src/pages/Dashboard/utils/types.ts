@@ -1,4 +1,4 @@
-import type { Tables } from "../../../services/database.types.ts";
+import type { AppointmentApi } from "../../../services/apiTypes.ts";
 
 export interface DashboardReducer {
     dashboardState: DashboardState;
@@ -38,11 +38,11 @@ export type DashboardStateAction =
     | { type: DashboardStateActions.SET_FILTERS; payload: DashboardFilter[] };
 
 export enum DashboardTimeFilter {
-    TODAY = "Today",
-    YESTERDAY = "Yesterday",
-    THIS_WEEK = "This week",
-    LAST_7_DAYS = "Last 7 days",
-    LAST_30_DAYS = "Last 30 days",
+    TODAY = "TODAY",
+    YESTERDAY = "YESTERDAY",
+    THIS_WEEK = "THIS_WEEK",
+    LAST_7_DAYS = "LAST_7_DAYS",
+    LAST_30_DAYS = "LAST_30_DAYS",
 }
 
 export const dashboardTimeFilterOptions = Object.values(DashboardTimeFilter);
@@ -60,15 +60,13 @@ export enum DashboardStatisticsType {
 
 export const dashboardStatisticsOptions = Object.values(DashboardStatisticsType);
 
-export type DashboardNextAppointment = Pick<Tables<"appointments">, "start_date" | "duration" | "status" | "id">;
-
 export interface DashboardRemoteData {
     numberOfAppointments: number | null;
     workedMinutes: number | null | undefined;
     completedAppointments: number | null;
     cancelledAppointments: number | null;
-    appointmentsChartData: DashboardChartData[];
-    nextAppointments: DashboardNextAppointment[];
+    chartData: DashboardChartData[];
+    nextFiveAppointments: AppointmentApi[];
 }
 
 export interface StatisticsBoxColorConfig {

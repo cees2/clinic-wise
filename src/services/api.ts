@@ -6,11 +6,12 @@ import type {
     UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
-import { getTimeFilterDates } from "../pages/Dashboard/utils";
+// import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import axios from "axios";
 import type {
     AppointmentApi,
     AppointmentFormType,
+    DashboardApi,
     EmployeeApi,
     EmployeeFormType,
     ListResponseApi,
@@ -26,6 +27,8 @@ import type {
     UserApi,
 } from "./apiTypes.ts";
 import { parseApiData } from "./services.ts";
+import { getTimeFilterDates } from "./filters/dateFilterMapper.ts";
+import { getDashboardTimeFilter } from "../pages/Dashboard/utils";
 
 // TODO: Change based on the environment
 const restApi = axios.create({
@@ -261,92 +264,31 @@ export const getRoomOccupancy = async (roomOccupancyId: number) => {
 // DASHBOARD
 
 export const getDashboardData = async (dashboardState: DashboardState): Promise<DashboardRemoteData> => {
-    const [startDate, endDate] = getTimeFilterDates(dashboardState.selectedFilters) ?? [];
+    const timeFilter = getDashboardTimeFilter(dashboardState.selectedFilters);
 
-    if (!startDate || !endDate) {
-        throw new Error("Invalid date filter");
-    }
+    const { data } = await restApi.get<ResponseApi<DashboardApi>>("/dashboard", {
+        params: { date_range_preset: timeFilter?.value },
+    });
 
-    // const numberOfAppointmentsRequest = supabase
-    //     .from("appointments")
-    //     .select("id.count()", { count: "exact" })
-    //     .gte("start_date", startDate)
-    //     .lte("start_date", endDate);
-    // const workedMinutesRequest = supabase
-    //     .from("appointments")
-    //     .select("duration.sum()")
-    //     .gte("start_date", startDate)
-    //     .lte("start_date", endDate);
-    // const completedAppointmentsRequest = supabase
-    //     .from("appointments")
-    //     .select("id.count()", { count: "exact" })
-    //     .eq("status", "COMPLETED")
-    //     .gte("start_date", startDate)
-    //     .lte("start_date", endDate);
-    // const cancelledAppointmentsRequest = supabase
-    //     .from("appointments")
-    //     .select("id.count()", { count: "exact" })
-    //     .eq("status", "CANCELLED")
-    //     .gte("start_date", startDate)
-    //     .lte("start_date", endDate);
-    // const appointmentsChartDataRequest = supabase
-    //     .from("appointments")
-    //     .select("label:start_date::date,count()", { count: "exact" })
-    //     .gte("start_date", startDate)
-    //     .lte("start_date", endDate);
-    // const nextAppointmentsRequest = supabase
-    //     .from("appointments")
-    //     .select("id,start_date,duration,status", { count: "exact" })
-    //     .gte("start_date", format(new Date(), DB_DATE_FORMAT_WITH_TIME))
-    //     .order("start_date", { ascending: true })
-    //     .limit(7);
-    //
-    // const [
-    //     numberOfAppointments,
-    //     workedMinutes,
-    //     completedAppointments,
-    //     cancelledAppointments,
-    //     appointmentsChartData,
-    //     nextAppointments
-    // ] = await Promise.all([
-    //     numberOfAppointmentsRequest,
-    //     workedMinutesRequest,
-    //     completedAppointmentsRequest,
-    //     cancelledAppointmentsRequest,
-    //     appointmentsChartDataRequest,
-    //     nextAppointmentsRequest
-    // ]);
-    //
-    // if (
-    //     numberOfAppointments.error ||
-    //     workedMinutes.error ||
-    //     completedAppointments.error ||
-    //     cancelledAppointments.error ||
-    //     appointmentsChartData.error ||
-    //     nextAppointments.error
-    // ) {
-    //     throw new Error("Could not fetch the dashboard data");
-    // }
-    //
-    // const sortedAppointmentsChartData = appointmentsChartData.data.sort((prevDate, nextDate) => {
-    //     const { label: prevDateDay } = prevDate;
-    //     const { label: nextDateDay } = nextDate;
-    //
-    //     return compareAsc(new Date(prevDateDay), new Date(nextDateDay));
-    // });
+    const {
+        work_time,
+        next_five_appointments,
+        cancelled_appointments,
+        completed_appointments,
+        number_of_appointments,
+        chart_data,
+    } = parseApiData(data);
 
     return {
-        numberOfAppointments: 0,
-        workedMinutes: 0,
-        completedAppointments: 0,
-        cancelledAppointments: 0,
-        appointmentsChartData: [],
-        nextAppointments: [],
+        nextFiveAppointments: next_five_appointments,
+        workedMinutes: work_time,
+        completedAppointments: completed_appointments,
+        cancelledAppointments: cancelled_appointments,
+        numberOfAppointments: number_of_appointments,
+        chartData:chart_data,
     };
 };
 
-// LIST RESOURCE
-// TODO: resourceType type
 export const getResourceListData = async <TableDataResource extends TableDataResourceType>(resourceData: string) => {
     const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`);
 

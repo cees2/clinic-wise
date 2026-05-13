@@ -1,5 +1,5 @@
 import { Header } from "../../../components/common/Header/Header.tsx";
-import { getDashboardTimeFilter } from "../utils";
+import { getDashboardTimeFilter, parseDashboardDateFilterToLayoutValue } from "../utils";
 import type { HeaderButton } from "../../../utils/projectTypes.ts";
 import { DashboardFilterId, DashboardStateActions, dashboardTimeFilterOptions } from "../utils/types.ts";
 import { useDashboardContext } from "../utils/context.ts";
@@ -12,7 +12,7 @@ export const DashboardHeader = () => {
     const selectedTimeFilter = getDashboardTimeFilter(selectedFilters);
     const headerButtons: HeaderButton[] = dashboardTimeFilterOptions.map((filterValue) => ({
         id: filterValue,
-        title: filterValue,
+        title: parseDashboardDateFilterToLayoutValue(filterValue),
         variant: selectedTimeFilter?.value === filterValue ? "primary" : "inactive",
         onClick: () =>
             dispatch({

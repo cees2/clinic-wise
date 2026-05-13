@@ -3,3 +3,4 @@ eslint.config.js
 .vscode
 docs
 dist
+package-lock.json

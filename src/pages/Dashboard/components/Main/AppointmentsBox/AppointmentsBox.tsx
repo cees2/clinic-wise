@@ -31,15 +31,15 @@ const AppointmentsList = styled.ul`
 
 export const AppointmentsBox = () => {
     const { data } = useDashboardQuery();
-    const { nextAppointments } = data ?? {};
+    const { nextFiveAppointments } = data ?? {};
 
-    if (!nextAppointments) return null;
+    if (!nextFiveAppointments) return null;
 
     return (
         <StyledAppointmentsBox>
             <h5 className="appointments-box__title">Next appointments</h5>
             <AppointmentsList>
-                {nextAppointments.map((appointment) => (
+                {nextFiveAppointments.map((appointment) => (
                     <AppointmentsBoxItem key={appointment.start_date} appointment={appointment} />
                 ))}
             </AppointmentsList>

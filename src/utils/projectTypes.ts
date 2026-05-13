@@ -56,7 +56,7 @@ export interface TableDataColumn<TableDataResource extends TableDataResourceType
     disableSorting?: true;
 }
 
-export type FilterCondition = "e" | "ne" | "c" | "gt" | "gte" | "lt" | "lte";
+export type FilterCondition = "e" | "ne" | "c" | "gt" | "gte" | "lt" | "lte" | "bt";
 
 export enum FilterType {
     NUMBER,
@@ -432,7 +432,7 @@ export interface TimePickerProps {
 }
 
 export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
-export type DateFilterCondition = Extract<FilterCondition, "gte" | "lte">;
+export type DateFilterCondition = Extract<FilterCondition, "gte" | "lte" | "bt">;
 export type TextFilterCondition = Extract<FilterCondition, "c" | "e">;
 export type EnumFilterCondition = Extract<FilterCondition, "e">;
 

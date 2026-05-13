@@ -5,11 +5,9 @@ import { useDashboardContext } from "../utils/context.ts";
 export const useDashboardQuery = () => {
     const { dashboardState } = useDashboardContext();
 
-    const query = useQuery({
-        queryFn: () => getDashboardData(dashboardState),
+    return useQuery({
+        queryFn: async () => getDashboardData(dashboardState),
         queryKey: ["dashboardData", dashboardState],
         staleTime: 1000 * 60 * 3,
     });
-
-    return query;
 };

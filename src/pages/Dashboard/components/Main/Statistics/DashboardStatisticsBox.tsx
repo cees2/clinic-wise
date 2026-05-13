@@ -70,7 +70,8 @@ const StyledDashboardStatisticsBox = styled.li<{
 `;
 
 export const DashboardStatisticsBox = ({ name }: Props) => {
-    const { data } = useDashboardQuery();
+    const {data }= useDashboardQuery();
+
     const statisticsBoxData = getStatisticsBoxData(name, data);
     const { appMode } = useDarkMode();
 

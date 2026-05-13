@@ -1,4 +1,5 @@
 import { PatientSubscriptionPlan } from "../utils/projectTypes.ts";
+import type { DashboardChartData } from "../pages/Dashboard/utils/types.ts";
 
 export interface ResponseApi<T> {
     data: T;
@@ -131,4 +132,13 @@ export type RoomOccupancyFormType = Omit<RoomOccupancyApi, "id"> & OptionalID;
 
 export interface RoomFormType {
     name: string;
+}
+
+export interface DashboardApi {
+    next_five_appointments: AppointmentApi[];
+    number_of_appointments: number;
+    work_time: number;
+    completed_appointments: number;
+    cancelled_appointments: number;
+    chart_data: DashboardChartData[];
 }

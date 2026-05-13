@@ -3,8 +3,6 @@ import { Bar } from "react-chartjs-2";
 import styled from "styled-components";
 import { CategoryScale, type ChartOptions } from "chart.js";
 import Chart from "chart.js/auto";
-import { getAppointmentsChartDataset } from "../../utils";
-import { useDashboardContext } from "../../utils/context.ts";
 import { useDarkMode } from "../../../../utils/hooks/useDarkMode.ts";
 import { AppColorMode } from "../../../../utils/projectTypes.ts";
 
@@ -31,13 +29,9 @@ const StyledAppointmentsChart = styled.div`
 `;
 
 export const AppointmentsChart = () => {
-    const {
-        dashboardState: { selectedFilters },
-    } = useDashboardContext();
     const { appMode } = useDarkMode();
     const { data } = useDashboardQuery();
-    const { appointmentsChartData } = data ?? {};
-    const chartData = getAppointmentsChartDataset(selectedFilters, appointmentsChartData);
+    const { chartData } = data ?? {};
     const chartFontColor = appMode === AppColorMode.DARK ? "#e5e7eb" : "#1f2937";
     const options: ChartOptions<"bar"> = {
         elements: { bar: { backgroundColor: "#16a34a", borderRadius: 10 } },
@@ -53,9 +47,22 @@ export const AppointmentsChart = () => {
         scales: { y: { ticks: { stepSize: 1, color: chartFontColor } }, x: { ticks: { color: chartFontColor } } },
     };
 
+    if (!chartData) return null;
+
+    console.log(chartData);
+    const chartConfig = {
+        labels: chartData.map((appointment) => appointment.label),
+        datasets: [
+            {
+                label: "Appointments",
+                data: chartData.map((appointment) => appointment.value),
+            },
+        ],
+    };
+
     return (
         <StyledAppointmentsChart>
-            <Bar data={chartData} options={options} />
+            <Bar data={chartConfig} options={options} />
         </StyledAppointmentsChart>
     );
 };

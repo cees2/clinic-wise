@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import type { DashboardNextAppointment } from "../../../utils/types.ts";
 import { format } from "date-fns";
 import { DISPLAY_DATE_FORMAT_MINUTES } from "../../../../../utils/constants.ts";
 import { Status } from "../../../../../components/common/Status.tsx";
