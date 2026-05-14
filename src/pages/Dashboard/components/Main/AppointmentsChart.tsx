@@ -49,7 +49,6 @@ export const AppointmentsChart = () => {
 
     if (!chartData) return null;
 
-    console.log(chartData);
     const chartConfig = {
         labels: chartData.map((appointment) => appointment.label),
         datasets: [

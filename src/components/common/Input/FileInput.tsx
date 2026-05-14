@@ -70,18 +70,6 @@ const StyledFileInput = styled.div`
     //}
 `;
 
-const ClearButton = styled.button`
-    border: 1px solid var(--color-red-600);
-    color: var(--color-red-600);
-    padding: 0.2rem 0.4rem;
-    font-size: 1.2rem;
-    border-radius: 0.6rem;
-    display: flex;
-    align-items: center;
-    column-gap: 1rem;
-    width: max-content;
-`;
-
 export const FileInput = <FormType extends Record<string, any>>({
     registerName,
     label,
@@ -158,12 +146,6 @@ export const FileInput = <FormType extends Record<string, any>>({
             <input type="file" id={registerName} onChange={onChangeInternal} onBlur={onBlur} ref={inputRef} />
             <span>{getFileCaption()}</span>
             {inputErrorName && <ErrorMessage error={inputErrorName} />}
-            {/*{withClearButton && setValue && (*/}
-            {/*    <ClearButton type="button" onClick={clearFileInputHandler}>*/}
-            {/*        <CiCircleRemove />*/}
-            {/*        Clear*/}
-            {/*    </ClearButton>*/}
-            {/*)}*/}
         </StyledFileInput>
     );
 };

@@ -1,5 +1,4 @@
 import { Button } from "../../../../../components/layout/Button.tsx";
-import type { Tables } from "../../../../../services/database.types.ts";
 import {
     RoomsFilterIds,
     RoomsTimeFilterOptionsArray,

@@ -40,11 +40,7 @@ const MainBarActions = () => {
     return (
         <StyledMainBarActions role="group" className="flex gap-y-2 items-center">
             <HiOutlineMoon onClick={toggleMode} />
-            <IoLogOutOutline
-                onClick={() => {
-                    logout.mutate();
-                }}
-            />
+            <IoLogOutOutline onClick={logout} />
         </StyledMainBarActions>
     );
 };

@@ -3,7 +3,7 @@ import { FormSubmit } from "../../../../components/common/Form/FormSubmit.tsx";
 import { TextInput } from "../../../../components/common/Input/TextInput/TextInput.tsx";
 import { useForm } from "react-hook-form";
 import { useMutateRooms } from "../../../../services/hooks/rooms/useMutateRooms.ts";
-import type { RoomFormType } from "../../../../utils/projectTypes.ts";
+import type { RoomFormType } from "../../../../services/apiTypes.ts";
 
 interface Props {
     showModal: boolean;

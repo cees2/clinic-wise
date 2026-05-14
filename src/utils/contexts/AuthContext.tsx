@@ -17,13 +17,13 @@ export const AuthContextProvider = ({ children }: Children) => {
     const [token, setToken] = useState<string | undefined>();
     const [user, setUser] = useState<undefined | UserApi>(undefined);
     const isAuthenticated = Boolean(token && user);
-    const {pathname} = useLocation();
+    const { pathname } = useLocation();
     const { isLoading, data } = useGetUser(pathname);
 
     useEffect(() => {
-        if(data){
+        if (data) {
             setUser(data.user);
-            setToken(data.token)
+            setToken(data.token);
         }
     }, [data?.token, data?.user]);
 

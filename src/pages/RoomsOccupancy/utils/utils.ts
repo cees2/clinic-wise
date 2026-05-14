@@ -4,7 +4,6 @@ import {
     RoomsFilterIds,
     type RoomOccupancyFormType,
     type RoomsFilterType,
-    type RoomsResponseType,
     type RoomsOccupanciesResponseType,
 } from "../../../utils/projectTypes";
 import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";

@@ -2,8 +2,6 @@ import type {
     LoginFormType,
     RoomsFilterType,
     TableDataResourceType,
-    UpdateUserFormType,
-    UpdateUserRequestType,
 } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 // import { getTimeFilterDates } from "../pages/Dashboard/utils";
@@ -175,10 +173,6 @@ export const loginUser = async (loginData: LoginFormType) => {
     const { data } = await restApi.post<LoginApi>("/security/login", loginData);
 
     return data;
-};
-
-export const logoutUser = async () => {
-    await restApi.post("/logout");
 };
 
 export const getUser = async (token: string) => {

@@ -5,9 +5,10 @@ import { Status } from "../../../../../components/common/Status.tsx";
 import { capitalizeFirstLetter } from "../../../../../utils/utils.ts";
 import { Link } from "react-router-dom";
 import { FaArrowRightLong } from "react-icons/fa6";
+import type { AppointmentApi } from "../../../../../services/apiTypes.ts";
 
 interface Props {
-    appointment: DashboardNextAppointment;
+    appointment: AppointmentApi;
 }
 
 const StyledAppointmentsBoxItem = styled.li`

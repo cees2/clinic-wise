@@ -92,10 +92,14 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Appoint
                 control={control}
                 label="Employee"
                 rules={{ required: true }}
-                defaultValue={{
-                    value: appointmentData?.employee.id,
-                    label: `${appointmentData?.employee.user.firstname} ${appointmentData?.employee.user.lastname}`,
-                }}
+                defaultValue={
+                    appointmentData
+                        ? {
+                              value: appointmentData.employee.id,
+                              label: `${appointmentData.employee.user.firstname} ${appointmentData.employee.user.lastname}`,
+                          }
+                        : undefined
+                }
             />
             <FormSelectInput<SearchSelectApi, false, AppointmentFormType>
                 loadOptions={loadPatients}
@@ -103,10 +107,14 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Appoint
                 control={control}
                 label="Patient"
                 rules={{ required: true }}
-                defaultValue={{
-                    value: appointmentData?.patient.id,
-                    label: `${appointmentData?.patient.user.firstname} ${appointmentData?.patient.user.lastname}`,
-                }}
+                defaultValue={
+                    appointmentData
+                        ? {
+                              value: appointmentData.patient.id,
+                              label: `${appointmentData.patient.user.firstname} ${appointmentData.patient.user.lastname}`,
+                          }
+                        : undefined
+                }
             />
             <TextAreaInput register={register} registerName="additional_note" label="Additional note" rows={3} />
         </GridForm>

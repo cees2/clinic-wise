@@ -5,7 +5,7 @@ export interface DashboardReducer {
 }
 
 export interface DashboardChartData {
-    count: number;
+    value: number;
     label: string;
 }
 

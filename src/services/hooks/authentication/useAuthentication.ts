@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { getUser, loginUser, logoutUser } from "../../api";
+import { getUser, loginUser } from "../../api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../utils/contexts/AuthContext";
@@ -24,18 +24,12 @@ export const useAuthentication = () => {
         },
     });
 
-    const logout = useMutation({
-        mutationFn: logoutUser,
-        onError: () => {
-            toast.error("Could not log out");
-        },
-        onSuccess: () => {
-            setUser(undefined);
-            setToken(undefined);
-            localStorage.removeItem("token");
-            void navigate("/login");
-        },
-    });
+    const logout = () => {
+        setUser(undefined);
+        setToken(undefined);
+        localStorage.removeItem("token");
+        void navigate("/login");
+    };
 
     const checkIfUserIsLoggedIn = async (): Promise<AuthenticationResult | null> => {
         const savedToken = localStorage.getItem("token");
