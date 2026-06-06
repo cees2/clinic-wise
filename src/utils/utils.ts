@@ -1,29 +1,32 @@
 import { AppColorMode, type SupportedCountriesShortNames } from "./projectTypes";
+import { SUPPORTED_NATIONALITY } from "./constants.ts";
 
-export const getCountryShortName = (countryName: string): SupportedCountriesShortNames => {
+export const getCountryShortName = (countryName: SUPPORTED_NATIONALITY): SupportedCountriesShortNames => {
+    console.log(countryName);
     switch (countryName) {
-        case "Poland":
+        case SUPPORTED_NATIONALITY.POLAND:
             return "pl";
-        case "Italy":
+        case SUPPORTED_NATIONALITY.ITALY:
             return "it";
-        case "Canada":
+        case SUPPORTED_NATIONALITY.CANADA:
             return "ca";
-        case "Germany":
+        case SUPPORTED_NATIONALITY.GERMANY:
             return "de";
-        case "France":
+        case SUPPORTED_NATIONALITY.FRANCE:
             return "fr";
-        case "Mexico":
+        case SUPPORTED_NATIONALITY.MEXICO:
             return "mx";
-        case "Norway":
+        case SUPPORTED_NATIONALITY.NORWAY:
             return "no";
-        case "United states":
+        case SUPPORTED_NATIONALITY["UNITED STATES"]:
         default:
             return "us";
     }
 };
 
-export const capitalizeFirstLetter = (word: string) =>
-    `${word.charAt(0).toUpperCase()}${word.substring(1).toLowerCase()}`;
+export function capitalizeFirstLetter(word: string) {
+    return `${word.charAt(0).toUpperCase()}${word.substring(1).toLowerCase()}`;
+}
 
 export const toggleHTMLElementColorMode = (appMode: AppColorMode) => {
     const htmlElement: HTMLHtmlElement | null = document.querySelector("html");

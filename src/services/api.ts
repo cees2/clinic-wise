@@ -1,11 +1,7 @@
-import type {
-    LoginFormType,
-    RoomsFilterType,
-    TableDataResourceType,
-} from "../utils/projectTypes";
+import type { LoginFormType, RoomsFilterType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 // import { getTimeFilterDates } from "../pages/Dashboard/utils";
-import axios from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 import type {
     AppointmentApi,
     AppointmentFormType,
@@ -279,12 +275,21 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
         completedAppointments: completed_appointments,
         cancelledAppointments: cancelled_appointments,
         numberOfAppointments: number_of_appointments,
-        chartData:chart_data,
+        chartData: chart_data,
     };
 };
 
-export const getResourceListData = async <TableDataResource extends TableDataResourceType>(resourceData: string) => {
-    const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`);
+export const getResourceListData = async <TableDataResource extends TableDataResourceType>(
+    resourceData: string,
+    tableDataState: TableDataState<TableDataResourceType>,
+) => {
+    const requestConfig: AxiosRequestConfig = {
+        params: {
+            page: tableDataState.selectedPage - 1,
+            size: tableDataState.selectedPaginationSize,
+        },
+    };
+    const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`, requestConfig);
 
     return data;
 };

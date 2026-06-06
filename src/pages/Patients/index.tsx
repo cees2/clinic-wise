@@ -3,7 +3,7 @@ import { Header } from "../../components/common/Header/Header";
 import TableDataRenderer from "../../components/layout/TableData/TableData";
 import { ContentLayout } from "../../components/layout/ContentLayout";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
-import { SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
+import { SUPPORTED_NATIONALITY_ENTRIES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
@@ -85,7 +85,7 @@ const Patients = () => {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: SUPPORTED_NATIONALITIES_ENTRIES.map(([value, name]) => ({ name, value })),
+                options: SUPPORTED_NATIONALITY_ENTRIES.map(([value, name]) => ({ name, value })),
             },
         ],
         resourceName: "patients",

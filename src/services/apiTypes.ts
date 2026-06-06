@@ -1,12 +1,13 @@
 import { PatientSubscriptionPlan } from "../utils/projectTypes.ts";
 import type { DashboardChartData } from "../pages/Dashboard/utils/types.ts";
+import type { SUPPORTED_NATIONALITY } from "../utils/constants.ts";
 
 export interface ResponseApi<T> {
     data: T;
 }
 
 export interface ListResponseApi<T> extends ResponseApi<T[]> {
-    size: number;
+    has_next: number;
 }
 
 interface OptionalID {
@@ -33,7 +34,7 @@ export interface UserApi {
     date_of_birth: string;
     document_id: string;
     enabled: boolean;
-    nationality: string;
+   nationality: SUPPORTED_NATIONALITY;
     phone_number: string;
     authorities: UserAuthority[];
     avatar_id: number;

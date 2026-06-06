@@ -142,7 +142,7 @@ export interface TableDataContextType<TableDataResource extends TableDataResourc
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
     resources?: TableDataResource[];
-    size?: number | null;
+    hasNext?: boolean;
 }
 
 export enum TableDataActionsEnum {
@@ -237,17 +237,6 @@ export enum PatientSubscriptionPlan {
     BASIC = "BASIC",
     PREMIUM = "PREMIUM",
     PLATINUM = "PLATINUM",
-}
-
-export interface Person {
-    name: string;
-    surname: string;
-    date_of_birth: string;
-    nationality: string;
-    address: string;
-    gender: string;
-    phone_number: string;
-    document_id: string;
 }
 
 export interface ConfirmationType {
@@ -461,7 +450,7 @@ export interface TableDataProps<TableDataResource extends TableDataResourceType>
     resources?: TableDataResource[];
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
-    size?: number | null;
+    hasNext?: number | null;
 }
 
 export type AlertWarning = "warning" | "error" | "info";

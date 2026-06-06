@@ -15,7 +15,7 @@ export const useTableDataFetcher = <TableDataResource extends TableDataResourceT
     const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
 
     return useQuery({
-        queryFn: () => getResourceListData<TableDataResource>(resourceName),
+        queryFn: () => getResourceListData<TableDataResource>(resourceName, tableDataState),
         queryKey: [resourceName, selectedFilters, selectedSort, selectedPage, selectedPaginationSize],
     });
 };

@@ -13,17 +13,15 @@ const PaginationNavigation = styled.div`
 const dropdownItems = [10, 20, 50, 100];
 
 const TableDataPagination = () => {
-    const { tableDataState, dispatch, itemsCount } = useTableDataContext();
+    const { tableDataState, dispatch, hasNext } = useTableDataContext();
     const { selectedPage, selectedPaginationSize } = tableDataState;
-    const maxAllowedPage = Math.ceil((itemsCount ?? 0) / selectedPaginationSize);
     const shouldDisablePreviousPageButton = selectedPage === 1;
-    const shouldDisableNextPageButton = maxAllowedPage === selectedPage;
 
     const setPreviousPageHandler = () => {
         dispatch({ type: TableDataActionsEnum.SET_PREVIOUS_PAGE });
     };
     const setNextPageHandler = () => {
-        if (shouldDisableNextPageButton) return;
+        if (!hasNext) return;
 
         dispatch({ type: TableDataActionsEnum.SET_NEXT_PAGE });
     };
@@ -54,7 +52,7 @@ const TableDataPagination = () => {
                     Previous
                 </Button>
                 <span>{selectedPage}</span>
-                <Button disabled={shouldDisableNextPageButton} onClick={setNextPageHandler}>
+                <Button disabled={!hasNext} onClick={setNextPageHandler}>
                     Next
                 </Button>
             </PaginationNavigation>

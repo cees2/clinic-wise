@@ -5,7 +5,7 @@ import { ContentLayout } from "../../components/layout/ContentLayout";
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { NationalityWithFlag } from "../../components/common/NationalityWithFlag";
-import { SUPPORTED_NATIONALITIES_ENTRIES } from "../../utils/constants";
+import { SUPPORTED_NATIONALITY_ENTRIES } from "../../utils/constants";
 import { useMutateEmployee } from "../../services/hooks/employees/useMutateEmployee.ts";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 import { type EmployeeApi, EmployeeRole, UserAuthority } from "../../services/apiTypes.ts";
@@ -85,7 +85,7 @@ const Employees = () => {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: SUPPORTED_NATIONALITIES_ENTRIES.map(([value, name]) => ({ name, value })),
+                options: SUPPORTED_NATIONALITY_ENTRIES.map(([value, name]) => ({ name, value })),
             },
         ],
         actions: [
