@@ -50,7 +50,7 @@ export const getEnumFilterInitialState = (filters: TableDataFilterState[], filte
 
     const selectedFilter = enumFilters.find((filter) => filter.id === filterId);
 
-    return selectedFilter ? selectedFilter.filterValue.split(",") : [];
+    return selectedFilter ? selectedFilter.filterValue : [];
 };
 
 export const getNumberFilterInitialState = (filters: TableDataFilterState[], filterId: string) => {

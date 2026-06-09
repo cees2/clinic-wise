@@ -7,7 +7,7 @@ export interface ResponseApi<T> {
 }
 
 export interface ListResponseApi<T> extends ResponseApi<T[]> {
-    has_next: number;
+    has_next: boolean;
 }
 
 interface OptionalID {

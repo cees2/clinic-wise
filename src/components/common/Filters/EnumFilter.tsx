@@ -19,14 +19,13 @@ const EnumFilter = ({ filterId, options, onHideDropdown, defaultValue, ...restPr
     const onChange = (selectedOption: string) => {
         setSelectedFilterState((prevSelectedFilterState) => {
             const { filterValue: prevSelectedOptions } = prevSelectedFilterState;
-            const updatedSelectedOptions = [...prevSelectedOptions];
 
-            if (updatedSelectedOptions.includes(selectedOption)) {
-                const checkedOptions = updatedSelectedOptions.filter((option) => option !== selectedOption);
+            if (prevSelectedOptions.includes(selectedOption)) {
+                const checkedOptions = prevSelectedOptions.filter((option) => option !== selectedOption);
                 return { ...prevSelectedFilterState, filterValue: checkedOptions };
             }
 
-            return { ...prevSelectedFilterState, filterValue: [...updatedSelectedOptions, selectedOption] };
+            return { ...prevSelectedFilterState, filterValue: Array.from(new Set([...prevSelectedOptions, selectedOption])) };
         });
     };
 

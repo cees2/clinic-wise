@@ -35,9 +35,7 @@ const TableDataFilterBody = ({ filter }: Props) => {
 };
 
 const TableDataFilters = () => {
-    const {
-        config: { filters },
-    } = useTableDataContext();
+    const { config: { filters }, } = useTableDataContext();
 
     if (!filters || filters.length === 0) return null;
 

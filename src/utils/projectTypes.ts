@@ -110,7 +110,7 @@ export type TableDataTextFilterState = {
 };
 
 export type TableDataEnumFilterState = {
-    filterValue: string;
+    filterValue: string[];
     filterType: FilterType.ENUM;
     filterCondition: EnumFilterCondition;
 };
@@ -450,7 +450,7 @@ export interface TableDataProps<TableDataResource extends TableDataResourceType>
     resources?: TableDataResource[];
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
-    hasNext?: number | null;
+    hasNext?: boolean;
 }
 
 export type AlertWarning = "warning" | "error" | "info";

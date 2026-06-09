@@ -58,3 +58,6 @@ export const MD_BREAKPOINT = "48rem";
 export const LG_BREAKPOINT = "64rem";
 export const XL_BREAKPOINT = "80rem";
 export const xXL_BREAKPOINT = "96rem";
+
+export const FILTER_VALUE_SEPARATOR = "あ";
+export const FILTER_CONDITION_VALUE_SEPARATOR = "い";

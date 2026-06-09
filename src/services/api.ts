@@ -1,7 +1,7 @@
 import type { LoginFormType, RoomsFilterType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 // import { getTimeFilterDates } from "../pages/Dashboard/utils";
-import axios, { type AxiosRequestConfig } from "axios";
+import axios from "axios";
 import type {
     AppointmentApi,
     AppointmentFormType,
@@ -20,8 +20,7 @@ import type {
     SearchSelectApi,
     UserApi,
 } from "./apiTypes.ts";
-import { parseApiData } from "./services.ts";
-import { getTimeFilterDates } from "./filters/dateFilterMapper.ts";
+import { createTableDataParams, parseApiData } from "./services.ts";
 import { getDashboardTimeFilter } from "../pages/Dashboard/utils";
 
 // TODO: Change based on the environment
@@ -67,7 +66,7 @@ export const getAppointment = async (appointmentId: string) => {
 // TODO: fix
 export const updateAppointment = async (appointment: AppointmentFormType) => {
     const { data } = await restApi.patch<ResponseApi<AppointmentApi>>(
-        `/appointments/${appointment.id.toString()}`,
+        `/appointments/${appointment.id}`,
         appointment,
     );
 
@@ -122,7 +121,7 @@ export const getEmployeesSelect = async (inputValue: string) => {
 };
 
 export const updateEmployee = async (employee: EmployeeFormType) => {
-    const { data } = await restApi.patch<ResponseApi<EmployeeApi>>(`/employees/${employee.id.toString()}`, employee);
+    const { data } = await restApi.patch<ResponseApi<EmployeeApi>>(`/employees/${employee.id}`, employee);
 
     return parseApiData(data);
 };
@@ -136,7 +135,7 @@ export const createPatient = async (patient: PatientFormType) => {
 };
 
 export const updatePatient = async (patient: PatientFormType) => {
-    const { data } = await restApi.patch<ResponseApi<PatientApi>>(`/patients/${patient.id.toString()}`, patient);
+    const { data } = await restApi.patch<ResponseApi<PatientApi>>(`/patients/${patient.id}`, patient);
 
     return parseApiData(data);
 };
@@ -281,15 +280,11 @@ export const getDashboardData = async (dashboardState: DashboardState): Promise<
 
 export const getResourceListData = async <TableDataResource extends TableDataResourceType>(
     resourceData: string,
-    tableDataState: TableDataState<TableDataResourceType>,
+    tableDataState: TableDataState<TableDataResource>,
 ) => {
-    const requestConfig: AxiosRequestConfig = {
-        params: {
-            page: tableDataState.selectedPage - 1,
-            size: tableDataState.selectedPaginationSize,
-        },
-    };
-    const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`, requestConfig);
+    const { data } = await restApi.get<ListResponseApi<TableDataResource>>(`/${resourceData}`, {
+        params: createTableDataParams(tableDataState),
+    });
 
     return data;
 };

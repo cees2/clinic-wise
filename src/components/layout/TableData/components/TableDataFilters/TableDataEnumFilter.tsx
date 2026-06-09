@@ -30,7 +30,7 @@ export const TableDataEnumFilter = ({ options, filterId }: Props) => {
 
         const selectedFilter: TableDataFilterState = {
             id: filterId,
-            filterValue: filterValue.join(","),
+            filterValue,
             filterCondition,
             filterType: FilterType.ENUM,
         };
