@@ -127,11 +127,11 @@ export type TableDataFilterState = {
 
 export interface TableDataSortState<TableDataResource> {
     id: Extract<keyof TableDataResource, string>;
-    isAscending: boolean;
+    sortType: SortColumnType;
 }
 
 export interface TableDataState<TableDataResource extends TableDataResourceType> {
-    selectedSort: TableDataSortState<TableDataResource> | null;
+    selectedSorts: TableDataSortState<TableDataResource>[];
     selectedFilters: TableDataFilterState[];
     selectedPage: number;
     selectedPaginationSize: number;
@@ -146,7 +146,8 @@ export interface TableDataContextType<TableDataResource extends TableDataResourc
 }
 
 export enum TableDataActionsEnum {
-    SET_SORT,
+    REMOVE_SORT,
+    REPLACE_OR_ADD_SORT,
     ADD_FILTER,
     REMOVE_FILTER,
     REPLACE_FILTER,
@@ -158,11 +159,15 @@ export enum TableDataActionsEnum {
 
 export type TableDataActionsType<TableDataResource extends TableDataResourceType> =
     | {
-          type: TableDataActionsEnum.SET_SORT;
+          type: TableDataActionsEnum.REPLACE_OR_ADD_SORT;
           payload: {
               id: Extract<keyof TableDataResource, string>;
-              isAscending: boolean;
-          } | null;
+              sortType: SortColumnType;
+          };
+      }
+    | {
+          type: TableDataActionsEnum.REMOVE_SORT;
+          payload: string;
       }
     | {
           type: TableDataActionsEnum.ADD_FILTER;
@@ -227,10 +232,10 @@ export enum Gender {
     FEMALE = "FEMALE",
 }
 
-export enum SortTableEnum {
-    ASCENDING,
-    DESCENDING,
-    NONE,
+export enum SortColumnType {
+    ASCENDING = "asc",
+    DESCENDING = "desc",
+    NONE = "none",
 }
 
 export enum PatientSubscriptionPlan {

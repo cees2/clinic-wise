@@ -1,7 +1,7 @@
 import { useTableDataContext } from "../utils/TableDataContext";
 import { LiaLongArrowAltDownSolid, LiaLongArrowAltUpSolid } from "react-icons/lia";
 import {
-    SortTableEnum,
+    SortColumnType,
     TableDataActionsEnum,
     type TableDataColumn,
     type TableDataResourceType,
@@ -14,57 +14,50 @@ const TableDataSorts = <TableDataResource extends TableDataResourceType>({
     column: TableDataColumn<TableDataResource>;
 }) => {
     const {
-        tableDataState: { selectedSort },
+        tableDataState: { selectedSorts },
         dispatch,
     } = useTableDataContext();
     const { id: columnId, disableSorting } = column;
     const sortingSVGClassnames =
         "cursor-pointer hover:scale-110 transition-all duration-100 w-[1.6rem] h-[1.6rem] flex-shrink-0";
+    const currentColumnSorted = selectedSorts.find((sort) => sort.id === columnId);
 
-    const sortColumnHandler = (sortType: SortTableEnum) => {
+    const sortColumnHandler = (sortType: SortColumnType) => {
         switch (sortType) {
-            case SortTableEnum.ASCENDING:
-                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: { id: columnId, isAscending: true } });
+            case SortColumnType.ASCENDING:
+            case SortColumnType.DESCENDING:
+                dispatch({
+                    type: TableDataActionsEnum.REPLACE_OR_ADD_SORT,
+                    payload: { id: columnId, sortType },
+                });
                 break;
-            case SortTableEnum.DESCENDING:
-                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: { id: columnId, isAscending: false } });
-                break;
-            case SortTableEnum.NONE:
+            case SortColumnType.NONE:
             default:
-                dispatch({ type: TableDataActionsEnum.SET_SORT, payload: null });
+                dispatch({ type: TableDataActionsEnum.REMOVE_SORT, payload: columnId });
         }
     };
 
     if (disableSorting) return null;
 
-    if (selectedSort && selectedSort.id === columnId) {
-        if (selectedSort.isAscending) {
+    if (currentColumnSorted) {
+        if (currentColumnSorted.sortType === SortColumnType.ASCENDING) {
             return (
-                <LiaLongArrowAltDownSolid
-                    onClick={() => {
-                        sortColumnHandler(SortTableEnum.DESCENDING);
-                    }}
+                <LiaLongArrowAltUpSolid
+                    onClick={() => sortColumnHandler(SortColumnType.DESCENDING)}
                     className={sortingSVGClassnames}
                 />
             );
         }
         return (
-            <LiaLongArrowAltUpSolid
-                onClick={() => {
-                    sortColumnHandler(SortTableEnum.NONE);
-                }}
+            <LiaLongArrowAltDownSolid
+                onClick={() => sortColumnHandler(SortColumnType.NONE)}
                 className={sortingSVGClassnames}
             />
         );
     }
 
     return (
-        <LuArrowDownUp
-            onClick={() => {
-                sortColumnHandler(SortTableEnum.ASCENDING);
-            }}
-            className={sortingSVGClassnames}
-        />
+        <LuArrowDownUp onClick={() => sortColumnHandler(SortColumnType.ASCENDING)} className={sortingSVGClassnames} />
     );
 };
 

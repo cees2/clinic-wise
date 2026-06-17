@@ -42,8 +42,22 @@ const tableDataContextReducer = <TableDataResource extends TableDataResourceType
             return { ...prevState, selectedPage: action.payload };
         case TableDataActionsEnum.SET_PAGINATION_SIZE:
             return { ...prevState, selectedPaginationSize: action.payload };
-        case TableDataActionsEnum.SET_SORT:
-            return { ...prevState, selectedSort: action.payload };
+        case TableDataActionsEnum.REPLACE_OR_ADD_SORT: {
+            const existingSortWithSpecifiedId = prevState.selectedSorts.findIndex(
+                (selectedSort) => selectedSort.id === action.payload.id,
+            );
+            const newSelectedSortsConfig =
+                existingSortWithSpecifiedId === -1
+                    ? prevState.selectedSorts.concat(action.payload)
+                    : [...prevState.selectedSorts].splice(existingSortWithSpecifiedId, 1, action.payload);
+
+            return { ...prevState, selectedSorts: newSelectedSortsConfig };
+        }
+        case TableDataActionsEnum.REMOVE_SORT:
+            return {
+                ...prevState,
+                selectedSorts: prevState.selectedSorts.filter((sort) => sort.id !== action.payload),
+            };
         case TableDataActionsEnum.SET_NEXT_PAGE:
             return { ...prevState, selectedPage: prevState.selectedPage + 1 };
         case TableDataActionsEnum.SET_PREVIOUS_PAGE: {

@@ -1,4 +1,9 @@
-import type { TableDataFilterState, TableDataResourceType, TableDataState } from "../utils/projectTypes.ts";
+import type {
+    TableDataFilterState,
+    TableDataResourceType,
+    TableDataSortState,
+    TableDataState,
+} from "../utils/projectTypes.ts";
 import { FILTER_CONDITION_VALUE_SEPARATOR, FILTER_VALUE_SEPARATOR } from "../utils/constants.ts";
 
 export const parseApiData = <T>(data: { data: T }): T => data.data;
@@ -6,9 +11,14 @@ export const parseApiData = <T>(data: { data: T }): T => data.data;
 export const createTableDataParams = <TableDataResource extends TableDataResourceType>(
     tableDataState: TableDataState<TableDataResource>,
 ) => {
-    const { selectedFilters, selectedPage, selectedPaginationSize } = tableDataState;
+    const { selectedFilters, selectedPage, selectedPaginationSize, selectedSorts } = tableDataState;
 
-    return { page: selectedPage - 1, size: selectedPaginationSize, ...parseSelectedFilters(selectedFilters) };
+    return {
+        page: selectedPage - 1,
+        size: selectedPaginationSize,
+        ...generateSortParam(selectedSorts),
+        ...parseSelectedFilters(selectedFilters),
+    };
 };
 
 const parseSelectedFilters = (selectedFilters: TableDataFilterState[]) => {
@@ -19,4 +29,12 @@ const parseSelectedFilters = (selectedFilters: TableDataFilterState[]) => {
         filterParams[id] = `${filterCondition}${FILTER_CONDITION_VALUE_SEPARATOR}${parsedFilterValue}`;
         return filterParams;
     }, {});
+};
+
+const generateSortParam = (selectedSorts: TableDataSortState<TableDataResourceType>[]) => {
+    const sortsAsString = selectedSorts.reduce((sorts, currentSortConfig) => {
+        return sorts.concat(`,${currentSortConfig.id}:${currentSortConfig.sortType}`);
+    }, "")
+
+    return { sort: sortsAsString };
 };

@@ -3,6 +3,6 @@ import type { TableDataResourceType, TableDataState } from "../../../../utils/pr
 export const tableDataConfigInitialValue: TableDataState<TableDataResourceType> = {
     selectedFilters: [],
     selectedPage: 1,
-    selectedSort: null,
+    selectedSorts: [],
     selectedPaginationSize: 20,
 };

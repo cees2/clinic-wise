@@ -12,10 +12,10 @@ export const useTableDataFetcher = <TableDataResource extends TableDataResourceT
     tableDataState: TableDataState<TableDataResource>,
 ): UseQueryResult<ListResponseApi<TableDataResource>> => {
     const { resourceName } = config;
-    const { selectedPage, selectedPaginationSize, selectedFilters, selectedSort } = tableDataState;
+    const { selectedPage, selectedPaginationSize, selectedFilters, selectedSorts } = tableDataState;
 
     return useQuery({
         queryFn: () => getResourceListData<TableDataResource>(resourceName, tableDataState),
-        queryKey: [resourceName, selectedFilters, selectedSort, selectedPage, selectedPaginationSize],
+        queryKey: [resourceName, selectedFilters, selectedSorts, selectedPage, selectedPaginationSize],
     });
 };

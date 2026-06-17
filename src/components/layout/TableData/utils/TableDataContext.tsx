@@ -4,7 +4,7 @@ import type { TableDataResourceType, TableDataContextType, Children } from "../.
 const TableDataContext = createContext<TableDataContextType<TableDataResourceType>>({
     config: { columns: [], resourceName: "appointments" },
     tableDataState: {
-        selectedSort: null,
+        selectedSorts: [],
         selectedFilters: [],
         selectedPage: 1,
         selectedPaginationSize: 10,
