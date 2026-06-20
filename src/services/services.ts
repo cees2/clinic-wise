@@ -32,9 +32,7 @@ const parseSelectedFilters = (selectedFilters: TableDataFilterState[]) => {
 };
 
 const generateSortParam = (selectedSorts: TableDataSortState<TableDataResourceType>[]) => {
-    const sortsAsString = selectedSorts.reduce((sorts, currentSortConfig) => {
-        return sorts.concat(`,${currentSortConfig.id}:${currentSortConfig.sortType}`);
-    }, "")
+    const sortsAsString = selectedSorts.map(selectedSort => `${selectedSort.id}:${selectedSort.sortType}`).join(",");
 
     return { sort: sortsAsString };
 };

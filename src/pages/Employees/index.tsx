@@ -60,6 +60,7 @@ const Employees = () => {
                 id: "document_id",
                 name: "Document ID",
                 render: (employee) => employee.user.document_id,
+                disableSorting: true
             },
             {
                 id: "role",
