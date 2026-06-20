@@ -48,6 +48,7 @@ const Patients = () => {
                 id: "document_id",
                 name: "Document ID",
                 render: (patient) => patient.user.document_id,
+                disableSorting: true
             },
         ],
         actions: [
