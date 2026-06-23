@@ -8,7 +8,7 @@ const StyledAppLayout = styled.div`
     display: grid;
     grid-template-columns: min-content 1fr;
     grid-template-rows: min-content 1fr;
-    background-color: var(--color-background-secondary);
+    background-color: var(--color-background-primary);
 `;
 
 const Main = styled.main`

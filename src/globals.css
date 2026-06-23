@@ -7,20 +7,20 @@
     --background-tertiary: #d1d5db;
 
     --font-primary: #030712;
-    --font-secondary: #111827;
-    --font-tertiary: #1f2937;
+    --font-secondary: #020617;
+    --font-tertiary: #0f172a;
 
-    --color-primary: #16a34a;
+    --color-primary: #00beb7;
 }
 
 :root.dark{
-    --background-primary: #111827;
-    --background-secondary: #1f2937;
+    --background-primary: #020617;
+    --background-secondary: #0f172a;
     --background-tertiary: #374151;
 
     --font-primary: #f3f4f6;
     --font-secondary: #e5e7eb;
     --font-tertiary: #d1d5db;
 
-    --color-primary: #16a34a;
+    --color-primary: #00beb7;
 }

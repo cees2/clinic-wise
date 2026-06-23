@@ -40,7 +40,7 @@ const StyledButton = styled.button<{ $variant?: ButtonVariant; $disabled?: boole
                 case "primary":
                 default:
                     return css`
-                        background-color: var(--color-green-700);
+                        background-color: var(--color-cyan-500);
                     `;
             }
         }}

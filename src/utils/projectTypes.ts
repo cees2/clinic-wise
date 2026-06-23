@@ -324,6 +324,7 @@ export interface HeaderButton {
 
 export interface HeaderProps {
     title: string;
+    subtitle?: string;
     as: KnownTarget;
     buttons?: HeaderButton[];
     className?: string;

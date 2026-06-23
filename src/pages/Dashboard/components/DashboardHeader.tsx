@@ -3,6 +3,7 @@ import { getDashboardTimeFilter, parseDashboardDateFilterToLayoutValue } from ".
 import type { HeaderButton } from "../../../utils/projectTypes.ts";
 import { DashboardFilterId, DashboardStateActions, dashboardTimeFilterOptions } from "../utils/types.ts";
 import { useDashboardContext } from "../utils/context.ts";
+import { format } from "date-fns";
 
 export const DashboardHeader = () => {
     const {
@@ -20,6 +21,7 @@ export const DashboardHeader = () => {
                 payload: { id: DashboardFilterId.TIME, value: filterValue },
             }),
     }));
+    const formattedTodayDate = format(new Date(), "eeee, dd MMMM R")
 
-    return <Header as="h3" title="Dashbaord" buttons={headerButtons} className="" />;
+    return <Header as="h3" title="Dashbaord" buttons={headerButtons} subtitle={formattedTodayDate} />;
 };

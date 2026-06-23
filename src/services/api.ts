@@ -1,6 +1,5 @@
 import type { LoginFormType, RoomsFilterType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
-// import { getTimeFilterDates } from "../pages/Dashboard/utils";
 import axios from "axios";
 import type {
     AppointmentApi,

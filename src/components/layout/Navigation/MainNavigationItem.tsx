@@ -3,42 +3,59 @@ import { type MainNavigationConfigItem, MainNavigationState } from "../../../uti
 import { NavLink } from "react-router-dom";
 import type { Dispatch, SetStateAction } from "react";
 
-const StyledMainNavigationItem = styled.a<{ $navigationState: MainNavigationState }>`
+const StyledMainNavigationAnchor = styled.a<{ $navigationState: MainNavigationState }>`
     &:visited,
     &:link {
         display: flex;
+        column-gap: 1.2rem;
         align-items: center;
-        column-gap: 1.6rem;
-        padding: 0.8rem 1.6rem;
-        transition: var(--duration-fast);
+        transition: var(--duration-fastest);
+        font-size: 1.4rem;
+        border-radius: var(--radius-2xl);
+        padding: 0.4rem 1.2rem;
+
+        ${({ $navigationState }) => {
+            if ($navigationState === MainNavigationState.CLOSED) {
+                return css`
+                    padding: 0;
+                    justify-content: center;
+                    gap: 0;
+                `;
+            }
+        }}
     }
 
     & > svg {
-        height: 2.4rem;
-        width: 2.4rem;
+        height: 1.8rem;
+        width: 1.8rem;
     }
 
     &:hover,
     &.active {
-        transform: scale(102%);
-        color: var(--color-primary);
-        font-weight: var(--font-weight-medium);
-    }
+        background-color: var(--background-tertiary);
 
-    &:hover > svg,
-    &.active > svg {
-        color: var(--color-primary);
-    }
+        > svg {
+            color: var(--color-primary);
 
-    & > .nav-item {
-        transition: all var(--duration-fast) 100ms;
+            ${({ $navigationState }) => {
+                if ($navigationState === MainNavigationState.CLOSED) {
+                    return css`
+                        background-color: var(--background-tertiary);
+                        border-radius: var(--radius-lg);
+                        box-sizing: content-box;
+                        padding: 0 0.8rem;
+                    `;
+                }
+            }}
+        }
 
         ${({ $navigationState }) => {
-            return css`
-                opacity: ${$navigationState === MainNavigationState.OPEN ? "1" : "0"};
-                visibility: ${$navigationState === MainNavigationState.OPEN ? "visible" : "hidden"};
-            `;
-        }};
+            if ($navigationState === MainNavigationState.CLOSED) {
+                return css`
+                    background-color: transparent;
+                `;
+            }
+        }}
     }
 `;
 
@@ -62,10 +79,12 @@ const MainNavigationItem = ({ navigationItem, navigationState, setNavigationStat
     if (visible === false) return null;
 
     return (
-        <StyledMainNavigationItem as={NavLink} to={to} $navigationState={navigationState} onClick={clickHandler}>
-            {icon}
-            <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}</span>
-        </StyledMainNavigationItem>
+        <li className="w-full">
+            <StyledMainNavigationAnchor as={NavLink} to={to} $navigationState={navigationState} onClick={clickHandler}>
+                {icon}
+                <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}</span>
+            </StyledMainNavigationAnchor>
+        </li>
     );
 };
 

@@ -72,12 +72,21 @@ const HeaderElement = styled.h1<{ as: KnownTarget }>`
     }}
 `;
 
-export const Header = ({ as, title, buttons, className }: HeaderProps) => {
+const Subtitle = styled.h6`
+    opacity: 0.8;
+    font-size: 1.4rem;
+    color: var(--font-tertiary);
+`
+
+export const Header = ({ as, title, subtitle, buttons, className }: HeaderProps) => {
     const navigate = useNavigate();
 
     return (
         <StyledHeader className={className}>
-            <HeaderElement as={as}>{title}</HeaderElement>
+            <div className="flex flex-col">
+                <HeaderElement as={as}>{title}</HeaderElement>
+                {subtitle && <Subtitle>{subtitle}</Subtitle>}
+            </div>
             {buttons && (
                 <ButtonGroup className="flex-col flex-wrap gap-y-6 sm:flex-row sm:gap-3">
                     {buttons.map((button) => {

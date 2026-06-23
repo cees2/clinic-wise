@@ -1,13 +1,12 @@
 import styled, { css } from "styled-components";
 import MainNavigationItem from "./MainNavigationItem";
 import { type MainNavigationConfigItem, MainNavigationState } from "../../../utils/projectTypes";
-import { MdOutlineCalendarMonth, MdOutlineRoomPreferences } from "react-icons/md";
+import { MdKeyboardDoubleArrowLeft, MdOutlineCalendarMonth, MdOutlineRoomPreferences } from "react-icons/md";
 import { LuChartNoAxesCombined } from "react-icons/lu";
 import { IoSettingsOutline } from "react-icons/io5";
 import { HiOutlineUsers } from "react-icons/hi";
 import FakerComponent from "../Faker/Faker";
 import { GrUserWorker } from "react-icons/gr";
-import { FaAngleDoubleLeft } from "react-icons/fa";
 import { useMemo, useState } from "react";
 import { UserAuthority } from "../../../services/apiTypes.ts";
 import { useAuthentication } from "../../../services/hooks/authentication/useAuthentication.ts";
@@ -17,14 +16,14 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 6.4rem;
+    row-gap: 1.6rem;
     height: 100vh;
     top: 0;
     left: 0;
     z-index: 20;
     grid-column: 1 / 2;
     grid-row: 1 / -1;
-    background-color: var(--background-primary);
+    background-color: var(--background-secondary);
     transition: all var(--duration-fast) ease-in;
     position: sticky;
 
@@ -47,7 +46,7 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
         height: 2.4rem;
         width: 2.4rem;
         cursor: pointer;
-        transition: var(--duration-fast) ease-in;
+        transition: var(--default-transition-duration) ease-in;
         margin: 2.4rem auto 0;
 
         ${({ $navigationState }) => {
@@ -89,7 +88,7 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
-    margin-top: 3.2rem;
+    margin-top: 1.2rem;
     width: 20%;
     align-self: center;
 `;
@@ -98,12 +97,16 @@ const NavigationList = styled.ul<{ $navigationState: MainNavigationState }>`
     display: flex;
     align-items: start;
     flex-direction: column;
-    row-gap: 1.6rem;
+    row-gap: 0.8rem;
+    width: 100%;
+    padding: 1.6rem 1.2rem 0;
 
     ${({ $navigationState }) => {
         if ($navigationState === MainNavigationState.CLOSED) {
             return css`
                 width: 100%;
+                padding: 0;
+                row-gap: 1.8rem;
             `;
         }
     }}
@@ -113,7 +116,6 @@ const MainNavigation = () => {
     const [navigationState, setNavigationState] = useState<MainNavigationState>(MainNavigationState.CLOSED);
     const { hasAuthority } = useAuthentication();
 
-    // TODO: Array of dependencies
     const mainNavigationConfig: MainNavigationConfigItem[] = useMemo(
         () => [
             {
@@ -161,7 +163,7 @@ const MainNavigation = () => {
     return (
         <StyledNavigation $navigationState={navigationState}>
             <div className="flex flex-col items-end">
-                <FaAngleDoubleLeft className="toggle-icon" onClick={toggleNavigationState} />
+                <MdKeyboardDoubleArrowLeft className="toggle-icon" onClick={toggleNavigationState} />
                 {navigationState === MainNavigationState.OPEN && <Image />}
             </div>
             <nav className="flex items-center justify-center">
