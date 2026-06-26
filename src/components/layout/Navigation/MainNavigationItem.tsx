@@ -3,7 +3,8 @@ import { type MainNavigationConfigItem, MainNavigationState } from "../../../uti
 import { NavLink } from "react-router-dom";
 import type { Dispatch, SetStateAction } from "react";
 
-const StyledMainNavigationAnchor = styled.a<{ $navigationState: MainNavigationState }>`
+export const StyledMainNavigationAnchor = styled.a<{ $navigationState: MainNavigationState }>`
+    &,
     &:visited,
     &:link {
         display: flex;
@@ -57,6 +58,28 @@ const StyledMainNavigationAnchor = styled.a<{ $navigationState: MainNavigationSt
             }
         }}
     }
+
+    & > .nav-item {
+        white-space: nowrap;
+        overflow: hidden;
+        transition: var(--duration-fastest);
+        opacity: 0;
+        visibility: hidden;
+        display: block;
+        width: 0;
+        height: 0;
+
+        ${({ $navigationState }) => {
+            if ($navigationState === MainNavigationState.OPEN) {
+                return css`
+                    visibility: visible;
+                    opacity: 1;
+                    width: auto;
+                    height: auto;
+                `;
+            }
+        }}
+    }
 `;
 
 interface Props {
@@ -82,7 +105,7 @@ const MainNavigationItem = ({ navigationItem, navigationState, setNavigationStat
         <li className="w-full">
             <StyledMainNavigationAnchor as={NavLink} to={to} $navigationState={navigationState} onClick={clickHandler}>
                 {icon}
-                <span className="nav-item">{navigationState === MainNavigationState.OPEN && title}</span>
+                <span className="nav-item">{title}</span>
             </StyledMainNavigationAnchor>
         </li>
     );

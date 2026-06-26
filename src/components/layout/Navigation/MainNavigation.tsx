@@ -85,6 +85,11 @@ const StyledNavigation = styled.aside<{ $navigationState: MainNavigationState }>
 
         animation: moveFromTop var(--duration-slow) ease-in-out;
     }
+
+    .nav-group-info {
+        font-size: 1.2rem;
+        color: var(--font-tertiary);
+    }
 `;
 
 const Image = styled.img.attrs({ src: "logo.png", alt: "ClinicWise logo" })`
@@ -168,6 +173,11 @@ const MainNavigation = () => {
             </div>
             <nav className="flex items-center justify-center">
                 <NavigationList $navigationState={navigationState}>
+                    {navigationState === MainNavigationState.OPEN && (
+                        <li>
+                            <span className="nav-group-info">MENU</span>
+                        </li>
+                    )}
                     {mainNavigationConfig.map((navigationItem) => (
                         <MainNavigationItem
                             key={navigationItem.title}
@@ -176,9 +186,14 @@ const MainNavigation = () => {
                             setNavigationState={setNavigationState}
                         />
                     ))}
+                    {navigationState === MainNavigationState.OPEN && (
+                        <li>
+                            <span className="nav-group-info">FAKE DATA</span>
+                        </li>
+                    )}
+                    <FakerComponent navigationState={navigationState} />
                 </NavigationList>
             </nav>
-            {navigationState === MainNavigationState.OPEN && <FakerComponent />}
         </StyledNavigation>
     );
 };
