@@ -17,7 +17,7 @@ const StyledDashboardStatisticsBox = styled.li<{
     grid-template-columns: 6.4rem 1fr;
     grid-template-rows: 1fr 1fr;
     column-gap: 1.2rem;
-    background-color: var(--background-tertiary);
+    background-color: var(--background-secondary);
     padding: 1.2rem;
     border-radius: var(--radius-2xl);
 
@@ -71,7 +71,6 @@ const StyledDashboardStatisticsBox = styled.li<{
 
 export const DashboardStatisticsBox = ({ name }: Props) => {
     const {data }= useDashboardQuery();
-
     const statisticsBoxData = getStatisticsBoxData(name, data);
     const { appMode } = useDarkMode();
 

@@ -6,17 +6,21 @@ const StyledAppointmentsBox = styled.div`
     grid-column: 1 / span 1;
     border-radius: var(--radius-2xl);
     padding: 2.4rem;
-    background-color: var(--background-tertiary);
+    background-color: var(--background-secondary);
     overflow-x: hidden;
 
     & > .appointments-box__title {
         font-weight: var(--font-weight-bold);
         font-size: 1.8rem;
-        text-align: center;
+        
+    }
+    
+    & > .appointments-box__subtitle {
+        font-size: 1.4rem;
     }
 
     @media (min-width: 48em) {
-        grid-column: 1 / span 2;
+        grid-column: 4 / -1;
     }
 `;
 
@@ -37,7 +41,8 @@ export const AppointmentsBox = () => {
 
     return (
         <StyledAppointmentsBox>
-            <h5 className="appointments-box__title">Next appointments</h5>
+            <h5 className="appointments-box__title">Up next</h5>
+            <span className="appointments-box__subtitle text-gray-300">Your next scheduled appointments</span>
             <AppointmentsList>
                 {nextFiveAppointments.map((appointment) => (
                     <AppointmentsBoxItem key={appointment.start_date} appointment={appointment} />

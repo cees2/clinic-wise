@@ -29,8 +29,8 @@ export const DashboardMain = () => {
     return (
         <StyledDashboardMain>
             <DashboardStatistics />
-            <AppointmentsBox />
             <AppointmentsChart />
+            <AppointmentsBox />
         </StyledDashboardMain>
     );
 };

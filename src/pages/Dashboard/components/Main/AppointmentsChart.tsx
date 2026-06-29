@@ -9,10 +9,10 @@ import { AppColorMode } from "../../../../utils/projectTypes.ts";
 Chart.register(CategoryScale);
 
 const StyledAppointmentsChart = styled.div`
-    grid-column: 1 / span 1;
+    grid-column: 1 / -1;
     border-radius: var(--radius-2xl);
     padding: 2.4rem;
-    background-color: var(--background-tertiary);
+    background-color: var(--background-secondary);
     color: var(--font-primary);
     overflow-x: hidden;
 
@@ -20,11 +20,7 @@ const StyledAppointmentsChart = styled.div`
         grid-column: 1 / span 1;
     }
     @media (min-width: 48em) {
-        grid-column: 1 / span 2;
-    }
-
-    @media (min-width: 80em) {
-        grid-column: 3 / span 2;
+        grid-column: 1 / span 3;
     }
 `;
 
