@@ -11,11 +11,12 @@ export const parseApiData = <T>(data: { data: T }): T => data.data;
 export const createTableDataParams = <TableDataResource extends TableDataResourceType>(
     tableDataState: TableDataState<TableDataResource>,
 ) => {
-    const { selectedFilters, selectedPage, selectedPaginationSize, selectedSorts } = tableDataState;
+    const { selectedFilters, selectedPage, selectedPaginationSize, selectedSorts, search } = tableDataState;
 
     return {
         page: selectedPage - 1,
         size: selectedPaginationSize,
+        search,
         ...generateSortParam(selectedSorts),
         ...parseSelectedFilters(selectedFilters),
     };
