@@ -15,8 +15,10 @@
 
 :root.dark{
     --background-primary: #020617;
-    --background-secondary: #0f172a;
-    --background-tertiary: #374151;
+    --background-secondary: oklch(19% .025 230);
+    --background-tertiary: color-mix(in oklab, oklch(27% .03 230) 40%, transparent);
+
+    --border-color: oklch(21% .03 230);
 
     --font-primary: #f3f4f6;
     --font-secondary: #e5e7eb;

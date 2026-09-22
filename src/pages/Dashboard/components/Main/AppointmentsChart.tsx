@@ -1,10 +1,12 @@
 import { useDashboardQuery } from "../../hooks/useDashboardQuery.ts";
 import { Bar } from "react-chartjs-2";
 import styled from "styled-components";
-import { CategoryScale, type ChartOptions } from "chart.js";
+import { CategoryScale, type ChartData, type ChartOptions } from "chart.js";
 import Chart from "chart.js/auto";
 import { useDarkMode } from "../../../../utils/hooks/useDarkMode.ts";
 import { AppColorMode } from "../../../../utils/projectTypes.ts";
+import { formatDate } from "date-fns";
+import { DISPLAY_DATE_FORMAT } from "../../../../utils/constants.ts";
 
 Chart.register(CategoryScale);
 
@@ -30,7 +32,7 @@ export const AppointmentsChart = () => {
     const { chartData } = data ?? {};
     const chartFontColor = appMode === AppColorMode.DARK ? "#e5e7eb" : "#1f2937";
     const options: ChartOptions<"bar"> = {
-        elements: { bar: { backgroundColor: "#16a34a", borderRadius: 10 } },
+        elements: { bar: { backgroundColor: "#00beb7", borderRadius: 10 } },
         plugins: {
             title: {
                 text: "Number of appointments",
@@ -45,8 +47,8 @@ export const AppointmentsChart = () => {
 
     if (!chartData) return null;
 
-    const chartConfig = {
-        labels: chartData.map((appointment) => appointment.label),
+    const chartConfig:ChartData<"bar"> = {
+        labels: chartData.map((appointment) => formatDate(appointment.label, DISPLAY_DATE_FORMAT)),
         datasets: [
             {
                 label: "Appointments",

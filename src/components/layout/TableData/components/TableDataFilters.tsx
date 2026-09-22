@@ -6,6 +6,7 @@ import TableDataDateFilter from "./TableDataFilters/TableDataDateFilter.tsx";
 import { TableDataEnumFilter } from "./TableDataFilters/TableDataEnumFilter.tsx";
 import { TableDataNumberFilter } from "./TableDataFilters/TableDataNumberFilter.tsx";
 import { TableDataTextFilter } from "./TableDataFilters/TableDataTextFilter.tsx";
+import TableDataSearch from "./TableDataFilters/TableDataSearch.tsx";
 
 const StyledTableDataFilters = styled.div`
     display: flex;
@@ -20,6 +21,7 @@ interface Props {
 
 const TableDataFilterBody = ({ filter }: Props) => {
     const { type, id, options } = filter;
+
     switch (type) {
         case FilterType.NUMBER:
             return <TableDataNumberFilter filterId={id} />;
@@ -41,6 +43,7 @@ const TableDataFilters = () => {
 
     return (
         <StyledTableDataFilters>
+            <TableDataSearch/>
             {filters.map((filter) => {
                 return (
                     <Dropdown key={filter.id} autoClose={false}>

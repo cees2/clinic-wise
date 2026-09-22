@@ -72,4 +72,6 @@ export interface DashboardRemoteData {
 export interface StatisticsBoxColorConfig {
     dark: string;
     light: string;
+    iconLight: string;
+    iconDark: string;
 }

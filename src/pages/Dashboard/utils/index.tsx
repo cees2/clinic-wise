@@ -9,7 +9,7 @@ import {
 import { intervalToDuration } from "date-fns";
 import { IoBriefcaseOutline, IoTimeOutline } from "react-icons/io5";
 import { VscError } from "react-icons/vsc";
-import { BsCheck2Circle } from "react-icons/bs";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 
 export const getDashboardTimeFilter = (selectedFilters: DashboardFilter[]) => {
     return selectedFilters.find((selectedFilter) => selectedFilter.id === DashboardFilterId.TIME);
@@ -34,26 +34,26 @@ export const getStatisticsBoxData = (
             return [
                 <IoTimeOutline />,
                 getWorkedTime(dashboardData.workedMinutes),
-                { light: "--color-violet-300", dark: "--color-violet-800" },
+                { light: "--color-violet-300", dark: "--color-violet-800", iconLight: "--color-violet-500", iconDark: "--color-violet-500" },
             ];
         case DashboardStatisticsType.CANCELLED_APPOINTMENTS:
             return [
                 <VscError />,
                 dashboardData.cancelledAppointments,
-                { light: "--color-red-300", dark: "--color-red-700" },
+                { light: "--color-red-300", dark: "--color-red-700", iconDark: "--color-red-500", iconLight: "--color-red-500" },
             ];
         case DashboardStatisticsType.COMPLETED_APPOINTMENTS:
             return [
-                <BsCheck2Circle />,
+                <IoIosCheckmarkCircleOutline />,
                 dashboardData.completedAppointments,
-                { light: "--color-green-400", dark: "--color-green-600" },
+                { light: "--color-lime-500", dark: "--color-green-600", iconLight: "--color-green-500", iconDark: "--color-green-500" },
             ];
         case DashboardStatisticsType.NUMBER_OF_APPOINTMENTS:
         default:
             return [
                 <IoBriefcaseOutline />,
                 dashboardData.numberOfAppointments,
-                { light: "--color-indigo-300", dark: "--color-indigo-800" },
+                { light: "--color-indigo-300", dark: "--color-indigo-800", iconLight: "--color-indigo-500", iconDark: "--color-indigo-500" },
             ];
     }
 };

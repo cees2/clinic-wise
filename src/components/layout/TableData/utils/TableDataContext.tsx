@@ -8,6 +8,7 @@ const TableDataContext = createContext<TableDataContextType<TableDataResourceTyp
         selectedFilters: [],
         selectedPage: 1,
         selectedPaginationSize: 10,
+        search: ""
     },
     dispatch: () => {},
     resources: [],

@@ -5,4 +5,5 @@ export const tableDataConfigInitialValue: TableDataState<TableDataResourceType> 
     selectedPage: 1,
     selectedSorts: [],
     selectedPaginationSize: 20,
+    search: ""
 };

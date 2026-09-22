@@ -19,7 +19,7 @@ const TableDataSorts = <TableDataResource extends TableDataResourceType>({
     } = useTableDataContext();
     const { id: columnId, disableSorting } = column;
     const sortingSVGClassnames =
-        "cursor-pointer hover:scale-110 transition-all duration-100 w-[1.6rem] h-[1.6rem] flex-shrink-0";
+        "cursor-pointer hover:scale-110 transition-all duration-100 w-[1.2rem] h-[1.2rem] flex-shrink-0";
     const currentColumnSorted = selectedSorts.find((sort) => sort.id === columnId);
 
     const sortColumnHandler = (sortType: SortColumnType) => {

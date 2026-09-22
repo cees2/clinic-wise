@@ -4,7 +4,7 @@ export const ContentLayout = styled.div`
     margin: 1.2rem 2.4rem;
     display: flex;
     flex-direction: column;
-    row-gap: 4.8rem;
+    row-gap: 2.4rem;
     max-width: 140rem;
 
     @media (min-width: 40em) {

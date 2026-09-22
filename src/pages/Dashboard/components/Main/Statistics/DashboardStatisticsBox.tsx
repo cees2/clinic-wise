@@ -14,58 +14,58 @@ const StyledDashboardStatisticsBox = styled.li<{
     $appMode: AppColorMode;
 }>`
     display: grid;
-    grid-template-columns: 6.4rem 1fr;
+    grid-template-columns: 1fr 6.4rem;
     grid-template-rows: 1fr 1fr;
     column-gap: 1.2rem;
     background-color: var(--background-secondary);
-    padding: 1.2rem;
+    padding: 2.4rem;
     border-radius: var(--radius-2xl);
+    border: 1px solid var(--color-gray-600);
 
     & > .icon-background {
-        grid-column: 1 / 2;
+        grid-column: 2 / span 1;
         grid-row: 1 / -1;
         align-self: center;
         justify-self: center;
         padding: 1.2rem;
         border-radius: 50%;
-        ${({ $backgroundColor: { light, dark }, $appMode }) => {
+        ${({ $backgroundColor: { light, dark , iconDark, iconLight}, $appMode }) => {
             return $appMode === AppColorMode.DARK
-                ? css`
-                      background-color: color-mix(in srgb, var(${dark}) 80%, transparent);
-                  `
-                : css`
-                      background-color: color-mix(in srgb, var(${light}) 40%, transparent);
-                  `;
+                ? css`background-color: color-mix(in srgb, var(${dark}) 20%, transparent);`
+                : css`background-color: color-mix(in srgb, var(${light}) 40%, transparent);`;
         }}
 
         & > svg {
             width: 3.2rem;
             height: 3.2rem;
-            ${({ $appMode }) => {
-                return (
-                    $appMode === AppColorMode.DARK &&
-                    css`
-                        stroke: var(--color-gray-200);
-                        fill: var(--color-gray-200);
-                    `
-                );
+            ${({ $appMode, $backgroundColor: { iconDark, iconLight } }) => {
+                return $appMode === AppColorMode.DARK
+                    ? css`
+                          stroke: var(${iconDark});
+                          fill: var(${iconDark});
+                      `
+                    : css`
+                          stroke: var(${iconLight});
+                          fill: var(${iconLight});
+                      `;
             }}
         }
     }
 
     & > .statistics-name,
     & > .statistics-value {
-        grid-column: 2 / -1;
+        grid-column: 1 / span 1;
         font-weight: 600;
     }
 
     & > .statistics-name {
-        grid-row: 1 / 2;
+        grid-row: 1 / span 1;
+        color: var(--font-tertiary);
     }
 
     & > .statistics-value {
-        grid-row: 2 / -1;
-        font-size: 2rem;
+        grid-row: 2 / span 1;
+        font-size: 3.2rem;
     }
 `;
 

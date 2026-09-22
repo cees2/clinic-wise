@@ -22,7 +22,7 @@ const StyledAppointmentsBoxItem = styled.li`
         &__link {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             column-gap: 1.2rem;
             padding: 1.2rem;
             color: inherit;
@@ -32,8 +32,8 @@ const StyledAppointmentsBoxItem = styled.li`
 
         &__icon {
             box-sizing: content-box;
-            width: 2.4rem;
-            height: 2.4rem;
+            width: 1.8rem;
+            height: 1.8rem;
             stroke: var(--color-primary);
             background-color: var(--background-tertiary);
             padding: 1rem;

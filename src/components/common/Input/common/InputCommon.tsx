@@ -5,6 +5,7 @@ export const StyledInput = styled.div<{ $disabled?: boolean }>`
     flex-direction: column;
     align-items: flex-start;
     column-gap: 0.8rem;
+    position: relative;
 
     & > input,
     & > textarea {
@@ -12,7 +13,7 @@ export const StyledInput = styled.div<{ $disabled?: boolean }>`
         width: 100%;
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-lg);
-        padding: 0.5rem 1.2rem;
+        padding: 0.5rem 2.4rem;
         color: var(--color-font-primary);
 
         ${({ $disabled }) => {
@@ -27,6 +28,23 @@ export const StyledInput = styled.div<{ $disabled?: boolean }>`
                 `
             );
         }}
+    }
+`;
+
+export const IconWrapper = styled.div`
+    position: relative;
+    
+    & > svg {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        width: 1.6rem;
+        height: 1.6rem;
+        transform: translateY(-50%);
+    }
+    
+    & > input {
+        padding-left: 3.6rem;
     }
 `;
 

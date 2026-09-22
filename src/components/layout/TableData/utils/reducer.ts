@@ -60,6 +60,8 @@ const tableDataContextReducer = <TableDataResource extends TableDataResourceType
             if (prevState.selectedPage === 1) return prevState;
             return { ...prevState, selectedPage: prevState.selectedPage - 1 };
         }
+        case TableDataActionsEnum.SET_SEARCH:
+            return {...prevState, search: action.payload}
         default:
             return prevState;
     }

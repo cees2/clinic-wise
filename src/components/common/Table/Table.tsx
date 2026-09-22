@@ -6,12 +6,18 @@ import {
     type TableRowProps,
 } from "../../../utils/projectTypes";
 
+const StyledTableWrapper = styled.div`
+    overflow: hidden;
+    overflow-x: auto;
+    border-radius: var(--radius-3xl);
+    border: 1px solid var(--border-color);
+    background-color: var(--color-background-primary);
+`;
+
 const StyledTableRow = styled.tr`
     padding: 0.8rem 1.6rem;
-
-    &:not(:last-child) {
-        border-bottom: 1px solid var(--color-gray-300);
-    }
+    background-color: var(--color-background-secondary);
+    border-bottom: 1px solid var(--color-background-primary);
 
     &:hover {
         background-color: var(--color-background-primary);
@@ -20,21 +26,22 @@ const StyledTableRow = styled.tr`
 
 export const StyledHeaderCell = styled.th`
     font-weight: var(--font-weight-semibold);
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     padding: 1.2rem;
 `;
 
 const StyledTableCell = styled.td`
     padding: 0.6rem 1.2rem;
+    font-size: 1.4rem;
 `;
 
 const Table = (props: TableProps) => {
     const { children, className } = props;
 
     return (
-        <div className="overflow-x-auto">
+        <StyledTableWrapper>
             <table className={className ?? ""}>{children}</table>
-        </div>
+        </StyledTableWrapper>
     );
 };
 
@@ -69,8 +76,8 @@ const TableRowCell = (props: TableRowCellProps) => {
 };
 
 const TableHead = styled.thead`
-    border-bottom: 1px solid var(--color-gray-300);
-
+    border-bottom: 1px solid var(--color-background-primary);
+    
     & > tr:hover {
         background-color: var(--color-background-secondary);
     }

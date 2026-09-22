@@ -135,6 +135,7 @@ export interface TableDataState<TableDataResource extends TableDataResourceType>
     selectedFilters: TableDataFilterState[];
     selectedPage: number;
     selectedPaginationSize: number;
+    search: string;
 }
 
 export interface TableDataContextType<TableDataResource extends TableDataResourceType> {
@@ -155,6 +156,7 @@ export enum TableDataActionsEnum {
     SET_PAGE,
     SET_NEXT_PAGE,
     SET_PREVIOUS_PAGE,
+    SET_SEARCH
 }
 
 export type TableDataActionsType<TableDataResource extends TableDataResourceType> =
@@ -194,7 +196,11 @@ export type TableDataActionsType<TableDataResource extends TableDataResourceType
       }
     | {
           type: TableDataActionsEnum.SET_PREVIOUS_PAGE;
-      };
+      }
+    | {
+          type: TableDataActionsEnum.SET_SEARCH;
+          payload: string;
+      }
 
 export interface DropdownContextType {
     open: boolean;
