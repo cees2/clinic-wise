@@ -22,16 +22,17 @@ const DropdownContext = createContext<DropdownContextType>({
     autoClose: true,
 });
 
-const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ $isForm?: boolean }>`
+const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ $isForm?: boolean}>`
     background-color: var(--color-background-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
-    column-gap: 2px;
-    padding: 1rem 1.6rem;
+    column-gap: var(--dropdown-toggle-column-gap, 2px);
+    padding: 0.6rem 1.2rem;
     border-radius: var(--radius-lg);
     border: none;
-
+    font-size: 1.2rem;
+    
     ${({ $isForm }) =>
         $isForm &&
         css`
@@ -47,7 +48,7 @@ const StyledDropdownToggleLabel = styled.span`
     max-width: 16rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     white-space: nowrap;
 `;
 
@@ -136,7 +137,7 @@ export const Dropdown = ({
     );
 };
 
-const DropdownToggle = ({ children, hideDefaultIcon, className, isForm, ...toggleProps }: DropdownToggleProps) => {
+const DropdownToggle = ({ children, hideDefaultIcon, className, isForm, $gap, ...toggleProps }: DropdownToggleProps) => {
     const { setOpen, setDropdownToggleRef, setIsOpening, open } = use(DropdownContext);
     const originalDropdownToggleRef = useRef<HTMLButtonElement>(null);
 
@@ -156,6 +157,7 @@ const DropdownToggle = ({ children, hideDefaultIcon, className, isForm, ...toggl
             className={className}
             $isForm={isForm}
             aria-expanded={open}
+            $gap={$gap}
             {...toggleProps}
         >
             {children}
@@ -194,7 +196,7 @@ const DropdownMenu = ({ children, onHideDropdown, className, forceOpen }: Dropdo
         };
     }, [clickOutsideHandler]);
 
-    if ((!open && !forceOpen) || !dropdownToggleRef) return null;
+    if ((!open && !forceOpen) || !dropdownToggleRef.current) return null;
 
     const { height: toggleHeight, width: toggleWidth } = dropdownToggleRef.current?.getBoundingClientRect() ?? {};
 
