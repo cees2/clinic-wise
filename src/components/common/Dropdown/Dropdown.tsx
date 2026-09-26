@@ -88,8 +88,9 @@ const StyledDropdownMenu = styled.ul.attrs({
 `;
 
 const StyledDropdownItem = styled.li.attrs({ role: "menuitem" })`
-    padding: 0.8rem 1.2rem;
+    padding: 0.8rem 1rem;
     transition: var(--duration-fast);
+    font-size: 1.2rem;
 
     &:hover {
         cursor: pointer;
@@ -239,9 +240,11 @@ const DropdownItems = <Resource,>({ render, items, onClick }: DropdownItemsProps
 const DropdownItem = ({
     children,
     onClick,
+    className
 }: {
     children: React.ReactNode;
     onClick?: (event: React.MouseEvent<HTMLLIElement>) => void;
+    className?: string;
 }) => {
     const { autoClose, setOpen } = use(DropdownContext);
 
@@ -252,7 +255,7 @@ const DropdownItem = ({
         }
     };
 
-    return <StyledDropdownItem onClick={onClickInternal}>{children}</StyledDropdownItem>;
+    return <StyledDropdownItem onClick={onClickInternal} className={className}>{children}</StyledDropdownItem>;
 };
 
 Dropdown.Toggle = DropdownToggle;

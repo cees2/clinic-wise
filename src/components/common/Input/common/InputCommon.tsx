@@ -6,6 +6,7 @@ export const StyledInput = styled.div<{ $disabled?: boolean }>`
     align-items: flex-start;
     column-gap: 0.8rem;
     position: relative;
+    font-size: 1.2rem;
 
     & > input,
     & > textarea {
@@ -13,7 +14,7 @@ export const StyledInput = styled.div<{ $disabled?: boolean }>`
         width: 100%;
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-lg);
-        padding: 0.5rem 2.4rem;
+        padding: 0.2rem 1rem;
         color: var(--color-font-primary);
 
         ${({ $disabled }) => {

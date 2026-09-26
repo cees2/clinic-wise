@@ -43,7 +43,6 @@ export const TableDataEnumFilter = ({ options, filterId }: Props) => {
     return (
         <EnumFilter
             options={options}
-            filterId={filterId}
             onHideDropdown={onHideDropdown}
             defaultValue={getEnumFilterInitialState(selectedFilters, filterId)}
         />

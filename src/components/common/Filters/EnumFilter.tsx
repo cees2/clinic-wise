@@ -1,16 +1,15 @@
 import { Dropdown } from "../Dropdown/Dropdown.tsx";
 import { type EnumFilterOption, type FilterState } from "../../../utils/projectTypes.ts";
-import { CheckboxInputSimple } from "../Input/CheckboxInput/CheckboxInputSimple.tsx";
 import { useState } from "react";
+import { MdOutlineDone } from "react-icons/md";
 
 interface Props extends React.ComponentProps<"input"> {
-    filterId: string;
     options: EnumFilterOption[];
     onHideDropdown: (enumFilterState: FilterState<string[], "e">) => void;
     defaultValue?: string[];
 }
 
-const EnumFilter = ({ filterId, options, onHideDropdown, defaultValue, ...restProps }: Props) => {
+const EnumFilter = ({ options, onHideDropdown, defaultValue }: Props) => {
     const [selectedFilterState, setSelectedFilterState] = useState<FilterState<string[], "e">>({
         filterValue: defaultValue ?? [],
         filterCondition: "e",
@@ -37,15 +36,9 @@ const EnumFilter = ({ filterId, options, onHideDropdown, defaultValue, ...restPr
                 const checked = selectedFilterState.filterValue.includes(value);
 
                 return (
-                    <Dropdown.Item key={name} onClick={() => onChange(value)}>
-                        <CheckboxInputSimple
-                            label={name}
-                            id={name}
-                            value={value}
-                            onChange={() => onChange(value)}
-                            checked={checked}
-                            {...restProps}
-                        />
+                    <Dropdown.Item key={name} onClick={() => onChange(value)} className="flex items-center gap-x-4">
+                        <MdOutlineDone className={checked ? "" : "opacity-0 invisible"}/>
+                        <span>{name}</span>
                     </Dropdown.Item>
                 );
             })}
