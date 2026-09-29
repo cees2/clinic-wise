@@ -190,7 +190,7 @@ export const updatePassword = async (newPassword: string): Promise<void> => {
 // ROOMS
 
 export const getRooms = async () => {
-    const { data } = await restApi.get<ListResponseApi<RoomApi>>("/rooms");
+    const { data } = await restApi.get<ListResponseApi<RoomApi>>("/rooms", {params: {page: 0, size: 20}});
 
     return parseApiData(data);
 };
@@ -230,7 +230,7 @@ export const getRoomsOccupancies = async (dateFilter?: RoomsFilterType, roomFilt
         //     query = query.in("room_id", queryFilter);
     }
 
-    const { data } = await restApi.get<ListResponseApi<RoomOccupancyApi>>("/room_occupancies");
+    const { data } = await restApi.get<ListResponseApi<RoomOccupancyApi>>("/room_occupancies", {params: {dateFilter, roomFilter, page: 0, size: 20}});
 
     return parseApiData(data);
 };

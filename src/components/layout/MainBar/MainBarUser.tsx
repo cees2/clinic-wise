@@ -3,7 +3,7 @@ import { useAuthContext } from "../../../utils/contexts/AuthContext";
 
 const Image = styled.img.attrs({ alt: "User avatar" })`
     width: 4rem;
-    height: 4rem;
+    height: var(--main-bar-height);
     border-radius: 50%;
     object-fit: cover;
 

@@ -64,7 +64,7 @@ const TableDataFilters = () => {
 
                 return (
                     <Dropdown key={filter.id} autoClose={false}>
-                        <Dropdown.Toggle hideDefaultIcon className="[--dropdown-toggle-column-gap:1.2rem]">
+                        <Dropdown.Toggle hideDefaultIcon className="[--dropdown-toggle-column-gap:1.2rem] border-1 border-slate-500/50">
                             <LuFilter />
                             {filter.name}
                             <FilterCounter>{filterCount}</FilterCounter>

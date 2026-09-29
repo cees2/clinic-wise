@@ -1,9 +1,9 @@
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { Dropdown } from "../../../common/Dropdown/Dropdown";
 import Table from "../../../common/Table/Table";
 import { useTableDataContext } from "../utils/TableDataContext";
 import type { TableDataResourceType } from "../../../../utils/projectTypes";
 import { useNavigate } from "react-router-dom";
+import { HiDotsHorizontal } from "react-icons/hi";
 
 interface Props<TableDataResource extends TableDataResourceType> {
     resource: TableDataResource;
@@ -23,7 +23,7 @@ const TableDataActionCell = <TableDataResource extends TableDataResourceType>({
         <Table.TableRowCell>
             <Dropdown placement="left">
                 <Dropdown.Toggle hideDefaultIcon>
-                    <BsThreeDotsVertical />
+                    <HiDotsHorizontal />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                     {actions.map((action) => {

@@ -23,14 +23,12 @@ const DropdownContext = createContext<DropdownContextType>({
 });
 
 const StyledDropdownToggle = styled.button.attrs({ type: "button" })<{ $isForm?: boolean}>`
-    background-color: var(--color-background-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
     column-gap: var(--dropdown-toggle-column-gap, 2px);
     padding: 0.6rem 1.2rem;
     border-radius: var(--radius-lg);
-    border: none;
     font-size: 1.2rem;
     
     ${({ $isForm }) =>

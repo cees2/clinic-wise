@@ -16,7 +16,7 @@ const Rooms = () => {
     const { filters } = useRoomsContext();
     const { isLoading: roomOccupanciesLoading, data: roomOccupancies } = useGetRoomsOccupancies(filters);
     const { isLoading: roomsLoading, data: rooms } = useGetRooms();
-    const HEADER_BUTTONS: HeaderButton[] = [
+    const headerButtons: HeaderButton[] = [
         { title: "Add room", onClick: () => setShowModal(true) },
         { title: "Add room occupancy", path: "/room-occupancies/new" },
     ];
@@ -24,8 +24,8 @@ const Rooms = () => {
     if (!rooms || rooms.length === 0) return <EmptyPage caption="No rooms found" />;
 
     return (
-        <ContentLayout>
-            <Header title="Rooms" as="h3" buttons={HEADER_BUTTONS} />
+        <ContentLayout className="max-h-[calc(100vh-2*var(--main-bar-vertical-padding)-var(--main-bar-height)-2*var(--content-layout-vertical-margin))]">
+            <Header title="Rooms" as="h3" buttons={headerButtons} />
             <RoomsFilters rooms={rooms} />
             <DayController />
             <RoomsTable

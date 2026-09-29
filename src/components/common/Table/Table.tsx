@@ -7,8 +7,7 @@ import {
 } from "../../../utils/projectTypes";
 
 const StyledTableWrapper = styled.div`
-    overflow: hidden;
-    overflow-x: auto;
+    overflow: auto;
     border-radius: var(--radius-3xl);
     border: 1px solid var(--border-color);
     background-color: var(--color-background-primary);
@@ -31,7 +30,7 @@ export const StyledHeaderCell = styled.th`
 `;
 
 const StyledTableCell = styled.td`
-    padding: 0.6rem 1.2rem;
+    padding: 0.8rem 1.2rem;
     font-size: 1.4rem;
 `;
 
