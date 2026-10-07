@@ -2,12 +2,10 @@ import { add, differenceInDays, format, isToday, isTomorrow, startOfDay, startOf
 import {
     RoomDateFilters,
     RoomsFilterIds,
-    type RoomOccupancyFormType,
     type RoomsFilterType,
-    type RoomsOccupanciesResponseType,
 } from "../../../utils/projectTypes";
-import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
-import type { RoomApi } from "../../../services/apiTypes.ts";
+import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
+import type { RoomApi, RoomOccupancyFormType } from "../../../services/apiTypes.ts";
 
 export const getDateValueFromPredefinedTimeFilters = (timeFilter: RoomDateFilters) => {
     let date: Date | null = null;
@@ -52,10 +50,15 @@ export const getDaysOffsetFromADate = (dateFilter?: string) => {
 };
 
 export const getDateFilterFromRoomsFilters = (filters: RoomsFilterType[]) => {
-    return filters.find((filter) => filter.id === RoomsFilterIds.DATE);
+    const dateFilterConfig = filters.find((filter) => filter.id === RoomsFilterIds.DATE);
+
+    return format(new Date(dateFilterConfig?.value ?? Date.now()), DB_DATE_FORMAT);
 };
+
 export const getRoomFilterFromRoomsFilters = (filters: RoomsFilterType[]) => {
-    return filters.find((filter) => filter.id === RoomsFilterIds.ROOM);
+    const roomFilter = filters.find((filter) => filter.id === RoomsFilterIds.ROOM);
+
+    return roomFilter ? roomFilter.value : "";
 };
 
 export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilterType[], timeFilter: RoomDateFilters) => {
@@ -79,21 +82,20 @@ export const getIsPredefinedTimeFilterSelected = (filters: RoomsFilterType[], ti
     }
 };
 
-export const getFilteredRooms = (filters: RoomsFilterType[], rooms?: RoomApi[]): RoomApi[] => {
+export const getFilteredRooms = (filters: RoomsFilterType[], rooms: RoomApi[]): RoomApi[] => {
     const roomsFilter = getRoomFilterFromRoomsFilters(filters);
 
-    if (!roomsFilter) return rooms ?? [];
+    if(!roomsFilter) return rooms;
 
-    const roomsIds = roomsFilter.value.split(",");
+    const roomsIds = roomsFilter.split(",");
 
-    return rooms?.filter((room) => roomsIds.includes(room.id.toString())) ?? [];
+    return rooms.filter((room) => roomsIds.includes(room.id.toString())) ?? [];
 };
 
-export const updateRoomFilterValue = (id: string, roomsFilter?: RoomsFilterType) => {
-    if (!roomsFilter) return id;
+export const updateRoomFilterValue = (id: string, roomsFilter: string) => {
+    if(!roomsFilter) return id;
 
-    const { value } = roomsFilter;
-    const roomsIdsArray = value.split(",");
+    const roomsIdsArray = roomsFilter.split(",");
     const indexOfId = roomsIdsArray.indexOf(id);
 
     if (indexOfId === -1) {

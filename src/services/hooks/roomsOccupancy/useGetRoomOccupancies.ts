@@ -1,28 +1,26 @@
 import { usePrefetchQuery, useQuery } from "@tanstack/react-query";
 import { getRoomsOccupancies } from "../../api";
-import { RoomsFilterIds, type RoomsFilterType } from "../../../utils/projectTypes";
+import { type RoomsFilterType } from "../../../utils/projectTypes";
 import {
     getDateFilterFromRoomsFilters,
     getRoomFilterFromRoomsFilters,
 } from "../../../pages/RoomsOccupancy/utils/utils.ts";
 import { add, format } from "date-fns";
-import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants.ts";
+import { DB_DATE_FORMAT } from "../../../utils/constants.ts";
 
 export const useGetRoomsOccupancies = (filters: RoomsFilterType[]) => {
     const dateFilter = getDateFilterFromRoomsFilters(filters);
     const roomFilter = getRoomFilterFromRoomsFilters(filters);
-    const filterNextDay = dateFilter?.value ? add(new Date(dateFilter.value), { days: 1 }) : "";
-    const formattedFilterNextDay = filterNextDay ? format(filterNextDay, DB_DATE_FORMAT_WITH_TIME) : "";
-    const nextDayFilter = { id: RoomsFilterIds.DATE, value: formattedFilterNextDay };
+    const filterNextDay = format(add(new Date(dateFilter), { days: 1 }), DB_DATE_FORMAT)
 
     const query = useQuery({
         queryFn: () => getRoomsOccupancies(dateFilter, roomFilter),
-        queryKey: ["roomOccupancies", { date: dateFilter?.value, rooms: roomFilter?.value }],
+        queryKey: ["roomOccupancies", { date: dateFilter, rooms: roomFilter }],
     });
 
     usePrefetchQuery({
-        queryFn: () => getRoomsOccupancies(nextDayFilter, roomFilter),
-        queryKey: ["roomOccupancies", { date: formattedFilterNextDay, rooms: roomFilter?.value }],
+        queryFn: () => getRoomsOccupancies(filterNextDay, roomFilter),
+        queryKey: ["roomOccupancies", { date: filterNextDay, rooms: roomFilter }],
     });
 
     return query;

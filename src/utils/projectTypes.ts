@@ -28,8 +28,15 @@ export enum MainNavigationState {
     CLOSED,
 }
 
+export type TableVariant = "default" | "grid";
+
+export type TableDensity = "compact" | "normal" | "wide"
+
 export interface TableBaseProps {
     className?: string;
+    variant?: TableVariant;
+    density?: TableDensity
+    stickyHeader?: boolean;
 }
 
 export type TableProps = React.ComponentProps<"table"> & TableBaseProps;

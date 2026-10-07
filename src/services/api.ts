@@ -1,4 +1,4 @@
-import type { LoginFormType, RoomsFilterType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
+import type { LoginFormType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import axios from "axios";
 import type {
@@ -216,21 +216,10 @@ export const uploadFakeRoomsOccupancy = async () => {
     return data;
 };
 
-export const getRoomsOccupancies = async (dateFilter?: RoomsFilterType, roomFilter?: RoomsFilterType) => {
-    if (dateFilter) {
-        //     const endDate = add(new Date(dateFilter.value), { days: 1 });
-        //     const formattedEndDate = format(endDate, DB_DATE_FORMAT_WITH_TIME);
-        //
-        //     query = query.gte("start", dateFilter.value).lte("end", formattedEndDate);
-    }
-    //
-    if (roomFilter) {
-        //     const queryFilter = roomFilter.value.split(",").map((filterValue) => Number(filterValue));
-        //
-        //     query = query.in("room_id", queryFilter);
-    }
-
-    const { data } = await restApi.get<ListResponseApi<RoomOccupancyApi>>("/room_occupancies", {params: {dateFilter, roomFilter, page: 0, size: 20}});
+export const getRoomsOccupancies = async (dateFilter: string, roomFilter: string) => {
+    const { data } = await restApi.get<ListResponseApi<RoomOccupancyApi>>("/room_occupancies", {
+        params: { date_filter: dateFilter, room_filter: roomFilter, page: 0, size: 20 },
+    });
 
     return parseApiData(data);
 };

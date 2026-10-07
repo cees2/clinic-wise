@@ -9,7 +9,7 @@ import type { RoomApi, RoomOccupancyApi } from "../../../../services/apiTypes.ts
 
 interface Props {
     roomOccupancies?: RoomOccupancyApi[];
-    rooms?: RoomApi[];
+    rooms: RoomApi[];
     roomOccupanciesLoading: boolean;
     roomsLoading: boolean;
 }
@@ -28,9 +28,9 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     const navigate = useNavigate();
 
     const getRoomOccupancyMatchesCurrentData = (minute: number, room: RoomApi) => {
-        if (!dateFilter?.value) return;
+        if (!dateFilter) return;
 
-        const dateFilterWithMinutes = addMinutes(new Date(dateFilter.value), minute);
+        const dateFilterWithMinutes = addMinutes(new Date(dateFilter), minute);
 
         return roomOccupancies?.find((roomOccupancy) => {
             const {
@@ -50,10 +50,10 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
     if (roomOccupanciesLoading || roomsLoading) return <LoadingSpinner />;
 
     return (
-        <Table className="min-w-[100%]">
+        <Table className="min-w-[100%]" variant="grid" stickyHeader>
             <Table.TableHead>
                 <Table.TableRow>
-                    <Table.TableHeaderCell className="text-left">Room</Table.TableHeaderCell>
+                    <Table.TableHeaderCell className="text-left">Time</Table.TableHeaderCell>
                     {filteredRooms.map(({ name }) => (
                         <Table.TableHeaderCell key={name} className="text-center">
                             {name}
@@ -69,7 +69,7 @@ const RoomsTable = ({ roomOccupancies, rooms, roomOccupanciesLoading, roomsLoadi
 
                     return (
                         <Table.TableRow key={minute}>
-                            <Table.TableRowCell>{currentTimeString}</Table.TableRowCell>
+                            <Table.TableRowCell className="w-px whitespace-nowrap">{currentTimeString}</Table.TableRowCell>
                             {filteredRooms.map((room) => {
                                 const roomOccupancyMatchingCurrentMinute = getRoomOccupancyMatchesCurrentData(
                                     minute,

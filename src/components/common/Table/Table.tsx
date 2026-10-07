@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
     type TableHeaderCellProps,
     type TableProps,
@@ -6,15 +6,47 @@ import {
     type TableRowProps,
 } from "../../../utils/projectTypes";
 
-const StyledTableWrapper = styled.div`
+const StyledTableWrapper = styled.div<TableProps>`
     overflow: auto;
     border-radius: var(--radius-3xl);
     border: 1px solid var(--border-color);
     background-color: var(--color-background-primary);
+    
+    --table-row-padding: 0.8rem 1.6rem;
+    --table-hedaer-cell-padding: 1.2rem;
+    --table-cell-padding: 0.8rem 1.2rem;
+    --table-cell-margin: 0;
+    --table-cell-border: none;
+    --table-cell-border-radius: 0;
+    
+    ${({variant}) => {
+        if(variant === "grid"){
+            return css`
+                --table-cell-margin: 0.2rem 0.4rem;
+                --table-cell-border: 1px dashed var(--color-cyan-800);
+                --table-cell-border-radius: var(--radius-2xl);
+
+                & > table {
+                    border-collapse: separate;
+                    border-spacing: 0.4rem 0.8rem;
+                }
+            `;
+        }
+    }}
+    
+    ${({stickyHeader}) => {
+        return stickyHeader && css`
+            & th {
+                position: sticky;
+                top: 0;
+                background-color: var(--color-background-primary);
+            }
+        `
+    }}
 `;
 
 const StyledTableRow = styled.tr`
-    padding: 0.8rem 1.6rem;
+    padding: var(--table-row-padding);
     background-color: var(--color-background-secondary);
     border-bottom: 1px solid var(--color-background-primary);
 
@@ -26,19 +58,22 @@ const StyledTableRow = styled.tr`
 export const StyledHeaderCell = styled.th`
     font-weight: var(--font-weight-semibold);
     font-size: 1.4rem;
-    padding: 1.2rem;
+    padding: var(--table-hedaer-cell-padding);
 `;
 
 const StyledTableCell = styled.td`
-    padding: 0.8rem 1.2rem;
+    padding: var(--table-cell-padding);
     font-size: 1.4rem;
+    border: var(--table-cell-border);
+    border-radius: var(--table-cell-border-radius);
+    margin: var(--table-cell-margin);
 `;
 
 const Table = (props: TableProps) => {
     const { children, className } = props;
 
     return (
-        <StyledTableWrapper>
+        <StyledTableWrapper {...props}>
             <table className={className ?? ""}>{children}</table>
         </StyledTableWrapper>
     );

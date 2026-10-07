@@ -10,6 +10,7 @@ import { useGetRooms } from "../../../../services/hooks/rooms/useGetRooms.ts";
 import { useGetRoomsOccupancies } from "../../../../services/hooks/roomsOccupancy/useGetRoomOccupancies.ts";
 import { useState } from "react";
 import { AddRoomModal } from "../../components/MainLayout/AddRoomModal.tsx";
+import { LoadingSpinner } from "../../../../components/common/LoadingSpinner.tsx";
 
 const Rooms = () => {
     const [showModal, setShowModal] = useState(false);
@@ -21,7 +22,9 @@ const Rooms = () => {
         { title: "Add room occupancy", path: "/room-occupancies/new" },
     ];
 
-    if (!rooms || rooms.length === 0) return <EmptyPage caption="No rooms found" />;
+    if (!rooms) return <LoadingSpinner/>
+
+    if (rooms.length === 0) return <EmptyPage caption="No rooms found" />;
 
     return (
         <ContentLayout className="max-h-[calc(100vh-2*var(--main-bar-vertical-padding)-var(--main-bar-height)-2*var(--content-layout-vertical-margin))]">
