@@ -5,8 +5,8 @@ import { CategoryScale, type ChartData, type ChartOptions } from "chart.js";
 import Chart from "chart.js/auto";
 import { useDarkMode } from "../../../../utils/hooks/useDarkMode.ts";
 import { AppColorMode } from "../../../../utils/projectTypes.ts";
-import { formatDate } from "date-fns";
 import { DISPLAY_DATE_FORMAT } from "../../../../utils/constants.ts";
+import { formatDate } from "date-fns";
 
 Chart.register(CategoryScale);
 
@@ -17,11 +17,12 @@ const StyledAppointmentsChart = styled.div`
     background-color: var(--background-secondary);
     color: var(--font-primary);
     overflow-x: hidden;
-
-    @media (min-width: 40em) {
-        grid-column: 1 / span 1;
-    }
-    @media (min-width: 48em) {
+    
+    @media (min-width: 80em) {
+        grid-column: 1 / span 2;
+    }   
+    
+    @media (min-width: 96em) {
         grid-column: 1 / span 3;
     }
 `;
@@ -53,6 +54,7 @@ export const AppointmentsChart = () => {
             {
                 label: "Appointments",
                 data: chartData.map((appointment) => appointment.value),
+                maxBarThickness: 60,
             },
         ],
     };

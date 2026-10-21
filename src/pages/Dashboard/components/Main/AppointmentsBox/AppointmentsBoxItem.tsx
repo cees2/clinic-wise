@@ -56,7 +56,7 @@ const StyledAppointmentsBoxItem = styled.li`
 
 export const AppointmentsBoxItem = ({ appointment }: Props) => {
     const { start_date, duration, status, id, patient } = appointment;
-    const formattedStartDate = format(new Date(start_date), "MMM M");
+    const formattedStartDate = format(new Date(start_date), "MMM d");
     const formattedStartDatetime = format(new Date(start_date), "hh:mm aa");
 
     return (

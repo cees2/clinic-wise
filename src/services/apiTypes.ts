@@ -7,7 +7,7 @@ export interface ResponseApi<T> {
 }
 
 export interface ListResponseApi<T> extends ResponseApi<T[]> {
-    has_next: boolean;
+    has_more: boolean;
 }
 
 interface OptionalID {
@@ -34,7 +34,7 @@ export interface UserApi {
     date_of_birth: string;
     document_id: string;
     enabled: boolean;
-   nationality: SUPPORTED_NATIONALITY;
+    nationality: SUPPORTED_NATIONALITY;
     phone_number: string;
     authorities: UserAuthority[];
     avatar_id: number;
@@ -93,6 +93,11 @@ export interface AppointmentApi {
 }
 
 export interface SearchSelectApi {
+    data: SearchSelectDataItemApi[];
+    has_more: boolean;
+}
+
+export interface SearchSelectDataItemApi {
     value: number;
     label: string;
 }

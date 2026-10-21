@@ -41,7 +41,7 @@ const tableDataContextReducer = <TableDataResource extends TableDataResourceType
         case TableDataActionsEnum.SET_PAGE:
             return { ...prevState, selectedPage: action.payload };
         case TableDataActionsEnum.SET_PAGINATION_SIZE:
-            return { ...prevState, selectedPaginationSize: action.payload };
+            return { ...prevState, selectedPaginationSize: action.payload, selectedPage: 1 };
         case TableDataActionsEnum.REPLACE_OR_ADD_SORT: {
             const newSelectedSortsConfig = prevState.selectedSorts
                 .filter((selectedSort) => selectedSort.id !== action.payload.id)

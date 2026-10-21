@@ -3,7 +3,7 @@ import { useDashboardQuery } from "../../../hooks/useDashboardQuery.ts";
 import { AppointmentsBoxItem } from "./AppointmentsBoxItem.tsx";
 
 const StyledAppointmentsBox = styled.div`
-    grid-column: 1 / span 1;
+    grid-column: 1 / -1;
     border-radius: var(--radius-2xl);
     padding: 2.4rem;
     background-color: var(--background-secondary);
@@ -12,14 +12,17 @@ const StyledAppointmentsBox = styled.div`
     & > .appointments-box__title {
         font-weight: var(--font-weight-bold);
         font-size: 1.8rem;
-        
     }
-    
+
     & > .appointments-box__subtitle {
         font-size: 1.4rem;
     }
 
-    @media (min-width: 48em) {
+    @media (min-width: 80em) {
+        grid-column: 3 / -1;
+    }
+    
+    @media (min-width: 96em) {
         grid-column: 4 / -1;
     }
 `;

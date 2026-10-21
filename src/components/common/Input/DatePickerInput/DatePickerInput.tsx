@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Calendar } from "react-date-range";
 import { Dropdown } from "../../Dropdown/Dropdown";
 import { useController, useFormState, type Control, type FieldPath, type RegisterOptions } from "react-hook-form";
@@ -11,7 +11,7 @@ import {
     getDefaultMinDate,
     getInputFieldErrorName,
 } from "../../utils/inputs";
-import { DB_DATE_FORMAT } from "../../../../utils/constants";
+import { DB_DATE_FORMAT, DB_DATE_FORMAT_WITH_TIME } from "../../../../utils/constants";
 import { StyledDatePickerInput } from "./StyledDatePickerInput.tsx";
 import type { TimePickerProps } from "../../../../utils/projectTypes.ts";
 import { useClickLabel } from "../../../../utils/hooks/useClickLabel.ts";
@@ -55,11 +55,12 @@ export const DatePickerInput = <FormType extends Record<string, any>>({
     const inputErrorName = getInputFieldErrorName(errors, registerName);
 
     const onInternalChange = (selectedDate: Date) => {
-        const currentDate = new Date(value);
+        if(withTimePicker){
+            const parsedISODate = parseISO(value);
+            selectedDate.setHours(parsedISODate.getHours(), parsedISODate.getMinutes());
+        }
 
-        selectedDate.setHours(currentDate.getHours());
-        selectedDate.setMinutes(currentDate.getMinutes());
-        onChange(format(selectedDate, DB_DATE_FORMAT));
+        onChange(format(selectedDate, withTimePicker ? DB_DATE_FORMAT_WITH_TIME : DB_DATE_FORMAT));
     };
 
     return (

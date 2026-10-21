@@ -6,7 +6,7 @@ import { useMutateAppointment } from "../../services/hooks/appointments/useMutat
 import { FilterType, type HeaderButton, type TableDataConfig } from "../../utils/projectTypes";
 import { useConfirmation } from "../../utils/hooks/useConfirmation.tsx";
 import { Status } from "../../components/common/Status";
-import { format } from "date-fns";
+import { format, isFuture } from "date-fns";
 import { DISPLAY_DATE_FORMAT_MINUTES } from "../../utils/constants";
 import { capitalizeFirstLetter } from "../../utils/utils";
 import { type AppointmentApi, AppointmentStatus } from "../../services/apiTypes.ts";
@@ -121,7 +121,7 @@ const Appointments = () => {
                         },
                     });
                 },
-                visible: (item) => item.status === AppointmentStatus.CANCELLED,
+                visible: (item) => item.status === AppointmentStatus.CANCELLED && isFuture(new Date(item.start_date)),
             },
             {
                 id: "edit",

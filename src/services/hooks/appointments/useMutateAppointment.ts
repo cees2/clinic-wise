@@ -33,17 +33,17 @@ export const useMutateAppointment = () => {
             await navigate(`/appointments/${data.id}/edit`);
         },
         onError: () => {
-            toast.error("Could not create the appointment");
+            toast.error("Could not create an appointment");
         },
     });
 
     const mutationCreate = useMutation({
         mutationFn: (appointment: AppointmentFormType) => createAppointment(appointment),
         onError: () => {
-            toast.error("Could not create the appointment");
+            toast.error("Could not create an appointment");
         },
         onSuccess: async (data) => {
-            toast.success("The appointment created successfully");
+            toast.success("The appointment has been created successfully");
             await queryClient.invalidateQueries({ queryKey: ["appointments"] });
             await navigate(`/appointments/${data.id}/edit`);
         },

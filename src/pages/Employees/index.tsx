@@ -60,7 +60,7 @@ const Employees = () => {
                 id: "document_id",
                 name: "Document ID",
                 render: (employee) => employee.user.document_id,
-                disableSorting: true
+                disableSorting: true,
             },
             {
                 id: "role",
@@ -86,7 +86,10 @@ const Employees = () => {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: SUPPORTED_NATIONALITY_ENTRIES.map(([value, name]) => ({ name, value })),
+                options: SUPPORTED_NATIONALITY_ENTRIES.map(([value, name]) => ({
+                    name: capitalizeFirstLetter(name),
+                    value,
+                })),
             },
         ],
         actions: [

@@ -10,7 +10,7 @@ import type React from "react";
 import type { Control, FieldPath, FormState, RegisterOptions } from "react-hook-form";
 import type { Props as SelectProps } from "react-select";
 import type { KnownTarget } from "styled-components/dist/types";
-import { type UserApi, UserAuthority } from "../services/apiTypes.ts";
+import { type SearchSelectApi, type UserApi, UserAuthority } from "../services/apiTypes.ts";
 
 export interface Children {
     children: React.ReactNode;
@@ -150,7 +150,7 @@ export interface TableDataContextType<TableDataResource extends TableDataResourc
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
     resources?: TableDataResource[];
-    hasNext?: boolean;
+    hasMore?: boolean;
 }
 
 export enum TableDataActionsEnum {
@@ -302,11 +302,12 @@ export interface FormSelectInputProps<
     FormType extends Record<string, any>,
 > extends SelectProps<OptionsType, isMulti> {
     options?: OptionsType[];
-    loadOptions?: (inputValue: string) => Promise<OptionsType[]>;
+    loadOptions?: FormSelectLoadOptions;
     control: Control<FormType>;
     registerName: FieldPath<FormType>;
     label: string;
     rules?: Omit<RegisterOptions<FormType>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
+    size?: number;
 }
 
 export interface FormSelectInputSimpleProps<
@@ -322,8 +323,21 @@ export interface FormSelectInputAsyncProps<
     isMulti extends boolean,
     FormType extends Record<string, any>,
 > extends FormSelectInputProps<OptionsType, isMulti, FormType> {
-    loadOptions: (inputValue: string) => Promise<OptionsType[]>;
+    loadOptions: FormSelectLoadOptions;
 }
+
+export interface FormSelectLoadOptionsParams {
+    inputValue: string;
+    params: { size: number; page: number };
+}
+
+export interface SearchSelectApiParams {
+    search: string;
+    size: number;
+    page: number;
+}
+
+export type FormSelectLoadOptions = (params: FormSelectLoadOptionsParams) => Promise<SearchSelectApi>
 
 export type ButtonVariant = "primary" | "danger" | "inactive";
 
@@ -433,10 +447,10 @@ export interface TooltipProps extends Children {
 }
 
 export interface TimePickerProps {
-    value: Date | string;
+    value: string;
     customHours?: number[];
     customMinutes?: number[];
-    onChangeTimePicker: (value: Date) => void;
+    onChangeTimePicker: (value: string) => void;
 }
 
 export type NumberFilterConditionType = Exclude<FilterCondition, "c">;
@@ -469,7 +483,7 @@ export interface TableDataProps<TableDataResource extends TableDataResourceType>
     resources?: TableDataResource[];
     tableDataState: TableDataState<TableDataResource>;
     dispatch: ActionDispatch<[action: TableDataActionsType<TableDataResourceType>]>;
-    hasNext?: boolean;
+    hasMore?: boolean;
 }
 
 export type AlertWarning = "warning" | "error" | "info";

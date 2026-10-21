@@ -1,4 +1,4 @@
-import type { LoginFormType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
+import type { FormSelectLoadOptionsParams, LoginFormType, TableDataResourceType, TableDataState } from "../utils/projectTypes";
 import type { DashboardRemoteData, DashboardState } from "../pages/Dashboard/utils/types.ts";
 import axios from "axios";
 import type {
@@ -19,7 +19,7 @@ import type {
     SearchSelectApi,
     UserApi,
 } from "./apiTypes.ts";
-import { createTableDataParams, parseApiData } from "./services.ts";
+import { convertSearchSelectParamsToApiParams, createTableDataParams, parseApiData } from "./services.ts";
 import { getDashboardTimeFilter } from "../pages/Dashboard/utils";
 
 // TODO: Change based on the environment
@@ -112,9 +112,10 @@ export const uploadFakeEmployees = async () => {
     return data;
 };
 
-// TODO: fix type
-export const getEmployeesSelect = async (inputValue: string) => {
-    const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/employees/search_select?input=${inputValue}`);
+export const getEmployeesSelect = async (params: FormSelectLoadOptionsParams) => {
+    const { data } = await restApi.get<ResponseApi<SearchSelectApi>>(`/employees/search_select`, {
+        params: convertSearchSelectParamsToApiParams(params),
+    });
 
     return parseApiData(data);
 };
@@ -143,8 +144,10 @@ export const removePatient = async (patientId: number) => {
     await restApi.delete(`/patients/${patientId}`);
 };
 
-export const getPatientsSelect = async (inputValue: string) => {
-    const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/patients/search_select?input=${inputValue}`);
+export const getPatientsSelect = async (params: FormSelectLoadOptionsParams) => {
+    const { data } = await restApi.get<ResponseApi<SearchSelectApi>>(`/patients/search_select`, {
+        params: convertSearchSelectParamsToApiParams(params),
+    });
 
     return parseApiData(data);
 };
@@ -203,7 +206,7 @@ export const createRoom = async (room: RoomFormType) => {
 
 // TODO: fix type
 export const getRoomsSelect = async (inputValue: string) => {
-    const { data } = await restApi.get<ResponseApi<SearchSelectApi[]>>(`/rooms/search_select?input=${inputValue}`);
+    const { data } = await restApi.get<ResponseApi<SearchSelectApi>>(`/rooms/search_select?input=${inputValue}`);
 
     return parseApiData(data);
 };

@@ -15,7 +15,7 @@ const TableDataRenderer = <TableDataResource extends TableDataResourceType>({
 }: TableDataRendererProps<TableDataResource>) => {
     const [tableDataState, dispatch] = useReducer(tableDataContextReducer, tableDataConfigInitialValue);
     const { isLoading, data } = useTableDataFetcher(config, tableDataState);
-    const { has_next: hasNext, data: resources } = data ?? {};
+    const { has_more: hasMore, data: resources } = data ?? {};
 
     if (isLoading) return <LoadingSpinner />;
 
@@ -25,7 +25,7 @@ const TableDataRenderer = <TableDataResource extends TableDataResourceType>({
             resources={resources}
             tableDataState={tableDataState}
             dispatch={dispatch}
-            hasNext={hasNext}
+            hasMore={hasMore}
         >
             <TableData.Filters />
             <TableData.Table />
@@ -40,7 +40,7 @@ export const TableData = <TableDataResource extends TableDataResourceType>({
     resources,
     tableDataState,
     dispatch,
-    hasNext,
+    hasMore,
 }: TableDataProps<TableDataResource>) => {
     return (
         <TableDataContextProvider
@@ -48,7 +48,7 @@ export const TableData = <TableDataResource extends TableDataResourceType>({
             resources={resources}
             tableDataState={tableDataState}
             dispatch={dispatch}
-            hasNext={hasNext}
+            hasMore={hasMore}
         >
             {children}
         </TableDataContextProvider>

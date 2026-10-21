@@ -1,5 +1,4 @@
-import { format, startOfToday } from "date-fns";
-import { DB_DATE_FORMAT_WITH_TIME } from "../../../utils/constants";
+import { formatISO, startOfToday } from "date-fns";
 import type { AppointmentApi, AppointmentFormType } from "../../../services/apiTypes.ts";
 
 export const getAppointmentFormDefaultValues = (
@@ -10,5 +9,5 @@ export const getAppointmentFormDefaultValues = (
     duration: appointmentData?.duration,
     employee_id: appointmentData?.employee.id,
     patient_id: appointmentData?.patient.id,
-    start_date: appointmentData?.start_date ?? format(startOfToday(), DB_DATE_FORMAT_WITH_TIME),
+    start_date: appointmentData?.start_date ?? formatISO(startOfToday()),
 });

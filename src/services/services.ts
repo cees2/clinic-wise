@@ -1,4 +1,6 @@
 import type {
+    FormSelectLoadOptionsParams,
+    SearchSelectApiParams,
     TableDataFilterState,
     TableDataResourceType,
     TableDataSortState,
@@ -37,3 +39,9 @@ const generateSortParam = (selectedSorts: TableDataSortState<TableDataResourceTy
 
     return { sort: sortsAsString };
 };
+
+export const convertSearchSelectParamsToApiParams = (params: FormSelectLoadOptionsParams): SearchSelectApiParams => ({
+    search: params.inputValue,
+    size: params.params.size,
+    page: params.params.page
+});

@@ -86,7 +86,7 @@ const Patients = () => {
                 id: "nationality",
                 name: "Nationality",
                 type: FilterType.ENUM,
-                options: SUPPORTED_NATIONALITY_ENTRIES.map(([value, name]) => ({ name, value })),
+                options: SUPPORTED_NATIONALITY_ENTRIES.map(([value, name]) => ({ name: capitalizeFirstLetter(name), value })),
             },
         ],
         resourceName: "patients",

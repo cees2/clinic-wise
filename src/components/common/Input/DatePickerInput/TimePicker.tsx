@@ -4,8 +4,9 @@ import { TimePickerMode, type TimePickerProps } from "../../../../utils/projectT
 import {
     getSelectedHourBasedOnValue,
     getSelectedMinuteBasedOnValue,
-    getUpdatedTimeValue,
 } from "../../utils/timePicker";
+import { format, parseISO } from "date-fns";
+import { DB_DATE_FORMAT_WITH_TIME } from "../../../../utils/constants.ts";
 
 interface Props extends TimePickerProps {
     mode: TimePickerMode;
@@ -45,8 +46,14 @@ const TimePickerColumn = ({ mode, value, onChangeTimePicker, customHours, custom
         mode === TimePickerMode.HOURS ? getSelectedHourBasedOnValue(value) : getSelectedMinuteBasedOnValue(value);
 
     const onColumnValueSelect = (newSelectedValue: number) => {
-        const updatedValue = getUpdatedTimeValue(value, newSelectedValue, mode);
-        onChangeTimePicker(updatedValue);
+        const updatedValue = parseISO(value);
+        if (mode === TimePickerMode.HOURS){
+            updatedValue.setHours(newSelectedValue)
+        } else {
+            updatedValue.setMinutes(newSelectedValue);
+        }
+
+        onChangeTimePicker(format(updatedValue, DB_DATE_FORMAT_WITH_TIME));
     };
 
     return (

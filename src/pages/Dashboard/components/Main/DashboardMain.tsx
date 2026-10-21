@@ -12,7 +12,7 @@ const StyledDashboardMain = styled.div`
     row-gap: 6.4rem;
     margin-top: 6.4rem;
 
-    @media (min-width: 48em) {
+    @media (min-width: 40em) {
         grid-template-columns: repeat(2, 1fr);
     }
 

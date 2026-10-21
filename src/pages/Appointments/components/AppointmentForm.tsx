@@ -12,6 +12,7 @@ import { getAppointmentFormDefaultValues } from "../utils/utils";
 import { toast } from "react-toastify";
 import { CLINIC_WORKING_HOURS, DISPLAY_DATE_FORMAT_MINUTES, EVERY_15_MINUTES } from "../../../utils/constants.ts";
 import type { AppointmentApi, AppointmentFormType, SearchSelectApi } from "../../../services/apiTypes.ts";
+import type { FormSelectLoadOptionsParams } from "../../../utils/projectTypes.ts";
 
 export const AppointmentForm = ({ appointmentData }: { appointmentData?: AppointmentApi }) => {
     const isEdit = Boolean(appointmentData);
@@ -22,17 +23,17 @@ export const AppointmentForm = ({ appointmentData }: { appointmentData?: Appoint
     });
     const navigate = useNavigate();
 
-    const loadEmployees = (inputValue: string) => {
+    const loadEmployees = (params: FormSelectLoadOptionsParams) => {
         return queryClient.fetchQuery({
-            queryFn: () => getEmployeesSelect(inputValue),
-            queryKey: ["employee_select", inputValue.toLowerCase()],
+            queryFn: () => getEmployeesSelect(params),
+            queryKey: ["employee_select", params],
         });
     };
 
-    const loadPatients = (inputValue: string) => {
+    const loadPatients = (params: FormSelectLoadOptionsParams) => {
         return queryClient.fetchQuery({
-            queryFn: () => getPatientsSelect(inputValue),
-            queryKey: ["patients_select", inputValue.toLowerCase()],
+            queryFn: () => getPatientsSelect(params),
+            queryKey: ["patients_select", params],
         });
     };
 
